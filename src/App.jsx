@@ -8,6 +8,8 @@ import FormatSchedule from './components/FormatSchedule'
 import MoneyStream from './components/MoneyStream'
 import Conference from './components/Conference'
 import AssociationTransition from './components/AssociationTransition'
+import Comparison from './components/Comparison'
+import BonusStack from './components/BonusStack'
 import Pricing from './components/Pricing'
 import Teachers from './components/Teachers'
 import Platform from './components/Platform'
@@ -17,6 +19,7 @@ import Identity from './components/Identity'
 import Faq from './components/Faq'
 import FinalCta from './components/FinalCta'
 import Footer from './components/Footer'
+import StickyBar from './components/StickyBar'
 
 function App() {
   return (
@@ -30,6 +33,8 @@ function App() {
       <MoneyStream />
       <Conference />
       <AssociationTransition />
+      <Comparison />
+      <BonusStack />
       <Pricing />
       <Teachers />
       <Platform />
@@ -39,6 +44,7 @@ function App() {
       <Faq />
       <FinalCta />
       <Footer />
+      <StickyBar />
     </>
   )
 }
