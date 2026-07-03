@@ -493,12 +493,44 @@ button {
 }
 
 .ribbon {
+  position: relative;
   background: linear-gradient(90deg, var(--gold-light), var(--gold) 50%, var(--gold-light));
   transform: rotate(-1.2deg);
   margin: 0 -40px;
   padding: 16px 0;
   box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
   overflow: hidden;
+}
+
+.ribbon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -35%;
+  width: 22%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.95) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  animation: ribbon-shine 3.2s ease-in-out infinite;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+@keyframes ribbon-shine {
+  0% {
+    left: -35%;
+  }
+  55% {
+    left: 130%;
+  }
+  100% {
+    left: 130%;
+  }
 }
 
 .ribbon-track {
