@@ -1249,64 +1249,79 @@ button {
   text-transform: none;
 }
 
-/* ---------- FAQ ---------- */
-.faq-list {
-  display: flex;
-  flex-direction: column;
+/* ---------- FAQ (big typographic accordion, adapted from 21st.dev accordion-05) ---------- */
+.faq-list-big {
+  width: 100%;
 }
 
-.faq-item {
+.faq-item-big {
   border-bottom: 1px solid var(--border);
-  padding: 22px 0;
 }
 
-.faq-question {
+.faq-item-big:last-child {
+  border-bottom: none;
+}
+
+.faq-trigger-big {
   width: 100%;
   display: flex;
-  align-items: center;
-  gap: 18px;
+  align-items: baseline;
+  gap: 20px;
   background: none;
   border: none;
   text-align: left;
-  padding: 0;
+  padding: 22px 0;
+  cursor: pointer;
 }
 
-.faq-question .q-text {
-  flex: 1;
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  letter-spacing: 0.01em;
-}
-
-.faq-toggle {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  color: var(--blood);
+.faq-num-big {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--muted);
   flex-shrink: 0;
-  transition: transform 0.2s ease;
+  width: 28px;
+  transition: color 0.25s ease;
 }
 
-.faq-item.open .faq-toggle {
-  transform: rotate(45deg);
+.faq-title-big {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 4vw, 2.6rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  opacity: 0.25;
+  transition: opacity 0.25s ease, color 0.25s ease;
 }
 
-.faq-answer {
+.faq-item-big.open .faq-title-big {
+  opacity: 1;
+  color: var(--blood);
+}
+
+.faq-item-big.open .faq-num-big {
+  color: var(--gold-dark);
+}
+
+.faq-panel-big {
   overflow: hidden;
   max-height: 0;
-  transition: max-height 0.25s ease;
-  padding-left: 0;
+  transition: max-height 0.3s ease;
+  padding-left: 48px;
 }
 
-.faq-item.open .faq-answer {
-  max-height: 240px;
+.faq-item-big.open .faq-panel-big {
+  max-height: 260px;
 }
 
-.faq-answer p {
-  padding-top: 12px;
+.faq-panel-big p {
+  padding-bottom: 24px;
   color: var(--muted);
   line-height: 1.6;
   max-width: 680px;
   text-transform: none;
+  font-size: 1rem;
 }
 
 /* ---------- Final CTA ---------- */

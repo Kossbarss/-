@@ -50,11 +50,15 @@ if (ribbonTrack) {
   ribbonTrack.innerHTML = items
 }
 
-// ---------- FAQ accordion ----------
-document.querySelectorAll('.faq-item').forEach((item) => {
-  const question = item.querySelector('.faq-question')
-  question.addEventListener('click', () => {
-    item.classList.toggle('open')
+// ---------- FAQ accordion (single-open, like Radix Accordion type="single") ----------
+const faqItems = document.querySelectorAll('.faq-item-big')
+faqItems.forEach((item, index) => {
+  const trigger = item.querySelector('.faq-trigger-big')
+  if (index === 0) item.classList.add('open')
+  trigger.addEventListener('click', () => {
+    const wasOpen = item.classList.contains('open')
+    faqItems.forEach((other) => other.classList.remove('open'))
+    if (!wasOpen) item.classList.add('open')
   })
 })
 
