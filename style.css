@@ -1026,115 +1026,88 @@ button {
   color: var(--ink-soft);
 }
 
-/* ---------- Month calendar (inspired by RISE) ---------- */
-.month-grid {
+/* ---------- 14-day cycle grid (identical block/palette/logo-placement to RISE) ---------- */
+.rise-cycle-section {
+  background: #0d0b0a;
+  position: relative;
+  overflow: hidden;
+}
+
+.rise-grid {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 8px;
-  margin-bottom: 28px;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
 }
 
 @media (max-width: 900px) {
-  .month-grid {
-    grid-template-columns: repeat(7, 1fr);
+  .rise-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
 @media (max-width: 560px) {
-  .month-grid {
-    grid-template-columns: repeat(5, 1fr);
+  .rise-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-.month-day {
-  aspect-ratio: 1;
-  border-radius: 10px;
-  background: var(--white);
-  border: 1px solid var(--border);
+.rise-cell {
+  position: relative;
+  aspect-ratio: 1 / 1.05;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #1c1917;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 14px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  padding: 6px 4px;
-  text-align: center;
+  justify-content: flex-start;
+  gap: 6px;
 }
 
-.month-day .day-num {
+.rise-cell.active {
+  background: linear-gradient(155deg, #dd0003 0%, #fe5200 100%);
+  border-color: transparent;
+}
+
+.cell-watermark {
+  position: absolute;
+  bottom: -18px;
+  right: -18px;
+  width: 78%;
+  max-width: 130px;
+  opacity: 0.14;
+  pointer-events: none;
+  user-select: none;
+}
+
+.rise-cell.active .cell-watermark {
+  opacity: 0.22;
+}
+
+.cell-day-num {
+  position: relative;
+  z-index: 1;
   font-family: var(--font-display);
-  font-size: 1.1rem;
-  color: var(--ink-soft);
+  font-size: 1.6rem;
+  color: rgba(250, 246, 239, 0.35);
+  letter-spacing: 0.02em;
 }
 
-.month-day .day-label {
-  font-size: 0.6rem;
+.rise-cell.active .cell-day-num {
+  color: var(--white);
+}
+
+.cell-label {
+  position: relative;
+  z-index: 1;
+  font-size: 0.72rem;
+  line-height: 1.25;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  line-height: 1.1;
-}
-
-.month-day-module {
-  background: linear-gradient(160deg, var(--gold-light), var(--gold));
-  border-color: transparent;
-}
-
-.month-day-module .day-num,
-.month-day-module .day-label {
-  color: var(--ink);
-}
-
-.month-day-supervision {
-  background: linear-gradient(160deg, var(--blood), var(--blood-dark));
-  border-color: transparent;
-}
-
-.month-day-supervision .day-num,
-.month-day-supervision .day-label {
+  letter-spacing: 0.01em;
   color: var(--white);
-}
-
-.month-day-practice {
-  background: linear-gradient(160deg, var(--periwinkle), var(--periwinkle-dark));
-  border-color: transparent;
-}
-
-.month-day-practice .day-num,
-.month-day-practice .day-label {
-  color: var(--white);
-}
-
-.month-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  font-size: 0.85rem;
-  color: var(--muted);
-  text-transform: none;
-}
-
-.month-legend span {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.month-legend .dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 999px;
-  display: inline-block;
-}
-
-.dot-module {
-  background: linear-gradient(160deg, var(--gold-light), var(--gold));
-}
-
-.dot-supervision {
-  background: linear-gradient(160deg, var(--blood), var(--blood-dark));
-}
-
-.dot-practice {
-  background: linear-gradient(160deg, var(--periwinkle), var(--periwinkle-dark));
+  max-width: 90%;
 }
 
 /* ---------- Bonus stack ---------- */

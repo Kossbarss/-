@@ -416,52 +416,80 @@
     </div>
   </section>
 
-  <!-- ============ MONTH CALENDAR (inspired by RISE) ============ -->
-  <section class="section">
+  <!-- ============ 14-DAY CYCLE GRID (identical layout/palette to RISE) ============ -->
+  <section class="section rise-cycle-section">
     <div class="container">
       <div class="section-head">
-        <span class="kicker">Приклад циклу</span>
-        <h2>Як виглядає 1 місяць у VIP Tattoo School</h2>
-        <p>Кожен місяць — новий модуль (5 днів), три групові супервізії та практика на моделі під наглядом ментора.</p>
+        <span class="kicker" style="color: var(--gold-light, var(--gold)); border-color: var(--gold-light, var(--gold));">Перші 14 днів</span>
+        <h2 style="color: var(--white);">Як виглядають перші 14 днів навчання</h2>
+        <p style="color: rgba(250,246,239,0.65);">Щільний, покроковий ритм: модулі, зустрічі з майстром і перша практична робота вже на другому тижні.</p>
       </div>
 
-      <div class="month-grid">
-        <div class="month-day month-day-module"><span class="day-num">1</span><span class="day-label">Модуль</span></div>
-        <div class="month-day month-day-module"><span class="day-num">2</span><span class="day-label">Модуль</span></div>
-        <div class="month-day month-day-module"><span class="day-num">3</span><span class="day-label">Модуль</span></div>
-        <div class="month-day month-day-module"><span class="day-num">4</span><span class="day-label">Модуль</span></div>
-        <div class="month-day month-day-module"><span class="day-num">5</span><span class="day-label">Модуль</span></div>
-        <div class="month-day"><span class="day-num">6</span></div>
-        <div class="month-day"><span class="day-num">7</span></div>
-        <div class="month-day"><span class="day-num">8</span></div>
-        <div class="month-day"><span class="day-num">9</span></div>
-        <div class="month-day month-day-supervision"><span class="day-num">10</span><span class="day-label">Супервізія</span></div>
-        <div class="month-day"><span class="day-num">11</span></div>
-        <div class="month-day"><span class="day-num">12</span></div>
-        <div class="month-day"><span class="day-num">13</span></div>
-        <div class="month-day"><span class="day-num">14</span></div>
-        <div class="month-day month-day-practice"><span class="day-num">15</span><span class="day-label">Практика</span></div>
-        <div class="month-day"><span class="day-num">16</span></div>
-        <div class="month-day month-day-supervision"><span class="day-num">17</span><span class="day-label">Супервізія</span></div>
-        <div class="month-day"><span class="day-num">18</span></div>
-        <div class="month-day"><span class="day-num">19</span></div>
-        <div class="month-day"><span class="day-num">20</span></div>
-        <div class="month-day"><span class="day-num">21</span></div>
-        <div class="month-day"><span class="day-num">22</span></div>
-        <div class="month-day"><span class="day-num">23</span></div>
-        <div class="month-day month-day-supervision"><span class="day-num">24</span><span class="day-label">Супервізія</span></div>
-        <div class="month-day"><span class="day-num">25</span></div>
-        <div class="month-day"><span class="day-num">26</span></div>
-        <div class="month-day"><span class="day-num">27</span></div>
-        <div class="month-day month-day-module"><span class="day-num">28</span><span class="day-label">Портфоліо</span></div>
-        <div class="month-day month-day-module"><span class="day-num">29</span><span class="day-label">Портфоліо</span></div>
-        <div class="month-day month-day-module"><span class="day-num">30</span><span class="day-label">Портфоліо</span></div>
-      </div>
-
-      <div class="month-legend">
-        <span><i class="dot dot-module"></i>Модуль / робота над портфоліо</span>
-        <span><i class="dot dot-supervision"></i>Групова супервізія</span>
-        <span><i class="dot dot-practice"></i>Практика на моделі</span>
+      <div class="rise-grid">
+        <div class="rise-cell active">
+          <img src="assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">01</span>
+          <span class="cell-label">Гігієна і стерилізація</span>
+        </div>
+        <div class="rise-cell active">
+          <img src="assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">02</span>
+          <span class="cell-label">Обладнання та налаштування</span>
+        </div>
+        <div class="rise-cell">
+          <img src="assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">03</span>
+        </div>
+        <div class="rise-cell active">
+          <img src="assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">04</span>
+          <span class="cell-label">Zoom із засновником школи</span>
+        </div>
+        <div class="rise-cell">
+          <img src="assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">05</span>
+        </div>
+        <div class="rise-cell">
+          <img src="assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">06</span>
+        </div>
+        <div class="rise-cell active">
+          <img src="assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">07</span>
+          <span class="cell-label">Офлайн-практика в студії</span>
+        </div>
+        <div class="rise-cell active">
+          <img src="assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">08</span>
+          <span class="cell-label">Лінія та розтушовка</span>
+        </div>
+        <div class="rise-cell">
+          <img src="assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">09</span>
+        </div>
+        <div class="rise-cell active">
+          <img src="assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">10</span>
+          <span class="cell-label">Розбір робіт з ментором</span>
+        </div>
+        <div class="rise-cell">
+          <img src="assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">11</span>
+        </div>
+        <div class="rise-cell active">
+          <img src="assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">12</span>
+          <span class="cell-label">Супервізія малої групи</span>
+        </div>
+        <div class="rise-cell">
+          <img src="assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">13</span>
+        </div>
+        <div class="rise-cell active">
+          <img src="assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">14</span>
+          <span class="cell-label">Перша тату на моделі</span>
+        </div>
       </div>
     </div>
   </section>
