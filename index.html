@@ -728,7 +728,22 @@
   <!-- ============ FOOTER ============ -->
   <footer class="footer">
     <div class="container">
-      <img src="assets/logo-full.png" alt="VIP Tattoo School" class="footer-logo" width="120" height="119" />
+      <div class="footer-particles-wrap">
+        <canvas id="logoParticles" data-logo="assets/logo-watermark.png" width="300" height="300" role="img" aria-label="Анимированный логотип VIP Tattoo School"></canvas>
+        <div class="footer-wordmark">VIP TATTOO<span class="dot">.</span>SCHOOL</div>
+        <p class="particles-hint">Кликни или удерживай логотип</p>
+        <div class="particle-theme-switch">
+          <button class="particle-theme-btn" data-theme="molten">Molten</button>
+          <button class="particle-theme-btn" data-theme="cosmic">Cosmic</button>
+          <button class="particle-theme-btn" data-theme="emerald">Emerald</button>
+          <button class="particle-theme-btn active" data-theme="vip">VIP</button>
+        </div>
+        <label class="particles-animate-toggle">
+          <input type="checkbox" id="particleAnimateToggle" checked />
+          Анимация
+        </label>
+      </div>
+
       <div class="footer-social">
         <a href="#" aria-label="Instagram">IG</a>
         <a href="#" aria-label="Telegram">TG</a>
@@ -760,5 +775,6 @@
   </div>
 
   <script src="script.js"></script>
+  <script src="particles.js"></script>
 </body>
 </html>
