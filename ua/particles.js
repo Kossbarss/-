@@ -1,7 +1,8 @@
 // Footer logo particle animation — lightweight Canvas 2D adaptation of a
 // Three.js "star shockwaves" reference: particles sample the brand mark
-// instead of a star and pulse with an automatic, hands-off shockwave
-// on a loop, using our VIP burgundy-gold palette.
+// instead of a star. Fully automatic, no controls: an ambient disintegration
+// cycle (particles periodically scatter away and reform) runs alongside a
+// looping shockwave pulse, using our VIP burgundy-gold palette.
 ;(function () {
   const canvas = document.getElementById('logoParticles')
   if (!canvas) return
@@ -20,6 +21,11 @@
   let particles = []
   let shockwaves = []
   let nextPulseAt = 3
+
+  const DISINTEGRATION_CYCLE = 10.0
+  const STABLE_END = 0.55
+  const DIS_FULL = STABLE_END + 0.15
+  const HOLD_END = DIS_FULL + 0.1
 
   function hexToRgb(hex) {
     const v = parseInt(hex.slice(1), 16)
@@ -68,10 +74,12 @@
     return chosen
   }
 
-  function initParticles(points) {
+  function initParticles(points, count) {
     particles = points.map((p, i) => {
       const angle = Math.random() * Math.PI * 2
       const dist = 60 + Math.random() * 110
+      const offStrength = 40 + Math.random() * 55
+      const offAngle = Math.random() * Math.PI * 2
       return {
         homeX: p.x,
         homeY: p.y,
@@ -80,6 +88,9 @@
         size: 1 + Math.random() * 1.5,
         colorOffset: Math.random(),
         seed: i,
+        cycleOffset: (i / count) * DISINTEGRATION_CYCLE * 0.5,
+        disintegrationOffsetX: Math.cos(offAngle) * offStrength,
+        disintegrationOffsetY: Math.sin(offAngle) * offStrength,
       }
     })
   }
@@ -106,9 +117,17 @@
 
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i]
-      let targetX = p.homeX
-      let targetY = p.homeY
 
+      // ambient disintegration cycle: scatter away, hold, reform
+      const cycleProgress = ((time * 0.6 + p.cycleOffset) % DISINTEGRATION_CYCLE) / DISINTEGRATION_CYCLE
+      let disAmt = 0
+      if (cycleProgress < STABLE_END) disAmt = 0
+      else if (cycleProgress < DIS_FULL) disAmt = (cycleProgress - STABLE_END) / (DIS_FULL - STABLE_END)
+      else if (cycleProgress < HOLD_END) disAmt = 1
+      else disAmt = 1 - (cycleProgress - HOLD_END) / (1 - HOLD_END)
+      disAmt = Math.sin(disAmt * Math.PI * 0.5)
+
+      // shockwave push, radial from center
       const dist = Math.sqrt(p.homeX * p.homeX + p.homeY * p.homeY) + 1e-6
       let addX = 0
       let addY = 0
@@ -122,16 +141,27 @@
         addX += (p.homeX / dist) * amp
         addY += (p.homeY / dist) * amp
       }
-      targetX += addX
-      targetY += addY
-      p.x += (targetX - p.x) * 0.09
-      p.y += (targetY - p.y) * 0.09
+
+      let targetX = p.homeX + addX
+      let targetY = p.homeY + addY
+      let lerp = 0.09
+
+      if (disAmt > 0.001) {
+        targetX += p.disintegrationOffsetX * disAmt
+        targetY += p.disintegrationOffsetY * disAmt
+        lerp = 0.05 + disAmt * 0.02
+      }
+
+      p.x += (targetX - p.x) * lerp
+      p.y += (targetY - p.y) * lerp
 
       const color = lerpColor(palette, p.colorOffset + time * 0.04)
-      const bright = 0.55 + Math.sin(time * 3 + p.seed) * 0.35
+      let bright = (0.55 + Math.sin(time * 3 + p.seed) * 0.35) * (1 - disAmt * 0.7)
+      const curSize = p.size * (1 - disAmt * 0.75)
+
       ctx.beginPath()
       ctx.fillStyle = `rgba(${color.r | 0}, ${color.g | 0}, ${color.b | 0}, ${0.65 + bright * 0.3})`
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+      ctx.arc(p.x, p.y, Math.max(0.2, curSize), 0, Math.PI * 2)
       ctx.fill()
     }
 
@@ -142,7 +172,8 @@
   img.crossOrigin = 'anonymous'
   img.src = canvas.dataset.logo
   img.onload = () => {
-    initParticles(sampleLogoPoints(img, 1300))
+    const count = 1300
+    initParticles(sampleLogoPoints(img, count), count)
     requestAnimationFrame(loop)
   }
 })()
