@@ -50,6 +50,12 @@ if (ribbonTrack) {
   ribbonTrack.innerHTML = items
 }
 
+// ---------- Vertical topics scroller (duplicated for a seamless loop) ----------
+const topicsTrack = document.getElementById('topicsTrack')
+if (topicsTrack) {
+  topicsTrack.innerHTML += topicsTrack.innerHTML
+}
+
 // ---------- FAQ accordion (single-open, like Radix Accordion type="single") ----------
 const faqItems = document.querySelectorAll('.faq-item-big')
 faqItems.forEach((item, index) => {

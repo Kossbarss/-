@@ -423,6 +423,40 @@
     </div>
   </section>
 
+  <!-- ============ TOPICS VERTICAL SCROLLER ============ -->
+  <section class="section topics-scroll-section">
+    <div class="topics-ring" aria-hidden="true">
+      <svg viewBox="0 0 400 400" width="400" height="400">
+        <ellipse cx="200" cy="200" rx="199" ry="150" fill="none" stroke="url(#ringGrad)" stroke-width="1.5" />
+        <defs>
+          <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="var(--gold)" stop-opacity="0" />
+            <stop offset="50%" stop-color="var(--gold)" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="var(--gold)" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="container">
+      <div class="section-head" style="text-align: center; max-width: 640px; margin-inline: auto;">
+        <h2 style="color: var(--white);">Протягом курсу<br />послідовно <span class="accent">розбираємо:</span></h2>
+      </div>
+
+      <div class="v-marquee">
+        <div class="v-track" id="topicsTrack">
+          <div class="v-item">Гігієна</div>
+          <div class="v-item">Техніка</div>
+          <div class="v-item">Колір</div>
+          <div class="v-item">Моделі</div>
+          <div class="v-item">Портфоліо</div>
+          <div class="v-item">Клієнти</div>
+        </div>
+        <div class="v-marquee-blur"></div>
+        <div class="v-marquee-blur is-bottom"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ LESSON GRID ============ -->
   <section class="section" style="background: var(--paper-alt); padding-top: 0;">
     <div class="container">
