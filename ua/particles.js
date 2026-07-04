@@ -1,10 +1,11 @@
 // Footer logo particle animation — lightweight Canvas 2D adaptation of a
 // Three.js "star shockwaves" reference: particles sample the brand mark
 // instead of a star. Fully automatic, no controls: a slow "planet" spin
-// around its own vertical axis (particles swing from side to side and
-// fade out as they pass to the far side, like a rotating globe) and an
-// ambient disintegration cycle (particles periodically scatter away and
-// reform) run alongside a looping shockwave pulse, using our VIP
+// around its own vertical axis, but built from 3 copies of the mark
+// spaced 120° apart around the axis (like a 3-sided rotating sign) so
+// there is always a face turned toward the viewer — no dark/"night"
+// side — plus an ambient disintegration cycle (particles periodically
+// scatter away and reform) and a looping shockwave pulse, using our VIP
 // burgundy-gold palette.
 ;(function () {
   const canvas = document.getElementById('logoParticles')
@@ -26,7 +27,7 @@
   let nextPulseAt = 3
   let globeRadius = 135
   const SPIN_SPEED = 0.45
-  const MIN_VISIBILITY = 0.16
+  const FACE_OFFSETS = [0, (Math.PI * 2) / 3, (Math.PI * 4) / 3]
 
   const DISINTEGRATION_CYCLE = 10.0
   const STABLE_END = 0.55
@@ -82,28 +83,36 @@
 
   function initParticles(points, count) {
     globeRadius = points.reduce((m, p) => Math.max(m, Math.abs(p.x)), 1)
-    particles = points.map((p, i) => {
-      const angle = Math.random() * Math.PI * 2
-      const dist = 60 + Math.random() * 110
-      const offStrength = 40 + Math.random() * 55
-      const offAngle = Math.random() * Math.PI * 2
-      return {
-        homeX: p.x,
-        homeY: p.y,
-        // fixed "longitude" on the globe, derived from the particle's flat
-        // x position — used every frame to project it onto the rotating
-        // sphere instead of spinning the flat shape in the picture plane
-        baseAngle: Math.asin(Math.max(-1, Math.min(1, p.x / globeRadius))),
-        x: p.x + Math.cos(angle) * dist,
-        y: p.y + Math.sin(angle) * dist,
-        size: 1 + Math.random() * 1.5,
-        colorOffset: Math.random(),
-        seed: i,
-        cycleOffset: (i / count) * DISINTEGRATION_CYCLE * 0.5,
-        disintegrationOffsetX: Math.cos(offAngle) * offStrength,
-        disintegrationOffsetY: Math.sin(offAngle) * offStrength,
+    particles = []
+    // build 3 copies of the sampled mark, one per face, each carrying its
+    // own fixed rotational offset so the three faces are spaced evenly
+    // around the spin axis
+    for (let f = 0; f < FACE_OFFSETS.length; f++) {
+      for (let i = 0; i < points.length; i++) {
+        const p = points[i]
+        const angle = Math.random() * Math.PI * 2
+        const dist = 60 + Math.random() * 110
+        const offStrength = 40 + Math.random() * 55
+        const offAngle = Math.random() * Math.PI * 2
+        particles.push({
+          homeX: p.x,
+          homeY: p.y,
+          // fixed "longitude" on this face, derived from the particle's
+          // flat x position — used every frame to project it onto the
+          // rotating sphere instead of spinning the flat shape in place
+          baseAngle: Math.asin(Math.max(-1, Math.min(1, p.x / globeRadius))),
+          faceOffset: FACE_OFFSETS[f],
+          x: p.x + Math.cos(angle) * dist,
+          y: p.y + Math.sin(angle) * dist,
+          size: 1 + Math.random() * 1.5,
+          colorOffset: Math.random(),
+          seed: f * count + i,
+          cycleOffset: (i / count) * DISINTEGRATION_CYCLE * 0.5,
+          disintegrationOffsetX: Math.cos(offAngle) * offStrength,
+          disintegrationOffsetY: Math.sin(offAngle) * offStrength,
+        })
       }
-    })
+    }
   }
 
   function triggerShockwave(amplitude) {
@@ -131,14 +140,17 @@
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i]
 
-      // project the flat home position onto a sphere spinning around its
-      // own vertical axis: gx sweeps across the globe's width and the
-      // particle fades out as it swings past the silhouette edge into the
-      // far side, exactly like watching a planet rotate in place
-      const globeAngle = p.baseAngle + spinPhase
+      // project this face's flat home position onto a sphere spinning
+      // around its own vertical axis: gx sweeps across the globe's width
+      // and the particle fades out as it swings past the silhouette edge
+      // toward the back of ITS face — but with 3 faces spaced 120° apart
+      // and each visible across a 180° arc, at least one is always
+      // turned toward the viewer, so there is never a fully dark gap
+      const globeAngle = p.baseAngle + spinPhase + p.faceOffset
       const gx = globeRadius * Math.sin(globeAngle)
       const depth = Math.cos(globeAngle)
-      const visibility = Math.max(MIN_VISIBILITY, depth)
+      if (depth <= 0) continue
+      const visibility = depth
 
       // ambient disintegration cycle: scatter away, hold, reform
       const cycleProgress = ((time * 0.6 + p.cycleOffset) % DISINTEGRATION_CYCLE) / DISINTEGRATION_CYCLE
@@ -194,7 +206,7 @@
   img.crossOrigin = 'anonymous'
   img.src = canvas.dataset.logo
   img.onload = () => {
-    const count = 1300
+    const count = 900
     initParticles(sampleLogoPoints(img, count), count)
     requestAnimationFrame(loop)
   }
