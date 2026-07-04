@@ -35,20 +35,41 @@
 
       <a href="#pricing" class="btn btn-gold nav-cta">Забрать курс</a>
 
-      <button class="nav-toggle" id="navToggle" aria-label="Меню">☰</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Открыть меню"><span></span></button>
     </div>
-    <div class="container mobile-nav" id="mobileNav">
+  </header>
+
+  <!-- Full-screen mobile menu overlay: kept outside <header> so its
+       position:fixed isn't re-anchored by the header's backdrop-filter
+       (which creates a containing block for fixed descendants). -->
+  <div class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header">
+      <a href="#top" class="logo">
+        <img src="assets/logo-mark.png" alt="VIP tattoo school" class="logo-mark-img" width="36" height="36" />
+        VIP tattoo school
+      </a>
+      <button class="mobile-nav-close" id="mobileNavClose" aria-label="Закрыть меню">&times;</button>
+    </div>
+
+    <nav class="mobile-nav-links">
       <a href="#program">О курсе</a>
       <a href="#curriculum">Программа</a>
       <a href="#pricing">Тарифы</a>
       <a href="#faq">Вопросы</a>
+    </nav>
+
+    <div class="mobile-nav-footer">
+      <a href="#pricing" class="btn btn-gold btn-block">Забрать курс</a>
       <div class="lang-switch">
         <a href="#" class="active">RU</a>
         <a href="ua/index.html">UA</a>
       </div>
-      <a href="#pricing" class="btn btn-gold">Забрать курс</a>
+      <div class="mobile-nav-socials">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="Telegram">TG</a>
+      </div>
     </div>
-  </header>
+  </div>
 
   <!-- ============ HERO ============ -->
   <section id="top" class="hero">

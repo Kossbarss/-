@@ -62,13 +62,26 @@ faqItems.forEach((item, index) => {
   })
 })
 
-// ---------- Mobile nav ----------
+// ---------- Mobile nav (full-screen overlay) ----------
 const navToggle = document.getElementById('navToggle')
 const mobileNav = document.getElementById('mobileNav')
+const mobileNavClose = document.getElementById('mobileNavClose')
+
+function setMobileNavOpen(open) {
+  mobileNav.classList.toggle('open', open)
+  navToggle.classList.toggle('on', open)
+  document.body.classList.toggle('nav-open', open)
+}
+
 if (navToggle && mobileNav) {
   navToggle.addEventListener('click', () => {
-    mobileNav.classList.toggle('open')
-    navToggle.textContent = mobileNav.classList.contains('open') ? '✕' : '☰'
+    setMobileNavOpen(!mobileNav.classList.contains('open'))
+  })
+  if (mobileNavClose) {
+    mobileNavClose.addEventListener('click', () => setMobileNavOpen(false))
+  }
+  mobileNav.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => setMobileNavOpen(false))
   })
 }
 
