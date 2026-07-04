@@ -1,9 +1,11 @@
 // Footer logo particle animation — lightweight Canvas 2D adaptation of a
 // Three.js "star shockwaves" reference: particles sample the brand mark
-// instead of a star. Fully automatic, no controls: a slow continuous
-// rotation and an ambient disintegration cycle (particles periodically
-// scatter away and reform) run alongside a looping shockwave pulse,
-// using our VIP burgundy-gold palette.
+// instead of a star. Fully automatic, no controls: a slow "planet" spin
+// around its own vertical axis (particles swing from side to side and
+// fade out as they pass to the far side, like a rotating globe) and an
+// ambient disintegration cycle (particles periodically scatter away and
+// reform) run alongside a looping shockwave pulse, using our VIP
+// burgundy-gold palette.
 ;(function () {
   const canvas = document.getElementById('logoParticles')
   if (!canvas) return
@@ -22,6 +24,9 @@
   let particles = []
   let shockwaves = []
   let nextPulseAt = 3
+  let globeRadius = 135
+  const SPIN_SPEED = 0.45
+  const MIN_VISIBILITY = 0.16
 
   const DISINTEGRATION_CYCLE = 10.0
   const STABLE_END = 0.55
@@ -76,6 +81,7 @@
   }
 
   function initParticles(points, count) {
+    globeRadius = points.reduce((m, p) => Math.max(m, Math.abs(p.x)), 1)
     particles = points.map((p, i) => {
       const angle = Math.random() * Math.PI * 2
       const dist = 60 + Math.random() * 110
@@ -84,6 +90,10 @@
       return {
         homeX: p.x,
         homeY: p.y,
+        // fixed "longitude" on the globe, derived from the particle's flat
+        // x position — used every frame to project it onto the rotating
+        // sphere instead of spinning the flat shape in the picture plane
+        baseAngle: Math.asin(Math.max(-1, Math.min(1, p.x / globeRadius))),
         x: p.x + Math.cos(angle) * dist,
         y: p.y + Math.sin(angle) * dist,
         size: 1 + Math.random() * 1.5,
@@ -110,17 +120,7 @@
       nextPulseAt = time + 4.5 + Math.random() * 1.5
     }
 
-    // slow continuous rotation of the whole shape around its center
-    const rotSpeed = -0.0008
-    const cosR = Math.cos(rotSpeed)
-    const sinR = Math.sin(rotSpeed)
-    for (let i = 0; i < particles.length; i++) {
-      const p = particles[i]
-      const hx = p.homeX
-      const hy = p.homeY
-      p.homeX = hx * cosR - hy * sinR
-      p.homeY = hx * sinR + hy * cosR
-    }
+    const spinPhase = time * SPIN_SPEED
 
     ctx.clearRect(0, 0, size, size)
     ctx.save()
@@ -130,6 +130,15 @@
 
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i]
+
+      // project the flat home position onto a sphere spinning around its
+      // own vertical axis: gx sweeps across the globe's width and the
+      // particle fades out as it swings past the silhouette edge into the
+      // far side, exactly like watching a planet rotate in place
+      const globeAngle = p.baseAngle + spinPhase
+      const gx = globeRadius * Math.sin(globeAngle)
+      const depth = Math.cos(globeAngle)
+      const visibility = Math.max(MIN_VISIBILITY, depth)
 
       // ambient disintegration cycle: scatter away, hold, reform
       const cycleProgress = ((time * 0.6 + p.cycleOffset) % DISINTEGRATION_CYCLE) / DISINTEGRATION_CYCLE
@@ -141,7 +150,7 @@
       disAmt = Math.sin(disAmt * Math.PI * 0.5)
 
       // shockwave push, radial from center
-      const dist = Math.sqrt(p.homeX * p.homeX + p.homeY * p.homeY) + 1e-6
+      const dist = Math.sqrt(gx * gx + p.homeY * p.homeY) + 1e-6
       let addX = 0
       let addY = 0
       for (let w = 0; w < shockwaves.length; w++) {
@@ -151,11 +160,11 @@
         const g = Math.exp(-((dist - R) * (dist - R)) / (2 * sw.width * sw.width))
         const decay = Math.exp(-sw.decay * elapsed)
         const amp = sw.amplitude * g * decay
-        addX += (p.homeX / dist) * amp
+        addX += (gx / dist) * amp
         addY += (p.homeY / dist) * amp
       }
 
-      let targetX = p.homeX + addX
+      let targetX = gx + addX
       let targetY = p.homeY + addY
       let lerp = 0.09
 
@@ -170,10 +179,10 @@
 
       const color = lerpColor(palette, p.colorOffset + time * 0.04)
       let bright = (0.55 + Math.sin(time * 3 + p.seed) * 0.35) * (1 - disAmt * 0.7)
-      const curSize = p.size * (1 - disAmt * 0.75)
+      const curSize = p.size * (1 - disAmt * 0.75) * (0.5 + 0.5 * visibility)
 
       ctx.beginPath()
-      ctx.fillStyle = `rgba(${color.r | 0}, ${color.g | 0}, ${color.b | 0}, ${0.65 + bright * 0.3})`
+      ctx.fillStyle = `rgba(${color.r | 0}, ${color.g | 0}, ${color.b | 0}, ${(0.65 + bright * 0.3) * visibility})`
       ctx.arc(p.x, p.y, Math.max(0.2, curSize), 0, Math.PI * 2)
       ctx.fill()
     }
