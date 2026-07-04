@@ -1,12 +1,12 @@
 // Footer logo particle animation — lightweight Canvas 2D adaptation of a
 // Three.js "star shockwaves" reference: particles sample the brand mark
 // instead of a star. Fully automatic, no controls: a slow "planet" spin
-// around its own vertical axis, but built from 3 copies of the mark
-// spaced 120° apart around the axis (like a 3-sided rotating sign) so
-// there is always a face turned toward the viewer — no dark/"night"
-// side — plus an ambient disintegration cycle (particles periodically
-// scatter away and reform) and a looping shockwave pulse, using our VIP
-// burgundy-gold palette.
+// around its own vertical axis, but built from 2 copies of the mark
+// spaced 180° apart around the axis (like a 2-sided rotating sign), so
+// as one face fades out at the edge the other is exactly emerging from
+// its own edge — no dark/"night" side — plus an ambient disintegration
+// cycle (particles periodically scatter away and reform) and a looping
+// shockwave pulse, using our VIP burgundy-gold palette.
 ;(function () {
   const canvas = document.getElementById('logoParticles')
   if (!canvas) return
@@ -27,7 +27,7 @@
   let nextPulseAt = 3
   let globeRadius = 135
   const SPIN_SPEED = 0.45
-  const FACE_OFFSETS = [0, (Math.PI * 2) / 3, (Math.PI * 4) / 3]
+  const FACE_OFFSETS = [0, Math.PI]
 
   const DISINTEGRATION_CYCLE = 10.0
   const STABLE_END = 0.55
@@ -206,7 +206,7 @@
   img.crossOrigin = 'anonymous'
   img.src = canvas.dataset.logo
   img.onload = () => {
-    const count = 900
+    const count = 1300
     initParticles(sampleLogoPoints(img, count), count)
     requestAnimationFrame(loop)
   }
