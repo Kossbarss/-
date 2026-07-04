@@ -104,7 +104,7 @@
           faceOffset: FACE_OFFSETS[f],
           x: p.x + Math.cos(angle) * dist,
           y: p.y + Math.sin(angle) * dist,
-          size: 1 + Math.random() * 1.5,
+          size: 1.2 + Math.random() * 1.7,
           colorOffset: Math.random(),
           seed: f * count + i,
           cycleOffset: (i / count) * DISINTEGRATION_CYCLE * 0.5,
@@ -134,6 +134,7 @@
     ctx.clearRect(0, 0, size, size)
     ctx.save()
     ctx.translate(size / 2, size / 2)
+    ctx.globalCompositeOperation = 'lighter'
 
     shockwaves = shockwaves.filter((sw) => time - sw.t0 < 4)
 
@@ -143,9 +144,9 @@
       // project this face's flat home position onto a sphere spinning
       // around its own vertical axis: gx sweeps across the globe's width
       // and the particle fades out as it swings past the silhouette edge
-      // toward the back of ITS face — but with 3 faces spaced 120° apart
-      // and each visible across a 180° arc, at least one is always
-      // turned toward the viewer, so there is never a fully dark gap
+      // toward the back of ITS face — but with 2 faces spaced 180° apart
+      // and each visible across a 180° arc, one is always turned toward
+      // the viewer, so there is never a fully dark gap
       const globeAngle = p.baseAngle + spinPhase + p.faceOffset
       const gx = globeRadius * Math.sin(globeAngle)
       const depth = Math.cos(globeAngle)
@@ -191,14 +192,19 @@
 
       const color = lerpColor(palette, p.colorOffset + time * 0.04)
       let bright = (0.55 + Math.sin(time * 3 + p.seed) * 0.35) * (1 - disAmt * 0.7)
-      const curSize = p.size * (1 - disAmt * 0.75) * (0.5 + 0.5 * visibility)
+      const curSize = p.size * (1 - disAmt * 0.75) * (0.6 + 0.4 * visibility)
+      // fade in/out at the silhouette edge without dimming the rest of the
+      // visible arc nearly as much, so the mark reads bright and vivid
+      const edgeFade = Math.sqrt(visibility)
+      const boost = 1.25
 
       ctx.beginPath()
-      ctx.fillStyle = `rgba(${color.r | 0}, ${color.g | 0}, ${color.b | 0}, ${(0.65 + bright * 0.3) * visibility})`
+      ctx.fillStyle = `rgba(${Math.min(255, color.r * boost) | 0}, ${Math.min(255, color.g * boost) | 0}, ${Math.min(255, color.b * boost) | 0}, ${(0.8 + bright * 0.4) * edgeFade})`
       ctx.arc(p.x, p.y, Math.max(0.2, curSize), 0, Math.PI * 2)
       ctx.fill()
     }
 
+    ctx.globalCompositeOperation = 'source-over'
     ctx.restore()
   }
 
