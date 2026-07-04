@@ -1,9 +1,11 @@
 // Footer logo particle animation — lightweight Canvas 2D adaptation of a
 // Three.js "star shockwaves" reference: particles sample the brand mark
-// instead of a star. Fully automatic, no controls: a slow continuous
-// rotation and an ambient disintegration cycle (particles periodically
-// scatter away and reform) run alongside a looping shockwave pulse,
-// using our VIP burgundy-gold palette.
+// instead of a star and render as small glowing star sprites (matching the
+// reference's radial-gradient star texture + additive blending). Fully
+// automatic, no controls: a slow clockwise rotation, an ambient
+// disintegration cycle (particles periodically scatter into a cloud of
+// stars and reform), a fast+slow compound twinkle, and a looping shockwave
+// pulse all run together, using our VIP burgundy-gold palette.
 ;(function () {
   const canvas = document.getElementById('logoParticles')
   if (!canvas) return
@@ -48,6 +50,18 @@
     }
   }
 
+  // 4-point sparkle/star path (concave quadratic curves), matching the
+  // reference's star-shaped particle texture instead of a plain dot.
+  function drawStar(x, y, r) {
+    ctx.beginPath()
+    ctx.moveTo(x, y - r)
+    ctx.quadraticCurveTo(x + r * 0.18, y - r * 0.18, x + r, y)
+    ctx.quadraticCurveTo(x + r * 0.18, y + r * 0.18, x, y + r)
+    ctx.quadraticCurveTo(x - r * 0.18, y + r * 0.18, x - r, y)
+    ctx.quadraticCurveTo(x - r * 0.18, y - r * 0.18, x, y - r)
+    ctx.closePath()
+  }
+
   function sampleLogoPoints(img, count) {
     const off = document.createElement('canvas')
     off.width = 200
@@ -86,9 +100,10 @@
         homeY: p.y,
         x: p.x + Math.cos(angle) * dist,
         y: p.y + Math.sin(angle) * dist,
-        size: 1 + Math.random() * 1.5,
+        size: 1.4 + Math.random() * 1.8,
         colorOffset: Math.random(),
         seed: i,
+        phase: Math.random() * Math.PI * 2,
         cycleOffset: (i / count) * DISINTEGRATION_CYCLE * 0.5,
         disintegrationOffsetX: Math.cos(offAngle) * offStrength,
         disintegrationOffsetY: Math.sin(offAngle) * offStrength,
@@ -110,8 +125,8 @@
       nextPulseAt = time + 4.5 + Math.random() * 1.5
     }
 
-    // slow continuous rotation of the whole shape around its center
-    const rotSpeed = 0.0008
+    // slow continuous clockwise rotation of the whole shape around its center
+    const rotSpeed = -0.0008
     const cosR = Math.cos(rotSpeed)
     const sinR = Math.sin(rotSpeed)
     for (let i = 0; i < particles.length; i++) {
@@ -125,13 +140,14 @@
     ctx.clearRect(0, 0, size, size)
     ctx.save()
     ctx.translate(size / 2, size / 2)
+    ctx.globalCompositeOperation = 'lighter'
 
     shockwaves = shockwaves.filter((sw) => time - sw.t0 < 4)
 
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i]
 
-      // ambient disintegration cycle: scatter away, hold, reform
+      // ambient disintegration cycle: scatter into a cloud of stars, hold, reform
       const cycleProgress = ((time * 0.6 + p.cycleOffset) % DISINTEGRATION_CYCLE) / DISINTEGRATION_CYCLE
       let disAmt = 0
       if (cycleProgress < STABLE_END) disAmt = 0
@@ -169,15 +185,23 @@
       p.y += (targetY - p.y) * lerp
 
       const color = lerpColor(palette, p.colorOffset + time * 0.04)
-      let bright = (0.55 + Math.sin(time * 3 + p.seed) * 0.35) * (1 - disAmt * 0.7)
-      const curSize = p.size * (1 - disAmt * 0.75)
 
-      ctx.beginPath()
-      ctx.fillStyle = `rgba(${color.r | 0}, ${color.g | 0}, ${color.b | 0}, ${0.65 + bright * 0.3})`
-      ctx.arc(p.x, p.y, Math.max(0.2, curSize), 0, Math.PI * 2)
+      // compound twinkle: slow phase wave modulated by a fast sparkle flicker
+      let bright = (0.6 + Math.sin(p.phase + time * 1.3) * 0.4) * (1 - disAmt * 0.75)
+      bright *= 0.8 + Math.sin(time * 7 + p.seed * 0.5) * 0.2
+
+      const curSize = Math.max(0.3, p.size * (1 - disAmt * 0.7))
+      const alpha = Math.min(1, 0.55 + bright * 0.55)
+
+      ctx.fillStyle = `rgba(${color.r | 0}, ${color.g | 0}, ${color.b | 0}, ${alpha})`
+      ctx.shadowColor = `rgba(${color.r | 0}, ${color.g | 0}, ${color.b | 0}, 0.9)`
+      ctx.shadowBlur = 3 + bright * 3
+      drawStar(p.x, p.y, curSize)
       ctx.fill()
     }
 
+    ctx.shadowBlur = 0
+    ctx.globalCompositeOperation = 'source-over'
     ctx.restore()
   }
 
