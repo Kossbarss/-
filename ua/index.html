@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../assets/favicon-logo.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VIP Tattoo School — Тату-майстер з нуля до перших клієнтів за 8 тижнів</title>
+  <meta name="description" content="Онлайн курс від тату-майстра з 9-річним досвідом. Без дорогого обладнання, без пошуку менторів наосліп, без страху зіпсувати шкіру." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital@1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <header class="header">
+    <div class="container">
+      <a href="#top" class="logo">
+        <img src="../assets/logo-mark.png" alt="VIP Tattoo School" class="logo-mark-img" width="36" height="36" />
+        VIP TATTOO<span class="dot">.</span>SCHOOL
+      </a>
+
+      <nav class="nav-links">
+        <a href="#program">Про курс</a>
+        <a href="#curriculum">Програма</a>
+        <a href="#pricing">Тарифи</a>
+        <a href="#faq">Питання</a>
+      </nav>
+
+      <div class="lang-switch lang-switch-desktop">
+        <a href="../index.html">RU</a>
+        <a href="#" class="active">UA</a>
+      </div>
+
+      <a href="#pricing" class="btn btn-gold nav-cta">Забрати курс</a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Меню">☰</button>
+    </div>
+    <div class="container mobile-nav" id="mobileNav">
+      <a href="#program">Про курс</a>
+      <a href="#curriculum">Програма</a>
+      <a href="#pricing">Тарифи</a>
+      <a href="#faq">Питання</a>
+      <div class="lang-switch">
+        <a href="../index.html">RU</a>
+        <a href="#" class="active">UA</a>
+      </div>
+      <a href="#pricing" class="btn btn-gold">Забрати курс</a>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section id="top" class="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <div>
+        <p class="hero-kicker">Онлайн курс від тату-майстра з 9-річним досвідом</p>
+        <h1>Тату-майстер<br /><em>з нуля до перших клієнтів</em><br />за 8 тижнів</h1>
+        <p class="hero-sub">Без дорогого обладнання, без пошуку менторів наосліп і без страху зіпсувати шкіру</p>
+        <p class="hero-lede">
+          Покрокова система: дивишся урок → відпрацьовуєш на штучній шкірі →
+          переходиш до моделі під наглядом ментора. Так само, як ми навчили
+          вже 300+ майстрів.
+        </p>
+        <a href="#pricing" class="hero-social-proof">курс пройшли 300+ учнів →</a>
+      </div>
+
+      <div class="hero-visual">
+        <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="500" fill="#15110f" />
+          <g fill="none" stroke="#c9a24a" stroke-width="1.4" opacity="0.9">
+            <path d="M200 90 C 160 120, 150 170, 200 210 C 250 170, 240 120, 200 90 Z" />
+            <path d="M200 210 C 190 230, 190 260, 200 300" />
+            <path d="M200 240 C 175 250, 160 245, 150 230" />
+            <path d="M200 260 C 225 270, 240 265, 250 250" />
+            <path d="M200 300 C 190 320, 190 350, 200 380" />
+            <path d="M170 130 C 180 110, 220 110, 230 130" stroke-width="1" opacity="0.6" />
+            <circle cx="200" cy="150" r="55" opacity="0.35" />
+            <circle cx="200" cy="150" r="80" opacity="0.18" />
+          </g>
+          <g fill="none" stroke="#c9a24a" stroke-width="1.2" opacity="0.55">
+            <path d="M60 420 L340 420" />
+            <path d="M60 420 L60 400" />
+            <path d="M340 420 L340 400" />
+            <path d="M120 420 L120 405" />
+            <path d="M280 420 L280 405" />
+          </g>
+          <g fill="#c9a24a" opacity="0.8">
+            <circle cx="90" cy="70" r="2" />
+            <circle cx="110" cy="60" r="1.5" />
+            <circle cx="310" cy="80" r="2" />
+            <circle cx="290" cy="65" r="1.5" />
+            <circle cx="70" cy="440" r="1.5" />
+            <circle cx="330" cy="450" r="2" />
+          </g>
+        </svg>
+        <div class="badge-overlay">
+          <p style="text-transform:none;color:rgba(250,246,239,0.8);font-size:0.85rem;margin-bottom:6px;">Пошагова система від ескізу до готової роботи</p>
+          <span class="students">300+ випускників школи</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" style="padding-bottom: 32px;">
+      <div class="card price-box">
+        <div class="price-box-row">
+          <div>
+            <div class="price-box-timer">До кінця передзапису на потік:</div>
+            <div class="price-box-clock" id="heroClock">04д 12:00:00</div>
+          </div>
+          <div class="price-box-price">
+            <span class="old">149€</span>
+            <span class="new">39€</span>
+          </div>
+          <a href="#pricing" class="btn btn-primary">Забрати курс зі знижкою</a>
+        </div>
+        <hr />
+        <div class="bonus-callout">
+          <span class="emoji">🎁</span>
+          <div>
+            <strong>Бонус за оплату зараз</strong>
+            <p>Чек-лист стерилізації та безпеки за стандартом SafeInk — щоб із перших робіт не втрачати клієнтів через помилки в гігієні.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ RIBBON (kept from MCMM) ============ -->
+    <div class="ribbon-wrap">
+      <div class="ribbon">
+        <div class="ribbon-track" id="ribbonTrack"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAIN POINTS ============ -->
+  <section id="program" class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">Кому підійде курс</span>
+        <h2>Тобі підійде цей курс, якщо:</h2>
+      </div>
+
+      <div class="pain-grid">
+        <div class="card pain-card">
+          <div class="pain-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" /></svg>
+          </div>
+          <p>Мрієш стати тату-майстром, але <strong>не знаєш, з чого почати</strong> — ти навчишся системи «від ескізу до готової роботи» за 8 тижнів.</p>
+        </div>
+        <div class="card pain-card">
+          <div class="pain-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="2" /><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
+          </div>
+          <p>Вже практикуєш на собі чи друзях, але <strong>соромишся вийти на клієнтів</strong> — покажу, як зібрати портфоліо, яке продає.</p>
+        </div>
+        <div class="card pain-card">
+          <div class="pain-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" /></svg>
+          </div>
+          <p><strong>Боїшся дорогого обладнання</strong> і не хочеш витрачати гроші даремно — розкажу, що купувати на старті, а що ні.</p>
+        </div>
+        <div class="card pain-card">
+          <div class="pain-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20l4-10 4 6 4-8 4 12" /></svg>
+          </div>
+          <p><strong>Немає ментора</strong> і вчишся по відео на YouTube без системи — тут кожен модуль веде до наступного кроку.</p>
+        </div>
+        <div class="card pain-card">
+          <div class="pain-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3v18h18" /><path d="M7 15l4-5 3 3 5-7" /></svg>
+          </div>
+          <p>Хочеш перетворити <strong>хобі на стабільний дохід</strong> — покажу, як рахувати вартість роботи і не працювати собі в збиток.</p>
+        </div>
+        <div class="card pain-card">
+          <div class="pain-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z" /></svg>
+          </div>
+          <p>Мрієш працювати у <strong>VIP-студії</strong> або відкрити свою — сертифікат школи і портфоліо стануть твоєю візитівкою.</p>
+        </div>
+      </div>
+
+      <div class="fit-list">
+        <h3>Цей курс точно для тебе, якщо ти:</h3>
+        <ul>
+          <li><span class="arrow">↳</span><span>Художник, дизайнер, майстер перманентного макіяжу чи самоучка, який вже тримає в руках тату-машинку</span></li>
+          <li><span class="arrow">↳</span><span>Шукаєш другу професію з можливістю працювати на себе і без офісу</span></li>
+          <li><span class="arrow">↳</span><span>Готовий приділяти навчанню 5–7 годин на тиждень протягом 8 тижнів</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INSTRUCTOR ============ -->
+  <section class="section instructor-section">
+    <div class="container">
+      <div class="instructor-layout">
+        <div class="instructor-photo">
+          <span class="initials">АД</span>
+        </div>
+
+        <div>
+          <span class="instructor-name-badge">Привіт, я Артем Дорошенко</span>
+          <div class="section-head" style="margin-bottom: 0;">
+            <h2 style="color:var(--paper);">Чому моя методика працює, навіть якщо ти тримав машинку пару разів</h2>
+            <p>
+              Я не теоретик, а практикуючий майстер, який щодня працює з
+              клієнтами у власній студії Black Rose Studio та щодня бачить,
+              які помилки роблять новачки.
+            </p>
+          </div>
+
+          <ul class="instructor-checklist">
+            <li><span class="check">✓</span><span><strong>9 років</strong> у тату-індустрії, власна студія в Києві</span></li>
+            <li><span class="check">✓</span><span><strong>300+ випускників</strong> школи, які вже працюють з клієнтами</span></li>
+            <li><span class="check">✓</span><span>Учні школи виконали <strong>2000+ робіт</strong> лише за 2025 рік</span></li>
+            <li><span class="check">✓</span><span>Досвід навчання новачків у <strong>12 студіях-партнерах</strong> по Україні та Європі</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAT TESTIMONIAL + CASES ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2 style="text-align:center;max-width:none;">Це не просто курс про «як тримати машинку». Це курс, після якого ви:</h2>
+      </div>
+
+      <div class="chat-mock" style="margin: 0 auto 48px;">
+        <div class="chat-head">
+          <span>Загальний чат випускників школи</span>
+          <span>зараз</span>
+        </div>
+        <p><span class="author">Марта_ink:</span> Дякую! 🙏 Мріяла тримати машинку впевнено рік, але завжди думала, що це не для мене. Після розбору роботи з ментором відчуваю себе нарешті майстром, а не «тою що намалювала пляму». Дяку...</p>
+      </div>
+
+      <div class="section-head">
+        <span class="kicker">Кейси учнів</span>
+        <h2>Кейси учнів після навчання</h2>
+      </div>
+
+      <div class="case-grid">
+        <div class="card case-card case-card-arch">
+          <div class="card-arch-tab">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 5c-3 1.8-3.6 5-1.2 6.6C11.2 10 10.6 6.8 10 5Z" fill="#c9a24a"/></svg>
+          </div>
+          <span class="case-index">/01</span>
+          <div class="case-visual">До / Після · Модуль 5</div>
+          <div class="case-body">
+            <h4>Ліана, 24 роки</h4>
+            <p>Перша тату на моделі під наглядом ментора — рівна лінія без тремтіння з першого разу.</p>
+            <div class="case-stat">3 клієнти за перший тиждень</div>
+          </div>
+        </div>
+        <div class="card case-card case-card-arch">
+          <div class="card-arch-tab">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 5c-3 1.8-3.6 5-1.2 6.6C11.2 10 10.6 6.8 10 5Z" fill="#c9a24a"/></svg>
+          </div>
+          <span class="case-index">/02</span>
+          <div class="case-visual">До / Після · Модуль 7</div>
+          <div class="case-body">
+            <h4>Максим, 31 рік</h4>
+            <p>Перейшов з малювання на папері одразу до кольорової роботи — портфоліо за 2 місяці.</p>
+            <div class="case-stat">12 робіт у портфоліо</div>
+          </div>
+        </div>
+        <div class="card case-card case-card-arch">
+          <div class="card-arch-tab">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 5c-3 1.8-3.6 5-1.2 6.6C11.2 10 10.6 6.8 10 5Z" fill="#c9a24a"/></svg>
+          </div>
+          <span class="case-index">/03</span>
+          <div class="case-visual">До / Після · Модуль 9</div>
+          <div class="case-body">
+            <h4>Оля, 27 років</h4>
+            <p>Знайшла перших клієнтів через Instagram ще до завершення курсу, за шаблоном з бонусів.</p>
+            <div class="case-stat">30+ заявок, 5 продажів</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:44px;">
+        <div class="stars">★★★★★</div>
+        <div class="avatar-row" style="justify-content:center;margin-bottom:24px;">
+          <div class="avatars">
+            <span class="avatar"></span><span class="avatar"></span><span class="avatar"></span><span class="avatar"></span><span class="avatar"></span>
+          </div>
+          <span class="count">300+</span>
+        </div>
+        <a href="#pricing" class="btn btn-primary">Купити курс і почати навчання тату</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHAT YOU GET ============ -->
+  <section class="section" style="background: var(--paper-alt);">
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">Формат навчання</span>
+        <h2>Що ви отримаєте на курсі?</h2>
+      </div>
+
+      <div class="feature-grid">
+        <div class="card feature-card">
+          <div class="icon">🤖</div>
+          <h4 style="font-size:1rem;margin-bottom:8px;">Доступ через Telegram-бота</h4>
+          <p>Сразу після оплати — зручне навчання прямо в месенджері.</p>
+        </div>
+        <div class="card feature-card">
+          <div class="icon">🎬</div>
+          <h4 style="font-size:1rem;margin-bottom:8px;">Короткі відеоуроки</h4>
+          <p>15–30 хвилин, лише робочі інструменти. Без води.</p>
+        </div>
+        <div class="card feature-card">
+          <div class="icon">🎁</div>
+          <h4 style="font-size:1rem;margin-bottom:8px;">Шаблони і бонуси</h4>
+          <p>Готові ескізи, чек-листи і калькулятор вартості робіт.</p>
+        </div>
+        <div class="card feature-card">
+          <div class="icon">♾️</div>
+          <h4 style="font-size:1rem;margin-bottom:8px;">Довічний доступ</h4>
+          <p>Переглядай уроки знову, коли освіжуєш знання чи навчаєш інших.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROGRAM PILLARS (kept from MCMM) ============ -->
+  <section id="curriculum" class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">Структура навчання</span>
+        <h2>З чого складається програма VIP Tattoo School</h2>
+      </div>
+
+      <div class="pillars-stack">
+        <div class="pillar-card pillar-tone-sand">
+          <div class="pillar-top">
+            <div class="pillar-num">01</div>
+            <div class="pillar-body">
+              <h3>Основи та безпека</h3>
+              <p>Гігієна і стерилізація за стандартом SafeInk, витратні матеріали, анатомія шкіри — фундамент, без якого не можна працювати з клієнтами.</p>
+              <div class="pillar-tags">
+                <span class="tag">Стерилізація</span>
+                <span class="tag">Витратні матеріали</span>
+                <span class="tag">Анатомія шкіри</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pillar-card pillar-tone-sand">
+          <div class="pillar-top">
+            <div class="pillar-num">02</div>
+            <div class="pillar-body">
+              <h3>Технічна майстерність</h3>
+              <p>Робота з машинкою, рівна лінія без тремтіння, розтушовка, кольори, перенесення ескізу на шкіру.</p>
+              <div class="pillar-tags">
+                <span class="tag">Лінія</span>
+                <span class="tag">Тінь і колір</span>
+                <span class="tag">Stencil</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pillar-card pillar-tone-periwinkle">
+          <div class="pillar-top">
+            <div class="pillar-num">03</div>
+            <div class="pillar-body">
+              <h3>Практика на моделях і супервізії</h3>
+              <p>Перша робота на моделі під особистим наглядом ментора з детальним розбором кожного етапу.</p>
+              <div class="pillar-tags">
+                <span class="tag">Робота на моделях</span>
+                <span class="tag">Розбір робіт з ментором</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pillar-card pillar-tone-blood">
+          <div class="pillar-top">
+            <div class="pillar-num">04</div>
+            <div class="pillar-body">
+              <h3>Бізнес і клієнти</h3>
+              <p>Портфоліо, що продає, ціноутворення, пошук перших клієнтів і побудова власного бренду майстра.</p>
+              <div class="pillar-tags">
+                <span class="tag">Портфоліо</span>
+                <span class="tag">Ціноутворення</span>
+                <span class="tag">Instagram для майстра</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top:32px;">
+        <a href="#pricing" class="btn btn-outline">Переглянути повну програму</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ LESSON GRID ============ -->
+  <section class="section" style="background: var(--paper-alt); padding-top: 0;">
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">10 модулів навчання</span>
+        <h2>Програма курсу</h2>
+      </div>
+
+      <div class="lesson-grid">
+        <div class="lesson-cell"><span class="lesson-num">0</span><p>Вступ: як влаштована тату-індустрія у 2026 році</p></div>
+        <div class="lesson-cell"><span class="lesson-num">1</span><p>Обладнання: що купувати на старті, а що ні</p></div>
+        <div class="lesson-cell"><span class="lesson-num">2</span><p>Гігієна і стерилізація за стандартом SafeInk</p></div>
+        <div class="lesson-cell"><span class="lesson-num">3</span><p>Анатомія шкіри і як обрати місце під тату</p></div>
+        <div class="lesson-cell"><span class="lesson-num">4</span><p>Лінійна робота: рівна лінія без тремтіння</p></div>
+        <div class="lesson-cell"><span class="lesson-num">5</span><p>Розтушовка і робота з тінями</p></div>
+        <div class="lesson-cell"><span class="lesson-num">6</span><p>Робота з кольором</p></div>
+        <div class="lesson-cell"><span class="lesson-num">7</span><p>Перенесення ескізу на шкіру (stencil)</p></div>
+        <div class="lesson-cell"><span class="lesson-num">8</span><p>Перша тату на моделі під наглядом ментора</p></div>
+        <div class="lesson-cell"><span class="lesson-num">9</span><p>Портфоліо, ціноутворення і перші клієнти</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 14-DAY CYCLE GRID (identical layout/palette to RISE) ============ -->
+  <section class="section rise-cycle-section">
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker" style="color: var(--gold-light, var(--gold)); border-color: var(--gold-light, var(--gold));">Перші 14 днів</span>
+        <h2 style="color: var(--white);">Як виглядають перші 14 днів навчання</h2>
+        <p style="color: rgba(250,246,239,0.65);">Щільний, покроковий ритм: модулі, зустрічі з майстром і перша практична робота вже на другому тижні.</p>
+      </div>
+
+      <div class="rise-grid">
+        <div class="rise-cell active">
+          <img src="../assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">01</span>
+          <span class="cell-label">Гігієна і стерилізація</span>
+        </div>
+        <div class="rise-cell active">
+          <img src="../assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">02</span>
+          <span class="cell-label">Обладнання та налаштування</span>
+        </div>
+        <div class="rise-cell">
+          <img src="../assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">03</span>
+        </div>
+        <div class="rise-cell active">
+          <img src="../assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">04</span>
+          <span class="cell-label">Zoom із засновником школи</span>
+        </div>
+        <div class="rise-cell">
+          <img src="../assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">05</span>
+        </div>
+        <div class="rise-cell">
+          <img src="../assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">06</span>
+        </div>
+        <div class="rise-cell active">
+          <img src="../assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">07</span>
+          <span class="cell-label">Офлайн-практика в студії</span>
+        </div>
+        <div class="rise-cell active">
+          <img src="../assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">08</span>
+          <span class="cell-label">Лінія та розтушовка</span>
+        </div>
+        <div class="rise-cell">
+          <img src="../assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">09</span>
+        </div>
+        <div class="rise-cell active">
+          <img src="../assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">10</span>
+          <span class="cell-label">Розбір робіт з ментором</span>
+        </div>
+        <div class="rise-cell">
+          <img src="../assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">11</span>
+        </div>
+        <div class="rise-cell active">
+          <img src="../assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">12</span>
+          <span class="cell-label">Супервізія малої групи</span>
+        </div>
+        <div class="rise-cell">
+          <img src="../assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">13</span>
+        </div>
+        <div class="rise-cell active">
+          <img src="../assets/logo-watermark.png" class="cell-watermark" alt="" aria-hidden="true" />
+          <span class="cell-day-num">14</span>
+          <span class="cell-label">Перша тату на моделі</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BONUS STACK ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">При оплаті до кінця передзапису</span>
+        <h2>Бонуси, які ви отримаєте безкоштовно</h2>
+        <p>Ці матеріали ми не продаємо окремо — вони входять у пакет для тих, хто записується зараз.</p>
+      </div>
+
+      <div class="bonus-list">
+        <div class="card bonus-row">
+          <div class="bonus-row-body">
+            <h4 style="text-transform:none;">Чек-лист стерилізації та безпеки SafeInk</h4>
+            <p>Покроковий протокол підготовки робочого місця і матеріалів.</p>
+          </div>
+          <div class="bonus-row-price"><span class="old">30€</span><span class="new">0€</span></div>
+        </div>
+        <div class="card bonus-row">
+          <div class="bonus-row-body">
+            <h4 style="text-transform:none;">База готових ескізів для перших робіт</h4>
+            <p>50+ ескізів у різних стилях, з якими можна практикувати одразу.</p>
+          </div>
+          <div class="bonus-row-price"><span class="old">25€</span><span class="new">0€</span></div>
+        </div>
+        <div class="card bonus-row">
+          <div class="bonus-row-body">
+            <h4 style="text-transform:none;">Калькулятор вартості тату</h4>
+            <p>Шаблон для розрахунку ціни роботи, щоб не працювати собі в збиток.</p>
+          </div>
+          <div class="bonus-row-price"><span class="old">15€</span><span class="new">0€</span></div>
+        </div>
+        <div class="card bonus-row">
+          <div class="bonus-row-body">
+            <h4 style="text-transform:none;">Урок «Як знімати процес для Instagram»</h4>
+            <p>Як показувати роботу так, щоб приваблювати перших клієнтів.</p>
+          </div>
+          <div class="bonus-row-price"><span class="old">20€</span><span class="new">0€</span></div>
+        </div>
+      </div>
+
+      <p class="bonus-total">Загальна цінність бонусів — <strong>90€</strong>, при оплаті зараз усі входять у вартість курсу.</p>
+    </div>
+  </section>
+
+  <!-- ============ PRICING / ORDER ============ -->
+  <section id="pricing" class="section pricing-section">
+    <svg class="pricing-watermark" viewBox="0 0 400 500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <path d="M200 90 C 160 120, 150 170, 200 210 C 250 170, 240 120, 200 90 Z" fill="none" stroke="currentColor" stroke-width="2" />
+      <path d="M200 210 C 190 230, 190 260, 200 300" fill="none" stroke="currentColor" stroke-width="2" />
+      <circle cx="200" cy="150" r="90" fill="none" stroke="currentColor" stroke-width="1.4" />
+      <circle cx="200" cy="150" r="130" fill="none" stroke="currentColor" stroke-width="1" />
+    </svg>
+    <div class="container">
+      <div class="order-box card">
+        <h3>Заповни форму і отримай доступ до курсу та перших уроків миттєво</h3>
+        <p class="bonus-note">При оплаті зараз отримуєш усі 4 бонуси на суму 90€ безкоштовно</p>
+        <div class="order-price">
+          <span class="old">149€</span>
+          <span class="new">39€</span>
+        </div>
+        <form class="order-form" onsubmit="return false;">
+          <input type="text" placeholder="Ваше ім'я" required />
+          <input type="email" placeholder="Email" required />
+          <button type="submit" class="btn btn-primary btn-block">Купити курс і отримати всі бонуси</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMPARISON ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">Чому саме ця школа</span>
+        <h2>Чим ми відрізняємось від типової школи тату</h2>
+      </div>
+
+      <div class="comparison-grid">
+        <div class="card comparison-col comparison-good">
+          <h4>VIP Tattoo School</h4>
+          <ul>
+            <li><span class="check-icon">✓</span><span>Практика на моделях під особистим наглядом ментора</span></li>
+            <li><span class="check-icon">✓</span><span>Індивідуальний розбір кожної виконаної роботи</span></li>
+            <li><span class="check-icon">✓</span><span>Сертифікат, визнаний студіями-партнерами</span></li>
+            <li><span class="check-icon">✓</span><span>Довічний доступ до записів і оновлень програми</span></li>
+            <li><span class="check-icon">✓</span><span>Закритий чат із випускниками і майстрами школи</span></li>
+          </ul>
+        </div>
+
+        <div class="card comparison-col comparison-bad">
+          <h4>Типова школа тату</h4>
+          <ul>
+            <li><span class="minus-icon">–</span><span>Лише теорія без практики на моделях</span></li>
+            <li><span class="minus-icon">–</span><span>Групи по 30+ людей без зворотного зв'язку</span></li>
+            <li><span class="minus-icon">–</span><span>Сертифікат без визнання в індустрії</span></li>
+            <li><span class="minus-icon">–</span><span>Доступ до матеріалів лише на час курсу</span></li>
+            <li><span class="minus-icon">–</span><span>Відсутність підтримки після завершення</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card guarantee-box">
+        <div class="guarantee-icon">🛡</div>
+        <div>
+          <h4>Гарантія чесного старту</h4>
+          <p>Якщо після першого модуля ви зрозумієте, що курс не ваш — повернемо оплату протягом 7 днів з моменту старту навчання. Без зайвих запитань.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CERTIFICATE ============ -->
+  <section class="section certificate-section">
+    <div class="container">
+      <div class="certificate-layout">
+        <div>
+          <div class="section-head" style="margin-bottom: 28px;">
+            <span class="kicker" style="color: var(--gold-light); border-color: var(--gold-light);">Документ про завершення</span>
+            <h2>Сертифікат VIP Tattoo School</h2>
+            <p>Визнається студіями-партнерами школи в Україні та Європі.</p>
+          </div>
+
+          <div class="certificate-checklist">
+            <div class="check-row"><span class="arrow">↳</span><span>Відповідає стандартам гігієни SafeInk</span></div>
+            <div class="check-row"><span class="arrow">↳</span><span>Підписаний майстром-засновником школи</span></div>
+            <div class="check-row"><span class="arrow">↳</span><span>40+ годин практики, включно з роботою на моделях</span></div>
+            <div class="check-row"><span class="arrow">↳</span><span>Визнається 12 студіями-партнерами</span></div>
+          </div>
+
+          <a href="#pricing" class="btn btn-gold">Хочу отримати сертифікат</a>
+        </div>
+
+        <div class="certificate-badge">
+          <div class="inner">
+            <h3>VIP TATTOO</h3>
+            <p>SCHOOL · SafeInk Certified · 2026</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section id="faq" class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">Популярні питання</span>
+        <h2>Q/A</h2>
+      </div>
+
+      <div class="faq-list-big" id="faqList">
+        <div class="faq-item-big">
+          <button class="faq-trigger-big">
+            <span class="faq-num-big">01</span>
+            <h3 class="faq-title-big">Чи потрібен художній досвід, щоб почати?</h3>
+          </button>
+          <div class="faq-panel-big">
+            <p>Базові навички малювання допоможуть, але не обов'язкові — у програмі є модуль з відпрацювання лінії та композиції ескізу з нуля.</p>
+          </div>
+        </div>
+        <div class="faq-item-big">
+          <button class="faq-trigger-big">
+            <span class="faq-num-big">02</span>
+            <h3 class="faq-title-big">Скільки коштує обладнання окрім курсу?</h3>
+          </button>
+          <div class="faq-panel-big">
+            <p>Базовий набір для навчання на штучній шкірі коштує від 60–80€. Список конкретних моделей і де купити — у бонусному уроці курсу.</p>
+          </div>
+        </div>
+        <div class="faq-item-big">
+          <button class="faq-trigger-big">
+            <span class="faq-num-big">03</span>
+            <h3 class="faq-title-big">Чи є гарантія, що я знайду перших клієнтів?</h3>
+          </button>
+          <div class="faq-panel-big">
+            <p>Ми даємо систему і шаблони для пошуку клієнтів, які вже спрацювали в учнів школи, але результат залежить від вашої практики й активності.</p>
+          </div>
+        </div>
+        <div class="faq-item-big">
+          <button class="faq-trigger-big">
+            <span class="faq-num-big">04</span>
+            <h3 class="faq-title-big">Скільки часу потрібно приділяти навчанню?</h3>
+          </button>
+          <div class="faq-panel-big">
+            <p>В середньому 5–7 годин на тиждень протягом 8 тижнів, включно з переглядом уроків і практикою.</p>
+          </div>
+        </div>
+        <div class="faq-item-big">
+          <button class="faq-trigger-big">
+            <span class="faq-num-big">05</span>
+            <h3 class="faq-title-big">Чи є вікові обмеження?</h3>
+          </button>
+          <div class="faq-panel-big">
+            <p>Навчання доступне з 18 років — це стандартна вимога для роботи в тату-індустрії.</p>
+          </div>
+        </div>
+        <div class="faq-item-big">
+          <button class="faq-trigger-big">
+            <span class="faq-num-big">06</span>
+            <h3 class="faq-title-big">Чи потрібен ноутбук або планшет для навчання?</h3>
+          </button>
+          <div class="faq-panel-big">
+            <p>Достатньо смартфона — навчання проходить через Telegram-бота, зручно дивитись уроки й здавати завдання з телефону.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="section" style="text-align:center;">
+    <div class="container">
+      <div class="final-box">
+        <h3>Пам'ятай:</h3>
+        <p>Зміни, яких ти чекаєш, починаються з дій.</p>
+        <p>За ціну одного клієнтського сеансу ти можеш освоїти навичку, яка приведе до стабільного потоку клієнтів.</p>
+        <p><strong>Не бійся мріяти масштабно — бійся не спробувати.</strong></p>
+        <a href="#pricing" class="btn btn-primary">Купити курс</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container">
+      <img src="../assets/logo-full.png" alt="VIP Tattoo School" class="footer-logo" width="120" height="119" />
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="Telegram">TG</a>
+      </div>
+      <p>
+        ФОП Дорошенко Артем Ігорович · РНОКПП: 0000000000<br />
+        <a href="#" class="legal-link">Публічна оферта</a>
+      </p>
+      <p style="margin-top:16px;">© Copyright 2026 by VIP TATTOO SCHOOL. Усі права захищені.</p>
+    </div>
+  </footer>
+
+  <!-- ============ STICKY BAR ============ -->
+  <div class="sticky-bar" id="stickyBar">
+    <div class="container sticky-bar-inner">
+      <div class="sticky-bar-timer">
+        <span class="sticky-bar-label">До закриття передзапису:</span>
+        <span class="sticky-bar-clock" id="stickyClock">04д 12:00:00</span>
+      </div>
+      <div class="sticky-bar-price">
+        <span class="old">149€</span>
+        <span class="new">39€</span>
+      </div>
+      <div class="sticky-bar-actions">
+        <a href="#pricing" class="btn btn-gold">Забрати курс</a>
+        <button class="sticky-bar-close" id="stickyClose" aria-label="Закрити">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

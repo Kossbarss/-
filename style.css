@@ -272,6 +272,34 @@ button {
   display: inline-flex;
 }
 
+.lang-switch {
+  display: flex;
+  gap: 6px;
+}
+
+.lang-switch a {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: rgba(250, 246, 239, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  text-transform: uppercase;
+}
+
+.lang-switch a:hover {
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.lang-switch a.active {
+  color: var(--ink);
+  background: var(--gold);
+  border-color: transparent;
+}
+
 .nav-toggle {
   display: none;
   background: none;
@@ -282,7 +310,8 @@ button {
 
 @media (max-width: 860px) {
   .nav-links,
-  .nav-cta {
+  .nav-cta,
+  .lang-switch-desktop {
     display: none;
   }
   .nav-toggle {

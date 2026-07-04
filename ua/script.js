@@ -35,11 +35,11 @@ setInterval(tickCountdown, 1000)
 
 // ---------- Ribbon marquee (kept from MCMM) ----------
 const ribbonStats = [
-  '8 недель обучения',
-  '40+ часов практики',
-  '300+ выпускников',
-  'Сертификат VIP Tattoo School',
-  'Пожизненный доступ к записям',
+  '8 тижнів навчання',
+  '40+ годин практики',
+  '300+ випускників',
+  'Сертифікат VIP Tattoo School',
+  'Довічний доступ до записів',
 ]
 
 const ribbonTrack = document.getElementById('ribbonTrack')
