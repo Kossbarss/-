@@ -17,6 +17,15 @@ Site Settings → Global Colors, і Elementor підхопить ту саму �
 Глобальні шрифти (Site Settings → Global Fonts): Bebas Neue (заголовки),
 Playfair Display italic (акцентні фрази), Inter (текст).
 
+Блок «Перші 14 днів» (`.rise-cycle-section`, секція 12 нижче) стилізовано
+під референс-лендинг RISE. Оригінал RISE використовує платний шрифт
+**Halvar Breitschrift** (студія TypeType, ліцензія не входить у цей
+проєкт) — його файли не можна просто скопіювати з чужого сайту. Замість
+нього тут підключено безкоштовний схожий за характером Google Font
+**Space Grotesk** (`--font-rise` у `style.css`), лише для цієї секції.
+Якщо у вас є власна ліцензія на Halvar Breitschrift — замініть
+`--font-rise` на нього.
+
 ---
 
 ## 1. Header
