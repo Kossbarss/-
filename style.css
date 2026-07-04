@@ -198,6 +198,16 @@ button {
   width: 100%;
 }
 
+/* long CTA labels must wrap instead of forcing the button (and the
+   page) wider than the viewport */
+@media (max-width: 640px) {
+  .btn {
+    white-space: normal;
+    text-align: center;
+    padding: 14px 22px;
+  }
+}
+
 .card {
   background: var(--white);
   border: 1px solid var(--border);
@@ -240,6 +250,8 @@ button {
   font-family: var(--font-display);
   font-size: 1.4rem;
   letter-spacing: 0.06em;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .logo .dot {
@@ -310,7 +322,7 @@ button {
   font-size: 1.4rem;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1024px) {
   .nav-links,
   .nav-cta,
   .lang-switch-desktop {
@@ -1085,7 +1097,7 @@ button {
 
 @media (max-width: 560px) {
   .rise-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -1203,6 +1215,12 @@ button {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  .cell-label {
+    -webkit-line-clamp: 3;
+  }
 }
 
 /* ---------- Bonus stack ---------- */
