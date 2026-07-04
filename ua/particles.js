@@ -1,7 +1,7 @@
 // Footer logo particle animation — lightweight Canvas 2D adaptation of a
 // Three.js "star shockwaves" reference: particles sample the brand mark
-// instead of a star, click/hold triggers a radial shockwave, four color
-// themes (Molten/Cosmic/Emerald + our VIP burgundy-gold) are switchable.
+// instead of a star and pulse with an automatic, hands-off shockwave
+// on a loop, using our VIP burgundy-gold palette.
 ;(function () {
   const canvas = document.getElementById('logoParticles')
   if (!canvas) return
@@ -15,31 +15,25 @@
   canvas.style.height = size + 'px'
   ctx.scale(dpr, dpr)
 
-  const themes = {
-    molten: ['#ff4800', '#ff8c00', '#d73a00', '#ffc600'],
-    cosmic: ['#6a0dad', '#9370db', '#4b0082', '#dda0dd'],
-    emerald: ['#00ff7f', '#3cb371', '#2e8b57', '#98fb98'],
-    vip: ['#c9a24a', '#e8d5a8', '#a3162e', '#7a0f22'],
-  }
-  let currentTheme = 'vip'
-  let animating = true
+  const palette = ['#c9a24a', '#e8d5a8', '#a3162e', '#7a0f22']
   let time = 0
   let particles = []
   let shockwaves = []
+  let nextPulseAt = 3
 
   function hexToRgb(hex) {
     const v = parseInt(hex.slice(1), 16)
     return { r: (v >> 16) & 255, g: (v >> 8) & 255, b: v & 255 }
   }
 
-  function lerpColor(palette, t) {
-    const n = palette.length
+  function lerpColor(pal, t) {
+    const n = pal.length
     const scaled = ((t % 1) + 1) % 1 * n
     const i0 = Math.floor(scaled) % n
     const i1 = (i0 + 1) % n
     const f = scaled - Math.floor(scaled)
-    const c0 = hexToRgb(palette[i0])
-    const c1 = hexToRgb(palette[i1])
+    const c0 = hexToRgb(pal[i0])
+    const c1 = hexToRgb(pal[i1])
     return {
       r: c0.r + (c1.r - c0.r) * f,
       g: c0.g + (c1.g - c0.g) * f,
@@ -95,63 +89,43 @@
     if (shockwaves.length > 5) shockwaves.shift()
   }
 
-  let holdStart = null
-  canvas.style.cursor = 'pointer'
-  canvas.style.touchAction = 'none'
-
-  function startHold(e) {
-    e.preventDefault()
-    holdStart = performance.now()
-  }
-  function endHold(e) {
-    if (holdStart === null) return
-    const heldSec = Math.min((performance.now() - holdStart) / 1000, 2)
-    triggerShockwave(16 + heldSec * 34)
-    holdStart = null
-  }
-  canvas.addEventListener('pointerdown', startHold)
-  canvas.addEventListener('pointerup', endHold)
-  canvas.addEventListener('pointerleave', () => {
-    holdStart = null
-  })
-
   function loop() {
     requestAnimationFrame(loop)
     time += 0.02
+
+    if (time >= nextPulseAt) {
+      triggerShockwave(28)
+      nextPulseAt = time + 4.5 + Math.random() * 1.5
+    }
+
     ctx.clearRect(0, 0, size, size)
     ctx.save()
     ctx.translate(size / 2, size / 2)
 
-    if (animating) {
-      shockwaves = shockwaves.filter((sw) => time - sw.t0 < 4)
-    }
-
-    const palette = themes[currentTheme]
+    shockwaves = shockwaves.filter((sw) => time - sw.t0 < 4)
 
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i]
       let targetX = p.homeX
       let targetY = p.homeY
 
-      if (animating) {
-        const dist = Math.sqrt(p.homeX * p.homeX + p.homeY * p.homeY) + 1e-6
-        let addX = 0
-        let addY = 0
-        for (let w = 0; w < shockwaves.length; w++) {
-          const sw = shockwaves[w]
-          const elapsed = time - sw.t0
-          const R = sw.speed * elapsed
-          const g = Math.exp(-((dist - R) * (dist - R)) / (2 * sw.width * sw.width))
-          const decay = Math.exp(-sw.decay * elapsed)
-          const amp = sw.amplitude * g * decay
-          addX += (p.homeX / dist) * amp
-          addY += (p.homeY / dist) * amp
-        }
-        targetX += addX
-        targetY += addY
-        p.x += (targetX - p.x) * 0.09
-        p.y += (targetY - p.y) * 0.09
+      const dist = Math.sqrt(p.homeX * p.homeX + p.homeY * p.homeY) + 1e-6
+      let addX = 0
+      let addY = 0
+      for (let w = 0; w < shockwaves.length; w++) {
+        const sw = shockwaves[w]
+        const elapsed = time - sw.t0
+        const R = sw.speed * elapsed
+        const g = Math.exp(-((dist - R) * (dist - R)) / (2 * sw.width * sw.width))
+        const decay = Math.exp(-sw.decay * elapsed)
+        const amp = sw.amplitude * g * decay
+        addX += (p.homeX / dist) * amp
+        addY += (p.homeY / dist) * amp
       }
+      targetX += addX
+      targetY += addY
+      p.x += (targetX - p.x) * 0.09
+      p.y += (targetY - p.y) * 0.09
 
       const color = lerpColor(palette, p.colorOffset + time * 0.04)
       const bright = 0.55 + Math.sin(time * 3 + p.seed) * 0.35
@@ -170,20 +144,5 @@
   img.onload = () => {
     initParticles(sampleLogoPoints(img, 1300))
     requestAnimationFrame(loop)
-  }
-
-  document.querySelectorAll('.particle-theme-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      currentTheme = btn.dataset.theme
-      document.querySelectorAll('.particle-theme-btn').forEach((b) => b.classList.remove('active'))
-      btn.classList.add('active')
-    })
-  })
-
-  const animateToggle = document.getElementById('particleAnimateToggle')
-  if (animateToggle) {
-    animateToggle.addEventListener('change', (e) => {
-      animating = e.target.checked
-    })
   }
 })()

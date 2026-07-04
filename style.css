@@ -1730,54 +1730,6 @@ button {
   color: var(--gold);
 }
 
-.particles-hint {
-  font-size: 0.78rem;
-  color: rgba(250, 246, 239, 0.45);
-  text-transform: none;
-}
-
-.particle-theme-switch {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.particle-theme-btn {
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: rgba(250, 246, 239, 0.6);
-  cursor: pointer;
-}
-
-.particle-theme-btn:hover {
-  border-color: rgba(255, 255, 255, 0.35);
-  color: var(--white);
-}
-
-.particle-theme-btn.active {
-  background: var(--gold);
-  border-color: transparent;
-  color: var(--ink);
-}
-
-.particles-animate-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.78rem;
-  color: rgba(250, 246, 239, 0.6);
-  cursor: pointer;
-  text-transform: none;
-}
-
 .footer-social {
   display: flex;
   justify-content: center;
