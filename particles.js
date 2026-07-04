@@ -1,8 +1,9 @@
 // Footer logo particle animation — lightweight Canvas 2D adaptation of a
 // Three.js "star shockwaves" reference: particles sample the brand mark
-// instead of a star. Fully automatic, no controls: an ambient disintegration
-// cycle (particles periodically scatter away and reform) runs alongside a
-// looping shockwave pulse, using our VIP burgundy-gold palette.
+// instead of a star. Fully automatic, no controls: a slow continuous
+// rotation and an ambient disintegration cycle (particles periodically
+// scatter away and reform) run alongside a looping shockwave pulse,
+// using our VIP burgundy-gold palette.
 ;(function () {
   const canvas = document.getElementById('logoParticles')
   if (!canvas) return
@@ -107,6 +108,18 @@
     if (time >= nextPulseAt) {
       triggerShockwave(28)
       nextPulseAt = time + 4.5 + Math.random() * 1.5
+    }
+
+    // slow continuous rotation of the whole shape around its center
+    const rotSpeed = 0.0008
+    const cosR = Math.cos(rotSpeed)
+    const sinR = Math.sin(rotSpeed)
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i]
+      const hx = p.homeX
+      const hy = p.homeY
+      p.homeX = hx * cosR - hy * sinR
+      p.homeY = hx * sinR + hy * cosR
     }
 
     ctx.clearRect(0, 0, size, size)
