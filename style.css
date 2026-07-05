@@ -268,10 +268,10 @@ button {
   justify-content: space-between;
   height: 64px;
   padding-inline: 28px;
-  background: rgba(21, 17, 15, 0.92);
-  backdrop-filter: blur(12px);
+  background: rgba(21, 17, 15, 0.78);
+  backdrop-filter: blur(24px) saturate(1.4);
   border-radius: 999px;
-  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.14);
 }
 
 @media (max-width: 640px) {
