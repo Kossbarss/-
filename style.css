@@ -1329,20 +1329,22 @@ body.nav-open {
 }
 
 /* fade the scrolling words into the section background at the top and
-   bottom edges of the porthole — same gradient stops/heights as RISE's
-   .v-marquee-blur, recolored to our section background */
+   bottom edges of the porthole. A real flat fully-opaque zone (0-28%)
+   comes first — RISE's original curve (opaque only at the very 0%
+   point, already translucent a few % in) let bright letter strokes
+   show through as a faint but readable sliver right at the edge. */
 .v-marquee-blur {
   position: absolute;
   inset: 0 0 auto;
   height: 50%;
-  background: linear-gradient(#0d0b0a, rgba(13, 11, 10, 0.86) 50%, rgba(13, 11, 10, 0.59) 75%, rgba(13, 11, 10, 0) 95%);
+  background: linear-gradient(#0d0b0a 0%, #0d0b0a 38%, rgba(13, 11, 10, 0.75) 68%, rgba(13, 11, 10, 0) 100%);
   pointer-events: none;
   z-index: 2;
 }
 
 .v-marquee-blur.is-bottom {
   inset: auto 0 0;
-  background: linear-gradient(rgba(13, 11, 10, 0) 5%, rgba(13, 11, 10, 0.59) 25%, rgba(13, 11, 10, 0.86) 50%, #0d0b0a);
+  background: linear-gradient(rgba(13, 11, 10, 0) 0%, rgba(13, 11, 10, 0.75) 32%, #0d0b0a 62%, #0d0b0a 100%);
 }
 
 /* ---------- 14-day cycle grid (identical block/palette/logo-placement to RISE) ---------- */
