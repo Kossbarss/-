@@ -164,28 +164,10 @@ button {
   transform: translateY(-2px);
 }
 
-.btn-primary {
-  background: var(--blood);
-  color: var(--white);
-  box-shadow: var(--shadow);
-}
-
-.btn-primary:hover {
-  background: var(--blood-dark);
-}
-
-.btn-gold {
-  background: var(--gold);
-  color: var(--ink);
-}
-
-.btn-gold:hover {
-  background: var(--gold-dark);
-}
-
-/* same red/orange gradient + glare-sweep + soft top-left highlight as
-   the "active" cells in the 14-day cycle grid, reused here so the
-   Забрать курс CTAs share that block's palette and shine mechanic */
+/* every button on the page shares this look: the same red/orange
+   gradient + glare-sweep + soft top-left highlight as the "active"
+   cells in the 14-day cycle grid, so all CTAs read as one consistent
+   mechanic instead of several different button styles */
 .btn-stardust {
   position: relative;
   overflow: hidden;
@@ -233,17 +215,6 @@ button {
   transform: skewX(-18deg);
   animation: cell-shine 3.6s ease-in-out infinite;
   pointer-events: none;
-}
-
-.btn-outline {
-  border-color: var(--ink);
-  color: var(--ink);
-  background: transparent;
-}
-
-.btn-outline:hover {
-  background: var(--ink);
-  color: var(--white);
 }
 
 .btn-block {
