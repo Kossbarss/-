@@ -560,39 +560,6 @@ body.nav-open {
   overflow: hidden;
 }
 
-/* backdrop photo of the school's founder, now on both desktop and
-   mobile — the foreground (text column + SVG illustration card)
-   stays exactly as it was, this just sits behind everything as
-   ambient texture, toned down and warmed with the site's gold/blood
-   tint so it reads as atmosphere rather than competing with the
-   actual content. background-position differs per breakpoint since
-   the source photo is portrait-oriented and needs a different crop
-   focus depending on how tall/narrow the viewport is. */
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url('assets/founder-hero-bg.jpg');
-  background-size: cover;
-  background-position: 78% 12%;
-  opacity: 0.3;
-  filter: grayscale(0.3) sepia(0.15);
-  z-index: 0;
-  pointer-events: none;
-}
-
-@media (max-width: 900px) {
-  .hero::before {
-    background-position: 70% top;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero::before {
-    background-position: 65% top;
-  }
-}
-
 .hero-glow {
   position: absolute;
   left: 50%;
@@ -685,6 +652,50 @@ body.nav-open {
   font-weight: 700;
   line-height: 1.4;
   margin-bottom: 12px;
+}
+
+/* floating cut-out portrait of the founder, positioned in the text
+   flow between the sub-headline and the system paragraph — same
+   placement as the reviewed reference landing */
+.hero-founder-photo {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 18px;
+}
+
+.hero-founder-photo::before {
+  content: '';
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 75%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 162, 74, 0.35) 0%, rgba(163, 22, 46, 0.16) 45%, transparent 72%);
+  filter: blur(24px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-founder-photo img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  filter: drop-shadow(0 20px 34px rgba(21, 17, 15, 0.35));
+}
+
+@media (min-width: 901px) {
+  .hero-founder-photo {
+    justify-content: flex-start;
+  }
+
+  .hero-founder-photo img {
+    max-width: 300px;
+  }
 }
 
 /* text scales down on mobile (h1 clamps to 3rem instead of 5rem) so
