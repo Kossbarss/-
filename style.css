@@ -658,7 +658,7 @@ body.nav-open {
 .hero-kicker {
   font-family: var(--font-accent);
   font-style: italic;
-  font-weight: 700;
+  font-weight: 400;
   font-size: 1.15rem;
   color: var(--ink);
   text-transform: none;
