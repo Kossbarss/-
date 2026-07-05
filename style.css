@@ -36,6 +36,7 @@
   /* free stand-in for the RISE reference's paid font (Halvar Breitschrift) */
   --font-rise: 'Space Grotesk', Arial, sans-serif;
   --font-sticky: 'Poppins', Arial, sans-serif;
+  --font-hero: 'Instrument Serif', Georgia, serif;
 }
 
 * {
@@ -559,6 +560,30 @@ body.nav-open {
   overflow: hidden;
 }
 
+/* a faint backdrop photo of the school's founder, desktop only — the
+   foreground (text column + SVG illustration card) stays exactly as
+   it was, this just sits behind everything as ambient texture, toned
+   down and warmed with the site's gold/blood tint so it reads as
+   atmosphere rather than competing with the actual content */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('assets/founder-hero-bg.jpg');
+  background-size: cover;
+  background-position: 78% 12%;
+  opacity: 0.24;
+  filter: grayscale(0.45) sepia(0.2);
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .hero::before {
+    display: none;
+  }
+}
+
 .hero-glow {
   position: absolute;
   left: 50%;
@@ -631,13 +656,16 @@ body.nav-open {
 }
 
 .hero h1 {
-  font-size: clamp(2.6rem, 5.4vw, 4.4rem);
-  line-height: 0.98;
+  font-family: var(--font-hero);
+  font-size: clamp(3rem, 6.2vw, 5rem);
+  line-height: 1.05;
+  letter-spacing: 0;
+  text-transform: none;
   margin-bottom: 20px;
 }
 
 .hero h1 em {
-  font-style: normal;
+  font-style: italic;
   color: var(--blood);
 }
 
@@ -667,6 +695,28 @@ body.nav-open {
   text-decoration: underline;
   text-decoration-color: var(--gold);
   text-underline-offset: 6px;
+}
+
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(21, 17, 15, 0.05);
+  border: 1px solid var(--border);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink-soft);
+  text-transform: none;
 }
 
 .hero-visual {
