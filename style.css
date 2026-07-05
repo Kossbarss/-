@@ -1304,23 +1304,28 @@ body.nav-open {
   overflow: hidden;
 }
 
-/* the ring (58vw across) is much bigger than the marquee it's centered
-   on (33.4vw tall), so it necessarily overhangs above and below it by
-   ~12vw — reserve that as margin above the marquee so it clears the
-   heading instead of cutting through it */
+/* the ring is much bigger than the marquee it's centered on, so it
+   necessarily overhangs above and below by the same amount — reserve
+   that as margin on both sides so it clears the heading above instead
+   of cutting through it, and so the section (overflow:hidden) is
+   tall enough to contain the ring's bottom curve instead of slicing
+   it off in a flat line */
 .topics-marquee-wrap {
   margin-top: 12vw;
+  margin-bottom: 12vw;
 }
 
 @media (max-width: 767px) {
   .topics-marquee-wrap {
     margin-top: 22vw;
+    margin-bottom: 22vw;
   }
 }
 
 @media (max-width: 479px) {
   .topics-marquee-wrap {
     margin-top: 20vw;
+    margin-bottom: 20vw;
   }
 }
 
