@@ -1226,6 +1226,11 @@ body.nav-open {
      same solid color — pull the next section over it by 2px so
      there's no gap to round differently in the first place */
   margin-bottom: -2px;
+  /* the wrap's own margin-bottom below already reserves exactly the
+     room the ring needs to overhang past the marquee — the section's
+     generic bottom padding would just stack more empty space on top
+     of that reserve, so drop it here */
+  padding-bottom: 0;
 }
 
 .topics-scroll-section .accent {
@@ -1319,20 +1324,20 @@ body.nav-open {
    it off in a flat line */
 .topics-marquee-wrap {
   margin-top: 12vw;
-  margin-bottom: 12vw;
+  margin-bottom: 14vw;
 }
 
 @media (max-width: 767px) {
   .topics-marquee-wrap {
     margin-top: 22vw;
-    margin-bottom: 22vw;
+    margin-bottom: 24vw;
   }
 }
 
 @media (max-width: 479px) {
   .topics-marquee-wrap {
     margin-top: 20vw;
-    margin-bottom: 20vw;
+    margin-bottom: 21vw;
   }
 }
 
