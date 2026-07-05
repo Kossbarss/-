@@ -689,14 +689,16 @@ body.nav-open {
 
 /* text scales down on mobile (h1 clamps to 3rem instead of 5rem) so
    the same absolute gaps that read as well-balanced on desktop look
-   cramped there — loosen them back up a bit at narrower widths */
+   cramped there — loosen them back up at narrower widths, matched
+   to the reference landing's own mobile gaps (measured at ~12-14%
+   of viewport width between kicker→headline and headline→subhead) */
 @media (max-width: 900px) {
   .hero-kicker {
-    margin-bottom: 12px;
+    margin-bottom: clamp(24px, 13vw, 50px);
   }
 
   .hero h1 {
-    margin-bottom: 18px;
+    margin-bottom: clamp(20px, 12vw, 46px);
   }
 
   .hero-sub {
