@@ -32,7 +32,7 @@ tickCountdown()
 setInterval(tickCountdown, 1000)
 
 // ---------- Sticky bar urgency countdown (short, resets every visit, spelled out in words) ----------
-const STICKY_COUNTDOWN_MS = 15 * 60 * 1000 // 15 minutes
+const STICKY_COUNTDOWN_MS = (10 * 60 + 40) * 1000 // 10 minutes 40 seconds
 const stickyDeadline = Date.now() + STICKY_COUNTDOWN_MS
 
 function pluralRu(n, [one, few, many]) {
@@ -50,7 +50,7 @@ function formatStickyRemaining(ms) {
   const seconds = totalSeconds % 60
   const minWord = pluralRu(minutes, ['минута', 'минуты', 'минут'])
   const secWord = pluralRu(seconds, ['секунда', 'секунды', 'секунд'])
-  return `${minutes} ${minWord} ${seconds} ${secWord}`
+  return `${minutes} ${minWord} и ${seconds} ${secWord}`
 }
 
 function tickStickyCountdown() {
