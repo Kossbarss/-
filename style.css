@@ -1204,14 +1204,15 @@ body.nav-open {
 /* two oversized "ring" shapes (a circle-minus-circle path) with a radial
    glow, one mirrored, layered so their bright arcs land on opposite
    sides — the same double-halo trick as the RISE reference, instead of
-   a plain stroked ellipse */
+   a plain stroked ellipse. RISE sizes it at 58vw (via :root{font-size:1vw}
+   + width:58rem) and hides it below 767px — ported 1:1 here as 58vw
+   directly, and the same display:none breakpoint. */
 .topics-ring {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 58vw;
-  max-width: 900px;
   aspect-ratio: 1 / 1;
   pointer-events: none;
 }
@@ -1227,22 +1228,33 @@ body.nav-open {
   transform: rotateY(180deg);
 }
 
-/* the RISE reference sizes this whole block off a viewport-relative
-   root font-size (:root{font-size:1vw}), so it reads big on desktop
-   but scales right back down on narrow phones; clamp() gets the same
-   fluid behavior without touching the site's global rem baseline */
+@media (max-width: 767px) {
+  .topics-ring {
+    display: none;
+  }
+}
+
+/* RISE: .v-marquee{height:33.4rem} / .v-item{font-size:5.9rem} by default,
+   bumped to 53rem/9.33rem only below 479px (root font-size:1vw makes
+   rem == vw there) — ported 1:1 as vw values at the same breakpoint */
 .v-marquee {
   position: relative;
-  height: clamp(140px, 33vw, 650px);
+  height: 33.4vw;
   overflow: hidden;
   margin-top: 16px;
+}
+
+@media (max-width: 479px) {
+  .v-marquee {
+    height: 53vw;
+  }
 }
 
 .v-track {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 1rem;
+  gap: 1vw;
   animation: scroll-up 9s linear infinite;
 }
 
@@ -1251,11 +1263,17 @@ body.nav-open {
   text-align: center;
   text-transform: uppercase;
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 5.9vw, 6rem);
-  font-weight: 400;
+  font-size: 5.9vw;
+  font-weight: 700;
   line-height: 1;
   color: var(--white);
   letter-spacing: 0.02em;
+}
+
+@media (max-width: 479px) {
+  .v-item {
+    font-size: 9.33vw;
+  }
 }
 
 @keyframes scroll-up {
@@ -1268,19 +1286,20 @@ body.nav-open {
 }
 
 /* fade the scrolling words into the section background at the top and
-   bottom edges of the porthole, so only the centered word reads clearly */
+   bottom edges of the porthole — same gradient stops/heights as RISE's
+   .v-marquee-blur, recolored to our section background */
 .v-marquee-blur {
   position: absolute;
   inset: 0 0 auto;
-  height: 45%;
-  background: linear-gradient(#0d0b0a, rgba(13, 11, 10, 0.86) 50%, rgba(13, 11, 10, 0.4) 80%, transparent);
+  height: 50%;
+  background: linear-gradient(#0d0b0a, rgba(13, 11, 10, 0.86) 50%, rgba(13, 11, 10, 0.59) 75%, rgba(13, 11, 10, 0) 95%);
   pointer-events: none;
   z-index: 2;
 }
 
 .v-marquee-blur.is-bottom {
   inset: auto 0 0;
-  background: linear-gradient(transparent, rgba(13, 11, 10, 0.4) 20%, rgba(13, 11, 10, 0.86) 50%, #0d0b0a);
+  background: linear-gradient(rgba(13, 11, 10, 0) 5%, rgba(13, 11, 10, 0.59) 25%, rgba(13, 11, 10, 0.86) 50%, #0d0b0a);
 }
 
 /* ---------- 14-day cycle grid (identical block/palette/logo-placement to RISE) ---------- */
