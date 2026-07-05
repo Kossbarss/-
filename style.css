@@ -1225,6 +1225,14 @@ body.nav-open {
   color: var(--gold-light);
 }
 
+/* centers the ring on the word-scroller itself rather than the whole
+   section — centering it on the section (which also includes the
+   heading above) made the ring drift up into the heading text on
+   desktop widths where the heading wraps to fewer/more lines */
+.topics-marquee-wrap {
+  position: relative;
+}
+
 /* two oversized "ring" shapes (a circle-minus-circle path) with a radial
    glow, one mirrored, layered so their bright arcs land on opposite
    sides — the same double-halo trick as the RISE reference, instead of
@@ -1271,6 +1279,17 @@ body.nav-open {
 @media (max-width: 479px) {
   .v-marquee {
     height: 53vw;
+  }
+}
+
+/* the ring (58vw across) is much bigger than the marquee it's centered
+   on (33.4vw tall), so it necessarily overhangs above and below it by
+   ~12vw — reserve that as margin above the marquee (only where the
+   ring is actually visible) so it clears the heading instead of
+   cutting through it */
+@media (min-width: 768px) {
+  .topics-marquee-wrap {
+    margin-top: 12vw;
   }
 }
 
