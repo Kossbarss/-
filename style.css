@@ -446,7 +446,7 @@ button {
 @media (max-width: 1024px) {
   .nav-links,
   .nav-cta,
-  .lang-switch-desktop {
+  .lang-switch.lang-switch-desktop {
     display: none;
   }
   .nav-toggle {
