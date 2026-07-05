@@ -502,6 +502,28 @@ body.nav-open {
   z-index: 0;
 }
 
+/* reusable ambient glow — the same gold/orange "topics scroller" ring
+   colors, echoed across other sections so the accent palette reads as
+   one continuous thread through the page instead of living in just
+   one isolated block. Position per instance via inline top/left/etc. */
+.ambient-glow {
+  position: absolute;
+  width: 620px;
+  height: 620px;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(20px);
+  z-index: 0;
+}
+
+.ambient-glow--gold {
+  background: radial-gradient(circle, rgba(253, 144, 77, 0.3) 0%, rgba(201, 162, 74, 0.14) 42%, transparent 72%);
+}
+
+.ambient-glow--blood {
+  background: radial-gradient(circle, rgba(163, 22, 46, 0.28) 0%, rgba(163, 22, 46, 0.12) 45%, transparent 72%);
+}
+
 .hero > .container {
   position: relative;
   z-index: 1;
@@ -822,7 +844,9 @@ body.nav-open {
 
 /* ---------- Instructor ---------- */
 .instructor-section {
-  background: var(--ink);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--paper) 0, var(--ink) 60px, var(--ink) calc(100% - 60px), var(--paper) 100%);
   color: var(--paper);
 }
 
@@ -1192,7 +1216,7 @@ body.nav-open {
 
 /* ---------- Vertical topics scroller (same porthole-marquee pattern as RISE) ---------- */
 .topics-scroll-section {
-  background: #0d0b0a;
+  background: linear-gradient(180deg, var(--paper-alt) 0, #0d0b0a 60px, #0d0b0a 100%);
   position: relative;
   overflow: hidden;
 }
@@ -1304,7 +1328,7 @@ body.nav-open {
 
 /* ---------- 14-day cycle grid (identical block/palette/logo-placement to RISE) ---------- */
 .rise-cycle-section {
-  background: #0d0b0a;
+  background: linear-gradient(180deg, #0d0b0a 0, #0d0b0a calc(100% - 60px), var(--paper) 100%);
   position: relative;
   overflow: hidden;
 }
@@ -1516,7 +1540,11 @@ body.nav-open {
 .pricing-section {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(155deg, var(--ink) 0%, var(--blood-dark) 55%, var(--blood) 100%);
+  /* a vertical fade-to-transparent layer on top of the original diagonal
+     gradient — a single angled gradient can't give full-width top/bottom
+     bands (the tilt concentrates 0%/100% in the corners instead) */
+  background: linear-gradient(180deg, var(--paper) 0, transparent 60px, transparent calc(100% - 60px), var(--paper) 100%),
+    linear-gradient(155deg, var(--ink) 0%, var(--blood-dark) 55%, var(--blood) 100%);
 }
 
 .pricing-watermark {
@@ -1688,7 +1716,10 @@ body.nav-open {
 
 /* ---------- Certificate ---------- */
 .certificate-section {
-  background: linear-gradient(135deg, var(--ink), #2a221c);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--paper) 0, transparent 60px, transparent calc(100% - 60px), var(--paper) 100%),
+    linear-gradient(135deg, var(--ink), #2a221c);
   color: var(--paper);
 }
 
@@ -1954,7 +1985,7 @@ body.nav-open {
 
 /* ---------- Footer ---------- */
 .footer {
-  background: var(--ink);
+  background: linear-gradient(180deg, var(--paper) 0, var(--ink) 30px, var(--ink) 100%);
   color: rgba(250, 246, 239, 0.55);
   padding: 40px 0;
   text-align: center;
