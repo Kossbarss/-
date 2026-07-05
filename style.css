@@ -658,10 +658,11 @@ body.nav-open {
 .hero-kicker {
   font-family: var(--font-accent);
   font-style: italic;
-  font-size: 1.05rem;
-  color: var(--muted);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--ink);
   text-transform: none;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .hero h1 {
