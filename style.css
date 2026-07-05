@@ -1231,17 +1231,15 @@ body.nav-open {
   transform: rotateY(180deg);
 }
 
+/* the RISE reference sizes this whole block off a viewport-relative
+   root font-size (:root{font-size:1vw}), so it reads big on desktop
+   but scales right back down on narrow phones; clamp() gets the same
+   fluid behavior without touching the site's global rem baseline */
 .v-marquee {
   position: relative;
-  height: 30rem;
+  height: clamp(180px, 30vw, 480px);
   overflow: hidden;
   margin-top: 16px;
-}
-
-@media (max-width: 640px) {
-  .v-marquee {
-    height: 24rem;
-  }
 }
 
 .v-track {
@@ -1258,17 +1256,11 @@ body.nav-open {
   text-align: center;
   text-transform: uppercase;
   font-family: var(--font-display);
-  font-size: 5.2rem;
+  font-size: clamp(1.9rem, 6vw, 5.2rem);
   font-weight: 400;
   line-height: 1;
   color: var(--white);
   letter-spacing: 0.02em;
-}
-
-@media (max-width: 640px) {
-  .v-item {
-    font-size: 3rem;
-  }
 }
 
 /* subtle glare sweeping across each word as it scrolls through */
