@@ -644,7 +644,7 @@ body.nav-open {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   gap: 40px;
-  padding: 64px 0 48px;
+  padding: 24px 0 48px;
   align-items: center;
 }
 
