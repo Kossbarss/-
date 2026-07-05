@@ -560,11 +560,14 @@ body.nav-open {
   overflow: hidden;
 }
 
-/* a faint backdrop photo of the school's founder, desktop only — the
-   foreground (text column + SVG illustration card) stays exactly as
-   it was, this just sits behind everything as ambient texture, toned
-   down and warmed with the site's gold/blood tint so it reads as
-   atmosphere rather than competing with the actual content */
+/* backdrop photo of the school's founder, now on both desktop and
+   mobile — the foreground (text column + SVG illustration card)
+   stays exactly as it was, this just sits behind everything as
+   ambient texture, toned down and warmed with the site's gold/blood
+   tint so it reads as atmosphere rather than competing with the
+   actual content. background-position differs per breakpoint since
+   the source photo is portrait-oriented and needs a different crop
+   focus depending on how tall/narrow the viewport is. */
 .hero::before {
   content: '';
   position: absolute;
@@ -572,15 +575,21 @@ body.nav-open {
   background-image: url('assets/founder-hero-bg.jpg');
   background-size: cover;
   background-position: 78% 12%;
-  opacity: 0.24;
-  filter: grayscale(0.45) sepia(0.2);
+  opacity: 0.3;
+  filter: grayscale(0.3) sepia(0.15);
   z-index: 0;
   pointer-events: none;
 }
 
 @media (max-width: 900px) {
   .hero::before {
-    display: none;
+    background-position: 70% top;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero::before {
+    background-position: 65% top;
   }
 }
 
