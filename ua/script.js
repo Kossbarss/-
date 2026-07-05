@@ -91,12 +91,3 @@ if (navToggle && mobileNav) {
   })
 }
 
-// ---------- Sticky bar close ----------
-const stickyBar = document.getElementById('stickyBar')
-const stickyClose = document.getElementById('stickyClose')
-if (stickyClose && stickyBar) {
-  stickyClose.addEventListener('click', () => {
-    stickyBar.style.display = 'none'
-    document.body.style.paddingBottom = '0'
-  })
-}

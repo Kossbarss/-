@@ -2015,85 +2015,75 @@ body.nav-open {
 }
 
 /* ---------- Sticky bottom bar ---------- */
+/* permanent (no close control) — the whole bar is one link, same
+   structure/logic as the reference floating bar: a small countdown
+   line above a bold combined price line, recolored from the
+   reference's flat maroon into the site's own black-to-blood-to-gold
+   gradient for a quieter, more expensive-looking version */
 .sticky-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 50;
-  background: var(--ink);
-  border-top: 2px solid var(--gold);
-  box-shadow: 0 -12px 30px -10px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(90deg, var(--ink) 0%, var(--blood-dark) 55%, var(--blood) 100%);
+  border-top: 1px solid rgba(201, 162, 74, 0.45);
+  box-shadow: 0 -14px 28px -12px rgba(0, 0, 0, 0.55);
 }
 
 .sticky-bar-inner {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 12px 0;
-  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  padding: 14px 0;
+  text-align: center;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.sticky-bar-inner:hover {
+  opacity: 0.88;
 }
 
 .sticky-bar-timer {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--paper);
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .sticky-bar-label {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: rgba(250, 246, 239, 0.65);
   text-transform: none;
 }
 
 .sticky-bar-clock {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 1rem;
   color: var(--gold-light);
+  letter-spacing: 0.02em;
 }
 
 .sticky-bar-price {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
   font-family: var(--font-display);
+  font-size: 1.15rem;
   color: var(--white);
+  letter-spacing: 0.01em;
 }
 
 .sticky-bar-price .old {
   text-decoration: line-through;
   color: rgba(250, 246, 239, 0.5);
-  font-size: 1rem;
+  font-size: 0.85em;
 }
 
 .sticky-bar-price .new {
-  font-size: 1.5rem;
+  font-size: 1.2em;
   color: var(--gold-light);
-}
-
-.sticky-bar-actions {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.sticky-bar-actions .btn {
-  padding: 10px 22px;
-  font-size: 0.9rem;
-}
-
-.sticky-bar-close {
-  background: none;
-  border: 1px solid rgba(250, 246, 239, 0.3);
-  color: rgba(250, 246, 239, 0.7);
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
 }
 
 /* ---------- Footer ---------- */
