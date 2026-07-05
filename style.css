@@ -183,6 +183,94 @@ button {
   background: var(--gold-dark);
 }
 
+/* "stardust" pearl button: a glossy 3D-lit pill (dark ink body, layered
+   inset shadows for a glass-like sheen, a soft glare drifting up on
+   hover) recolored from a reference blue/dark version into the site's
+   gold palette. The sparkle glyphs swap on hover via two stacked
+   spans, same trick as the reference. */
+.btn-stardust {
+  position: relative;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--gold-light);
+  border-radius: 999px;
+  box-shadow:
+    inset 0 0.3rem 0.9rem rgba(255, 255, 255, 0.12),
+    inset 0 -0.1rem 0.3rem rgba(0, 0, 0, 0.7),
+    inset 0 -0.4rem 0.9rem rgba(201, 162, 74, 0.35),
+    0 16px 26px -14px rgba(0, 0, 0, 0.55);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.btn-stardust:hover {
+  background: var(--ink);
+  box-shadow:
+    inset 0 0.3rem 0.5rem rgba(232, 213, 168, 0.35),
+    inset 0 -0.1rem 0.3rem rgba(0, 0, 0, 0.7),
+    inset 0 -0.4rem 0.9rem rgba(201, 162, 74, 0.55),
+    0 16px 26px -14px rgba(0, 0, 0, 0.6);
+}
+
+.btn-stardust:active {
+  transform: translateY(3px);
+}
+
+.btn-stardust-wrap {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-stardust::before,
+.btn-stardust::after {
+  content: '';
+  position: absolute;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.btn-stardust::before {
+  left: -15%;
+  right: -15%;
+  bottom: 25%;
+  top: -100%;
+  border-radius: 50%;
+  background: rgba(232, 213, 168, 0.12);
+}
+
+.btn-stardust::after {
+  left: 6%;
+  right: 6%;
+  top: 10%;
+  bottom: 42%;
+  border-radius: 14px 14px 0 0;
+  box-shadow: inset 0 8px 8px -8px rgba(232, 213, 168, 0.5);
+  background: linear-gradient(180deg, rgba(232, 213, 168, 0.2) 0%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0) 100%);
+}
+
+.btn-stardust:hover::before {
+  transform: translateY(-5%);
+}
+
+.btn-stardust:hover::after {
+  opacity: 0.5;
+  transform: translateY(5%);
+}
+
+.btn-stardust-icon.alt {
+  display: none;
+}
+
+.btn-stardust:hover .btn-stardust-icon:not(.alt) {
+  display: none;
+}
+
+.btn-stardust:hover .btn-stardust-icon.alt {
+  display: inline-block;
+}
+
 .btn-outline {
   border-color: var(--ink);
   color: var(--ink);
