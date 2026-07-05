@@ -663,7 +663,7 @@ body.nav-open {
   line-height: 1.25;
   color: var(--ink);
   text-transform: none;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .hero h1 {
@@ -672,7 +672,7 @@ body.nav-open {
   line-height: 1.05;
   letter-spacing: 0;
   text-transform: none;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .hero h1 em {
@@ -684,7 +684,24 @@ body.nav-open {
   font-size: 1.15rem;
   font-weight: 700;
   line-height: 1.4;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
+}
+
+/* text scales down on mobile (h1 clamps to 3rem instead of 5rem) so
+   the same absolute gaps that read as well-balanced on desktop look
+   cramped there — loosen them back up a bit at narrower widths */
+@media (max-width: 900px) {
+  .hero-kicker {
+    margin-bottom: 12px;
+  }
+
+  .hero h1 {
+    margin-bottom: 18px;
+  }
+
+  .hero-sub {
+    margin-bottom: 22px;
+  }
 }
 
 .hero-lede {
