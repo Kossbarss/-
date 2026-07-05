@@ -1260,12 +1260,6 @@ body.nav-open {
   transform: rotateY(180deg);
 }
 
-@media (max-width: 767px) {
-  .topics-ring {
-    display: none;
-  }
-}
-
 /* RISE: .v-marquee{height:33.4rem} / .v-item{font-size:5.9rem} by default,
    bumped to 53rem/9.33rem only below 479px (root font-size:1vw makes
    rem == vw there) — ported 1:1 as vw values at the same breakpoint */
@@ -1296,13 +1290,10 @@ body.nav-open {
 
 /* the ring (58vw across) is much bigger than the marquee it's centered
    on (33.4vw tall), so it necessarily overhangs above and below it by
-   ~12vw — reserve that as margin above the marquee (only where the
-   ring is actually visible) so it clears the heading instead of
-   cutting through it */
-@media (min-width: 768px) {
-  .topics-marquee-wrap {
-    margin-top: 12vw;
-  }
+   ~12vw — reserve that as margin above the marquee so it clears the
+   heading instead of cutting through it */
+.topics-marquee-wrap {
+  margin-top: 12vw;
 }
 
 .v-track {
