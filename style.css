@@ -227,19 +227,37 @@ button {
 }
 
 /* ---------- Header ---------- */
+/* floating pill nav: the bar itself carries the background/shadow and
+   sits inset from the edges, rather than a full-bleed bar, so the
+   header reads as an element floating over the page like a card */
 .header {
   position: sticky;
   top: 0;
   z-index: 45;
-  background: rgba(21, 17, 15, 0.95);
-  backdrop-filter: blur(8px);
+  padding: 16px 0;
 }
 
 .header .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 80px;
+  height: 64px;
+  padding-inline: 28px;
+  background: rgba(21, 17, 15, 0.92);
+  backdrop-filter: blur(12px);
+  border-radius: 999px;
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 640px) {
+  .header {
+    padding: 12px 0;
+  }
+
+  .header .container {
+    height: 56px;
+    padding-inline: 16px;
+  }
 }
 
 .logo {
