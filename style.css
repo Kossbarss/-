@@ -651,7 +651,7 @@ body.nav-open {
 @media (max-width: 900px) {
   .hero-inner {
     grid-template-columns: 1fr;
-    padding: 40px 0 32px;
+    padding: 16px 0 32px;
   }
 }
 
@@ -660,9 +660,10 @@ body.nav-open {
   font-style: italic;
   font-weight: 400;
   font-size: 1.15rem;
+  line-height: 1.25;
   color: var(--ink);
   text-transform: none;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .hero h1 {
@@ -671,7 +672,7 @@ body.nav-open {
   line-height: 1.05;
   letter-spacing: 0;
   text-transform: none;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .hero h1 em {
@@ -683,7 +684,7 @@ body.nav-open {
   font-size: 1.15rem;
   font-weight: 700;
   line-height: 1.4;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 
 .hero-lede {
