@@ -25,13 +25,42 @@ function tickCountdown() {
   const remaining = getDeadline() - Date.now()
   const text = formatRemaining(remaining)
   const heroClock = document.getElementById('heroClock')
-  const stickyClock = document.getElementById('stickyClock')
   if (heroClock) heroClock.textContent = text
-  if (stickyClock) stickyClock.textContent = text
 }
 
 tickCountdown()
 setInterval(tickCountdown, 1000)
+
+// ---------- Sticky bar urgency countdown (short, resets every visit, spelled out in words) ----------
+const STICKY_COUNTDOWN_MS = 15 * 60 * 1000 // 15 minutes
+const stickyDeadline = Date.now() + STICKY_COUNTDOWN_MS
+
+function pluralUa(n, [one, few, many]) {
+  const n10 = n % 10
+  const n100 = n % 100
+  if (n100 >= 11 && n100 <= 14) return many
+  if (n10 === 1) return one
+  if (n10 >= 2 && n10 <= 4) return few
+  return many
+}
+
+function formatStickyRemaining(ms) {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000))
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = totalSeconds % 60
+  const minWord = pluralUa(minutes, ['хвилина', 'хвилини', 'хвилин'])
+  const secWord = pluralUa(seconds, ['секунда', 'секунди', 'секунд'])
+  return `${minutes} ${minWord} ${seconds} ${secWord}`
+}
+
+function tickStickyCountdown() {
+  const stickyClock = document.getElementById('stickyClock')
+  if (!stickyClock) return
+  stickyClock.textContent = formatStickyRemaining(stickyDeadline - Date.now())
+}
+
+tickStickyCountdown()
+setInterval(tickStickyCountdown, 1000)
 
 // ---------- Ribbon marquee (kept from MCMM) ----------
 const ribbonStats = [
