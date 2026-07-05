@@ -1219,6 +1219,13 @@ body.nav-open {
   background: linear-gradient(180deg, var(--paper-alt) 0, #0d0b0a 60px, #0d0b0a 100%);
   position: relative;
   overflow: hidden;
+  /* at fractional device-pixel-ratios (common on real phones, e.g.
+     2.625x) Chromium can round this section's own edge to a
+     different device pixel than the next section's, leaving a
+     hairline seam between them even though both end in the exact
+     same solid color — pull the next section over it by 2px so
+     there's no gap to round differently in the first place */
+  margin-bottom: -2px;
 }
 
 .topics-scroll-section .accent {
