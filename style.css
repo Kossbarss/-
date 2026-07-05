@@ -1249,6 +1249,22 @@ body.nav-open {
   pointer-events: none;
 }
 
+/* on narrow screens the scrolling words span almost the full width,
+   so the ring's arcs (fixed at 58vw like desktop) end up crowding
+   right against the letters — widen the ring so the arcs sit further
+   out from the text column instead of overlapping it */
+@media (max-width: 767px) {
+  .topics-ring {
+    width: 78vw;
+  }
+}
+
+@media (max-width: 479px) {
+  .topics-ring {
+    width: 92vw;
+  }
+}
+
 .topics-ring svg {
   position: absolute;
   inset: 0;
@@ -1294,6 +1310,18 @@ body.nav-open {
    heading instead of cutting through it */
 .topics-marquee-wrap {
   margin-top: 12vw;
+}
+
+@media (max-width: 767px) {
+  .topics-marquee-wrap {
+    margin-top: 22vw;
+  }
+}
+
+@media (max-width: 479px) {
+  .topics-marquee-wrap {
+    margin-top: 20vw;
+  }
 }
 
 .v-track {
