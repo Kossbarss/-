@@ -2032,8 +2032,11 @@ body.nav-open {
   box-shadow: 0 -14px 28px -12px rgba(0, 0, 0, 0.55);
 }
 
-/* soft diffusion above the bar, same light color-bleed the reference
-   has where the page fades into the bar instead of a hard edge */
+/* soft diffusion above the bar: the same horizontal ink/blood/gold
+   gradient as the bar itself, masked to fade from fully transparent
+   at the top into fully opaque right where it meets the bar's own
+   top edge — so the colour matches (not a generic grey tint) and the
+   seam between fade and bar disappears instead of stepping */
 .sticky-bar::before {
   content: '';
   position: absolute;
@@ -2041,7 +2044,9 @@ body.nav-open {
   right: 0;
   bottom: 100%;
   height: 12px;
-  background: linear-gradient(180deg, rgba(21, 17, 15, 0) 0%, rgba(21, 17, 15, 0.5) 100%);
+  background: linear-gradient(90deg, var(--ink) 0%, var(--blood-dark) 55%, var(--blood) 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 100%);
   backdrop-filter: blur(6px);
   pointer-events: none;
 }
