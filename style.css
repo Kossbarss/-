@@ -1122,12 +1122,45 @@ body.nav-open {
 /* ---------- Instructor ---------- */
 .instructor-section {
   position: relative;
-  overflow: hidden;
   background: linear-gradient(180deg, var(--paper) 0, var(--ink) 60px, var(--ink) calc(100% - 60px), var(--paper) 100%);
   color: var(--paper);
-  /* same fractional-device-pixel hairline seam fix as .pricing-section */
-  margin-top: -2px;
-  margin-bottom: -2px;
+}
+
+/* the fade-to-transparent/fade-to-solid gradients on this section
+   (and the three others sharing this pattern below) render a visible
+   dark seam right at the section's own top/bottom edge on real phones
+   with a fractional device-pixel-ratio (e.g. 2.625x) — confirmed to
+   reproduce even where both sides are the exact same solid --paper
+   (not a mismatched-neighbour-color issue) and to sometimes land just
+   inside the *neighbouring* element rather than this one, so a strip
+   confined to this section's own box (which .overflow:hidden would
+   force) can't reliably cover it. Fix: move the decorative-glow clip
+   to an inner .section-clip wrapper instead of the section itself, so
+   the section is free of overflow:hidden and its ::before/::after can
+   bleed a few px past its own edge, straddling the seam wherever it
+   actually lands. */
+.instructor-section .section-clip {
+  position: relative;
+  overflow: hidden;
+}
+
+.instructor-section::before,
+.instructor-section::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--paper);
+  z-index: 2;
+}
+
+.instructor-section::before {
+  top: -3px;
+}
+
+.instructor-section::after {
+  bottom: -3px;
 }
 
 .instructor-layout {
@@ -1760,10 +1793,34 @@ body.nav-open {
 .rise-cycle-section {
   background: linear-gradient(180deg, #0d0b0a 0, #0d0b0a calc(100% - 60px), var(--paper) 100%);
   position: relative;
+}
+
+.rise-cycle-section .section-clip {
+  position: relative;
   overflow: hidden;
-  /* same fractional-device-pixel hairline seam fix as .pricing-section */
-  margin-top: -2px;
-  margin-bottom: -2px;
+}
+
+/* overhanging seam-cover strips, see the long comment on
+   .instructor-section above — top neighbour (.topics-scroll-section)
+   ends in the same solid #0d0b0a, bottom neighbour is plain --paper */
+.rise-cycle-section::before,
+.rise-cycle-section::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  z-index: 2;
+}
+
+.rise-cycle-section::before {
+  top: -3px;
+  background: #0d0b0a;
+}
+
+.rise-cycle-section::after {
+  bottom: -3px;
+  background: var(--paper);
 }
 
 .rise-cycle-section .section-head h2,
@@ -1972,19 +2029,37 @@ body.nav-open {
 /* ---------- Pricing / order form ---------- */
 .pricing-section {
   position: relative;
-  overflow: hidden;
   /* a vertical fade-to-transparent layer on top of the original diagonal
      gradient — a single angled gradient can't give full-width top/bottom
      bands (the tilt concentrates 0%/100% in the corners instead) */
   background: linear-gradient(180deg, var(--paper) 0, transparent 60px, transparent calc(100% - 60px), var(--paper) 100%),
     linear-gradient(155deg, var(--ink) 0%, var(--blood-dark) 55%, var(--blood) 100%);
-  /* same fractional-device-pixel hairline seam as .topics-scroll-section
-     below — both edges end in the same solid --paper as their
-     neighbours, but Chromium can round the shared boundary to a
-     different device pixel on each side, so pull this section over
-     both neighbours by 2px instead of leaving a gap to round differently */
-  margin-top: -2px;
-  margin-bottom: -2px;
+}
+
+.pricing-section .section-clip {
+  position: relative;
+  overflow: hidden;
+}
+
+/* overhanging seam-cover strips, see the long comment on
+   .instructor-section above — both neighbours here are plain --paper */
+.pricing-section::before,
+.pricing-section::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--paper);
+  z-index: 2;
+}
+
+.pricing-section::before {
+  top: -3px;
+}
+
+.pricing-section::after {
+  bottom: -3px;
 }
 
 .pricing-watermark {
@@ -2157,13 +2232,37 @@ body.nav-open {
 /* ---------- Certificate ---------- */
 .certificate-section {
   position: relative;
-  overflow: hidden;
   background: linear-gradient(180deg, var(--paper) 0, transparent 60px, transparent calc(100% - 60px), var(--paper) 100%),
     linear-gradient(135deg, var(--ink), #2a221c);
   color: var(--paper);
-  /* same fractional-device-pixel hairline seam fix as .pricing-section */
-  margin-top: -2px;
-  margin-bottom: -2px;
+}
+
+.certificate-section .section-clip {
+  position: relative;
+  overflow: hidden;
+}
+
+/* overhanging seam-cover strips, see the long comment on
+   .instructor-section above — top neighbour here is the testimonials
+   section (--paper-alt), bottom neighbour is plain --paper */
+.certificate-section::before,
+.certificate-section::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  z-index: 2;
+}
+
+.certificate-section::before {
+  top: -3px;
+  background: var(--paper-alt);
+}
+
+.certificate-section::after {
+  bottom: -3px;
+  background: var(--paper);
 }
 
 .certificate-layout {
