@@ -556,7 +556,7 @@ body.nav-open {
 /* ---------- Hero ---------- */
 .hero {
   position: relative;
-  background: linear-gradient(180deg, var(--paper) 0%, var(--paper-alt) 100%);
+  background: linear-gradient(180deg, #0e0a08 0%, #1c140f 100%);
   overflow: hidden;
 }
 
@@ -575,6 +575,32 @@ body.nav-open {
     transparent 72%
   );
   filter: blur(10px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* glowing diagonal rim, mostly off-canvas bottom-right — only its
+   upper-left arc crosses into the visible hero, echoing the
+   reference banner's light-arc backdrop in our own blood/gold tones */
+.hero-arc {
+  position: absolute;
+  right: -25vw;
+  top: -12vw;
+  width: 120vw;
+  height: 120vw;
+  max-width: 1200px;
+  max-height: 1200px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    transparent 0%,
+    transparent calc(50% - 4px),
+    var(--gold) calc(50% - 2px),
+    var(--blood) 50%,
+    transparent calc(50% + 4px),
+    transparent 100%
+  );
+  filter: blur(2px) drop-shadow(0 0 45px rgba(163, 22, 46, 0.5)) drop-shadow(0 0 90px rgba(201, 162, 74, 0.3));
   pointer-events: none;
   z-index: 0;
 }
@@ -648,10 +674,10 @@ body.nav-open {
   font-weight: 500;
   font-size: 0.85rem;
   line-height: 1.4;
-  color: var(--ink-soft);
+  color: rgba(250, 246, 239, 0.85);
   text-transform: none;
-  background: rgba(201, 162, 74, 0.1);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
   padding: 8px 20px;
   margin-bottom: 22px;
@@ -663,19 +689,55 @@ body.nav-open {
   line-height: 1.05;
   letter-spacing: 0;
   text-transform: none;
+  color: var(--white);
   margin-bottom: 10px;
 }
 
 .hero h1 em {
   font-style: italic;
-  color: var(--blood);
+  color: var(--blood-light);
 }
 
 .hero-sub {
   font-size: 1.15rem;
   font-weight: 700;
   line-height: 1.4;
+  color: rgba(250, 246, 239, 0.82);
   margin-bottom: 12px;
+}
+
+.hero-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 20px 0 26px;
+}
+
+.hero-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(250, 246, 239, 0.85);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.hero-cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.hero-cta-secondary svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 /* floating cut-out portrait of the founder, positioned in the text
@@ -738,7 +800,7 @@ body.nav-open {
 }
 
 .hero-lede {
-  background: linear-gradient(155deg, var(--blood) 0%, var(--gold) 100%);
+  background: linear-gradient(155deg, var(--gold-light) 0%, var(--gold) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -756,7 +818,7 @@ body.nav-open {
   gap: 10px;
   font-family: var(--font-display);
   font-size: 1.2rem;
-  color: var(--ink);
+  color: var(--gold-light);
   text-decoration: underline;
   text-decoration-color: var(--gold);
   text-underline-offset: 6px;
@@ -775,21 +837,90 @@ body.nav-open {
   align-items: center;
   padding: 7px 14px;
   border-radius: 999px;
-  background: rgba(21, 17, 15, 0.05);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   font-family: var(--font-body);
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: var(--ink-soft);
+  color: rgba(250, 246, 239, 0.82);
   text-transform: none;
+}
+
+/* staggered entrance for the hero copy, echoing the reference
+   banner's fade-slide-in sequence */
+@keyframes heroFadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-kicker,
+.hero h1,
+.hero-sub,
+.hero-cta-row,
+.hero-founder-photo,
+.hero-lede,
+.hero-social-proof,
+.hero-tags {
+  animation: heroFadeSlideIn 0.7s ease both;
+}
+
+.hero-kicker {
+  animation-delay: 0s;
+}
+
+.hero h1 {
+  animation-delay: 0.08s;
+}
+
+.hero-sub {
+  animation-delay: 0.16s;
+}
+
+.hero-cta-row {
+  animation-delay: 0.24s;
+}
+
+.hero-founder-photo {
+  animation-delay: 0.32s;
+}
+
+.hero-lede {
+  animation-delay: 0.4s;
+}
+
+.hero-social-proof {
+  animation-delay: 0.48s;
+}
+
+.hero-tags {
+  animation-delay: 0.56s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-kicker,
+  .hero h1,
+  .hero-sub,
+  .hero-cta-row,
+  .hero-founder-photo,
+  .hero-lede,
+  .hero-social-proof,
+  .hero-tags {
+    animation: none;
+  }
 }
 
 /* ---------- Countdown price box ---------- */
 .price-box {
   padding: 26px 30px;
   border: 2px solid var(--gold);
-  background: var(--white);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .price-box-row {
@@ -802,14 +933,14 @@ body.nav-open {
 
 .price-box-timer {
   font-size: 0.85rem;
-  color: var(--muted);
+  color: rgba(250, 246, 239, 0.6);
   text-transform: none;
 }
 
 .price-box-clock {
   font-family: var(--font-display);
   font-size: 1.6rem;
-  color: var(--blood);
+  color: var(--blood-light);
   letter-spacing: 0.03em;
 }
 
@@ -821,7 +952,7 @@ body.nav-open {
 
 .price-box-price .old {
   text-decoration: line-through;
-  color: var(--muted);
+  color: rgba(250, 246, 239, 0.5);
   font-family: var(--font-display);
   font-size: 1.3rem;
 }
@@ -829,12 +960,12 @@ body.nav-open {
 .price-box-price .new {
   font-family: var(--font-display);
   font-size: 2.4rem;
-  color: var(--blood);
+  color: var(--blood-light);
 }
 
 .price-box hr {
   border: none;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
   margin: 20px 0;
 }
 
@@ -854,10 +985,11 @@ body.nav-open {
   display: block;
   margin-bottom: 4px;
   text-transform: none;
+  color: var(--white);
 }
 
 .bonus-callout p {
-  color: var(--muted);
+  color: rgba(250, 246, 239, 0.6);
   font-size: 0.9rem;
   line-height: 1.5;
 }
