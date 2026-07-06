@@ -555,7 +555,9 @@ body.nav-open {
 
 /* ---------- Top line (meta info above hero) ---------- */
 .hero-topline {
-  background: var(--ink);
+  /* matches the hero gradient's own top-edge color (see .hero below)
+     so the seam between them is invisible */
+  background: #0e0a08;
   text-align: center;
   padding: 10px 20px;
   /* pull up behind the header's own (transparent) box so its dark
