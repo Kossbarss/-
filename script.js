@@ -59,6 +59,8 @@ function tickStickyCountdown() {
   if (stickyClock) stickyClock.textContent = text
   const popupClock = document.getElementById('popupClock')
   if (popupClock) popupClock.textContent = text
+  const miniClock = document.getElementById('miniClock')
+  if (miniClock) miniClock.textContent = text
 }
 
 tickStickyCountdown()

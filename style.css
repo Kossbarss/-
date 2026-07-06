@@ -553,6 +553,22 @@ body.nav-open {
   overflow: hidden;
 }
 
+/* ---------- Top line (meta info above hero) ---------- */
+.hero-topline {
+  background: var(--ink);
+  text-align: center;
+  padding: 10px 20px;
+}
+
+.hero-topline p {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: 0.82rem;
+  color: rgba(250, 246, 239, 0.55);
+  line-height: 1.5;
+  text-transform: none;
+}
+
 /* ---------- Hero ---------- */
 .hero {
   position: relative;
@@ -1178,6 +1194,41 @@ body.nav-open {
   color: var(--white);
 }
 
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(201, 162, 74, 0.25);
+}
+
+@media (max-width: 900px) {
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--gold-light);
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: rgba(250, 246, 239, 0.65);
+  text-transform: none;
+}
+
 /* ---------- Chat testimonial mock ---------- */
 .chat-mock {
   background: #1c1a19;
@@ -1327,6 +1378,49 @@ body.nav-open {
 .avatar-row .count {
   font-family: var(--font-display);
   font-size: 1.3rem;
+}
+
+/* ---------- Testimonials ---------- */
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .testimonial-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.testimonial-card {
+  padding: 28px;
+}
+
+.testimonial-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  text-transform: none;
+  margin: 14px 0 20px;
+}
+
+.testimonial-author {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.testimonial-author strong {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--ink);
+}
+
+.testimonial-author span {
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-transform: none;
 }
 
 /* ---------- Feature cards ---------- */
@@ -2477,6 +2571,19 @@ body.nav-open {
 
 body.popup-open {
   overflow: hidden;
+}
+
+/* ---------- Mini timer (before footer) ---------- */
+.mini-timer {
+  text-align: center;
+  padding: 18px 20px;
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-transform: none;
+}
+
+.mini-timer strong {
+  color: var(--blood);
 }
 
 /* ---------- Footer ---------- */
