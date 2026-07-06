@@ -669,7 +669,10 @@ body.nav-open {
 
 .hero h1 em {
   font-style: italic;
-  color: var(--gold-light);
+  background: linear-gradient(155deg, var(--gold-light) 0%, var(--gold) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero-sub {
