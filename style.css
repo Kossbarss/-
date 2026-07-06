@@ -1300,83 +1300,171 @@ body.nav-open {
   color: var(--gold-light);
 }
 
-/* ---------- Case studies ---------- */
-.case-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+/* ---------- Case studies: fan carousel ---------- */
+/* required for the browser to smoothly interpolate --angle between
+   0deg and 360deg in the keyframes below — without registering it,
+   the custom property animates as a discrete jump, not a rotation */
+@property --case-fan-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
 }
 
-@media (max-width: 900px) {
-  .case-grid {
-    grid-template-columns: 1fr;
+.case-fan-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.case-fan-layout {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 22rem;
+}
+
+.case-fan-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 11rem;
+  aspect-ratio: 3/4;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 20px 40px -18px rgba(21, 17, 15, 0.45);
+  /* rotating conic-gradient "gold foil" border: two background layers,
+     one clipped to the padding-box (card fill) and one to the
+     border-box (the ring itself) */
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--white), var(--white)) padding-box,
+    conic-gradient(
+      from var(--case-fan-angle),
+      var(--gold-dark) 0%,
+      var(--gold) 37%,
+      var(--gold-light) 30%,
+      var(--gold) 33%,
+      var(--gold-dark) 40%,
+      var(--gold-dark) 50%,
+      var(--gold) 77%,
+      var(--gold-light) 80%,
+      var(--gold) 83%,
+      var(--gold-dark) 90%
+    ) border-box;
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+
+.case-fan-card.is-focused {
+  box-shadow: 0 28px 50px -16px rgba(163, 22, 46, 0.4);
+  /* only the focused card spins its border — keeps the ring still
+     (cheap) at rest across every card, and animates just the one the
+     visitor is actually looking at */
+  animation: case-fan-border-spin 3.2s linear infinite;
+}
+
+@keyframes case-fan-border-spin {
+  to {
+    --case-fan-angle: 360deg;
   }
 }
 
-.case-card {
-  overflow: hidden;
+@media (prefers-reduced-motion: reduce) {
+  .case-fan-card.is-focused {
+    animation: none;
+  }
 }
 
-.case-card-arch {
+.case-fan-card-visual {
   position: relative;
-  overflow: visible;
-  margin-top: 26px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  padding: 14px;
+  color: var(--white);
 }
 
-.card-arch-tab {
+.case-fan-card-visual::before {
+  content: '';
   position: absolute;
-  top: -26px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 52px;
-  height: 52px;
-  border-radius: 999px;
-  background: var(--white);
-  border: 1px solid var(--border);
-  display: grid;
-  place-items: center;
-  box-shadow: 0 8px 16px -8px rgba(21, 17, 15, 0.25);
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(21, 17, 15, 0.85) 100%);
 }
 
-.card-arch-tab svg {
-  width: 22px;
-  height: 22px;
+.case-fan-card-label {
+  position: relative;
+  z-index: 1;
 }
 
-.case-index {
-  position: absolute;
-  top: 12px;
-  right: 16px;
+.case-fan-card-index {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--gold-light);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.case-fan-card-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+}
+
+/* placeholder "photo" gradients standing in for real before/after work
+   photos — swap for background-image: url(...) once photos are ready */
+.case-fan-card:nth-child(1) .case-fan-card-visual {
+  background: linear-gradient(150deg, #caa46a, #7a5a2e);
+}
+
+.case-fan-card:nth-child(2) .case-fan-card-visual {
+  background: linear-gradient(150deg, #c9a24a, #7a0f22);
+}
+
+.case-fan-card:nth-child(3) .case-fan-card-visual {
+  background: linear-gradient(150deg, #a3162e, #2a221c);
+}
+
+@media (max-width: 720px) {
+  .case-fan-layout {
+    height: 15rem;
+  }
+
+  .case-fan-card {
+    width: 7rem;
+  }
+}
+
+.case-fan-detail {
+  max-width: 480px;
+  margin: 28px auto 0;
+  text-align: center;
+}
+
+.case-fan-detail-module {
+  display: inline-block;
   font-family: var(--font-accent);
   font-style: italic;
   font-size: 0.85rem;
   color: var(--muted);
-  z-index: 2;
+  margin-bottom: 10px;
 }
 
-.case-visual {
-  aspect-ratio: 4/3;
-  background: linear-gradient(135deg, var(--paper-alt), var(--gold-light));
-  display: grid;
-  place-items: center;
-  color: var(--ink);
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-}
-
-.case-body {
-  padding: 20px 22px;
-}
-
-.case-body h4 {
-  font-size: 1.05rem;
+.case-fan-detail h4 {
+  font-size: 1.2rem;
   margin-bottom: 8px;
 }
 
-.case-body p {
+.case-fan-detail p {
   color: var(--muted);
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: 0.95rem;
+  line-height: 1.55;
   text-transform: none;
 }
 
@@ -1385,6 +1473,60 @@ body.nav-open {
   font-family: var(--font-display);
   color: var(--blood);
   font-size: 1.05rem;
+}
+
+.case-fan-nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.case-fan-nav[hidden] {
+  display: none;
+}
+
+.case-fan-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.case-fan-arrow:hover {
+  border-color: var(--gold);
+  color: var(--blood);
+}
+
+.case-fan-arrow:active {
+  transform: scale(0.92);
+}
+
+.case-fan-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.case-fan-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(21, 17, 15, 0.18);
+  transition: all 0.3s ease;
+}
+
+.case-fan-dot.is-active {
+  background: var(--blood);
+  transform: scale(1.3);
 }
 
 .stars {

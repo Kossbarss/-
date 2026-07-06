@@ -280,42 +280,19 @@
         <h2>Кейсы учеников после обучения</h2>
       </div>
 
-      <div class="case-grid">
-        <div class="card case-card case-card-arch">
-          <div class="card-arch-tab">
-            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 5c-3 1.8-3.6 5-1.2 6.6C11.2 10 10.6 6.8 10 5Z" fill="#c9a24a"/></svg>
-          </div>
-          <span class="case-index">/01</span>
-          <div class="case-visual">До / После · Модуль 5</div>
-          <div class="case-body">
-            <h4>Лиана, 24 года</h4>
-            <p>Первая тату на модели под наблюдением ментора — ровная линия без дрожи с первого раза.</p>
-            <div class="case-stat">3 клиента за первую неделю</div>
-          </div>
-        </div>
-        <div class="card case-card case-card-arch">
-          <div class="card-arch-tab">
-            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 5c-3 1.8-3.6 5-1.2 6.6C11.2 10 10.6 6.8 10 5Z" fill="#c9a24a"/></svg>
-          </div>
-          <span class="case-index">/02</span>
-          <div class="case-visual">До / После · Модуль 7</div>
-          <div class="case-body">
-            <h4>Максим, 31 год</h4>
-            <p>Перешёл от рисования на бумаге сразу к цветной работе — портфолио за 2 месяца.</p>
-            <div class="case-stat">12 работ в портфолио</div>
-          </div>
-        </div>
-        <div class="card case-card case-card-arch">
-          <div class="card-arch-tab">
-            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 5c-3 1.8-3.6 5-1.2 6.6C11.2 10 10.6 6.8 10 5Z" fill="#c9a24a"/></svg>
-          </div>
-          <span class="case-index">/03</span>
-          <div class="case-visual">До / После · Модуль 9</div>
-          <div class="case-body">
-            <h4>Оля, 27 лет</h4>
-            <p>Нашла первых клиентов через Instagram ещё до завершения курса, по шаблону из бонусов.</p>
-            <div class="case-stat">30+ заявок, 5 продаж</div>
-          </div>
+      <div class="case-fan-wrap">
+        <div class="case-fan-layout" id="caseFanLayout"></div>
+
+        <div class="case-fan-detail" id="caseFanDetail"></div>
+
+        <div class="case-fan-nav" id="caseFanNav" hidden>
+          <button class="case-fan-arrow" id="caseFanPrev" aria-label="Предыдущий кейс">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+          </button>
+          <div class="case-fan-dots" id="caseFanDots"></div>
+          <button class="case-fan-arrow" id="caseFanNext" aria-label="Следующий кейс">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+          </button>
         </div>
       </div>
 

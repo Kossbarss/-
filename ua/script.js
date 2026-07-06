@@ -151,3 +151,179 @@ if (stickyBarTrigger && popupOverlay && popupCard) {
   })
 }
 
+// ---------- Case studies fan carousel ----------
+const caseStudies = [
+  {
+    idx: '01',
+    name: 'Ліана, 24 роки',
+    module: 'До / Після · Модуль 5',
+    text: 'Перша тату на моделі під наглядом ментора — рівна лінія без тремтіння з першого разу.',
+    stat: '3 клієнти за перший тиждень',
+  },
+  {
+    idx: '02',
+    name: 'Максим, 31 рік',
+    module: 'До / Після · Модуль 7',
+    text: 'Перейшов з малювання на папері одразу до кольорової роботи — портфоліо за 2 місяці.',
+    stat: '12 робіт у портфоліо',
+  },
+  {
+    idx: '03',
+    name: 'Оля, 27 років',
+    module: 'До / Після · Модуль 9',
+    text: 'Знайшла перших клієнтів через Instagram ще до завершення курсу, за шаблоном з бонусів.',
+    stat: '30+ заявок, 5 продажів',
+  },
+]
+
+const caseFanLayout = document.getElementById('caseFanLayout')
+
+if (caseFanLayout) {
+  const caseFanDetail = document.getElementById('caseFanDetail')
+  const caseFanNav = document.getElementById('caseFanNav')
+  const caseFanDots = document.getElementById('caseFanDots')
+  const caseFanPrev = document.getElementById('caseFanPrev')
+  const caseFanNext = document.getElementById('caseFanNext')
+
+  const MAX_VISIBLE = 7
+
+  // rot(deg), scale, x(rem), y(rem), z-index — the hand-tuned 7-slot fan
+  // geometry, used verbatim once there are enough cases to fill it
+  const FAN_POSITIONS = [
+    { rot: -21, scale: 0.7756, x: -9.5, y: 2.3, z: 1 },
+    { rot: -14, scale: 0.8498, x: -7.0, y: 1.3, z: 2 },
+    { rot: -7, scale: 0.9346, x: -3.5, y: 0.4, z: 3 },
+    { rot: 0, scale: 1.0, x: 0, y: 0, z: 10 },
+    { rot: 7, scale: 0.9346, x: 3.5, y: 0.4, z: 3 },
+    { rot: 14, scale: 0.8498, x: 7.0, y: 1.3, z: 2 },
+    { rot: 21, scale: 0.7756, x: 9.5, y: 2.3, z: 1 },
+  ]
+
+  // fallback for fewer than 7 cards: same proportions, scaled down to
+  // however many are actually on screen
+  function getSlotConfig(totalVisible, slot) {
+    if (totalVisible >= MAX_VISIBLE) return FAN_POSITIONS[slot]
+    const center = totalVisible >> 1
+    const distance = totalVisible > 1 ? (slot - center) / (center || 1) : 0
+    const abs = Math.abs(distance)
+    return {
+      rot: distance * 21,
+      scale: 1 - 0.2244 * abs * abs,
+      x: distance * 9.5,
+      y: abs * abs * 2.3,
+      z: 10 - Math.abs(slot - center),
+    }
+  }
+
+  const needsPagination = caseStudies.length > MAX_VISIBLE
+  let centerIndex = Math.floor(caseStudies.length / 2)
+  let focusedSlot = null
+
+  function renderDetail(item) {
+    caseFanDetail.innerHTML = `
+      <span class="case-fan-detail-module">${item.module}</span>
+      <h4>${item.name}</h4>
+      <p>${item.text}</p>
+      <div class="case-stat">${item.stat}</div>
+    `
+  }
+
+  function applyLayout() {
+    const cards = caseFanLayout.querySelectorAll('.case-fan-card')
+    const visibleCount = cards.length
+    const centerSlot = (visibleCount - 1) / 2
+
+    cards.forEach((card) => {
+      const slot = Number(card.dataset.slot)
+      const base = getSlotConfig(visibleCount, slot)
+      let x = base.x
+      let y = base.y
+      let rot = base.rot
+      let scale = base.scale
+
+      if (focusedSlot !== null) {
+        const distance = Math.abs(slot - focusedSlot)
+        if (slot === focusedSlot) {
+          y -= 0.9
+          scale *= 1.1
+        } else {
+          const normalized = centerSlot > 0 ? (slot - centerSlot) / centerSlot : 0
+          const push = 2.6 * (1 - Math.abs(normalized)) * (1 + 0.2 * Math.max(0, 3 - distance))
+          if (slot < focusedSlot) {
+            x -= push
+            rot -= 3 / (distance + 1)
+          } else {
+            x += push
+            rot += 3 / (distance + 1)
+          }
+        }
+      }
+
+      card.style.transform = `translate(-50%, -50%) translate(${x}rem, ${y}rem) rotate(${rot}deg) scale(${scale})`
+      card.classList.toggle('is-focused', focusedSlot === slot)
+      card.style.zIndex = focusedSlot === slot ? 20 : base.z
+    })
+  }
+
+  function render() {
+    caseFanLayout.innerHTML = ''
+    caseFanDots.innerHTML = ''
+    focusedSlot = null
+
+    const visibleCount = Math.min(caseStudies.length, MAX_VISIBLE)
+    const half = Math.floor(visibleCount / 2)
+
+    caseStudies.forEach((_, i) => {
+      const dot = document.createElement('span')
+      dot.className = 'case-fan-dot' + (i === centerIndex ? ' is-active' : '')
+      caseFanDots.appendChild(dot)
+    })
+
+    for (let slot = 0; slot < visibleCount; slot++) {
+      const dataIndex = ((centerIndex + slot - half) % caseStudies.length + caseStudies.length) % caseStudies.length
+      const item = caseStudies[dataIndex]
+      const card = document.createElement('div')
+      card.className = 'case-fan-card'
+      card.dataset.slot = String(slot)
+      card.innerHTML = `
+        <div class="case-fan-card-visual">
+          <div class="case-fan-card-label">
+            <span class="case-fan-card-index">/${item.idx}</span>
+            <span class="case-fan-card-name">${item.name}</span>
+          </div>
+        </div>
+      `
+      card.addEventListener('mouseenter', () => {
+        focusedSlot = slot
+        renderDetail(item)
+        applyLayout()
+      })
+      card.addEventListener('mouseleave', () => {
+        focusedSlot = null
+        renderDetail(caseStudies[centerIndex])
+        applyLayout()
+      })
+      caseFanLayout.appendChild(card)
+    }
+
+    renderDetail(caseStudies[centerIndex])
+    caseFanNav.hidden = !needsPagination
+    applyLayout()
+  }
+
+  if (caseFanPrev) {
+    caseFanPrev.addEventListener('click', () => {
+      centerIndex = (centerIndex - 1 + caseStudies.length) % caseStudies.length
+      render()
+    })
+  }
+  if (caseFanNext) {
+    caseFanNext.addEventListener('click', () => {
+      centerIndex = (centerIndex + 1) % caseStudies.length
+      render()
+    })
+  }
+
+  render()
+}
+
