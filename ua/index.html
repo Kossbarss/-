@@ -808,9 +808,9 @@
     </div>
   </footer>
 
-  <!-- ============ STICKY BAR ============ -->
+  <!-- ============ STICKY BAR (opens the popup below instead of scrolling) ============ -->
   <div class="sticky-bar" id="stickyBar">
-    <a href="#pricing" class="container sticky-bar-inner">
+    <div class="container sticky-bar-inner" id="stickyBarTrigger" role="button" tabindex="0" aria-haspopup="dialog">
       <div class="sticky-bar-timer">
         <span class="sticky-bar-label">До кінця акції:</span>
         <span class="sticky-bar-clock" id="stickyClock">10 хвилин та 40 секунд</span>
@@ -818,7 +818,29 @@
       <div class="sticky-bar-price">
         Забрати курс зі знижкою за <span class="old">499€</span> <span class="new">99€</span>
       </div>
-    </a>
+    </div>
+  </div>
+
+  <!-- ============ POPUP (форма для збору контактів, відкривається зі sticky-бару) ============ -->
+  <div class="popup-overlay" id="popupOverlay"></div>
+  <div class="popup-card card" id="popupCard" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+    <button class="popup-close" id="popupClose" aria-label="Закрити" type="button">&times;</button>
+    <p class="popup-kicker">🎁 Спеціальна пропозиція</p>
+    <h3 id="popupTitle">Ти зможеш освоїти тату-машинку і знайти перших клієнтів самостійно</h3>
+    <p class="popup-sub">300+ випускників школи вже працюють з клієнтами</p>
+    <div class="popup-price">
+      <span class="old">499€</span>
+      <span class="new">99€</span>
+    </div>
+    <div class="popup-timer">
+      Ціна актуальна ще: <strong id="popupClock">10 хвилин та 40 секунд</strong>
+    </div>
+    <form class="popup-form" onsubmit="return false;">
+      <input type="text" placeholder="Ваше ім'я" required />
+      <input type="email" placeholder="Email" required />
+      <button type="submit" class="btn btn-stardust btn-block"><span class="btn-stardust-wrap">Забрати курс зі знижкою</span></button>
+    </form>
+    <p class="popup-footnote">✅ <strong>7 днів гарантія повернення</strong> — без зайвих запитань</p>
   </div>
 
   <script src="script.js"></script>

@@ -54,9 +54,11 @@ function formatStickyRemaining(ms) {
 }
 
 function tickStickyCountdown() {
+  const text = formatStickyRemaining(stickyDeadline - Date.now())
   const stickyClock = document.getElementById('stickyClock')
-  if (!stickyClock) return
-  stickyClock.textContent = formatStickyRemaining(stickyDeadline - Date.now())
+  if (stickyClock) stickyClock.textContent = text
+  const popupClock = document.getElementById('popupClock')
+  if (popupClock) popupClock.textContent = text
 }
 
 tickStickyCountdown()
@@ -117,6 +119,33 @@ if (navToggle && mobileNav) {
   }
   mobileNav.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => setMobileNavOpen(false))
+  })
+}
+
+// ---------- Popup (lead-capture modal, opened from the sticky bar) ----------
+const stickyBarTrigger = document.getElementById('stickyBarTrigger')
+const popupOverlay = document.getElementById('popupOverlay')
+const popupCard = document.getElementById('popupCard')
+const popupClose = document.getElementById('popupClose')
+
+function setPopupOpen(open) {
+  popupOverlay.classList.toggle('open', open)
+  popupCard.classList.toggle('open', open)
+  document.body.classList.toggle('popup-open', open)
+}
+
+if (stickyBarTrigger && popupOverlay && popupCard) {
+  stickyBarTrigger.addEventListener('click', () => setPopupOpen(true))
+  stickyBarTrigger.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      setPopupOpen(true)
+    }
+  })
+  if (popupClose) popupClose.addEventListener('click', () => setPopupOpen(false))
+  popupOverlay.addEventListener('click', () => setPopupOpen(false))
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setPopupOpen(false)
   })
 }
 
