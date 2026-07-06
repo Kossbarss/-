@@ -751,9 +751,28 @@ body.nav-open {
   filter: drop-shadow(0 20px 34px rgba(21, 17, 15, 0.35));
 }
 
+/* soft dark fade over the bottom of the photo, same spot the system
+   paragraph overlaps, so that gold-on-photo text stays readable —
+   matches the reference landing's own bottom-fade treatment */
+.hero-founder-photo-shade {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
+  height: 40%;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.2) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
 @media (min-width: 901px) {
   .hero-founder-photo img {
     max-width: 300px;
+  }
+
+  .hero-founder-photo-shade {
+    width: 300px;
   }
 }
 
