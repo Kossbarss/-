@@ -558,6 +558,18 @@ body.nav-open {
   background: var(--ink);
   text-align: center;
   padding: 10px 20px;
+  /* pull up behind the header's own (transparent) box so its dark
+     background fills that gap instead of the page's cream body
+     background showing through above the fold */
+  margin-top: -96px;
+  padding-top: 106px;
+}
+
+@media (max-width: 640px) {
+  .hero-topline {
+    margin-top: -80px;
+    padding-top: 90px;
+  }
 }
 
 .hero-topline p {
