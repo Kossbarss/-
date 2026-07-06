@@ -1358,14 +1358,20 @@ body.nav-open {
   background-clip: padding-box, border-box;
   background-origin: padding-box, border-box;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+  animation: case-fan-border-spin 3.2s linear infinite;
 }
+
+/* stagger so all 7 rings don't spin in lockstep */
+.case-fan-card[data-slot='0'] { animation-delay: -2.7s; }
+.case-fan-card[data-slot='1'] { animation-delay: -2.3s; }
+.case-fan-card[data-slot='2'] { animation-delay: -1.6s; }
+.case-fan-card[data-slot='3'] { animation-delay: -0.9s; }
+.case-fan-card[data-slot='4'] { animation-delay: -0.4s; }
+.case-fan-card[data-slot='5'] { animation-delay: -1.1s; }
+.case-fan-card[data-slot='6'] { animation-delay: -2s; }
 
 .case-fan-card.is-focused {
   box-shadow: 0 28px 50px -16px rgba(163, 22, 46, 0.4);
-  /* only the focused card spins its border — keeps the ring still
-     (cheap) at rest across every card, and animates just the one the
-     visitor is actually looking at */
-  animation: case-fan-border-spin 3.2s linear infinite;
 }
 
 @keyframes case-fan-border-spin {
@@ -1375,7 +1381,7 @@ body.nav-open {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .case-fan-card.is-focused {
+  .case-fan-card {
     animation: none;
   }
 }
@@ -1429,6 +1435,22 @@ body.nav-open {
 
 .case-fan-card:nth-child(3) .case-fan-card-visual {
   background: linear-gradient(150deg, #a3162e, #2a221c);
+}
+
+.case-fan-card:nth-child(4) .case-fan-card-visual {
+  background: linear-gradient(150deg, #7a0f22, #1c1512);
+}
+
+.case-fan-card:nth-child(5) .case-fan-card-visual {
+  background: linear-gradient(150deg, #d8b46a, #8a3b1e);
+}
+
+.case-fan-card:nth-child(6) .case-fan-card-visual {
+  background: linear-gradient(150deg, #b98a3e, #4a1414);
+}
+
+.case-fan-card:nth-child(7) .case-fan-card-visual {
+  background: linear-gradient(150deg, #8a6a2e, #2a221c);
 }
 
 @media (max-width: 720px) {
