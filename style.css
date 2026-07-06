@@ -786,18 +786,6 @@ body.nav-open {
   text-transform: none;
 }
 
-.hero-social-proof {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  color: var(--gold-light);
-  text-decoration: underline;
-  text-decoration-color: var(--gold);
-  text-underline-offset: 6px;
-}
-
 .hero-tags {
   display: flex;
   flex-wrap: wrap;
@@ -840,7 +828,6 @@ body.nav-open {
 .hero-cta-row,
 .hero-founder-photo,
 .hero-lede,
-.hero-social-proof,
 .hero-tags {
   animation: heroFadeSlideIn 0.7s ease both;
 }
@@ -869,12 +856,8 @@ body.nav-open {
   animation-delay: 0.4s;
 }
 
-.hero-social-proof {
-  animation-delay: 0.48s;
-}
-
 .hero-tags {
-  animation-delay: 0.56s;
+  animation-delay: 0.48s;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -884,7 +867,6 @@ body.nav-open {
   .hero-cta-row,
   .hero-founder-photo,
   .hero-lede,
-  .hero-social-proof,
   .hero-tags {
     animation: none;
   }
