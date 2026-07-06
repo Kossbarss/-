@@ -1125,6 +1125,9 @@ body.nav-open {
   overflow: hidden;
   background: linear-gradient(180deg, var(--paper) 0, var(--ink) 60px, var(--ink) calc(100% - 60px), var(--paper) 100%);
   color: var(--paper);
+  /* same fractional-device-pixel hairline seam fix as .pricing-section */
+  margin-top: -2px;
+  margin-bottom: -2px;
 }
 
 .instructor-layout {
@@ -1758,6 +1761,9 @@ body.nav-open {
   background: linear-gradient(180deg, #0d0b0a 0, #0d0b0a calc(100% - 60px), var(--paper) 100%);
   position: relative;
   overflow: hidden;
+  /* same fractional-device-pixel hairline seam fix as .pricing-section */
+  margin-top: -2px;
+  margin-bottom: -2px;
 }
 
 .rise-cycle-section .section-head h2,
@@ -1972,6 +1978,13 @@ body.nav-open {
      bands (the tilt concentrates 0%/100% in the corners instead) */
   background: linear-gradient(180deg, var(--paper) 0, transparent 60px, transparent calc(100% - 60px), var(--paper) 100%),
     linear-gradient(155deg, var(--ink) 0%, var(--blood-dark) 55%, var(--blood) 100%);
+  /* same fractional-device-pixel hairline seam as .topics-scroll-section
+     below — both edges end in the same solid --paper as their
+     neighbours, but Chromium can round the shared boundary to a
+     different device pixel on each side, so pull this section over
+     both neighbours by 2px instead of leaving a gap to round differently */
+  margin-top: -2px;
+  margin-bottom: -2px;
 }
 
 .pricing-watermark {
@@ -2148,6 +2161,9 @@ body.nav-open {
   background: linear-gradient(180deg, var(--paper) 0, transparent 60px, transparent calc(100% - 60px), var(--paper) 100%),
     linear-gradient(135deg, var(--ink), #2a221c);
   color: var(--paper);
+  /* same fractional-device-pixel hairline seam fix as .pricing-section */
+  margin-top: -2px;
+  margin-bottom: -2px;
 }
 
 .certificate-layout {
