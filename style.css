@@ -101,12 +101,12 @@ button {
 }
 
 .section {
-  padding: 88px 0;
+  padding: 56px 0;
 }
 
 @media (max-width: 720px) {
   .section {
-    padding: 56px 0;
+    padding: 32px 0;
   }
 }
 
@@ -983,7 +983,7 @@ body.nav-open {
 /* ---------- Ribbon (kept from MCMM) ---------- */
 .ribbon-wrap {
   background: var(--ink);
-  padding: 6px 0 26px;
+  padding: 6px 0 14px;
 }
 
 .ribbon {
@@ -2307,7 +2307,7 @@ body.nav-open {
   max-width: 680px;
   margin-inline: auto;
   text-align: center;
-  padding: 48px;
+  padding: 32px;
   border: 2px solid var(--gold);
   background: var(--white);
 }
@@ -2576,7 +2576,7 @@ body.popup-open {
 /* ---------- Mini timer (before footer) ---------- */
 .mini-timer {
   text-align: center;
-  padding: 18px 20px;
+  padding: 10px 20px;
   font-size: 0.9rem;
   color: var(--muted);
   text-transform: none;
@@ -2590,7 +2590,7 @@ body.popup-open {
 .footer {
   background: linear-gradient(180deg, var(--paper) 0, var(--ink) 30px, var(--ink) 100%);
   color: rgba(250, 246, 239, 0.55);
-  padding: 40px 0;
+  padding: 28px 0;
   text-align: center;
 }
 
