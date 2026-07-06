@@ -390,9 +390,10 @@ if (caseFanLayout) {
   render()
 }
 
-// ---------- Avatar tooltip tilt ----------
-document.querySelectorAll('.avatar-tip .avatar').forEach((avatar) => {
-  const tip = avatar.closest('.avatar-tip')
+// ---------- Avatar tooltip tilt + tap-to-open (touch has no hover) ----------
+const avatarTips = document.querySelectorAll('.avatar-tip')
+avatarTips.forEach((tip) => {
+  const avatar = tip.querySelector('.avatar')
   avatar.addEventListener('mousemove', (e) => {
     const rect = avatar.getBoundingClientRect()
     const offsetX = e.clientX - rect.left - rect.width / 2
@@ -402,5 +403,14 @@ document.querySelectorAll('.avatar-tip .avatar').forEach((avatar) => {
   avatar.addEventListener('mouseleave', () => {
     tip.style.setProperty('--tip-rot', '0deg')
   })
+  avatar.addEventListener('click', (e) => {
+    e.stopPropagation()
+    const wasActive = tip.classList.contains('is-active')
+    avatarTips.forEach((t) => t.classList.remove('is-active'))
+    tip.classList.toggle('is-active', !wasActive)
+  })
+})
+document.addEventListener('click', () => {
+  avatarTips.forEach((t) => t.classList.remove('is-active'))
 })
 
