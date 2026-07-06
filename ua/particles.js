@@ -120,8 +120,10 @@
     if (shockwaves.length > 5) shockwaves.shift()
   }
 
+  let rafId = null
+
   function loop() {
-    requestAnimationFrame(loop)
+    rafId = requestAnimationFrame(loop)
     time += 0.02
 
     if (time >= nextPulseAt) {
@@ -214,6 +216,20 @@
   img.onload = () => {
     const count = 1300
     initParticles(sampleLogoPoints(img, count), count)
-    requestAnimationFrame(loop)
+
+    // this footer canvas otherwise runs 1300 particles' worth of trig
+    // and color math every frame forever, competing with scroll for
+    // main-thread time even while the user is still up in the hero —
+    // only run the loop while it's actually visible
+    const observer = new IntersectionObserver((entries) => {
+      const isVisible = entries[0].isIntersecting
+      if (isVisible && rafId === null) {
+        rafId = requestAnimationFrame(loop)
+      } else if (!isVisible && rafId !== null) {
+        cancelAnimationFrame(rafId)
+        rafId = null
+      }
+    })
+    observer.observe(canvas)
   }
 })()

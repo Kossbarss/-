@@ -214,7 +214,6 @@ button {
   width: 45%;
   height: 100%;
   background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%);
-  transform: skewX(-18deg);
   animation: cell-shine 3.6s ease-in-out infinite;
   pointer-events: none;
 }
@@ -607,6 +606,11 @@ body.nav-open {
   pointer-events: none;
   filter: blur(20px);
   z-index: 0;
+  /* without a transform hint, some engines re-rasterize this blur on
+     every scroll frame instead of caching it as its own GPU layer —
+     costly at 620x620px, and repeated in four sections. translateZ(0)
+     is a static no-op transform that forces the one-time promotion. */
+  transform: translateZ(0);
 }
 
 .ambient-glow--gold {
@@ -1009,21 +1013,23 @@ body.nav-open {
     rgba(255, 255, 255, 0.95) 50%,
     transparent 100%
   );
-  transform: skewX(-20deg);
   animation: ribbon-shine 3.2s ease-in-out infinite;
   pointer-events: none;
   mix-blend-mode: screen;
 }
 
+/* transform instead of left — see the comment on @keyframes
+   cell-shine above. 750% covers the same -35%->130% parent-relative
+   distance, scaled to this element's own width (22% of the parent). */
 @keyframes ribbon-shine {
   0% {
-    left: -35%;
+    transform: skewX(-20deg) translateX(0%);
   }
   55% {
-    left: 130%;
+    transform: skewX(-20deg) translateX(750%);
   }
   100% {
-    left: 130%;
+    transform: skewX(-20deg) translateX(750%);
   }
 }
 
@@ -1886,7 +1892,6 @@ body.nav-open {
   width: 45%;
   height: 100%;
   background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%);
-  transform: skewX(-18deg);
   animation: cell-shine 3.6s ease-in-out infinite;
   pointer-events: none;
   z-index: 1;
@@ -1904,15 +1909,22 @@ body.nav-open {
   animation-delay: 1.8s;
 }
 
+/* animates transform instead of left: left triggers a full layout
+   recalculation every frame, and this runs on every .btn-stardust
+   button *and* every active .rise-cell on the page simultaneously,
+   forever — enough simultaneous reflow to visibly stutter scrolling.
+   translateX is compositor-only (no layout/paint), same visual
+   sweep. 422% covers the same distance as -60%->130% of the parent
+   did, scaled to this element's own width (45% of the parent). */
 @keyframes cell-shine {
   0% {
-    left: -60%;
+    transform: skewX(-18deg) translateX(0%);
   }
   55% {
-    left: 130%;
+    transform: skewX(-18deg) translateX(422%);
   }
   100% {
-    left: 130%;
+    transform: skewX(-18deg) translateX(422%);
   }
 }
 
