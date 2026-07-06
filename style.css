@@ -579,32 +579,6 @@ body.nav-open {
   z-index: 0;
 }
 
-/* glowing diagonal rim, mostly off-canvas bottom-right — only its
-   upper-left arc crosses into the visible hero, echoing the
-   reference banner's light-arc backdrop in our own blood/gold tones */
-.hero-arc {
-  position: absolute;
-  right: -25vw;
-  top: -12vw;
-  width: 120vw;
-  height: 120vw;
-  max-width: 1200px;
-  max-height: 1200px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    transparent 0%,
-    transparent calc(50% - 4px),
-    var(--gold) calc(50% - 2px),
-    var(--blood) 50%,
-    transparent calc(50% + 4px),
-    transparent 100%
-  );
-  filter: blur(2px) drop-shadow(0 0 45px rgba(163, 22, 46, 0.5)) drop-shadow(0 0 90px rgba(201, 162, 74, 0.3));
-  pointer-events: none;
-  z-index: 0;
-}
-
 /* reusable ambient glow — the same gold/orange "topics scroller" ring
    colors, echoed across other sections so the accent palette reads as
    one continuous thread through the page instead of living in just
