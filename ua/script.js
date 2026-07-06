@@ -390,3 +390,17 @@ if (caseFanLayout) {
   render()
 }
 
+// ---------- Avatar tooltip tilt ----------
+document.querySelectorAll('.avatar-tip .avatar').forEach((avatar) => {
+  const tip = avatar.closest('.avatar-tip')
+  avatar.addEventListener('mousemove', (e) => {
+    const rect = avatar.getBoundingClientRect()
+    const offsetX = e.clientX - rect.left - rect.width / 2
+    const rot = Math.max(-20, Math.min(20, (offsetX / (rect.width / 2)) * 20))
+    tip.style.setProperty('--tip-rot', rot + 'deg')
+  })
+  avatar.addEventListener('mouseleave', () => {
+    tip.style.setProperty('--tip-rot', '0deg')
+  })
+})
+
