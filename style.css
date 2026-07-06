@@ -777,6 +777,8 @@ body.nav-open {
 }
 
 .hero-lede {
+  position: relative;
+  z-index: 2;
   background: linear-gradient(155deg, var(--gold-light) 0%, var(--gold) 100%);
   background-clip: text;
   -webkit-background-clip: text;
@@ -785,8 +787,17 @@ body.nav-open {
   font-size: 1rem;
   line-height: 1.6;
   max-width: 480px;
-  margin: 0 auto 28px;
+  /* pulled up so the top ~15% of this text overlaps the bottom of the
+     founder photo, matching the reference landing's text-on-photo
+     composition instead of sitting fully below it */
+  margin: -85px auto 28px;
   text-transform: none;
+}
+
+@media (min-width: 901px) {
+  .hero-lede {
+    margin-top: -95px;
+  }
 }
 
 .hero-tags {
