@@ -1622,10 +1622,35 @@ body.nav-open {
 .avatar-tip {
   position: relative;
   margin-left: -14px;
+  /* gentle idle float so the row feels alive at rest — transform-only,
+     so it's pure GPU compositing (no repaint), same reasoning as the
+     case-fan border fix earlier */
+  animation: avatar-float 3.6s ease-in-out infinite;
 }
 
 .avatar-tip:first-child {
   margin-left: 0;
+}
+
+.avatar-tip:nth-child(1) { animation-delay: 0s; }
+.avatar-tip:nth-child(2) { animation-delay: 0.35s; }
+.avatar-tip:nth-child(3) { animation-delay: 0.7s; }
+.avatar-tip:nth-child(4) { animation-delay: 1.05s; }
+.avatar-tip:nth-child(5) { animation-delay: 1.4s; }
+
+@keyframes avatar-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-tip {
+    animation: none;
+  }
 }
 
 .avatar-tip:hover .avatar,
