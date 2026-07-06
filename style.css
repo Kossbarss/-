@@ -1455,13 +1455,29 @@ body.nav-open {
   background: linear-gradient(150deg, #8a6a2e, #2a221c);
 }
 
+.case-fan-cta {
+  margin-top: 44px;
+}
+
 @media (max-width: 720px) {
+  .case-fan-head {
+    margin-bottom: 20px;
+  }
+
   .case-fan-layout {
-    height: 15rem;
+    height: 11rem;
   }
 
   .case-fan-card {
     width: 7rem;
+  }
+
+  .case-fan-nav {
+    margin-top: 12px;
+  }
+
+  .case-fan-cta {
+    margin-top: 18px;
   }
 }
 
