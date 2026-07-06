@@ -761,7 +761,7 @@ body.nav-open {
   transform: translateX(-50%);
   width: 260px;
   height: 40%;
-  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.2) 100%);
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.2) 55%, rgba(0, 0, 0, 0.2) 100%);
   z-index: 2;
   pointer-events: none;
 }
