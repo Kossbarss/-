@@ -642,15 +642,19 @@ body.nav-open {
 }
 
 .hero-kicker {
-  font-family: var(--font-accent);
-  font-style: italic;
-  font-weight: 400;
-  font-size: 1.15rem;
-  line-height: 1.25;
-  color: var(--ink);
+  display: inline-block;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--ink-soft);
   text-transform: none;
-  text-align: left;
-  margin-bottom: 6px;
+  background: rgba(201, 162, 74, 0.1);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 20px;
+  margin-bottom: 22px;
 }
 
 .hero h1 {
