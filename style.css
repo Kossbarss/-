@@ -1607,9 +1607,17 @@ body.nav-open {
   border-radius: 999px;
   border: 3px solid var(--paper);
   background: linear-gradient(135deg, var(--gold-light), var(--blood));
+  background-size: cover;
+  background-position: center;
   cursor: pointer;
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+.avatar-tip:nth-child(1) .avatar { background-image: url('assets/avatar-1.jpg'); }
+.avatar-tip:nth-child(2) .avatar { background-image: url('assets/avatar-2.jpg'); }
+.avatar-tip:nth-child(3) .avatar { background-image: url('assets/avatar-3.jpg'); }
+.avatar-tip:nth-child(4) .avatar { background-image: url('assets/avatar-4.jpg'); }
+.avatar-tip:nth-child(5) .avatar { background-image: url('assets/avatar-5.jpg'); }
 
 .avatar-row .count {
   font-family: var(--font-display);
