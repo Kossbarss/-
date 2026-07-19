@@ -1,0 +1,24 @@
+name: Raise hero stats
+
+on:
+  push:
+    branches:
+      - chatgpt/raise-hero-stats
+    paths:
+      - .github/workflows/raise-hero-stats.yml
+
+permissions:
+  contents: write
+
+jobs:
+  adjust-spacing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: chatgpt/raise-hero-stats
+
+      - name: Raise desktop statistics closer to gallery
+        shell: bash
+        run
