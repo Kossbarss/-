@@ -648,7 +648,7 @@ body.nav-open {
   display: grid;
   grid-template-columns: 1fr;
   gap: 28px;
-  padding: 42px 0 54px;
+  padding: 18px 0 48px;
 }
 
 .hero-copy {
@@ -702,13 +702,13 @@ body.nav-open {
   width: min(1040px, 100%);
   margin-inline: auto;
   font-family: var(--font-rise);
-  font-size: clamp(3rem, 5.5vw, 5rem);
+  font-size: clamp(3rem, 4.5vw, 4rem);
   font-weight: 700;
   line-height: 0.98;
   letter-spacing: -0.055em;
   text-transform: uppercase;
   color: var(--white);
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 }
 
 .hero h1 em {
@@ -723,7 +723,7 @@ body.nav-open {
   order: 2;
   width: min(720px, 100%);
   margin-inline: auto;
-  font-size: 1.08rem;
+  font-size: 1rem;
   font-weight: 500;
   line-height: 1.4;
   color: rgba(250, 246, 239, 0.82);
@@ -737,7 +737,7 @@ body.nav-open {
   align-items: center;
   justify-content: center;
   gap: 14px;
-  margin: 20px 0 26px;
+  margin: 14px 0 12px;
 }
 
 .hero-cta-secondary {
@@ -746,7 +746,7 @@ body.nav-open {
   gap: 8px;
   justify-content: center;
   width: min(416px, 100%);
-  min-height: 72px;
+  min-height: 64px;
   padding: 18px 34px;
   border-radius: 999px;
   border: 0;
@@ -777,7 +777,7 @@ body.nav-open {
   position: relative;
   isolation: isolate;
   width: 100vw;
-  margin: -26px 0 -64px calc(50% - 50vw);
+  margin: -12px 0 -64px calc(50% - 50vw);
   height: clamp(390px, 34vw, 540px);
   display: grid;
   place-items: center;

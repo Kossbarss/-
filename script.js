@@ -66,7 +66,7 @@ document.querySelectorAll('[data-hero-carousel]').forEach((shell) => {
     const delta = Math.min(now - lastFrame, 40)
     lastFrame = now
     if (visible && !dragging) {
-      rotation += delta * 0.004
+      rotation += delta * 0.008
       rotation += dragVelocity
       dragVelocity *= 0.94
       if (Math.abs(dragVelocity) < 0.002) dragVelocity = 0
