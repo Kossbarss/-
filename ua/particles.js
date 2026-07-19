@@ -20,7 +20,7 @@
   canvas.style.height = size + 'px'
   ctx.scale(dpr, dpr)
 
-  const palette = ['#c9a24a', '#e8d5a8', '#a3162e', '#7a0f22']
+  const palette = ['#c9a24a', '#e8d5a8', '#ff0003', '#dd0003']
   let time = 0
   let particles = []
   let shockwaves = []

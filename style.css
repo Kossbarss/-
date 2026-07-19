@@ -19,9 +19,11 @@
   --gold-light: #e8d5a8;
   --gold-dark: #a9803a;
 
-  --blood: #a3162e;
-  --blood-dark: #7a0f22;
-  --blood-light: #c94257;
+  /* vivid red-orange, matching the client's reference (rise-platform.com)
+     palette instead of the earlier muted burgundy/wine tones */
+  --blood: #ff0003;
+  --blood-dark: #dd0003;
+  --blood-light: #fe5200;
 
   --periwinkle: #8f99cf;
   --periwinkle-dark: #6672ab;
@@ -599,8 +601,8 @@ body.nav-open {
   transform: translate(-50%, -50%);
   background: radial-gradient(
     circle,
-    rgba(163, 22, 46, 0.32) 0%,
-    rgba(163, 22, 46, 0.16) 32%,
+    rgba(255, 0, 3, 0.32) 0%,
+    rgba(255, 0, 3, 0.16) 32%,
     rgba(201, 162, 74, 0.1) 55%,
     transparent 72%
   );
@@ -633,7 +635,7 @@ body.nav-open {
 }
 
 .ambient-glow--blood {
-  background: radial-gradient(circle, rgba(163, 22, 46, 0.28) 0%, rgba(163, 22, 46, 0.12) 45%, transparent 72%);
+  background: radial-gradient(circle, rgba(255, 0, 3, 0.28) 0%, rgba(255, 0, 3, 0.12) 45%, transparent 72%);
 }
 
 .hero > .container {
@@ -771,7 +773,7 @@ body.nav-open {
   width: 75%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(201, 162, 74, 0.35) 0%, rgba(163, 22, 46, 0.16) 45%, transparent 72%);
+  background: radial-gradient(circle, rgba(201, 162, 74, 0.35) 0%, rgba(255, 0, 3, 0.16) 45%, transparent 72%);
   filter: blur(24px);
   z-index: 0;
   pointer-events: none;
@@ -1384,7 +1386,7 @@ body.nav-open {
 .case-fan-card[data-slot='6']::before { animation-delay: -2s; }
 
 .case-fan-card.is-focused {
-  box-shadow: 0 28px 50px -16px rgba(163, 22, 46, 0.4);
+  box-shadow: 0 28px 50px -16px rgba(255, 0, 3, 0.4);
 }
 
 @keyframes case-fan-border-spin {
@@ -1446,15 +1448,15 @@ body.nav-open {
 }
 
 .case-fan-card:nth-child(2) .case-fan-card-visual {
-  background: linear-gradient(150deg, #c9a24a, #7a0f22);
+  background: linear-gradient(150deg, #c9a24a, #dd0003);
 }
 
 .case-fan-card:nth-child(3) .case-fan-card-visual {
-  background: linear-gradient(150deg, #a3162e, #2a221c);
+  background: linear-gradient(150deg, #ff0003, #2a221c);
 }
 
 .case-fan-card:nth-child(4) .case-fan-card-visual {
-  background: linear-gradient(150deg, #7a0f22, #1c1512);
+  background: linear-gradient(150deg, #dd0003, #1c1512);
 }
 
 .case-fan-card:nth-child(5) .case-fan-card-visual {
