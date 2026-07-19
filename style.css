@@ -2533,6 +2533,8 @@ body.nav-open {
 }
 
 .cell-watermark {
+  /* centered like the reference's .n-calendar-svg, not tucked in a
+     corner */
   position: absolute;
   top: 50%;
   left: 50%;
