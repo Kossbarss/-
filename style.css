@@ -818,7 +818,7 @@ body.nav-open {
 
 .hero-panorama {
   position: relative;
-  width: var(--hero-cylinder-width, 1800px);
+  width: var(--hero-cylinder-width, 2400px);
   height: clamp(300px, 26vw, 410px);
   transform-style: preserve-3d;
   will-change: transform;
@@ -920,7 +920,7 @@ body.nav-open {
   }
 
   .hero-panorama {
-    width: var(--hero-cylinder-width, 1100px);
+    width: var(--hero-cylinder-width, 1500px);
     height: clamp(245px, 70vw, 330px);
   }
 
