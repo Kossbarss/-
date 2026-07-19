@@ -3392,6 +3392,10 @@ body.popup-open {
   white-space: nowrap;
 }
 
+.hero-title-mobile-break {
+  display: none;
+}
+
 .hero h1 em {
   color: inherit;
   background: none;
@@ -3413,6 +3417,8 @@ body.popup-open {
 .hero-cta-row {
   order: 3;
   margin: 0;
+  position: relative;
+  z-index: 5;
 }
 
 .hero-cta-secondary {
@@ -3433,9 +3439,10 @@ body.popup-open {
 
 .hero-panorama-shell {
   order: 4;
+  z-index: 1;
   width: 100vw;
   height: clamp(410px, 29vw, 500px);
-  margin: -140px 0 -56px calc(50% - 50vw);
+  margin: -118px 0 -56px calc(50% - 50vw);
   perspective: 1500px;
   overflow: hidden;
 }
@@ -3568,16 +3575,23 @@ body.popup-open {
 
   .hero h1 {
     order: 1;
-    width: calc(100vw - 34px);
-    margin: 0 calc(50% - 50vw) 4vw;
+    align-self: center;
+    width: 100%;
+    margin: 0 auto 4vw;
     font-size: clamp(1.28rem, 5.8vw, 2.35rem);
     line-height: 0.94;
     letter-spacing: -0.035em;
   }
 
   .hero h1 span {
+    width: 100%;
     white-space: normal;
-    text-wrap: balance;
+    text-align: center;
+    text-wrap: wrap;
+  }
+
+  .hero-title-mobile-break {
+    display: block;
   }
 
   .hero-panorama-shell {
