@@ -647,34 +647,35 @@ body.nav-open {
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
-  padding: 24px 0 48px;
+  gap: 28px;
+  padding: 42px 0 54px;
 }
 
 .hero-copy {
-  max-width: 640px;
+  width: 100%;
+  max-width: none;
   text-align: center;
 }
 
 .hero-price-box {
   align-self: start;
+  width: min(920px, 100%);
+  margin-inline: auto;
 }
 
 @media (max-width: 900px) {
   .hero-inner {
-    padding: 16px 0 32px;
+    padding: 28px 0 36px;
   }
 }
 
 @media (min-width: 901px) {
   .hero-inner {
-    grid-template-columns: 1.05fr 0.95fr;
-    align-items: start;
-    gap: 40px;
+    align-items: center;
   }
 
   .hero-price-box {
-    margin-top: 8px;
+    margin-top: 10px;
   }
 }
 
@@ -695,17 +696,20 @@ body.nav-open {
 }
 
 .hero h1 {
-  font-family: var(--font-hero);
-  font-size: clamp(3rem, 6.2vw, 5rem);
-  line-height: 1.05;
-  letter-spacing: 0;
-  text-transform: none;
+  width: min(1040px, 100%);
+  margin-inline: auto;
+  font-family: var(--font-rise);
+  font-size: clamp(3rem, 6.4vw, 5.8rem);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
   color: var(--white);
-  margin-bottom: 10px;
+  margin-bottom: 18px;
 }
 
 .hero h1 em {
-  font-style: italic;
+  font-style: normal;
   background: linear-gradient(155deg, var(--gold-light) 0%, var(--gold) 100%);
   background-clip: text;
   -webkit-background-clip: text;
@@ -713,11 +717,13 @@ body.nav-open {
 }
 
 .hero-sub {
-  font-size: 1.15rem;
-  font-weight: 700;
+  width: min(720px, 100%);
+  margin-inline: auto;
+  font-size: 1.08rem;
+  font-weight: 500;
   line-height: 1.4;
   color: rgba(250, 246, 239, 0.82);
-  margin-bottom: 12px;
+  margin-bottom: 0;
 }
 
 .hero-cta-row {
@@ -754,43 +760,149 @@ body.nav-open {
   flex-shrink: 0;
 }
 
-/* floating cut-out portrait of the founder, positioned in the text
-   flow between the sub-headline and the system paragraph — same
-   placement as the reviewed reference landing */
-.hero-founder-photo {
+/* Five-photo panorama following the RISE hero construction: the
+   founder anchors the centre while the supporting shots curve away
+   into dark side fades. */
+.hero-panorama-shell {
   position: relative;
-  display: flex;
-  justify-content: center;
-  margin: 8px 0 18px;
+  isolation: isolate;
+  width: 100vw;
+  margin: -20px 0 -34px calc(50% - 50vw);
+  min-height: clamp(340px, 38vw, 520px);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
 }
 
-.hero-founder-photo::before {
-  content: '';
+.hero-panorama-glow {
   position: absolute;
-  top: 8%;
+  z-index: -1;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  width: 75%;
-  aspect-ratio: 1;
+  width: min(62vw, 760px);
+  height: 62%;
+  transform: translate(-50%, -42%);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(201, 162, 74, 0.35) 0%, rgba(255, 0, 3, 0.16) 45%, transparent 72%);
-  filter: blur(24px);
-  z-index: 0;
+  background: rgba(255, 0, 3, 0.36);
+  filter: blur(110px);
   pointer-events: none;
 }
 
-.hero-founder-photo img {
+.hero-panorama {
   position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 260px;
-  height: auto;
-  filter: drop-shadow(0 20px 34px rgba(21, 17, 15, 0.35));
+  z-index: 2;
+  width: min(1260px, 106vw);
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: center;
+  gap: clamp(8px, 1vw, 15px);
+  perspective: 1100px;
 }
 
-@media (min-width: 901px) {
-  .hero-founder-photo img {
-    max-width: 300px;
+.hero-shot {
+  position: relative;
+  aspect-ratio: 0.64;
+  margin: 0;
+  border-radius: clamp(18px, 1.7vw, 28px);
+  overflow: hidden;
+  background: #17110e;
+  box-shadow: 0 28px 60px -30px rgba(0, 0, 0, 0.95);
+  transform-style: preserve-3d;
+}
+
+.hero-shot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 48%, rgba(8, 5, 4, 0.56) 100%);
+  pointer-events: none;
+}
+
+.hero-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.84) contrast(1.04) brightness(0.86);
+}
+
+.hero-shot--far-left {
+  transform: rotateY(17deg) scale(0.78) translateX(10%);
+  transform-origin: right center;
+}
+
+.hero-shot--left {
+  transform: rotateY(9deg) scale(0.91) translateX(4%);
+  transform-origin: right center;
+}
+
+.hero-shot--center {
+  z-index: 2;
+  transform: scale(1.06);
+  box-shadow: 0 32px 72px -30px rgba(255, 0, 3, 0.48);
+}
+
+.hero-shot--center img {
+  filter: saturate(0.9) contrast(1.03) brightness(0.94);
+}
+
+.hero-shot--right {
+  transform: rotateY(-9deg) scale(0.91) translateX(-4%);
+  transform-origin: left center;
+}
+
+.hero-shot--far-right {
+  transform: rotateY(-17deg) scale(0.78) translateX(-10%);
+  transform-origin: left center;
+}
+
+.hero-panorama-fade {
+  position: absolute;
+  z-index: 3;
+  inset-block: 0;
+  width: min(24vw, 360px);
+  pointer-events: none;
+}
+
+.hero-panorama-fade--left {
+  left: 0;
+  background: linear-gradient(90deg, #0e0a08 3%, rgba(14, 10, 8, 0) 100%);
+}
+
+.hero-panorama-fade--right {
+  right: 0;
+  background: linear-gradient(270deg, #0e0a08 3%, rgba(14, 10, 8, 0) 100%);
+}
+
+@media (max-width: 700px) {
+  .hero h1 {
+    font-size: clamp(2.35rem, 10.5vw, 4.7rem);
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .hero-panorama-shell {
+    min-height: clamp(290px, 76vw, 460px);
+    margin-top: -10px;
+    margin-bottom: -24px;
+  }
+
+  .hero-panorama {
+    width: clamp(720px, 190vw, 1120px);
+    gap: clamp(8px, 2vw, 14px);
+  }
+
+  .hero-shot {
+    border-radius: 18px;
+  }
+
+  .hero-panorama-glow {
+    width: 78vw;
+    height: 52%;
+    filter: blur(70px);
+  }
+
+  .hero-panorama-fade {
+    width: 22vw;
   }
 }
 
@@ -823,18 +935,9 @@ body.nav-open {
   font-weight: 600;
   font-size: 1rem;
   line-height: 1.6;
-  max-width: 480px;
-  /* pulled up so the top ~15% of this text overlaps the bottom of the
-     founder photo, matching the reference landing's text-on-photo
-     composition instead of sitting fully below it */
-  margin: -85px auto 28px;
+  max-width: 760px;
+  margin: 0 auto 28px;
   text-transform: none;
-}
-
-@media (min-width: 901px) {
-  .hero-lede {
-    margin-top: -95px;
-  }
 }
 
 .hero-tags {
@@ -877,7 +980,7 @@ body.nav-open {
 .hero h1,
 .hero-sub,
 .hero-cta-row,
-.hero-founder-photo,
+.hero-panorama-shell,
 .hero-lede,
 .hero-tags {
   animation: heroFadeSlideIn 0.7s ease both;
@@ -899,7 +1002,7 @@ body.nav-open {
   animation-delay: 0.24s;
 }
 
-.hero-founder-photo {
+.hero-panorama-shell {
   animation-delay: 0.32s;
 }
 
@@ -916,7 +1019,7 @@ body.nav-open {
   .hero h1,
   .hero-sub,
   .hero-cta-row,
-  .hero-founder-photo,
+  .hero-panorama-shell,
   .hero-lede,
   .hero-tags {
     animation: none;
