@@ -1,0 +1,103 @@
+name: Apply live hero gallery border
+
+on:
+  push:
+    branches:
+      - claude/landing-page-redesign-bzy3r4
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch-live-branch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout live branch
+        uses: actions/checkout@v4
+        with:
+          ref: vip-landing-live
+          fetch-depth: 0
+
+      - name: Append animated gallery border styles
+        shell: bash
+        run: |
+          if grep -q "HERO_GALLERY_ANIMATED_BORDER" style.css; then
+            echo "Animated gallery border already exists"
+            exit 0
+          fi
+
+          cat >> style.css <<'CSS'
+
+/* HERO_GALLERY_ANIMATED_BORDER */
+@property --hero-border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes hero-border-rotate {
+  from { --hero-border-angle: 0deg; }
+  to { --hero-border-angle: 360deg; }
+}
+
+.hero-shot {
+  border: 2px solid transparent;
+  background:
+    linear-gradient(#120003, #120003) padding-box,
+    conic-gradient(
+      from var(--hero-border-angle),
+      #220006 0%,
+      #5f0014 22%,
+      #d4002f 43%,
+      #ff194d 52%,
+      #8f001f 68%,
+      #2a0008 83%,
+      #220006 100%
+    ) border-box;
+  animation: hero-border-rotate 4.8s linear infinite;
+  box-shadow:
+    0 0 0 1px rgba(255, 20, 70, 0.16),
+    0 0 18px rgba(164, 0, 40, 0.32),
+    0 24px 54px -26px rgba(0, 0, 0, 0.95);
+}
+
+.hero-shot:nth-child(2n) { animation-delay: -0.8s; }
+.hero-shot:nth-child(3n) { animation-delay: -1.6s; }
+.hero-shot:nth-child(4n) { animation-delay: -2.4s; }
+.hero-shot:nth-child(5n) { animation-delay: -3.2s; }
+
+.hero-shot img {
+  border-radius: calc(clamp(20px, 1.62vw, 30px) - 2px);
+}
+
+@media (max-width: 700px) {
+  .hero-shot {
+    animation-duration: 6.5s;
+    border-width: 1.5px;
+    box-shadow:
+      0 0 0 1px rgba(255, 20, 70, 0.12),
+      0 0 12px rgba(164, 0, 40, 0.24);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-shot {
+    animation: none;
+  }
+}
+CSS
+
+      - name: Commit live style change
+        shell: bash
+        run: |
+          if git diff --quiet -- style.css; then
+            echo "No style changes to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add style.css
+          git commit -m "Add animated red gradient borders to hero gallery"
+          git push origin HEAD:vip-landing-live
