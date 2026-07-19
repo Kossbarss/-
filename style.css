@@ -7,17 +7,17 @@
    ============================================================ */
 
 :root {
-  --ink: #15110f;
-  --ink-soft: #3a332e;
-  --muted: #6f645c;
+  --ink: #050505;
+  --ink-soft: #f3d3d4;
+  --muted: #b0b0b0;
 
-  --paper: #faf6ef;
-  --paper-alt: #f2e9da;
-  --white: #fffdfa;
+  --paper: #050505;
+  --paper-alt: #141414;
+  --white: #ffffff;
 
-  --gold: #c9a24a;
-  --gold-light: #e8d5a8;
-  --gold-dark: #a9803a;
+  --gold: #ff0003;
+  --gold-light: #fd904d;
+  --gold-dark: #dd0003;
 
   /* vivid red-orange, matching the client's reference (rise-platform.com)
      palette instead of the earlier muted burgundy/wine tones */
@@ -25,12 +25,12 @@
   --blood-dark: #dd0003;
   --blood-light: #fe5200;
 
-  --periwinkle: #8f99cf;
-  --periwinkle-dark: #6672ab;
-  --sage: #6f8a5b;
+  --periwinkle: #e31e24;
+  --periwinkle-dark: #dd0003;
+  --sage: #fe5200;
 
-  --border: rgba(21, 17, 15, 0.12);
-  --shadow: 0 20px 45px -25px rgba(21, 17, 15, 0.35);
+  --border: rgba(255, 255, 255, 0.14);
+  --shadow: 0 20px 45px -25px rgba(0, 0, 0, 0.72);
 
   --font-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
   --font-accent: 'Playfair Display', Georgia, serif;
@@ -68,7 +68,7 @@ h1, h2, h3, h4 {
   margin: 0;
   font-family: var(--font-display);
   letter-spacing: 0.01em;
-  color: var(--ink);
+  color: var(--white);
   text-transform: uppercase;
 }
 
@@ -236,7 +236,7 @@ button {
 }
 
 .card {
-  background: var(--white);
+  background: #141414;
   border: 1px solid var(--border);
   border-radius: 14px;
 }
@@ -245,8 +245,9 @@ button {
   display: inline-flex;
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   font-size: 0.8rem;
   font-weight: 500;
   text-transform: none;
@@ -270,7 +271,7 @@ button {
   justify-content: space-between;
   height: 64px;
   padding-inline: 28px;
-  background: rgba(21, 17, 15, 0.78);
+  background: rgba(5, 5, 5, 0.78);
   backdrop-filter: blur(24px) saturate(1.4);
   border-radius: 999px;
   box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.14);
@@ -351,7 +352,7 @@ button {
 }
 
 .lang-switch.lang-toggle:hover {
-  box-shadow: 0 0 0 4px rgba(201, 162, 74, 0.12);
+  box-shadow: 0 0 0 4px rgba(255, 0, 3, 0.12);
 }
 
 .lang-toggle-thumb {
@@ -559,7 +560,7 @@ body.nav-open {
 .hero-topline {
   /* matches the hero gradient's own top-edge color (see .hero below)
      so the seam between them is invisible */
-  background: #0e0a08;
+  background: #050505;
   text-align: center;
   padding: 10px 20px;
   /* pull up behind the header's own (transparent) box so its dark
@@ -588,7 +589,7 @@ body.nav-open {
 /* ---------- Hero ---------- */
 .hero {
   position: relative;
-  background: linear-gradient(180deg, #0e0a08 0%, #1c140f 100%);
+  background: linear-gradient(180deg, #050505 0%, #200806 100%);
   overflow: hidden;
 }
 
@@ -603,7 +604,7 @@ body.nav-open {
     circle,
     rgba(255, 0, 3, 0.32) 0%,
     rgba(255, 0, 3, 0.16) 32%,
-    rgba(201, 162, 74, 0.1) 55%,
+    rgba(255, 0, 3, 0.1) 55%,
     transparent 72%
   );
   filter: blur(10px);
@@ -631,7 +632,7 @@ body.nav-open {
 }
 
 .ambient-glow--gold {
-  background: radial-gradient(circle, rgba(253, 144, 77, 0.3) 0%, rgba(201, 162, 74, 0.14) 42%, transparent 72%);
+  background: radial-gradient(circle, rgba(253, 144, 77, 0.3) 0%, rgba(255, 0, 3, 0.14) 42%, transparent 72%);
 }
 
 .ambient-glow--blood {
@@ -773,7 +774,7 @@ body.nav-open {
   width: 75%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(201, 162, 74, 0.35) 0%, rgba(255, 0, 3, 0.16) 45%, transparent 72%);
+  background: radial-gradient(circle, rgba(255, 0, 3, 0.35) 0%, rgba(255, 0, 3, 0.16) 45%, transparent 72%);
   filter: blur(24px);
   z-index: 0;
   pointer-events: none;
@@ -785,7 +786,7 @@ body.nav-open {
   width: 100%;
   max-width: 260px;
   height: auto;
-  filter: drop-shadow(0 20px 34px rgba(21, 17, 15, 0.35));
+  filter: drop-shadow(0 20px 34px rgba(5, 5, 5, 0.35));
 }
 
 @media (min-width: 901px) {
@@ -1115,7 +1116,7 @@ body.nav-open {
 }
 
 .pain-card strong {
-  color: var(--ink);
+  color: var(--white);
 }
 
 .fit-list {
@@ -1146,7 +1147,7 @@ body.nav-open {
 .instructor-section {
   position: relative;
   background: linear-gradient(180deg, var(--paper) 0, var(--ink) 60px, var(--ink) calc(100% - 60px), var(--paper) 100%);
-  color: var(--paper);
+  color: var(--white);
 }
 
 /* the fade-to-transparent/fade-to-solid gradients on this section
@@ -1205,7 +1206,7 @@ body.nav-open {
   background: linear-gradient(160deg, var(--gold-dark), var(--ink) 70%);
   display: grid;
   place-items: center;
-  border: 1px solid rgba(201, 162, 74, 0.4);
+  border: 1px solid rgba(255, 0, 3, 0.4);
 }
 
 .instructor-photo .initials {
@@ -1259,7 +1260,7 @@ body.nav-open {
   gap: 18px;
   margin-top: 32px;
   padding-top: 28px;
-  border-top: 1px solid rgba(201, 162, 74, 0.25);
+  border-top: 1px solid rgba(255, 0, 3, 0.25);
 }
 
 @media (max-width: 900px) {
@@ -1290,10 +1291,10 @@ body.nav-open {
 
 /* ---------- Chat testimonial mock ---------- */
 .chat-mock {
-  background: #1c1a19;
+  background: #141414;
   border-radius: 16px;
   padding: 20px 22px;
-  color: var(--paper);
+  color: var(--white);
   max-width: 460px;
 }
 
@@ -1343,7 +1344,7 @@ body.nav-open {
   border-radius: 14px;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 20px 40px -18px rgba(21, 17, 15, 0.45);
+  box-shadow: 0 20px 40px -18px rgba(5, 5, 5, 0.45);
   /* gold "foil" ring: a 2px inset reveals an oversized conic-gradient
      pseudo-element sitting behind it. The gradient is painted once —
      only its transform: rotate() is animated, so the spin is pure
@@ -1418,7 +1419,7 @@ body.nav-open {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 40%, rgba(21, 17, 15, 0.85) 100%);
+  background: linear-gradient(180deg, transparent 40%, rgba(5, 5, 5, 0.85) 100%);
 }
 
 .case-fan-card-label {
@@ -1444,31 +1445,31 @@ body.nav-open {
 /* placeholder "photo" gradients standing in for real before/after work
    photos — swap for background-image: url(...) once photos are ready */
 .case-fan-card:nth-child(1) .case-fan-card-visual {
-  background: linear-gradient(150deg, #caa46a, #7a5a2e);
+  background: linear-gradient(150deg, #fd904d, #dd0003);
 }
 
 .case-fan-card:nth-child(2) .case-fan-card-visual {
-  background: linear-gradient(150deg, #c9a24a, #dd0003);
+  background: linear-gradient(150deg, #ff0003, #dd0003);
 }
 
 .case-fan-card:nth-child(3) .case-fan-card-visual {
-  background: linear-gradient(150deg, #ff0003, #2a221c);
+  background: linear-gradient(150deg, #ff0003, #200806);
 }
 
 .case-fan-card:nth-child(4) .case-fan-card-visual {
-  background: linear-gradient(150deg, #dd0003, #1c1512);
+  background: linear-gradient(150deg, #dd0003, #141414);
 }
 
 .case-fan-card:nth-child(5) .case-fan-card-visual {
-  background: linear-gradient(150deg, #d8b46a, #8a3b1e);
+  background: linear-gradient(150deg, #fd904d, #e31e24);
 }
 
 .case-fan-card:nth-child(6) .case-fan-card-visual {
-  background: linear-gradient(150deg, #b98a3e, #4a1414);
+  background: linear-gradient(150deg, #fe5200, #dd0003);
 }
 
 .case-fan-card:nth-child(7) .case-fan-card-visual {
-  background: linear-gradient(150deg, #8a6a2e, #2a221c);
+  background: linear-gradient(150deg, #ff3c00, #200806);
 }
 
 .case-fan-cta {
@@ -1550,9 +1551,9 @@ body.nav-open {
   height: 44px;
   border-radius: 999px;
   border: 1.5px solid var(--border);
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(8px);
-  color: var(--ink);
+  color: var(--white);
   cursor: pointer;
   transition: border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
 }
@@ -1576,7 +1577,7 @@ body.nav-open {
   width: 8px;
   height: 8px;
   border-radius: 999px;
-  background: rgba(21, 17, 15, 0.18);
+  background: rgba(5, 5, 5, 0.18);
   transition: all 0.3s ease;
 }
 
@@ -1680,7 +1681,7 @@ body.nav-open {
   /* same card treatment as the 14-day cycle cells (.rise-cell): flat
      dark fill, hairline border, logo watermark tucked in the corner —
      ties this tooltip into the same visual language site-wide */
-  background: #1c1917;
+  background: #141414;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 9px;
   padding: 6px 10px 7px;
@@ -1812,7 +1813,7 @@ body.nav-open {
 .testimonial-author strong {
   font-family: var(--font-display);
   font-size: 1rem;
-  color: var(--ink);
+  color: var(--white);
 }
 
 .testimonial-author span {
@@ -1875,17 +1876,17 @@ body.nav-open {
 }
 
 .pillar-tone-sand {
-  background: linear-gradient(135deg, var(--paper-alt), var(--gold-light));
-  color: var(--ink);
+  background: linear-gradient(235deg, #fd904d, #e00103 50%, #fd904d);
+  color: var(--white);
 }
 
 .pillar-tone-periwinkle {
-  background: linear-gradient(135deg, var(--periwinkle), var(--periwinkle-dark));
+  background: linear-gradient(155deg, #e31e24, #dd0003);
   color: var(--white);
 }
 
 .pillar-tone-blood {
-  background: linear-gradient(135deg, var(--blood), var(--blood-dark));
+  background: linear-gradient(155deg, #ff0003, #dd0003);
   color: var(--white);
 }
 
@@ -1947,7 +1948,7 @@ body.nav-open {
 }
 
 .lesson-cell {
-  background: var(--white);
+  background: #141414;
   padding: 22px;
   display: flex;
   gap: 14px;
@@ -1969,7 +1970,7 @@ body.nav-open {
 
 /* ---------- Vertical topics scroller (same porthole-marquee pattern as RISE) ---------- */
 .topics-scroll-section {
-  background: linear-gradient(180deg, var(--paper-alt) 0, #0d0b0a 60px, #0d0b0a 100%);
+  background: linear-gradient(180deg, var(--paper-alt) 0, #050505 60px, #050505 100%);
   position: relative;
   overflow: hidden;
   /* at fractional device-pixel-ratios (common on real phones, e.g.
@@ -2140,7 +2141,7 @@ body.nav-open {
   left: 0;
   right: 0;
   height: calc(50% + 2px);
-  background: linear-gradient(#0d0b0a 0%, #0d0b0a 38%, rgba(13, 11, 10, 0.75) 68%, rgba(13, 11, 10, 0) 100%);
+  background: linear-gradient(#050505 0%, #050505 38%, rgba(13, 11, 10, 0.75) 68%, rgba(13, 11, 10, 0) 100%);
   pointer-events: none;
   z-index: 2;
 }
@@ -2148,12 +2149,12 @@ body.nav-open {
 .v-marquee-blur.is-bottom {
   top: auto;
   bottom: -2px;
-  background: linear-gradient(rgba(13, 11, 10, 0) 0%, rgba(13, 11, 10, 0.75) 32%, #0d0b0a 62%, #0d0b0a 100%);
+  background: linear-gradient(rgba(13, 11, 10, 0) 0%, rgba(13, 11, 10, 0.75) 32%, #050505 62%, #050505 100%);
 }
 
 /* ---------- 14-day cycle grid (identical block/palette/logo-placement to RISE) ---------- */
 .rise-cycle-section {
-  background: linear-gradient(180deg, #0d0b0a 0, #0d0b0a calc(100% - 60px), var(--paper) 100%);
+  background: linear-gradient(180deg, #050505 0, #050505 calc(100% - 60px), var(--paper) 100%);
   position: relative;
 }
 
@@ -2164,7 +2165,7 @@ body.nav-open {
 
 /* overhanging seam-cover strips, see the long comment on
    .instructor-section above — top neighbour (.topics-scroll-section)
-   ends in the same solid #0d0b0a, bottom neighbour is plain --paper */
+   ends in the same solid #050505, bottom neighbour is plain --paper */
 .rise-cycle-section::before,
 .rise-cycle-section::after {
   content: '';
@@ -2177,7 +2178,7 @@ body.nav-open {
 
 .rise-cycle-section::before {
   top: -3px;
-  background: #0d0b0a;
+  background: #050505;
 }
 
 .rise-cycle-section::after {
@@ -2482,7 +2483,7 @@ body.nav-open {
   margin-inline: auto;
   padding: 40px;
   border: 2px solid var(--gold);
-  background: var(--white);
+  background: #141414;
   text-align: center;
 }
 
@@ -2580,7 +2581,7 @@ body.nav-open {
 
 .comparison-good {
   border-color: var(--gold);
-  background: linear-gradient(180deg, #fff, var(--paper-alt));
+  background: linear-gradient(155deg, rgba(253, 144, 77, 0.22), rgba(224, 1, 3, 0.2));
 }
 
 .comparison-good .check-icon {
@@ -2628,8 +2629,8 @@ body.nav-open {
 .certificate-section {
   position: relative;
   background: linear-gradient(180deg, var(--paper) 0, transparent 60px, transparent calc(100% - 60px), var(--paper) 100%),
-    linear-gradient(135deg, var(--ink), #2a221c);
-  color: var(--paper);
+    linear-gradient(135deg, var(--ink), #200806);
+  color: var(--white);
 }
 
 .certificate-section .section-clip {
@@ -2694,7 +2695,7 @@ body.nav-open {
   gap: 14px;
   padding: 16px 20px;
   background: rgba(250, 246, 239, 0.06);
-  border: 1px solid rgba(201, 162, 74, 0.35);
+  border: 1px solid rgba(255, 0, 3, 0.35);
   border-radius: 12px;
   text-transform: none;
 }
@@ -2708,14 +2709,14 @@ body.nav-open {
   max-width: 300px;
   margin-inline: auto;
   border-radius: 999px;
-  border: 2px dashed rgba(201, 162, 74, 0.5);
+  border: 2px dashed rgba(255, 0, 3, 0.5);
   display: grid;
   place-items: center;
   padding: 28px;
 }
 
 .certificate-badge .inner {
-  border: 1px solid rgba(201, 162, 74, 0.5);
+  border: 1px solid rgba(255, 0, 3, 0.5);
   border-radius: 999px;
   width: 100%;
   height: 100%;
@@ -2778,7 +2779,7 @@ body.nav-open {
   font-size: clamp(1.4rem, 4vw, 2.6rem);
   line-height: 1;
   letter-spacing: 0.01em;
-  color: var(--ink);
+  color: var(--white);
   opacity: 0.25;
   transition: opacity 0.25s ease, color 0.25s ease;
 }
@@ -2819,7 +2820,7 @@ body.nav-open {
   text-align: center;
   padding: 24px;
   border: 2px solid var(--gold);
-  background: var(--white);
+  background: #141414;
 }
 
 .final-box h3 {
@@ -2851,7 +2852,7 @@ body.nav-open {
   right: 0;
   z-index: 50;
   background: linear-gradient(90deg, var(--ink) 0%, var(--blood-dark) 55%, var(--blood) 100%);
-  border-top: 1px solid rgba(201, 162, 74, 0.45);
+  border-top: 1px solid rgba(255, 0, 3, 0.45);
   box-shadow: 0 -14px 28px -12px rgba(0, 0, 0, 0.55);
 }
 
@@ -3076,7 +3077,7 @@ body.nav-open {
 }
 
 .popup-footnote strong {
-  color: var(--ink);
+  color: var(--white);
 }
 
 body.popup-open {
@@ -3144,7 +3145,7 @@ body.popup-open {
   width: 38px;
   height: 38px;
   border-radius: 999px;
-  border: 1px solid rgba(201, 162, 74, 0.4);
+  border: 1px solid rgba(255, 0, 3, 0.4);
   display: grid;
   place-items: center;
   color: var(--gold-light);
