@@ -31,45 +31,65 @@ function tickCountdown() {
 tickCountdown()
 setInterval(tickCountdown, 1000)
 
-// ---------- Hero 3D photo carousel (autoplay + mouse/touch drag) ----------
+// ---------- Hero panorama: curved desktop strip + flat mobile strip ----------
 document.querySelectorAll('[data-hero-carousel]').forEach((shell) => {
-  const cylinder = shell.querySelector('.hero-panorama')
   const cards = [...shell.querySelectorAll('.hero-shot')]
-  if (!cylinder || cards.length < 3) return
+  if (cards.length < 3) return
 
-  let rotation = -(360 / cards.length) * 2
+  let step = 220
+  let offset = 0
   let dragVelocity = 0
   let dragging = false
   let pointerX = 0
   let lastFrame = performance.now()
   let visible = true
+  let compact = false
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   function layoutCarousel() {
-    const compact = window.matchMedia('(max-width: 700px)').matches
-    const cylinderWidth = compact ? 1500 : 3600
-    const faceWidth = cylinderWidth / cards.length
-    const radius = cylinderWidth / (2 * Math.PI)
-    const angle = 360 / cards.length
-
-    shell.style.setProperty('--hero-cylinder-width', `${cylinderWidth}px`)
-    shell.style.setProperty('--hero-face-width', `${faceWidth}px`)
-    cards.forEach((card, index) => {
-      card.style.transform = `translate(-50%, -50%) rotateY(${index * angle}deg) translateZ(${radius}px)`
-    })
+    compact = window.matchMedia('(max-width: 700px)').matches
+    step = compact
+      ? window.innerWidth * 0.4
+      : Math.min(238, Math.max(196, window.innerWidth * 0.128))
+    offset = -2 * step
+    render()
   }
 
   function render() {
-    cylinder.style.transform = `rotateY(${rotation}deg)`
+    const span = cards.length * step
+    cards.forEach((card, index) => {
+      const rawX = index * step + offset
+      const x = ((rawX + span / 2) % span + span) % span - span / 2
+      const distance = Math.abs(x / step)
+
+      if (compact) {
+        card.style.transform = `translate(-50%, -50%) translate3d(${x}px, 0, 0)`
+        card.style.opacity = distance <= 2.05 ? '1' : '0'
+        card.style.filter = 'none'
+      } else {
+        const curve = Math.min(distance, 4.5)
+        const y = 0
+        const depth = Math.max(0, 1 - curve / 4)
+        const z = -depth * 60
+        const rotation = Math.max(-18, Math.min(18, (x / (step * 4)) * 18))
+        const scale = 0.64 + Math.min(curve / 4, 1) * 0.36
+        const brightness = Math.max(0.64, 1 - curve * 0.07)
+        card.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) rotateY(${rotation}deg) scale(${scale})`
+        card.style.opacity = distance <= 5.2 ? '1' : '0'
+        card.style.filter = `brightness(${brightness})`
+      }
+      card.style.zIndex = String(20 - Math.round(distance))
+    })
   }
 
   function animate(now) {
     const delta = Math.min(now - lastFrame, 40)
     lastFrame = now
     if (visible && !dragging) {
-      rotation += delta * 0.008
-      rotation += dragVelocity
-      dragVelocity *= 0.94
-      if (Math.abs(dragVelocity) < 0.002) dragVelocity = 0
+      if (!reducedMotion) offset -= delta * (compact ? 0.018 : 0.024)
+      offset += dragVelocity
+      dragVelocity *= 0.93
+      if (Math.abs(dragVelocity) < 0.01) dragVelocity = 0
       render()
     }
     requestAnimationFrame(animate)
@@ -87,9 +107,8 @@ document.querySelectorAll('[data-hero-carousel]').forEach((shell) => {
     if (!dragging) return
     const deltaX = event.clientX - pointerX
     pointerX = event.clientX
-    const rotationDelta = deltaX * 0.08
-    rotation += rotationDelta
-    dragVelocity = rotationDelta * 0.12
+    offset += deltaX
+    dragVelocity = deltaX * 0.13
     render()
   })
 
@@ -103,7 +122,7 @@ document.querySelectorAll('[data-hero-carousel]').forEach((shell) => {
   shell.addEventListener('keydown', (event) => {
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
     event.preventDefault()
-    rotation += event.key === 'ArrowLeft' ? 18 : -18
+    offset += event.key === 'ArrowLeft' ? step : -step
     render()
   })
 
@@ -118,6 +137,16 @@ document.querySelectorAll('[data-hero-carousel]').forEach((shell) => {
   window.addEventListener('resize', layoutCarousel, { passive: true })
   requestAnimationFrame(animate)
 })
+
+const heroSection = document.querySelector('.hero')
+const stickyBar = document.getElementById('stickyBar')
+if (heroSection && stickyBar && 'IntersectionObserver' in window) {
+  new IntersectionObserver(([entry]) => {
+    stickyBar.classList.toggle('is-visible', !entry.isIntersecting)
+  }, { threshold: 0.04 }).observe(heroSection)
+} else if (stickyBar) {
+  stickyBar.classList.add('is-visible')
+}
 
 // ---------- Sticky bar urgency countdown (short, resets every visit, spelled out in words) ----------
 const STICKY_COUNTDOWN_MS = (10 * 60 + 40) * 1000 // 10 minutes 40 seconds

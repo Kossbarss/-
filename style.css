@@ -35,10 +35,27 @@
   --font-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
   --font-accent: 'Playfair Display', Georgia, serif;
   --font-body: 'Inter', system-ui, sans-serif;
-  /* free stand-in for the RISE reference's paid font (Halvar Breitschrift) */
-  --font-rise: 'Space Grotesk', Arial, sans-serif;
+  --font-rise: 'Halvarbreitschrift', 'Arial Narrow', Arial, sans-serif;
   --font-sticky: 'Poppins', Arial, sans-serif;
   --font-hero: 'Instrument Serif', Georgia, serif;
+}
+
+/* The RISE reference serves Halvar Breitschrift in four weights. The hero uses
+   only Regular and Bold, so those are the two faces loaded here. */
+@font-face {
+  font-family: 'Halvarbreitschrift';
+  src: url('https://cdn.prod.website-files.com/6839de86f1e62cf3a6c69b60/69679521d3cf46020514d03c_HalvarBreitschrift-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Halvarbreitschrift';
+  src: url('https://cdn.prod.website-files.com/6839de86f1e62cf3a6c69b60/69679521166d9dd10fe4c2e5_HalvarBreitschrift-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 * {
@@ -3328,4 +3345,324 @@ body.popup-open {
 .footer a.legal-link {
   text-decoration: underline;
   color: rgba(250, 246, 239, 0.75);
+}
+
+/* ============================================================
+   RISE-matched hero composition
+   Desktop measurements are normalized from the 1846x830 reference.
+   Mobile measurements follow the reference's 1vw root scale, where
+   the three cards are 36vw x 55vw with a 4vw gap.
+   ============================================================ */
+.hero {
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse 42% 38% at 50% 56%, rgba(117, 0, 0, 0.78) 0%, rgba(69, 0, 0, 0.55) 42%, transparent 76%),
+    radial-gradient(ellipse 70% 42% at 50% -2%, rgba(95, 8, 8, 0.34) 0%, transparent 68%),
+    #000;
+  font-family: var(--font-rise);
+}
+
+.hero-glow {
+  top: 58%;
+  width: min(78vw, 1160px);
+  height: 560px;
+  background: radial-gradient(ellipse, rgba(142, 0, 0, 0.46) 0%, rgba(87, 0, 0, 0.24) 43%, transparent 72%);
+  filter: blur(34px);
+}
+
+.hero-inner {
+  gap: 0;
+  padding: 10px 0 42px;
+}
+
+.hero h1 {
+  order: 1;
+  width: min(1180px, 100%);
+  margin: 0 auto clamp(28px, 2.15vw, 40px);
+  font-family: var(--font-rise);
+  font-size: clamp(2.65rem, 2.7vw, 3.2rem);
+  font-weight: 700;
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  color: #fff;
+}
+
+.hero h1 span {
+  display: block;
+  white-space: nowrap;
+}
+
+.hero h1 em {
+  color: inherit;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+.hero-sub {
+  order: 2;
+  width: min(760px, 100%);
+  margin: 0 auto clamp(30px, 2.2vw, 42px);
+  font-family: var(--font-rise);
+  font-size: clamp(1.05rem, 1.25vw, 1.45rem);
+  font-weight: 400;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.96);
+  text-wrap: balance;
+}
+
+.hero-cta-row {
+  order: 3;
+  margin: 0;
+}
+
+.hero-cta-secondary {
+  width: min(416px, 100%);
+  min-height: 72px;
+  padding: 20px 44px;
+  font-family: var(--font-rise);
+  font-size: clamp(1rem, 1.04vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.1;
+  background: linear-gradient(230deg, #fd904d 0%, #e00103 50%, #fd904d 100%);
+  box-shadow: none;
+}
+
+.hero-cta-secondary:hover {
+  background: linear-gradient(230deg, #fd904d 0%, #e00103 50%, #fd904d 100%);
+}
+
+.hero-panorama-shell {
+  order: 4;
+  width: 100vw;
+  height: clamp(410px, 29vw, 500px);
+  margin: -140px 0 -56px calc(50% - 50vw);
+  perspective: 1500px;
+  overflow: hidden;
+}
+
+.hero-panorama-viewport {
+  perspective: 1500px;
+}
+
+.hero-panorama {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+}
+
+.hero-shot {
+  top: 50%;
+  left: 50%;
+  width: clamp(250px, 17.3vw, 320px);
+  height: clamp(350px, 22.75vw, 420px);
+  border-radius: clamp(20px, 1.62vw, 30px);
+  backface-visibility: visible;
+  transform-origin: center;
+  transition: filter 180ms linear, opacity 180ms linear;
+}
+
+.hero-shot::after {
+  background: linear-gradient(180deg, transparent 72%, rgba(0, 0, 0, 0.2) 100%);
+}
+
+.hero-shot img {
+  filter: saturate(0.92) contrast(1.03) brightness(0.94);
+}
+
+.hero-panorama-glow {
+  width: min(74vw, 1120px);
+  height: 46%;
+  background: rgba(123, 0, 0, 0.48);
+  filter: blur(96px);
+}
+
+.hero-panorama-fade {
+  width: min(13vw, 220px);
+}
+
+.hero-panorama-fade--left {
+  background: linear-gradient(90deg, #000 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.hero-panorama-fade--right {
+  background: linear-gradient(270deg, #000 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.hero-stats {
+  order: 5;
+  width: min(690px, 100%);
+  margin: -14px auto 32px;
+  gap: 80px;
+  font-family: var(--font-rise);
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.hero-stat {
+  font-family: var(--font-rise);
+  font-weight: 400;
+  line-height: 1.12;
+}
+
+.hero-stat strong {
+  font-size: clamp(1.45rem, 1.55vw, 1.8rem);
+  font-weight: 400;
+}
+
+.hero-stat span {
+  font-size: clamp(1rem, 1.2vw, 1.35rem);
+}
+
+.hero .hero-topline {
+  order: 6;
+  width: min(820px, 100%);
+  margin: 0 auto 26px;
+  padding: 0;
+  background: transparent;
+}
+
+.hero .hero-topline p {
+  font-family: var(--font-rise);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.hero-lede {
+  order: 7;
+}
+
+.hero-tags {
+  order: 8;
+}
+
+/* The promotional bar remains available after the hero, but no longer
+   obscures the gallery or its statistics while the hero is on screen. */
+.sticky-bar {
+  transform: translateY(110%);
+  transition: transform 280ms ease;
+}
+
+.sticky-bar.is-visible {
+  transform: translateY(0);
+}
+
+@media (max-width: 700px) {
+  .hero {
+    background:
+      radial-gradient(ellipse 76% 30% at 50% 35%, rgba(112, 0, 0, 0.72) 0%, rgba(56, 0, 0, 0.44) 48%, transparent 78%),
+      #000;
+  }
+
+  .hero-glow {
+    top: 34%;
+    width: 88vw;
+    height: 70vw;
+    filter: blur(42px);
+  }
+
+  .hero-inner {
+    padding: 18px 0 30px;
+  }
+
+  .hero h1 {
+    order: 1;
+    width: calc(100vw - 34px);
+    margin: 0 calc(50% - 50vw) 4vw;
+    font-size: clamp(1.28rem, 5.8vw, 2.35rem);
+    line-height: 0.94;
+    letter-spacing: -0.035em;
+  }
+
+  .hero h1 span {
+    white-space: normal;
+    text-wrap: balance;
+  }
+
+  .hero-panorama-shell {
+    order: 2;
+    height: 58vw;
+    min-height: 218px;
+    max-height: 290px;
+    margin: 0 0 18vw calc(50% - 50vw);
+    perspective: none;
+  }
+
+  .hero-panorama-viewport {
+    perspective: none;
+  }
+
+  .hero-shot {
+    width: 36vw;
+    max-width: 180px;
+    height: 55vw;
+    max-height: 275px;
+    border-radius: 3vw;
+    box-shadow: none;
+  }
+
+  .hero-shot::after {
+    display: none;
+  }
+
+  .hero-panorama-glow {
+    width: 82vw;
+    height: 42%;
+    filter: blur(54px);
+  }
+
+  .hero-panorama-fade {
+    width: 8vw;
+  }
+
+  .hero-sub {
+    order: 3;
+    width: 88vw;
+    margin: 0 calc(50% - 44vw) 10vw;
+    font-size: clamp(0.9rem, 3.73vw, 1.2rem);
+    line-height: 1.2;
+  }
+
+  .hero-stats {
+    order: 4;
+    width: 92vw;
+    margin: 0 calc(50% - 46vw) 8vw;
+    gap: 8vw;
+    color: rgba(255, 255, 255, 0.56);
+  }
+
+  .hero-stat strong {
+    font-size: clamp(1.3rem, 5.33vw, 1.75rem);
+  }
+
+  .hero-stat span {
+    font-size: clamp(0.76rem, 3.2vw, 1rem);
+    line-height: 1.2;
+  }
+
+  .hero-cta-row {
+    order: 5;
+    width: 100%;
+    margin: 0 0 9vw;
+  }
+
+  .hero-cta-secondary {
+    width: 100%;
+    min-height: 72px;
+    font-size: clamp(0.96rem, 4vw, 1.2rem);
+  }
+
+  .hero .hero-topline {
+    order: 6;
+    margin-bottom: 24px;
+  }
+
+  .hero-lede {
+    order: 7;
+  }
+
+  .hero-tags {
+    order: 8;
+  }
 }
