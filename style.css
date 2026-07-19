@@ -64,11 +64,16 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
   font-family: var(--font-body);
   background: var(--paper);
   color: var(--ink-soft);
@@ -279,6 +284,7 @@ button {
   top: 0;
   z-index: 45;
   padding: 16px 0;
+  background: #000;
 }
 
 .header .container {
@@ -301,6 +307,35 @@ button {
   .header .container {
     height: 56px;
     padding-inline: 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .header .container {
+    gap: 10px;
+    padding-inline: 12px;
+  }
+
+  .header .logo {
+    gap: 8px;
+    min-width: 0;
+    font-size: 1.1rem;
+  }
+
+  .header .logo-mark-img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .header .nav-toggle {
+    flex: 0 0 auto;
+  }
+}
+
+@supports not (overflow: clip) {
+  html,
+  body {
+    overflow-x: hidden;
   }
 }
 
@@ -1191,6 +1226,7 @@ body.nav-open {
 .ribbon-wrap {
   background: var(--ink);
   padding: 6px 0 14px;
+  overflow: hidden;
 }
 
 .ribbon {
@@ -3678,5 +3714,22 @@ body.popup-open {
 
   .hero-tags {
     order: 8;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 900px) {
+  .hero h1 {
+    width: 100%;
+    font-size: clamp(2.25rem, 5.2vw, 2.75rem);
+  }
+
+  .hero h1 span {
+    width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .hero-title-mobile-break {
+    display: block;
   }
 }
