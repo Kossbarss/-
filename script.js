@@ -31,6 +31,94 @@ function tickCountdown() {
 tickCountdown()
 setInterval(tickCountdown, 1000)
 
+// ---------- Hero 3D photo carousel (autoplay + mouse/touch drag) ----------
+document.querySelectorAll('[data-hero-carousel]').forEach((shell) => {
+  const cylinder = shell.querySelector('.hero-panorama')
+  const cards = [...shell.querySelectorAll('.hero-shot')]
+  if (!cylinder || cards.length < 3) return
+
+  let rotation = -(360 / cards.length) * 2
+  let dragVelocity = 0
+  let dragging = false
+  let pointerX = 0
+  let lastFrame = performance.now()
+  let visible = true
+
+  function layoutCarousel() {
+    const compact = window.matchMedia('(max-width: 700px)').matches
+    const cylinderWidth = compact ? 1100 : 1800
+    const faceWidth = cylinderWidth / cards.length
+    const radius = cylinderWidth / (2 * Math.PI)
+    const angle = 360 / cards.length
+
+    shell.style.setProperty('--hero-cylinder-width', `${cylinderWidth}px`)
+    shell.style.setProperty('--hero-face-width', `${faceWidth}px`)
+    cards.forEach((card, index) => {
+      card.style.transform = `translate(-50%, -50%) rotateY(${index * angle}deg) translateZ(${radius}px)`
+    })
+  }
+
+  function render() {
+    cylinder.style.transform = `rotateY(${rotation}deg)`
+  }
+
+  function animate(now) {
+    const delta = Math.min(now - lastFrame, 40)
+    lastFrame = now
+    if (visible && !dragging) {
+      rotation += delta * 0.004
+      rotation += dragVelocity
+      dragVelocity *= 0.94
+      if (Math.abs(dragVelocity) < 0.002) dragVelocity = 0
+      render()
+    }
+    requestAnimationFrame(animate)
+  }
+
+  shell.addEventListener('pointerdown', (event) => {
+    dragging = true
+    pointerX = event.clientX
+    dragVelocity = 0
+    shell.classList.add('is-dragging')
+    shell.setPointerCapture(event.pointerId)
+  })
+
+  shell.addEventListener('pointermove', (event) => {
+    if (!dragging) return
+    const deltaX = event.clientX - pointerX
+    pointerX = event.clientX
+    const rotationDelta = deltaX * 0.08
+    rotation += rotationDelta
+    dragVelocity = rotationDelta * 0.12
+    render()
+  })
+
+  function releasePointer() {
+    dragging = false
+    shell.classList.remove('is-dragging')
+  }
+
+  shell.addEventListener('pointerup', releasePointer)
+  shell.addEventListener('pointercancel', releasePointer)
+  shell.addEventListener('keydown', (event) => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
+    event.preventDefault()
+    rotation += event.key === 'ArrowLeft' ? 18 : -18
+    render()
+  })
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting
+    }, { threshold: 0.05 }).observe(shell)
+  }
+
+  layoutCarousel()
+  render()
+  window.addEventListener('resize', layoutCarousel, { passive: true })
+  requestAnimationFrame(animate)
+})
+
 // ---------- Sticky bar urgency countdown (short, resets every visit, spelled out in words) ----------
 const STICKY_COUNTDOWN_MS = (10 * 60 + 40) * 1000 // 10 minutes 40 seconds
 const stickyDeadline = Date.now() + STICKY_COUNTDOWN_MS
@@ -413,4 +501,3 @@ avatarTips.forEach((tip) => {
 document.addEventListener('click', () => {
   avatarTips.forEach((t) => t.classList.remove('is-active'))
 })
-
