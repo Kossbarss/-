@@ -3458,11 +3458,11 @@ body.popup-open {
 }
 
 .hero-cta-secondary {
-  width: min(416px, 100%);
-  min-height: 72px;
-  padding: 20px 44px;
+  width: min(336px, 100%);
+  min-height: 56px;
+  padding: 14px 30px;
   font-family: var(--font-rise);
-  font-size: clamp(1rem, 1.04vw, 1.25rem);
+  font-size: clamp(0.86rem, 0.9vw, 1rem);
   font-weight: 500;
   line-height: 1.1;
   background: linear-gradient(230deg, #fd904d 0%, #e00103 50%, #fd904d 100%);
@@ -3478,7 +3478,7 @@ body.popup-open {
   z-index: 1;
   width: 100vw;
   height: clamp(410px, 29vw, 500px);
-  margin: -118px 0 -56px calc(50% - 50vw);
+  margin: clamp(28px, 2vw, 38px) 0 -56px calc(50% - 50vw);
   perspective: 1500px;
   overflow: hidden;
 }
@@ -3698,9 +3698,10 @@ body.popup-open {
   }
 
   .hero-cta-secondary {
-    width: 100%;
-    min-height: 72px;
-    font-size: clamp(0.96rem, 4vw, 1.2rem);
+    width: min(82vw, 300px);
+    min-height: 54px;
+    padding: 14px 24px;
+    font-size: clamp(0.82rem, 3.45vw, 0.95rem);
   }
 
   .hero .hero-topline {
