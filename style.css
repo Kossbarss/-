@@ -1680,9 +1680,9 @@ body.nav-open {
      ties this tooltip into the same visual language site-wide */
   background: #1c1917;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
-  padding: 10px 16px 12px;
-  min-width: 160px;
+  border-radius: 9px;
+  padding: 6px 10px 7px;
+  min-width: 118px;
   overflow: hidden;
   white-space: nowrap;
   text-align: left;
@@ -1695,10 +1695,10 @@ body.nav-open {
 
 .avatar-tip-watermark {
   position: absolute;
-  bottom: -14px;
-  right: -14px;
+  bottom: -10px;
+  right: -10px;
   width: 60%;
-  max-width: 90px;
+  max-width: 62px;
   opacity: 0.32;
   filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.25));
   pointer-events: none;
@@ -1711,10 +1711,10 @@ body.nav-open {
   display: block;
   font-family: var(--font-rise);
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.58rem;
   color: rgba(250, 246, 239, 0.4);
   letter-spacing: -0.01em;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .avatar-tip-name {
@@ -1722,7 +1722,7 @@ body.nav-open {
   z-index: 2;
   display: block;
   font-family: var(--font-display);
-  font-size: 0.9rem;
+  font-size: 0.66rem;
   color: var(--white);
 }
 
@@ -1732,9 +1732,9 @@ body.nav-open {
   display: block;
   font-family: var(--font-body);
   text-transform: none;
-  font-size: 0.72rem;
+  font-size: 0.52rem;
   color: rgba(250, 246, 239, 0.6);
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 .avatar-tip:hover .avatar-tip-bubble,
