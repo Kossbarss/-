@@ -46,7 +46,7 @@ document.querySelectorAll('[data-hero-carousel]').forEach((shell) => {
 
   function layoutCarousel() {
     const compact = window.matchMedia('(max-width: 700px)').matches
-    const cylinderWidth = compact ? 1500 : 2400
+    const cylinderWidth = compact ? 1500 : 3600
     const faceWidth = cylinderWidth / cards.length
     const radius = cylinderWidth / (2 * Math.PI)
     const angle = 360 / cards.length
