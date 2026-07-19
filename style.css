@@ -2206,7 +2206,25 @@ body.nav-open {
 
 @media (max-width: 560px) {
   .rise-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .rise-cell {
+    padding: 10px;
+  }
+
+  .cell-day-num {
+    font-size: 1.1rem;
+  }
+
+  .cell-label {
+    font-size: 0.56rem;
+    line-height: 1.25;
+    -webkit-line-clamp: 3;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
   }
 }
 
