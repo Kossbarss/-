@@ -3479,8 +3479,12 @@ body.popup-open {
   order: 4;
   z-index: 1;
   width: 100vw;
-  height: clamp(410px, 29vw, 500px);
-  margin: clamp(28px, 2vw, 38px) 0 -56px calc(50% - 50vw);
+  /* was clamp(410px, 29vw, 500px) — much taller than the photos
+     themselves (clamp(350px, 22.75vw, 420px)), which centered them
+     with a big dead band of empty space above, between the CTA
+     button and the visible photos */
+  height: clamp(370px, 24.5vw, 450px);
+  margin: -12px 0 -56px calc(50% - 50vw);
   perspective: 1500px;
   overflow: hidden;
 }
