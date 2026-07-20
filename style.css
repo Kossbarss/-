@@ -31,10 +31,7 @@
   z-index: 1;
 }
 
-.hero .hero-panorama-fade--left {
-  background: linear-gradient(90deg, #000000 3%, transparent 100%) !important;
-}
-
+.hero .hero-panorama-fade--left,
 .hero .hero-panorama-fade--right {
-  background: linear-gradient(270deg, #000000 3%, transparent 100%) !important;
+  display: none !important;
 }
