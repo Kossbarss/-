@@ -15,6 +15,7 @@
     radial-gradient(ellipse at 40% 52%, #164e63 0%, rgba(22, 78, 99, 0.30) 31%, transparent 61%),
     linear-gradient(180deg, #000000 0%, #000000 100%) !important;
   isolation: isolate;
+  padding-top: 96px;
 }
 
 .hero > .hero-glow {
@@ -40,12 +41,16 @@
   background: transparent !important;
 }
 
-/* Transparent floating oval navigation. */
+/* Transparent floating oval navigation, overlaid on the hero. */
 .header {
+  position: fixed !important;
+  inset: 0 0 auto 0 !important;
   background: transparent !important;
+  pointer-events: none;
 }
 
 .header .container {
+  pointer-events: auto;
   background-color: rgba(7, 11, 12, 0.46) !important;
   background-image: linear-gradient(
     110deg,
@@ -54,8 +59,15 @@
     rgba(3, 7, 8, 0.62) 100%
   ) !important;
   border: none !important;
+  outline: none !important;
   border-radius: 999px !important;
   backdrop-filter: blur(18px) saturate(1.18) !important;
   -webkit-backdrop-filter: blur(18px) saturate(1.18) !important;
   box-shadow: 0 10px 28px -18px rgba(0, 0, 0, 0.72) !important;
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding-top: 80px;
+  }
 }
