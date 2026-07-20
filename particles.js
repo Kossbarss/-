@@ -21,6 +21,11 @@
   frontFacingScript.async = false
   document.head.appendChild(frontFacingScript)
 
+  const caseNameScript = document.createElement('script')
+  caseNameScript.src = prefix + 'case-name-margo.js'
+  caseNameScript.async = false
+  document.head.appendChild(caseNameScript)
+
   function loadLegacyParticles() {
     const nativeRaf = window.requestAnimationFrame
     window.requestAnimationFrame = function (callback) {
