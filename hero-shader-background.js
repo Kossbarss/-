@@ -311,10 +311,8 @@ void main(){
   }
 
   try {
-    layers = [
-      createLayer(baseHost, ['#000000', '#06b6d4', '#0891b2', '#164e63', '#f97316'], 0.3),
-      createLayer(overlayHost, ['#000000', '#ffffff', '#06b6d4', '#f97316'], 0.2),
-    ]
+    layers.push(createLayer(baseHost, ['#000000', '#06b6d4', '#0891b2', '#164e63', '#f97316'], 0.3))
+    layers.push(createLayer(overlayHost, ['#000000', '#ffffff', '#06b6d4', '#f97316'], 0.2))
   } catch (error) {
     layers.forEach((item) => item.dispose())
     mount.remove()
