@@ -155,9 +155,10 @@ void main(){
   let ready = false
   let resizePending = true
   let quality = mobileQuery.matches ? 0.78 : 0.9
-  let renderSamples = 0
-  let renderCostTotal = 0
+  let frameSamples = 0
+  let frameTimeTotal = 0
   let stableSamples = 0
+  let smoothedDelta = 16.67
 
   const contextOptions = {
     alpha: true,
@@ -272,24 +273,24 @@ void main(){
     return true
   }
 
-  function adaptQuality(renderCost) {
-    renderCostTotal += renderCost
-    renderSamples += 1
+  function adaptQuality(frameDelta) {
+    frameTimeTotal += frameDelta
+    frameSamples += 1
 
-    if (renderSamples < 45) return
+    if (frameSamples < 60) return
 
-    const average = renderCostTotal / renderSamples
-    renderSamples = 0
-    renderCostTotal = 0
+    const average = frameTimeTotal / frameSamples
+    frameSamples = 0
+    frameTimeTotal = 0
 
-    if (average > 13 && quality > 0.58) {
+    if (average > 22 && quality > 0.58) {
       quality = Math.max(0.58, quality * 0.84)
       resizePending = true
       stableSamples = 0
       return
     }
 
-    if (average < 5.5 && quality < 0.94) {
+    if (average < 17.8 && quality < 0.94) {
       stableSamples += 1
       if (stableSamples >= 4) {
         quality = Math.min(0.94, quality + 0.06)
@@ -310,14 +311,14 @@ void main(){
   function loop(now) {
     if (disposed || !active || !gl || gl.isContextLost()) return
 
-    const delta = Math.min(Math.max(now - lastTime, 0), 34)
+    const rawDelta = Math.min(Math.max(now - lastTime, 0), 32)
     lastTime = now
-    baseFrame += delta * 0.3
-    overlayFrame += delta * 0.2
+    smoothedDelta += (rawDelta - smoothedDelta) * 0.18
+    baseFrame += smoothedDelta * 0.3
+    overlayFrame += smoothedDelta * 0.2
 
-    const start = performance.now()
     renderCurrentFrame()
-    adaptQuality(performance.now() - start)
+    adaptQuality(rawDelta)
     raf = requestAnimationFrame(loop)
   }
 
