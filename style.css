@@ -32,10 +32,15 @@
 }
 
 .hero .hero-panorama-fade--left,
-.hero .hero-panorama-fade--right {
+.hero .hero-panorama-fade--right,
+.hero .hero-panorama-glow {
   display: none !important;
 }
 
 .hero .hero-shot {
   box-shadow: none !important;
+}
+
+.hero .hero-shot::after {
+  background: transparent !important;
 }
