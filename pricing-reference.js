@@ -16,12 +16,47 @@
     const style = document.createElement('style')
     style.dataset.feature = 'pricing-reference-single-plan'
     style.textContent = `
+      .pricing-reference-single {
+        background:
+          linear-gradient(180deg,
+            var(--paper) 0,
+            #170305 62px,
+            #170305 calc(100% - 62px),
+            var(--paper) 100%) !important;
+      }
+
       .pricing-reference-single .section-clip {
         position: relative;
         isolation: isolate;
         min-height: 560px;
         display: grid;
         align-items: center;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 78% 45%, rgba(255,76,38,.22), transparent 34%),
+          radial-gradient(circle at 20% 58%, rgba(128,0,8,.34), transparent 42%),
+          linear-gradient(135deg, #120205 0%, #250306 42%, #5f0908 72%, #d92c18 120%);
+      }
+
+      .pricing-reference-single .section-clip::before,
+      .pricing-reference-single .section-clip::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 72px;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .pricing-reference-single .section-clip::before {
+        top: 0;
+        background: linear-gradient(180deg, rgba(16,2,4,.98), transparent);
+      }
+
+      .pricing-reference-single .section-clip::after {
+        bottom: 0;
+        background: linear-gradient(0deg, rgba(16,2,4,.98), transparent);
       }
 
       .pricing-reference-canvas {
@@ -36,7 +71,10 @@
 
       .pricing-reference-single .pricing-watermark {
         z-index: 1;
-        opacity: .09;
+        color: #f0b35a;
+        opacity: .15;
+        mix-blend-mode: screen;
+        filter: drop-shadow(0 0 22px rgba(255,76,38,.18));
       }
 
       .pricing-reference-single .container {
@@ -49,15 +87,17 @@
         position: relative;
         overflow: hidden;
         max-width: 640px;
-        border: 1px solid rgba(255,255,255,.72);
+        border: 1px solid rgba(238,205,135,.72);
         border-radius: 22px;
-        background: linear-gradient(145deg, rgba(255,255,255,.86), rgba(255,250,245,.68));
-        -webkit-backdrop-filter: blur(14px) saturate(1.18);
-        backdrop-filter: blur(14px) saturate(1.18);
+        background:
+          linear-gradient(145deg, rgba(255,252,247,.88), rgba(255,244,235,.72));
+        -webkit-backdrop-filter: blur(16px) saturate(1.22);
+        backdrop-filter: blur(16px) saturate(1.22);
         box-shadow:
-          0 30px 70px -32px rgba(0,0,0,.72),
-          inset 0 1px 0 rgba(255,255,255,.82),
-          0 0 0 1px rgba(201,162,74,.25);
+          0 34px 80px -32px rgba(0,0,0,.88),
+          inset 0 1px 0 rgba(255,255,255,.86),
+          0 0 0 1px rgba(134,25,12,.18),
+          0 0 44px rgba(255,64,31,.15);
         transform: translateZ(0);
       }
 
@@ -68,8 +108,9 @@
         z-index: 0;
         pointer-events: none;
         background:
-          radial-gradient(circle at 18% 12%, rgba(255,255,255,.72), transparent 34%),
-          linear-gradient(115deg, transparent 15%, rgba(255,255,255,.18) 48%, transparent 78%);
+          radial-gradient(circle at 18% 12%, rgba(255,255,255,.76), transparent 34%),
+          radial-gradient(circle at 78% 68%, rgba(255,93,43,.12), transparent 34%),
+          linear-gradient(115deg, transparent 15%, rgba(255,255,255,.2) 48%, transparent 78%);
       }
 
       .pricing-reference-single .pricing-reference-card::after {
@@ -80,8 +121,8 @@
         padding: 1px;
         border-radius: inherit;
         pointer-events: none;
-        background: linear-gradient(115deg,#4c3723,#d8bd83,#8b673c,#fff,#4c3723);
-        background-size: 260% 260%;
+        background: linear-gradient(115deg,#4b120d,#ff6b3d,#eab667,#8b2315,#ff3d1f,#4b120d);
+        background-size: 280% 280%;
         -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
         -webkit-mask-composite: xor;
         mask-composite: exclude;
@@ -94,15 +135,15 @@
       }
 
       .pricing-reference-single .order-form input {
-        background: rgba(255,255,255,.76);
-        border-color: rgba(21,17,15,.14);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+        background: rgba(255,255,255,.8);
+        border-color: rgba(83,15,10,.18);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.82);
       }
 
       .pricing-reference-single .order-form input:focus {
         outline: none;
-        border-color: rgba(0,197,222,.75);
-        box-shadow: 0 0 0 3px rgba(0,197,222,.14);
+        border-color: rgba(255,83,43,.82);
+        box-shadow: 0 0 0 3px rgba(255,83,43,.16);
       }
 
       .pricing-reference-ripple-button {
@@ -117,7 +158,7 @@
         border-radius: 999px;
         pointer-events: none;
         transform: scale(0);
-        background: rgba(255,255,255,.5);
+        background: rgba(255,240,220,.55);
         animation: pricingReferenceRipple .65s ease-out forwards;
       }
 
@@ -176,7 +217,7 @@
 
     const gl = canvas.getContext('webgl', { alpha: true, antialias: false })
     if (!gl) {
-      canvas.style.background = 'radial-gradient(circle at 50% 45%, rgba(0,197,222,.28), transparent 28%), radial-gradient(circle at 58% 56%, rgba(139,68,170,.25), transparent 34%), linear-gradient(145deg,#fff,#f8fbff)'
+      canvas.style.background = 'radial-gradient(circle at 50% 45%, rgba(255,92,46,.52), transparent 28%), radial-gradient(circle at 58% 56%, rgba(126,4,10,.52), transparent 36%), linear-gradient(145deg,#110205,#2a0306 45%,#8f100b 78%,#ff4f2b 125%)'
       return
     }
 
@@ -185,8 +226,16 @@
       precision highp float;
       uniform float iTime;
       uniform vec2 iResolution;
-      mat2 rotate2d(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}
-      float variation(vec2 v1,vec2 v2,float strength,float speed){return sin(dot(normalize(v1),normalize(v2))*strength+iTime*speed)/100.0;}
+
+      mat2 rotate2d(float a){
+        float c=cos(a),s=sin(a);
+        return mat2(c,-s,s,c);
+      }
+
+      float variation(vec2 v1,vec2 v2,float strength,float speed){
+        return sin(dot(normalize(v1),normalize(v2))*strength+iTime*speed)/100.0;
+      }
+
       float circle(vec2 uv,vec2 center,float rad,float width){
         vec2 diff=center-uv;
         float len=length(diff);
@@ -194,28 +243,47 @@
         len-=variation(diff,vec2(1.0,0.0),5.0,2.0);
         return smoothstep(rad-width,rad,len)-smoothstep(rad,rad+width,len);
       }
+
       void main(){
         vec2 uv=gl_FragCoord.xy/iResolution.xy;
         float aspect=iResolution.x/max(iResolution.y,1.0);
         uv.x*=aspect;
+
         vec2 center=vec2(aspect*.5,.5);
+        vec2 shifted=uv-center;
         float radius=.34;
         float mask=0.0;
-        mask+=circle(uv,center,radius,.035);
-        mask+=circle(uv,center,radius-.018,.010);
-        mask+=circle(uv,center,radius+.018,.005);
-        vec2 v=rotate2d(iTime*.23)*(uv-center);
-        vec3 cyan=vec3(0.0,.78,.92);
-        vec3 blue=vec3(.12,.35,.95);
-        vec3 violet=vec3(.47,.10,.62);
-        vec3 lime=vec3(.36,.88,.05);
-        float sweep=.5+.5*sin(iTime*.7+v.x*5.0-v.y*3.0);
-        vec3 ringColor=mix(cyan,blue,sweep);
-        ringColor=mix(ringColor,violet,smoothstep(.42,.95,sweep));
-        ringColor=mix(ringColor,lime,smoothstep(.72,1.0,cos(iTime*.45+v.y*4.0)*.5+.5));
-        vec3 bg=vec3(.985,.98,.965);
-        vec3 color=mix(bg,ringColor,clamp(mask,0.0,1.0));
-        color=mix(color,vec3(1.0),circle(uv,center,radius,.003));
+        mask+=circle(uv,center,radius,.038);
+        mask+=circle(uv,center,radius-.022,.012);
+        mask+=circle(uv,center,radius+.022,.006);
+
+        vec2 v=rotate2d(iTime*.20)*shifted;
+        float sweep=.5+.5*sin(iTime*.72+v.x*5.2-v.y*3.4);
+        float pulse=.5+.5*cos(iTime*.48+v.y*4.1);
+
+        vec3 deepBurgundy=vec3(.055,.004,.010);
+        vec3 burgundy=vec3(.24,.008,.016);
+        vec3 redColor=vec3(.95,.035,.015);
+        vec3 orangeColor=vec3(1.0,.28,.10);
+        vec3 goldColor=vec3(.93,.61,.22);
+
+        float horizontalGlow=smoothstep(aspect*.95,aspect*.28,abs(shifted.x));
+        float verticalGlow=smoothstep(.82,.10,abs(shifted.y));
+        vec3 bg=mix(deepBurgundy,burgundy,clamp(horizontalGlow*.42+verticalGlow*.16,0.0,1.0));
+        bg=mix(bg,redColor,clamp((uv.x/aspect)*.16,0.0,.16));
+
+        vec3 ringColor=mix(redColor,orangeColor,sweep);
+        ringColor=mix(ringColor,goldColor,pulse*.48);
+
+        float ringDistance=abs(length(shifted)-radius);
+        float halo=exp(-ringDistance*18.0);
+        vec3 color=bg;
+        color+=ringColor*(mask*.92+halo*.24);
+        color+=goldColor*circle(uv,center,radius,.003)*.72;
+
+        float vignette=smoothstep(1.05,.24,length(vec2(shifted.x/max(aspect,1.0),shifted.y)));
+        color*=.72+.28*vignette;
+
         gl_FragColor=vec4(color,1.0);
       }
     `
