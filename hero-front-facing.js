@@ -39,7 +39,24 @@
     return nativeSetProperty.call(this, property, nextValue, priority)
   }
 
-  cards.forEach((card) => {
-    card.style.transform = normalizeTransform(card.style.transform)
+  function normalizeCard(card) {
+    const current = card.style.transform
+    const next = normalizeTransform(current)
+    if (next !== current) card.style.transform = next
+  }
+
+  cards.forEach(normalizeCard)
+
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+        normalizeCard(mutation.target)
+      }
+    })
   })
+
+  cards.forEach((card) => observer.observe(card, {
+    attributes: true,
+    attributeFilter: ['style'],
+  }))
 })()
