@@ -16,6 +16,11 @@
   pricingScript.async = false
   document.head.appendChild(pricingScript)
 
+  const frontFacingScript = document.createElement('script')
+  frontFacingScript.src = prefix + 'hero-front-facing.js'
+  frontFacingScript.async = false
+  document.head.appendChild(frontFacingScript)
+
   function loadLegacyParticles() {
     const nativeRaf = window.requestAnimationFrame
     window.requestAnimationFrame = function (callback) {
