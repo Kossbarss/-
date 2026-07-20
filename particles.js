@@ -16,8 +16,28 @@
   pricingScript.async = false
   document.head.appendChild(pricingScript)
 
-  const legacyParticles = document.createElement('script')
-  legacyParticles.src = 'https://raw.githack.com/Kossbarss/-/4dae747eee4f0c35bd612daa5779babcc4d13777/particles.js'
-  legacyParticles.async = true
-  document.head.appendChild(legacyParticles)
+  function loadLegacyParticles() {
+    const nativeRaf = window.requestAnimationFrame
+    window.requestAnimationFrame = function (callback) {
+      if (callback && callback.name === 'levelCards') return 0
+      return nativeRaf.call(window, callback)
+    }
+
+    const legacyParticles = document.createElement('script')
+    legacyParticles.src = 'https://raw.githack.com/Kossbarss/-/4dae747eee4f0c35bd612daa5779babcc4d13777/particles.js'
+    legacyParticles.async = true
+    legacyParticles.addEventListener('load', function () {
+      window.requestAnimationFrame = nativeRaf
+    }, { once: true })
+    legacyParticles.addEventListener('error', function () {
+      window.requestAnimationFrame = nativeRaf
+    }, { once: true })
+    document.head.appendChild(legacyParticles)
+  }
+
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(loadLegacyParticles, { timeout: 1200 })
+  } else {
+    setTimeout(loadLegacyParticles, 400)
+  }
 })()
