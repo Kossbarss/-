@@ -17,12 +17,11 @@
     style.dataset.feature = 'pricing-reference-single-plan'
     style.textContent = `
       .pricing-reference-single {
-        background:
-          linear-gradient(180deg,
-            var(--paper) 0,
-            #170305 62px,
-            #170305 calc(100% - 62px),
-            var(--paper) 100%) !important;
+        background: linear-gradient(180deg,
+          var(--paper) 0,
+          #160503 62px,
+          #160503 calc(100% - 62px),
+          var(--paper) 100%) !important;
       }
 
       .pricing-reference-single .section-clip {
@@ -33,9 +32,9 @@
         align-items: center;
         overflow: hidden;
         background:
-          radial-gradient(circle at 78% 45%, rgba(255,76,38,.22), transparent 34%),
-          radial-gradient(circle at 20% 58%, rgba(128,0,8,.34), transparent 42%),
-          linear-gradient(135deg, #120205 0%, #250306 42%, #5f0908 72%, #d92c18 120%);
+          radial-gradient(circle at 68% 38%, rgba(240,179,82,.20), transparent 30%),
+          radial-gradient(circle at 26% 62%, rgba(126,24,9,.34), transparent 44%),
+          linear-gradient(135deg, #0b0201 0%, #210604 40%, #4a1007 72%, #7d2c08 112%);
       }
 
       .pricing-reference-single .section-clip::before,
@@ -51,12 +50,12 @@
 
       .pricing-reference-single .section-clip::before {
         top: 0;
-        background: linear-gradient(180deg, rgba(16,2,4,.98), transparent);
+        background: linear-gradient(180deg, rgba(9,1,1,.96), transparent);
       }
 
       .pricing-reference-single .section-clip::after {
         bottom: 0;
-        background: linear-gradient(0deg, rgba(16,2,4,.98), transparent);
+        background: linear-gradient(0deg, rgba(9,1,1,.96), transparent);
       }
 
       .pricing-reference-canvas {
@@ -71,10 +70,10 @@
 
       .pricing-reference-single .pricing-watermark {
         z-index: 1;
-        color: #f0b35a;
-        opacity: .15;
+        color: #d6a34e;
+        opacity: .18;
         mix-blend-mode: screen;
-        filter: drop-shadow(0 0 22px rgba(255,76,38,.18));
+        filter: drop-shadow(0 0 24px rgba(222,164,68,.18));
       }
 
       .pricing-reference-single .container {
@@ -87,17 +86,17 @@
         position: relative;
         overflow: hidden;
         max-width: 640px;
-        border: 1px solid rgba(238,205,135,.72);
+        border: 1px solid rgba(237,197,112,.82);
         border-radius: 22px;
         background:
-          linear-gradient(145deg, rgba(255,252,247,.88), rgba(255,244,235,.72));
-        -webkit-backdrop-filter: blur(16px) saturate(1.22);
-        backdrop-filter: blur(16px) saturate(1.22);
+          linear-gradient(145deg, rgba(255,252,245,.90), rgba(250,230,213,.76));
+        -webkit-backdrop-filter: blur(16px) saturate(1.2);
+        backdrop-filter: blur(16px) saturate(1.2);
         box-shadow:
-          0 34px 80px -32px rgba(0,0,0,.88),
+          0 34px 80px -32px rgba(0,0,0,.9),
           inset 0 1px 0 rgba(255,255,255,.86),
-          0 0 0 1px rgba(134,25,12,.18),
-          0 0 44px rgba(255,64,31,.15);
+          0 0 0 1px rgba(143,59,13,.22),
+          0 0 48px rgba(220,154,54,.16);
         transform: translateZ(0);
       }
 
@@ -108,9 +107,9 @@
         z-index: 0;
         pointer-events: none;
         background:
-          radial-gradient(circle at 18% 12%, rgba(255,255,255,.76), transparent 34%),
-          radial-gradient(circle at 78% 68%, rgba(255,93,43,.12), transparent 34%),
-          linear-gradient(115deg, transparent 15%, rgba(255,255,255,.2) 48%, transparent 78%);
+          radial-gradient(circle at 18% 12%, rgba(255,255,255,.74), transparent 34%),
+          radial-gradient(circle at 80% 68%, rgba(230,161,65,.15), transparent 34%),
+          linear-gradient(112deg, transparent 16%, rgba(255,244,214,.22) 48%, transparent 76%);
       }
 
       .pricing-reference-single .pricing-reference-card::after {
@@ -121,12 +120,12 @@
         padding: 1px;
         border-radius: inherit;
         pointer-events: none;
-        background: linear-gradient(115deg,#4b120d,#ff6b3d,#eab667,#8b2315,#ff3d1f,#4b120d);
+        background: linear-gradient(115deg,#4b1608,#ad4d14,#efc46d,#7b250b,#d79a3d,#4b1608);
         background-size: 280% 280%;
         -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
         -webkit-mask-composite: xor;
         mask-composite: exclude;
-        animation: pricingReferenceBorder 5s linear infinite;
+        animation: pricingReferenceBorder 5.4s linear infinite;
       }
 
       .pricing-reference-single .pricing-reference-card > * {
@@ -135,15 +134,15 @@
       }
 
       .pricing-reference-single .order-form input {
-        background: rgba(255,255,255,.8);
-        border-color: rgba(83,15,10,.18);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,.82);
+        background: rgba(255,255,255,.82);
+        border-color: rgba(94,42,12,.2);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.84);
       }
 
       .pricing-reference-single .order-form input:focus {
         outline: none;
-        border-color: rgba(255,83,43,.82);
-        box-shadow: 0 0 0 3px rgba(255,83,43,.16);
+        border-color: rgba(211,151,55,.9);
+        box-shadow: 0 0 0 3px rgba(211,151,55,.17);
       }
 
       .pricing-reference-ripple-button {
@@ -158,7 +157,7 @@
         border-radius: 999px;
         pointer-events: none;
         transform: scale(0);
-        background: rgba(255,240,220,.55);
+        background: rgba(255,225,164,.56);
         animation: pricingReferenceRipple .65s ease-out forwards;
       }
 
@@ -173,12 +172,8 @@
       }
 
       @media (max-width: 700px) {
-        .pricing-reference-single .section-clip {
-          min-height: 520px;
-        }
-        .pricing-reference-single .container {
-          width: min(1180px, 100% - 32px);
-        }
+        .pricing-reference-single .section-clip { min-height: 520px; }
+        .pricing-reference-single .container { width: min(1180px, 100% - 32px); }
         .pricing-reference-single .pricing-reference-card {
           padding: 28px 18px;
           border-radius: 18px;
@@ -187,9 +182,7 @@
 
       @media (prefers-reduced-motion: reduce) {
         .pricing-reference-single .pricing-reference-card::after,
-        .pricing-reference-ripple {
-          animation: none;
-        }
+        .pricing-reference-ripple { animation: none; }
       }
     `
     document.head.appendChild(style)
@@ -217,7 +210,7 @@
 
     const gl = canvas.getContext('webgl', { alpha: true, antialias: false })
     if (!gl) {
-      canvas.style.background = 'radial-gradient(circle at 50% 45%, rgba(255,92,46,.52), transparent 28%), radial-gradient(circle at 58% 56%, rgba(126,4,10,.52), transparent 36%), linear-gradient(145deg,#110205,#2a0306 45%,#8f100b 78%,#ff4f2b 125%)'
+      canvas.style.background = 'radial-gradient(circle at 56% 42%, rgba(236,184,88,.36), transparent 27%), radial-gradient(circle at 36% 58%, rgba(116,27,8,.42), transparent 38%), linear-gradient(145deg,#090101,#260704 48%,#5d1708 82%,#9b470f 125%)'
       return
     }
 
@@ -239,8 +232,8 @@
       float circle(vec2 uv,vec2 center,float rad,float width){
         vec2 diff=center-uv;
         float len=length(diff);
-        len+=variation(diff,vec2(0.0,1.0),5.0,2.0);
-        len-=variation(diff,vec2(1.0,0.0),5.0,2.0);
+        len+=variation(diff,vec2(0.0,1.0),5.0,1.6);
+        len-=variation(diff,vec2(1.0,0.0),5.0,1.4);
         return smoothstep(rad-width,rad,len)-smoothstep(rad,rad+width,len);
       }
 
@@ -249,7 +242,7 @@
         float aspect=iResolution.x/max(iResolution.y,1.0);
         uv.x*=aspect;
 
-        vec2 center=vec2(aspect*.5,.5);
+        vec2 center=vec2(aspect*.52,.5);
         vec2 shifted=uv-center;
         float radius=.34;
         float mask=0.0;
@@ -257,32 +250,41 @@
         mask+=circle(uv,center,radius-.022,.012);
         mask+=circle(uv,center,radius+.022,.006);
 
-        vec2 v=rotate2d(iTime*.20)*shifted;
-        float sweep=.5+.5*sin(iTime*.72+v.x*5.2-v.y*3.4);
-        float pulse=.5+.5*cos(iTime*.48+v.y*4.1);
+        vec2 v=rotate2d(iTime*.16)*shifted;
+        float sweep=.5+.5*sin(iTime*.55+v.x*4.5-v.y*3.0);
+        float pulse=.5+.5*cos(iTime*.34+v.y*3.6);
 
-        vec3 deepBurgundy=vec3(.055,.004,.010);
-        vec3 burgundy=vec3(.24,.008,.016);
-        vec3 redColor=vec3(.95,.035,.015);
-        vec3 orangeColor=vec3(1.0,.28,.10);
-        vec3 goldColor=vec3(.93,.61,.22);
+        vec3 nearBlack=vec3(.025,.004,.002);
+        vec3 darkRed=vec3(.13,.020,.008);
+        vec3 warmRed=vec3(.34,.065,.018);
+        vec3 bronze=vec3(.55,.25,.045);
+        vec3 gold=vec3(.92,.62,.20);
+        vec3 paleGold=vec3(1.0,.82,.43);
 
-        float horizontalGlow=smoothstep(aspect*.95,aspect*.28,abs(shifted.x));
-        float verticalGlow=smoothstep(.82,.10,abs(shifted.y));
-        vec3 bg=mix(deepBurgundy,burgundy,clamp(horizontalGlow*.42+verticalGlow*.16,0.0,1.0));
-        bg=mix(bg,redColor,clamp((uv.x/aspect)*.16,0.0,.16));
+        float radialWarmth=exp(-length(shifted)*1.8);
+        float sideWarmth=smoothstep(0.0,1.0,uv.x/aspect);
+        vec3 bg=mix(nearBlack,darkRed,radialWarmth*.78);
+        bg=mix(bg,warmRed,sideWarmth*.24);
+        bg=mix(bg,bronze,pulse*.055);
 
-        vec3 ringColor=mix(redColor,orangeColor,sweep);
-        ringColor=mix(ringColor,goldColor,pulse*.48);
+        vec3 ringColor=mix(warmRed,gold,sweep);
+        ringColor=mix(ringColor,paleGold,pulse*.28);
 
         float ringDistance=abs(length(shifted)-radius);
-        float halo=exp(-ringDistance*18.0);
-        vec3 color=bg;
-        color+=ringColor*(mask*.92+halo*.24);
-        color+=goldColor*circle(uv,center,radius,.003)*.72;
+        float halo=exp(-ringDistance*16.0);
 
-        float vignette=smoothstep(1.05,.24,length(vec2(shifted.x/max(aspect,1.0),shifted.y)));
-        color*=.72+.28*vignette;
+        float glintTrack=shifted.x*.62+shifted.y*.88;
+        float glintCenter=sin(iTime*.28)*.42;
+        float glint=exp(-pow(glintTrack-glintCenter,2.0)*34.0);
+        glint*=smoothstep(.86,.06,length(shifted));
+
+        vec3 color=bg;
+        color+=ringColor*(mask*.9+halo*.2);
+        color+=paleGold*circle(uv,center,radius,.003)*.68;
+        color+=paleGold*glint*.055;
+
+        float vignette=smoothstep(1.06,.25,length(vec2(shifted.x/max(aspect,1.0),shifted.y)));
+        color*=.7+.3*vignette;
 
         gl_FragColor=vec4(color,1.0);
       }
@@ -323,6 +325,7 @@
     const timeLocation = gl.getUniformLocation(program, 'iTime')
     const resolutionLocation = gl.getUniformLocation(program, 'iResolution')
     const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     let frameId = 0
     let visible = true
 
@@ -342,13 +345,13 @@
       gl.uniform1f(timeLocation, now * .001)
       gl.uniform2f(resolutionLocation, canvas.width, canvas.height)
       gl.drawArrays(gl.TRIANGLES, 0, 6)
-      if (visible) frameId = requestAnimationFrame(render)
+      if (visible && !reducedMotion) frameId = requestAnimationFrame(render)
     }
 
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (entries) {
         const nextVisible = entries[0].isIntersecting
-        if (nextVisible && !visible) {
+        if (nextVisible && !visible && !reducedMotion) {
           visible = true
           frameId = requestAnimationFrame(render)
         } else if (!nextVisible && visible) {
