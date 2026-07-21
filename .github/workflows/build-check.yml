@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   build:
+    # This branch-only comment creates the validation pull request run.
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
