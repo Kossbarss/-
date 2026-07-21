@@ -41,6 +41,10 @@
   background: transparent !important;
 }
 
+.hero-panorama-viewport {
+  transform: translateY(-58px) !important;
+}
+
 /* Transparent floating oval navigation, overlaid on the hero. */
 .header {
   position: fixed !important;
@@ -66,8 +70,137 @@
   box-shadow: 0 10px 28px -18px rgba(0, 0, 0, 0.72) !important;
 }
 
+/* Remove artificial urgency until a real campaign deadline is configured. */
+.price-box-timer,
+.price-box-clock,
+.sticky-bar-timer,
+.mini-timer,
+.popup-timer {
+  display: none !important;
+}
+
+/* Runtime-upgraded controls keep the existing visual language. */
+.sticky-bar-inner,
+.case-fan-card,
+.case-fan-dot {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  font: inherit;
+  color: inherit;
+}
+
+button.sticky-bar-inner {
+  width: 100%;
+  background: transparent;
+}
+
+.case-fan-card {
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.case-fan-dot {
+  padding: 0;
+  cursor: pointer;
+}
+
+.contact-note {
+  margin: 10px auto 0;
+  max-width: 34rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  text-align: center;
+  text-transform: none;
+}
+
+:where(a, button, input, [tabindex]):focus-visible {
+  outline: 3px solid var(--gold-light, #e8d5a8) !important;
+  outline-offset: 4px;
+}
+
+/* Static fallback remains visible if canvas or image sampling fails. */
+#logoParticles {
+  background: center / 58% no-repeat url('./assets/logo-watermark.png');
+}
+
+@keyframes hero-mobile-gold-edge {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+@media (max-width: 700px) {
+  .hero {
+    padding-top: 80px;
+  }
+
+  .hero-panorama-shell {
+    margin-top: 28px !important;
+    margin-bottom: calc(18vw - 28px) !important;
+  }
+
+  .hero-panorama-viewport {
+    transform: none !important;
+  }
+
+  .hero-shot {
+    overflow: hidden !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  .hero-shot img {
+    width: calc(100% + 4px) !important;
+    height: calc(100% + 4px) !important;
+    max-width: none !important;
+    margin: -2px !important;
+    border-radius: 0 !important;
+    object-fit: cover !important;
+  }
+
+  .hero-shot::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    border: 1px solid transparent;
+    border-radius: inherit;
+    background: linear-gradient(115deg, #4c3723 0%, #6a4b2b 28%, #d8bd83 48%, #8b673c 58%, #4c3723 78%, #b99557 100%) border-box;
+    background-size: 240% 240%;
+    -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    animation: hero-mobile-gold-edge 4.2s linear infinite;
+  }
+
+  .hero-shot::after {
+    z-index: 3;
+  }
+}
+
 @media (max-width: 640px) {
   .hero {
     padding-top: 80px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  #logoParticles {
+    background-size: 58%;
   }
 }
