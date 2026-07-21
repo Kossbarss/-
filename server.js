@@ -1,9 +1,24 @@
 const express = require('express')
+const fs = require('fs')
 const path = require('path')
 
 const app = express()
 const PORT = process.env.PORT || 3000
+const indexPath = path.join(__dirname, 'index.html')
 
+function sendEnhancedIndex(_req, res, next) {
+  fs.readFile(indexPath, 'utf8', (error, html) => {
+    if (error) return next(error)
+
+    const enhancedHtml = html
+      .replace('</head>', '  <link rel="stylesheet" href="dist/card-fan-carousel.css" />\n</head>')
+      .replace('<script src="script.js"></script>', '<script src="dist/card-fan-carousel.js"></script>\n  <script src="script.js"></script>')
+
+    res.type('html').send(enhancedHtml)
+  })
+}
+
+app.get(['/', '/index.html'], sendEnhancedIndex)
 app.use(express.static(path.join(__dirname)))
 
 app.listen(PORT, () => {
