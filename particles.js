@@ -5,11 +5,12 @@
   window.__vipTattooEffectsLoaderStarted = true
 
   const prefix = location.pathname.includes('/ua/') ? '../' : ''
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const modules = [
     'hero-shader-background.js',
     'pricing-reference.js',
-    'legacy-effects.js',
   ]
+  if (!reducedMotion) modules.push('legacy-effects.js')
 
   function load(index) {
     if (index >= modules.length) {
