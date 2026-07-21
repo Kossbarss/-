@@ -50,37 +50,28 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   let centerIndex = Math.floor(studies.length / 2)
-  let renderedModeKey = ''
+  let focusedSlot = null
+  let renderedVisibleCount = 0
   let resizeFrame = 0
-  let transitionTimer = 0
   let suppressClickUntil = 0
-  const gesture = {
-    active: false,
-    pointerId: null,
-    startX: 0,
-    startY: 0,
-    currentX: 0,
-    currentY: 0,
-    rotation: 0,
-  }
+  const gesture = { active: false, pointerId: null, startX: 0, startY: 0, x: 0, y: 0 }
 
-  const modulo = (value, total) => ((value % total) + total) % total
+  layout.setAttribute('role', 'group')
+  layout.setAttribute('aria-roledescription', app.isUk ? 'карусель кейсів' : 'карусель кейсов')
+  layout.setAttribute('aria-label', app.isUk ? 'Кейси випускників. Гортайте свайпом або кнопками.' : 'Кейсы выпускников. Листайте свайпом или кнопками.')
+  layout.tabIndex = 0
+  detail?.setAttribute('aria-live', 'polite')
+  detail?.setAttribute('aria-atomic', 'true')
+  previous?.setAttribute('aria-label', app.copy.previousCase)
+  next?.setAttribute('aria-label', app.copy.nextCase)
 
-  function getMode() {
+  function modeForWidth() {
     const width = layout.getBoundingClientRect().width || window.innerWidth
-    if (width < 480) return { key: 'cylinder-6', kind: 'cylinder', slots: 6, cardRatio: 0.35 }
-    if (width < 768) return { key: 'cylinder-7', kind: 'cylinder', slots: 7, cardRatio: 0.27 }
-    if (width < 1024) return { key: 'fan-12', kind: 'fan', slots: 12, rotation: 18, edgeScale: 0.7, vertical: 28 }
-    return { key: 'fan-20', kind: 'fan', slots: 20, rotation: 24, edgeScale: 0.64, vertical: 42 }
-  }
-
-  function buildSlots(mode) {
-    const centerSlot = Math.floor(mode.slots / 2)
-    return Array.from({ length: mode.slots }, (_, slot) => {
-      const offset = slot - centerSlot
-      const dataIndex = modulo(centerIndex + offset, studies.length)
-      return { slot, centerSlot, offset, dataIndex, item: studies[dataIndex] }
-    })
+    if (width < 480) return { visible: 3, rotation: 9, edgeScale: 0.84, vertical: 12 }
+    if (width < 768) return { visible: 3, rotation: 11, edgeScale: 0.86, vertical: 15 }
+    if (width < 1024) return { visible: 5, rotation: 16, edgeScale: 0.80, vertical: 22 }
+    if (width < 1440) return { visible: 7, rotation: 21, edgeScale: 0.78, vertical: 34 }
+    return { visible: 7, rotation: 22, edgeScale: 0.80, vertical: 38 }
   }
 
   function renderDetail(item) {
@@ -99,6 +90,49 @@
     detail.append(module, title, text, stat)
   }
 
+  function applyLayout() {
+    const cards = [...layout.querySelectorAll('.case-fan-card')]
+    if (!cards.length) return
+
+    const mode = modeForWidth()
+    const centerSlot = (cards.length - 1) / 2
+    const cardWidth = cards[0].getBoundingClientRect().width || 140
+    const layoutWidth = layout.getBoundingClientRect().width || window.innerWidth
+    const maxX = Math.max(cardWidth * 0.58, layoutWidth / 2 - cardWidth * 0.58 - 8)
+
+    cards.forEach((card) => {
+      const slot = Number(card.dataset.slot)
+      const normalized = centerSlot ? (slot - centerSlot) / centerSlot : 0
+      const absolute = Math.abs(normalized)
+      let x = normalized * maxX
+      let y = absolute * absolute * mode.vertical
+      let rotation = normalized * mode.rotation
+      let scale = 1 - (1 - mode.edgeScale) * absolute
+      let zIndex = 100 - Math.round(absolute * 20)
+
+      if (focusedSlot !== null && hoverCapable.matches) {
+        const slotDistance = Math.abs(slot - focusedSlot)
+        if (slot === focusedSlot) {
+          y -= 10
+          scale *= 1.08
+          zIndex = 130
+        } else {
+          const direction = slot < focusedSlot ? -1 : 1
+          x += direction * Math.max(8, cardWidth * 0.08) / (slotDistance + 0.5)
+        }
+      }
+
+      card.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, 0) rotate(${rotation}deg) scale(${scale})`
+      card.style.zIndex = String(zIndex)
+      card.classList.toggle('is-focused', focusedSlot === slot)
+    })
+  }
+
+  function select(index, options = {}) {
+    centerIndex = (index + studies.length) % studies.length
+    render({ focusCenter: Boolean(options.focusCenter) })
+  }
+
   function createDot(item, index) {
     const dot = document.createElement('button')
     dot.type = 'button'
@@ -109,14 +143,14 @@
     return dot
   }
 
-  function createCard(face, mode) {
-    const { slot, centerSlot, dataIndex, item } = face
+  function createCard(item, dataIndex, slot, centerSlot) {
     const card = document.createElement('button')
     card.type = 'button'
     card.className = 'case-fan-card'
     card.dataset.slot = String(slot)
     card.dataset.caseIndex = String(dataIndex)
     card.setAttribute('aria-label', `${app.isUk ? 'Відкрити кейс' : 'Открыть кейс'} ${item.name}. ${item.stat}`)
+    card.setAttribute('aria-pressed', String(slot === centerSlot))
 
     const visual = document.createElement('span')
     visual.className = 'case-fan-card-visual'
@@ -132,170 +166,72 @@
     visual.appendChild(label)
     card.appendChild(visual)
 
-    if (mode.kind === 'fan' && hoverCapable.matches) {
-      card.addEventListener('mouseenter', () => renderDetail(item))
-      card.addEventListener('mouseleave', () => renderDetail(studies[centerIndex]))
+    if (hoverCapable.matches) {
+      card.addEventListener('mouseenter', () => {
+        focusedSlot = slot
+        renderDetail(item)
+        applyLayout()
+      })
+      card.addEventListener('mouseleave', () => {
+        focusedSlot = null
+        renderDetail(studies[centerIndex])
+        applyLayout()
+      })
     }
 
-    card.addEventListener('focus', () => renderDetail(item))
-    card.addEventListener('blur', () => renderDetail(studies[centerIndex]))
+    card.addEventListener('focus', () => {
+      focusedSlot = slot
+      renderDetail(item)
+      applyLayout()
+    })
+    card.addEventListener('blur', () => {
+      focusedSlot = null
+      renderDetail(studies[centerIndex])
+      applyLayout()
+    })
     card.addEventListener('click', (event) => {
       if (performance.now() < suppressClickUntil) {
         event.preventDefault()
         return
-      }
-      if (mode.kind === 'cylinder') {
-        const offset = slot - centerSlot
-        if (offset !== 0) {
-          animateCylinderStep(offset)
-          return
-        }
       }
       select(dataIndex, { focusCenter: event.detail === 0 })
     })
     return card
   }
 
-  function applyFanLayout(mode) {
-    const cards = [...layout.querySelectorAll('.case-fan-card')]
-    if (!cards.length) return
-
-    const centerSlot = (cards.length - 1) / 2
-    const cardWidth = cards[0].getBoundingClientRect().width || 100
-    const layoutWidth = layout.getBoundingClientRect().width || window.innerWidth
-    const maxX = Math.max(cardWidth * 0.55, layoutWidth / 2 - cardWidth * 0.55 - 10)
-
-    cards.forEach((card) => {
-      const slot = Number(card.dataset.slot)
-      const normalized = centerSlot ? (slot - centerSlot) / centerSlot : 0
-      const absolute = Math.abs(normalized)
-      const x = normalized * maxX
-      const y = Math.pow(absolute, 1.65) * mode.vertical
-      const rotation = normalized * mode.rotation
-      const scale = 1 - (1 - mode.edgeScale) * absolute
-      const zIndex = 100 - Math.round(absolute * 60)
-      const isCenter = Math.abs(slot - centerSlot) < 0.51
-
-      card.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, 0) rotate(${rotation}deg) scale(${scale})`
-      card.style.zIndex = String(zIndex)
-      card.style.opacity = '1'
-      card.style.pointerEvents = 'auto'
-      card.tabIndex = isCenter ? 0 : -1
-      card.setAttribute('aria-hidden', 'false')
-      card.setAttribute('aria-pressed', String(isCenter))
-      card.classList.toggle('is-centered', isCenter)
-    })
-  }
-
-  function normalizeAngle(value) {
-    return modulo(value + 180, 360) - 180
-  }
-
-  function applyCylinderLayout(mode, extraRotation = 0) {
-    const cards = [...layout.querySelectorAll('.case-fan-card')]
-    if (!cards.length) return
-
-    const centerSlot = Math.floor(mode.slots / 2)
-    const step = 360 / mode.slots
-    const cardWidth = cards[0].getBoundingClientRect().width || 130
-    const radius = Math.max(cardWidth * 0.92, (cardWidth * mode.slots * 1.04) / (2 * Math.PI))
-
-    cards.forEach((card) => {
-      const slot = Number(card.dataset.slot)
-      const angle = (slot - centerSlot) * step + extraRotation
-      const visibleAngle = normalizeAngle(angle)
-      const absoluteAngle = Math.abs(visibleAngle)
-      const isCenter = absoluteAngle < step * 0.32
-      const isInteractive = absoluteAngle <= 82
-      const opacity = absoluteAngle <= 92 ? 1 : 0
-      const depth = Math.cos((visibleAngle * Math.PI) / 180)
-
-      card.style.transform = `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${radius}px)`
-      card.style.zIndex = String(100 + Math.round(depth * 80))
-      card.style.opacity = String(opacity)
-      card.style.pointerEvents = isInteractive ? 'auto' : 'none'
-      card.tabIndex = isCenter ? 0 : -1
-      card.setAttribute('aria-hidden', String(!isInteractive))
-      card.setAttribute('aria-pressed', String(isCenter))
-      card.classList.toggle('is-centered', isCenter)
-    })
-  }
-
-  function applyLayout(extraRotation = 0) {
-    const mode = getMode()
-    if (mode.kind === 'cylinder') applyCylinderLayout(mode, extraRotation)
-    else applyFanLayout(mode)
-  }
-
   function render(options = {}) {
-    const mode = getMode()
-    renderedModeKey = mode.key
-    layout.classList.toggle('is-cylinder', mode.kind === 'cylinder')
-    layout.classList.toggle('is-fan', mode.kind === 'fan')
-    layout.classList.remove('is-dragging', 'is-snapping')
-    layout.dataset.slots = String(mode.slots)
+    const mode = modeForWidth()
+    const visibleCount = Math.min(studies.length, mode.visible)
+    const centerSlot = Math.floor(visibleCount / 2)
+    renderedVisibleCount = visibleCount
+    focusedSlot = null
     layout.replaceChildren()
     dots?.replaceChildren()
 
     studies.forEach((item, index) => dots?.appendChild(createDot(item, index)))
-    buildSlots(mode).forEach((face) => layout.appendChild(createCard(face, mode)))
+
+    for (let slot = 0; slot < visibleCount; slot += 1) {
+      const dataIndex = ((centerIndex + slot - centerSlot) % studies.length + studies.length) % studies.length
+      layout.appendChild(createCard(studies[dataIndex], dataIndex, slot, centerSlot))
+    }
 
     renderDetail(studies[centerIndex])
     if (nav) nav.hidden = studies.length <= 1
-    applyLayout(0)
+    applyLayout()
 
-    requestAnimationFrame(() => {
-      dots?.querySelector('.case-fan-dot.is-active')?.scrollIntoView({ block: 'nearest', inline: 'center' })
-      if (options.focusCenter) layout.querySelector('.case-fan-card.is-centered')?.focus({ preventScroll: true })
-    })
-  }
-
-  function select(index, options = {}) {
-    centerIndex = modulo(index, studies.length)
-    render(options)
-  }
-
-  function finishCylinderAnimation(stepCount, options = {}) {
-    window.clearTimeout(transitionTimer)
-    transitionTimer = window.setTimeout(() => {
-      centerIndex = modulo(centerIndex + stepCount, studies.length)
-      render({ focusCenter: Boolean(options.focusCenter) })
-    }, reducedMotion ? 20 : 430)
-  }
-
-  function animateCylinderStep(stepCount, options = {}) {
-    if (!stepCount) return
-    const mode = getMode()
-    if (mode.kind !== 'cylinder') {
-      select(centerIndex + stepCount, options)
-      return
+    if (options.focusCenter) {
+      requestAnimationFrame(() => {
+        layout.querySelector(`.case-fan-card[data-slot="${centerSlot}"]`)?.focus({ preventScroll: true })
+      })
     }
-
-    const clamped = Math.max(-3, Math.min(3, stepCount))
-    const targetRotation = -(360 / mode.slots) * clamped
-    layout.classList.remove('is-dragging')
-    layout.classList.add('is-snapping')
-    applyCylinderLayout(mode, targetRotation)
-    finishCylinderAnimation(clamped, options)
   }
 
   function step(direction, options = {}) {
-    const mode = getMode()
-    if (mode.kind === 'cylinder') animateCylinderStep(direction, options)
-    else select(centerIndex + direction, options)
+    select(centerIndex + direction, options)
   }
 
   previous?.addEventListener('click', () => step(-1))
   next?.addEventListener('click', () => step(1))
-
-  layout.setAttribute('role', 'group')
-  layout.setAttribute('aria-roledescription', app.isUk ? 'карусель кейсів' : 'карусель кейсов')
-  layout.setAttribute('aria-label', app.isUk ? 'Кейси випускників. Гортайте свайпом, кнопками або стрілками клавіатури.' : 'Кейсы выпускников. Листайте свайпом, кнопками или стрелками клавиатуры.')
-  layout.tabIndex = 0
-  detail?.setAttribute('aria-live', 'polite')
-  detail?.setAttribute('aria-atomic', 'true')
-  previous?.setAttribute('aria-label', app.copy.previousCase)
-  next?.setAttribute('aria-label', app.copy.nextCase)
 
   layout.addEventListener('keydown', (event) => {
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
@@ -307,41 +243,29 @@
 
   layout.addEventListener('pointerdown', (event) => {
     if (!event.isPrimary) return
-    const mode = getMode()
     gesture.active = true
     gesture.pointerId = event.pointerId
-    gesture.startX = gesture.currentX = event.clientX
-    gesture.startY = gesture.currentY = event.clientY
-    gesture.rotation = 0
+    gesture.startX = gesture.x = event.clientX
+    gesture.startY = gesture.y = event.clientY
     layout.classList.add('is-dragging')
-    layout.classList.remove('is-snapping')
     layout.setPointerCapture?.(event.pointerId)
-    if (mode.kind === 'cylinder') applyCylinderLayout(mode, 0)
   })
 
   layout.addEventListener('pointermove', (event) => {
     if (!gesture.active || event.pointerId !== gesture.pointerId) return
-    gesture.currentX = event.clientX
-    gesture.currentY = event.clientY
-    const deltaX = gesture.currentX - gesture.startX
-    const deltaY = gesture.currentY - gesture.startY
-    const mode = getMode()
-
+    gesture.x = event.clientX
+    gesture.y = event.clientY
+    const deltaX = gesture.x - gesture.startX
+    const deltaY = gesture.y - gesture.startY
     if (Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY)) event.preventDefault()
-    if (mode.kind === 'cylinder') {
-      gesture.rotation = deltaX * 0.22
-      applyCylinderLayout(mode, gesture.rotation)
-    }
   }, { passive: false })
 
   function finishGesture(event) {
     if (!gesture.active || (event && event.pointerId !== gesture.pointerId)) return
-
-    const deltaX = gesture.currentX - gesture.startX
-    const deltaY = gesture.currentY - gesture.startY
-    const mode = getMode()
-    const threshold = Math.max(32, Math.min(70, layout.getBoundingClientRect().width * 0.09))
-    const horizontalSwipe = Math.abs(deltaX) >= threshold && Math.abs(deltaX) > Math.abs(deltaY) * 1.12
+    const deltaX = gesture.x - gesture.startX
+    const deltaY = gesture.y - gesture.startY
+    const threshold = Math.max(34, Math.min(72, layout.getBoundingClientRect().width * 0.1))
+    const horizontalSwipe = Math.abs(deltaX) >= threshold && Math.abs(deltaX) > Math.abs(deltaY) * 1.15
 
     if (event && layout.hasPointerCapture?.(event.pointerId)) layout.releasePointerCapture(event.pointerId)
     gesture.active = false
@@ -349,18 +273,8 @@
     layout.classList.remove('is-dragging')
 
     if (horizontalSwipe) {
-      suppressClickUntil = performance.now() + 320
-      const direction = deltaX < 0 ? 1 : -1
-      if (mode.kind === 'cylinder') {
-        const rawSteps = Math.round(Math.abs(gesture.rotation) / (360 / mode.slots))
-        animateCylinderStep(direction * Math.max(1, Math.min(3, rawSteps || 1)))
-      } else {
-        step(direction)
-      }
-    } else if (mode.kind === 'cylinder') {
-      layout.classList.add('is-snapping')
-      applyCylinderLayout(mode, 0)
-      window.setTimeout(() => layout.classList.remove('is-snapping'), reducedMotion ? 20 : 430)
+      suppressClickUntil = performance.now() + 300
+      step(deltaX < 0 ? 1 : -1)
     }
   }
 
@@ -371,9 +285,9 @@
     if (resizeFrame) cancelAnimationFrame(resizeFrame)
     resizeFrame = requestAnimationFrame(() => {
       resizeFrame = 0
-      const nextMode = getMode()
-      if (nextMode.key !== renderedModeKey) render()
-      else applyLayout(0)
+      const nextVisibleCount = Math.min(studies.length, modeForWidth().visible)
+      if (nextVisibleCount !== renderedVisibleCount) render()
+      else applyLayout()
     })
   }
 
@@ -383,5 +297,6 @@
     window.addEventListener('resize', scheduleResponsiveUpdate, { passive: true })
   }
 
+  if (!reducedMotion) layout.classList.add('has-motion')
   render()
 })()
