@@ -1,10 +1,7 @@
-// Local footer logo particle animation and hero gallery border.
-// This file replaces the previous raw.githack dependency and intentionally
-// excludes the old infinite levelCards requestAnimationFrame loop.
+// Footer logo particle animation and hero gallery border.
+// Restored from the last working implementation. The old levelCards loop is intentionally excluded.
 
 ;(function () {
-  'use strict'
-
   const canvas = document.getElementById('logoParticles')
   if (!canvas) return
 
@@ -26,7 +23,6 @@
   let nextPulseAt = 3
   let globeRadius = 135
   let rafId = null
-  let lastFrameAt = 0
 
   const SPIN_SPEED = 0.45
   const FACE_OFFSETS = [0, Math.PI]
@@ -46,7 +42,7 @@
 
   function lerpColor(colors, progress) {
     const count = colors.length
-    const scaled = (((progress % 1) + 1) % 1) * count
+    const scaled = ((((progress % 1) + 1) % 1) * count)
     const firstIndex = Math.floor(scaled) % count
     const secondIndex = (firstIndex + 1) % count
     const amount = scaled - Math.floor(scaled)
@@ -64,6 +60,7 @@
     const offscreen = document.createElement('canvas')
     offscreen.width = 200
     offscreen.height = 200
+
     const offscreenContext = offscreen.getContext('2d')
     if (!offscreenContext) return []
 
@@ -141,12 +138,9 @@
     if (shockwaves.length > 5) shockwaves.shift()
   }
 
-  function drawFrame(timestamp) {
+  function drawFrame() {
     rafId = requestAnimationFrame(drawFrame)
-
-    if (timestamp - lastFrameAt < 30) return
-    lastFrameAt = timestamp
-    time += 0.03
+    time += 0.02
 
     if (time >= nextPulseAt) {
       triggerShockwave(28)
@@ -221,10 +215,18 @@
   }
 
   const image = new Image()
-  image.src = canvas.dataset.logo
+  image.crossOrigin = 'anonymous'
+
   image.addEventListener('load', () => {
-    const count = 900
-    initParticles(sampleLogoPoints(image, count), count)
+    const count = 1300
+
+    try {
+      initParticles(sampleLogoPoints(image, count), count)
+    } catch (error) {
+      console.error('[VIP Tattoo] Footer particle logo could not be sampled:', error)
+      return
+    }
+
     if (!particles.length) return
 
     if ('IntersectionObserver' in window) {
@@ -236,16 +238,21 @@
           rafId = null
         }
       }, { threshold: 0.05 })
+
       observer.observe(canvas)
     } else {
       rafId = requestAnimationFrame(drawFrame)
     }
   }, { once: true })
+
+  image.addEventListener('error', () => {
+    console.error('[VIP Tattoo] Footer particle logo image failed to load:', canvas.dataset.logo)
+  }, { once: true })
+
+  image.src = canvas.dataset.logo
 })()
 
 ;(function () {
-  'use strict'
-
   if (document.querySelector('style[data-feature="hero-gallery-brown-gold-flow"]')) return
 
   const style = document.createElement('style')
@@ -289,5 +296,6 @@
       .hero-shot { animation: none !important; }
     }
   `
+
   document.head.appendChild(style)
 })()
