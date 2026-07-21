@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   build:
+    # Validation pull request run for the approved dependency and build check.
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
