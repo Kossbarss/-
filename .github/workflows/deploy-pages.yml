@@ -22,18 +22,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build React carousel assets
-        run: npm run build
-
       - name: Prepare static site
         run: |
           mkdir -p _site
@@ -44,20 +32,11 @@ jobs:
             --exclude '_site/' \
             --exclude 'src/' \
             --exclude 'components/' \
+            --exclude 'dist/' \
             --exclude 'package.json' \
             --exclude 'package-lock.json' \
             --exclude 'server.js' \
             --exclude 'tsconfig.json'
-          python3 - <<'PY'
-          from pathlib import Path
-          page = Path('_site/index.html')
-          html = page.read_text(encoding='utf-8')
-          if 'dist/card-fan-carousel.css' not in html:
-              html = html.replace('</head>', '  <link rel="stylesheet" href="dist/card-fan-carousel.css" />\n</head>')
-          if 'dist/card-fan-carousel.js' not in html:
-              html = html.replace('<script src="script.js"></script>', '<script src="dist/card-fan-carousel.js"></script>\n  <script src="script.js"></script>')
-          page.write_text(html, encoding='utf-8')
-          PY
           touch _site/.nojekyll
 
       - name: Configure GitHub Pages
