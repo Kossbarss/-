@@ -1,0 +1,242 @@
+/* Student cases carousel: isolated stacking, responsive cylinder/fan modes. */
+.case-fan-wrap {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  width: 100%;
+  overflow: clip;
+  padding: 18px 0 6px;
+}
+
+@supports not (overflow: clip) {
+  .case-fan-wrap {
+    overflow: hidden;
+  }
+}
+
+.case-fan-layout {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  overflow: clip;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  contain: layout paint;
+  touch-action: pan-y pinch-zoom;
+  overscroll-behavior-x: contain;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+
+.case-fan-layout.is-dragging {
+  cursor: grabbing;
+}
+
+.case-fan-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0;
+  padding: 2px;
+  border: 0;
+  background: transparent;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-origin: 50% 82%;
+  will-change: transform, opacity;
+  transition:
+    transform 0.42s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.2s ease,
+    box-shadow 0.24s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.case-fan-layout.is-dragging .case-fan-card {
+  transition: none;
+}
+
+.case-fan-layout.is-snapping .case-fan-card {
+  transition:
+    transform 0.42s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.2s ease,
+    box-shadow 0.24s ease;
+}
+
+.case-fan-card.is-centered,
+.case-fan-card[aria-pressed='true'] {
+  box-shadow: 0 28px 52px -18px rgba(21, 17, 15, 0.58);
+}
+
+.case-fan-detail {
+  position: relative;
+  z-index: 1;
+  min-height: 9rem;
+}
+
+.case-fan-nav {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  max-width: 100%;
+}
+
+.case-fan-nav[hidden] {
+  display: none;
+}
+
+.case-fan-dots {
+  max-width: min(58vw, 380px);
+  padding: 7px 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+
+.case-fan-dots::-webkit-scrollbar {
+  display: none;
+}
+
+.case-fan-dot {
+  flex: 0 0 10px;
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  scroll-snap-align: center;
+}
+
+.case-fan-arrow {
+  flex: 0 0 44px;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* 0-479 px: six-face 3D cylinder. */
+@media (max-width: 479px) {
+  .case-fan-wrap {
+    padding-top: 8px;
+  }
+
+  .case-fan-layout {
+    height: clamp(17rem, 78vw, 20rem);
+    width: 100%;
+    perspective: 780px;
+  }
+
+  .case-fan-layout.is-cylinder .case-fan-card {
+    width: clamp(7.2rem, 35vw, 8.8rem);
+  }
+
+  .case-fan-card-visual {
+    padding: 10px;
+  }
+
+  .case-fan-card-name {
+    font-size: 0.86rem;
+    line-height: 1.06;
+  }
+
+  .case-fan-card-index {
+    font-size: 0.72rem;
+  }
+
+  .case-fan-detail {
+    min-height: 10.8rem;
+    margin-top: 14px;
+    padding-inline: 6px;
+  }
+
+  .case-fan-detail p {
+    font-size: 0.9rem;
+  }
+
+  .case-fan-nav {
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .case-fan-dots {
+    max-width: calc(100vw - 150px);
+    gap: 7px;
+  }
+}
+
+/* 480-767 px: seven-face 3D cylinder. */
+@media (min-width: 480px) and (max-width: 767px) {
+  .case-fan-layout {
+    height: clamp(18rem, 60vw, 22rem);
+    perspective: 900px;
+  }
+
+  .case-fan-layout.is-cylinder .case-fan-card {
+    width: clamp(7.8rem, 27vw, 10rem);
+  }
+
+  .case-fan-detail {
+    min-height: 9.8rem;
+    margin-top: 16px;
+  }
+}
+
+/* 768-1023 px: twelve cards in a contained fan. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .case-fan-layout {
+    height: clamp(18.5rem, 34vw, 22rem);
+  }
+
+  .case-fan-layout.is-fan .case-fan-card {
+    width: clamp(6.4rem, 11.5vw, 8.2rem);
+  }
+
+  .case-fan-card-name {
+    font-size: 0.9rem;
+  }
+}
+
+/* 1024 px and above: twenty slots, contained in the section. */
+@media (min-width: 1024px) {
+  .case-fan-layout {
+    height: clamp(20rem, 24vw, 24rem);
+  }
+
+  .case-fan-layout.is-fan .case-fan-card {
+    width: clamp(5.1rem, 7vw, 7.2rem);
+  }
+
+  .case-fan-card-name {
+    font-size: clamp(0.72rem, 0.78vw, 0.92rem);
+  }
+
+  .case-fan-card-index {
+    font-size: clamp(0.62rem, 0.62vw, 0.78rem);
+  }
+}
+
+@media (min-width: 1440px) {
+  .case-fan-layout {
+    height: 25rem;
+  }
+
+  .case-fan-layout.is-fan .case-fan-card {
+    width: 7.5rem;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .case-fan-card:hover {
+    box-shadow: 0 20px 40px -18px rgba(21, 17, 15, 0.45);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-fan-card,
+  .case-fan-layout.is-snapping .case-fan-card {
+    transition: none;
+  }
+}
