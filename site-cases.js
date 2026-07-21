@@ -58,7 +58,7 @@
 
   layout.setAttribute('role', 'group')
   layout.setAttribute('aria-roledescription', app.isUk ? 'карусель кейсів' : 'карусель кейсов')
-  layout.setAttribute('aria-label', app.isUk ? 'Кейси випускників. Гортайте свайпом або кнопками.' : 'Кейсы выпускников. Листайте свайпом или кнопками.')
+  layout.setAttribute('aria-label', app.isUk ? 'Кейси випускників. Обирайте картку, гортайте свайпом або кнопками.' : 'Кейсы выпускников. Выбирайте карточку, листайте свайпом или кнопками.')
   layout.tabIndex = 0
   detail?.setAttribute('aria-live', 'polite')
   detail?.setAttribute('aria-atomic', 'true')
@@ -67,11 +67,10 @@
 
   function modeForWidth() {
     const width = layout.getBoundingClientRect().width || window.innerWidth
-    if (width < 480) return { visible: 3, rotation: 9, edgeScale: 0.84, vertical: 12 }
-    if (width < 768) return { visible: 3, rotation: 11, edgeScale: 0.86, vertical: 15 }
-    if (width < 1024) return { visible: 5, rotation: 16, edgeScale: 0.80, vertical: 22 }
-    if (width < 1440) return { visible: 7, rotation: 21, edgeScale: 0.78, vertical: 34 }
-    return { visible: 7, rotation: 22, edgeScale: 0.80, vertical: 38 }
+    if (width < 480) return { visible: 6, rotation: 16, edgeScale: 0.68, vertical: 18 }
+    if (width < 768) return { visible: 7, rotation: 18, edgeScale: 0.70, vertical: 22 }
+    if (width < 1024) return { visible: 12, rotation: 22, edgeScale: 0.61, vertical: 31 }
+    return { visible: 18, rotation: 25, edgeScale: 0.55, vertical: 44 }
   }
 
   function renderDetail(item) {
@@ -95,20 +94,23 @@
     if (!cards.length) return
 
     const mode = modeForWidth()
-    const centerSlot = (cards.length - 1) / 2
-    const cardWidth = cards[0].getBoundingClientRect().width || 140
+    const activeSlot = Math.floor(cards.length / 2)
+    const leftSlots = Math.max(1, activeSlot)
+    const rightSlots = Math.max(1, cards.length - 1 - activeSlot)
+    const cardWidth = cards[0].getBoundingClientRect().width || 110
     const layoutWidth = layout.getBoundingClientRect().width || window.innerWidth
-    const maxX = Math.max(cardWidth * 0.58, layoutWidth / 2 - cardWidth * 0.58 - 8)
+    const maxX = Math.max(cardWidth * 0.58, layoutWidth / 2 - cardWidth * 0.58 - 10)
 
     cards.forEach((card) => {
       const slot = Number(card.dataset.slot)
-      const normalized = centerSlot ? (slot - centerSlot) / centerSlot : 0
+      const offset = slot - activeSlot
+      const normalized = offset < 0 ? offset / leftSlots : offset / rightSlots
       const absolute = Math.abs(normalized)
       let x = normalized * maxX
       let y = absolute * absolute * mode.vertical
       let rotation = normalized * mode.rotation
       let scale = 1 - (1 - mode.edgeScale) * absolute
-      let zIndex = 100 - Math.round(absolute * 20)
+      let zIndex = 100 - Math.round(absolute * 36)
 
       if (focusedSlot !== null && hoverCapable.matches) {
         const slotDistance = Math.abs(slot - focusedSlot)
@@ -118,13 +120,16 @@
           zIndex = 130
         } else {
           const direction = slot < focusedSlot ? -1 : 1
-          x += direction * Math.max(8, cardWidth * 0.08) / (slotDistance + 0.5)
+          x += direction * Math.max(6, cardWidth * 0.06) / (slotDistance + 0.5)
         }
       }
 
+      const isActive = slot === activeSlot
       card.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, 0) rotate(${rotation}deg) scale(${scale})`
       card.style.zIndex = String(zIndex)
+      card.setAttribute('aria-pressed', String(isActive))
       card.classList.toggle('is-focused', focusedSlot === slot)
+      card.classList.toggle('is-centered', isActive)
     })
   }
 
@@ -143,14 +148,14 @@
     return dot
   }
 
-  function createCard(item, dataIndex, slot, centerSlot) {
+  function createCard(item, dataIndex, slot, activeSlot) {
     const card = document.createElement('button')
     card.type = 'button'
     card.className = 'case-fan-card'
     card.dataset.slot = String(slot)
     card.dataset.caseIndex = String(dataIndex)
     card.setAttribute('aria-label', `${app.isUk ? 'Відкрити кейс' : 'Открыть кейс'} ${item.name}. ${item.stat}`)
-    card.setAttribute('aria-pressed', String(slot === centerSlot))
+    card.setAttribute('aria-pressed', String(slot === activeSlot))
 
     const visual = document.createElement('span')
     visual.className = 'case-fan-card-visual'
@@ -201,29 +206,31 @@
 
   function render(options = {}) {
     const mode = modeForWidth()
-    const visibleCount = Math.min(studies.length, mode.visible)
-    const centerSlot = Math.floor(visibleCount / 2)
+    const visibleCount = mode.visible
+    const activeSlot = Math.floor(visibleCount / 2)
     renderedVisibleCount = visibleCount
     focusedSlot = null
+    layout.dataset.visibleSlots = String(visibleCount)
     layout.replaceChildren()
     dots?.replaceChildren()
 
     studies.forEach((item, index) => dots?.appendChild(createDot(item, index)))
 
     for (let slot = 0; slot < visibleCount; slot += 1) {
-      const dataIndex = ((centerIndex + slot - centerSlot) % studies.length + studies.length) % studies.length
-      layout.appendChild(createCard(studies[dataIndex], dataIndex, slot, centerSlot))
+      const dataIndex = ((centerIndex + slot - activeSlot) % studies.length + studies.length) % studies.length
+      layout.appendChild(createCard(studies[dataIndex], dataIndex, slot, activeSlot))
     }
 
     renderDetail(studies[centerIndex])
     if (nav) nav.hidden = studies.length <= 1
     applyLayout()
 
-    if (options.focusCenter) {
-      requestAnimationFrame(() => {
-        layout.querySelector(`.case-fan-card[data-slot="${centerSlot}"]`)?.focus({ preventScroll: true })
-      })
-    }
+    requestAnimationFrame(() => {
+      dots?.querySelector('.case-fan-dot.is-active')?.scrollIntoView({ block: 'nearest', inline: 'center' })
+      if (options.focusCenter) {
+        layout.querySelector(`.case-fan-card[data-slot="${activeSlot}"]`)?.focus({ preventScroll: true })
+      }
+    })
   }
 
   function step(direction, options = {}) {
@@ -264,8 +271,8 @@
     if (!gesture.active || (event && event.pointerId !== gesture.pointerId)) return
     const deltaX = gesture.x - gesture.startX
     const deltaY = gesture.y - gesture.startY
-    const threshold = Math.max(34, Math.min(72, layout.getBoundingClientRect().width * 0.1))
-    const horizontalSwipe = Math.abs(deltaX) >= threshold && Math.abs(deltaX) > Math.abs(deltaY) * 1.15
+    const threshold = Math.max(32, Math.min(68, layout.getBoundingClientRect().width * 0.09))
+    const horizontalSwipe = Math.abs(deltaX) >= threshold && Math.abs(deltaX) > Math.abs(deltaY) * 1.12
 
     if (event && layout.hasPointerCapture?.(event.pointerId)) layout.releasePointerCapture(event.pointerId)
     gesture.active = false
@@ -285,7 +292,7 @@
     if (resizeFrame) cancelAnimationFrame(resizeFrame)
     resizeFrame = requestAnimationFrame(() => {
       resizeFrame = 0
-      const nextVisibleCount = Math.min(studies.length, modeForWidth().visible)
+      const nextVisibleCount = modeForWidth().visible
       if (nextVisibleCount !== renderedVisibleCount) render()
       else applyLayout()
     })
