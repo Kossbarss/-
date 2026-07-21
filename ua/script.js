@@ -4,6 +4,12 @@
   window.VIP_TATTOO_LOCALE = 'uk'
   const modules = ['../site-core.js', '../site-interactions.js', '../site-cases.js']
 
+  const casesStyle = document.createElement('link')
+  casesStyle.rel = 'stylesheet'
+  casesStyle.href = '../case-fan-layout-fix.css'
+  casesStyle.dataset.vipCasesFanFix = 'true'
+  document.head.appendChild(casesStyle)
+
   function finish() {
     const caseLayout = document.getElementById('caseFanLayout')
     caseLayout?.setAttribute('role', 'group')
