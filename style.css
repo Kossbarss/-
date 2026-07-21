@@ -70,13 +70,16 @@
   box-shadow: 0 10px 28px -18px rgba(0, 0, 0, 0.72) !important;
 }
 
-/* Remove artificial urgency until a real campaign deadline is configured. */
+/* Keep only the countdown inside the fixed discount bar. */
 .price-box-timer,
 .price-box-clock,
-.sticky-bar-timer,
 .mini-timer,
 .popup-timer {
   display: none !important;
+}
+
+.sticky-bar-timer {
+  display: flex !important;
 }
 
 /* Runtime-upgraded controls keep the existing visual language. */
@@ -96,7 +99,7 @@ button.sticky-bar-inner {
 }
 
 .case-fan-card {
-  padding: 0;
+  padding: 2px;
   background: transparent;
   cursor: pointer;
 }
@@ -124,6 +127,15 @@ button.sticky-bar-inner {
 /* Static fallback remains visible if canvas or image sampling fails. */
 #logoParticles {
   background: center / 58% no-repeat url('./assets/logo-watermark.png');
+}
+
+/* Remove the pale body gutter below the footer; keep safe space inside the dark footer. */
+body {
+  padding-bottom: 0 !important;
+}
+
+.footer {
+  padding-bottom: 90px !important;
 }
 
 @keyframes hero-mobile-gold-edge {
