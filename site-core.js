@@ -108,6 +108,42 @@
     }
   }
 
+  const stickyClock = document.getElementById('stickyClock')
+  if (stickyClock) {
+    const duration = (10 * 60 + 40) * 1000
+    const deadline = Date.now() + duration
+
+    function plural(value, forms) {
+      const lastTwo = value % 100
+      const last = value % 10
+      if (lastTwo >= 11 && lastTwo <= 14) return forms[2]
+      if (last === 1) return forms[0]
+      if (last >= 2 && last <= 4) return forms[1]
+      return forms[2]
+    }
+
+    function formatRemaining(ms) {
+      const totalSeconds = Math.max(0, Math.floor(ms / 1000))
+      const minutes = Math.floor(totalSeconds / 60)
+      const seconds = totalSeconds % 60
+      const minuteForms = isUk ? ['хвилина', 'хвилини', 'хвилин'] : ['минута', 'минуты', 'минут']
+      const secondForms = isUk ? ['секунда', 'секунди', 'секунд'] : ['секунда', 'секунды', 'секунд']
+      const joiner = isUk ? 'та' : 'и'
+      return `${minutes} ${plural(minutes, minuteForms)} ${joiner} ${seconds} ${plural(seconds, secondForms)}`
+    }
+
+    function updateStickyClock() {
+      const remaining = deadline - Date.now()
+      stickyClock.textContent = formatRemaining(remaining)
+      return remaining > 0
+    }
+
+    updateStickyClock()
+    const timerId = window.setInterval(() => {
+      if (!updateStickyClock()) window.clearInterval(timerId)
+    }, 1000)
+  }
+
   const ribbonTrack = document.getElementById('ribbonTrack')
   if (ribbonTrack) {
     const items = isUk
