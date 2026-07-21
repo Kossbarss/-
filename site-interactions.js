@@ -1,0 +1,284 @@
+;(function () {
+  'use strict'
+
+  if (window.__vipTattooInteractionsLoaded) return
+  window.__vipTattooInteractionsLoaded = true
+
+  const app = window.VIP_TATTOO_APP
+  if (!app) return
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  document.querySelectorAll('[data-hero-carousel]').forEach((shell) => {
+    const cards = [...shell.querySelectorAll('.hero-shot')]
+    if (cards.length < 3) return
+
+    let step = 220
+    let offset = 0
+    let velocity = 0
+    let dragging = false
+    let pointerX = 0
+    let compact = false
+    let visible = true
+    let frameId = 0
+    let lastFrame = performance.now()
+
+    shell.setAttribute('aria-roledescription', 'carousel')
+    shell.setAttribute('aria-label', app.copy.carousel)
+
+    function render() {
+      const span = cards.length * step
+      cards.forEach((card, index) => {
+        const rawX = index * step + offset
+        const x = ((rawX + span / 2) % span + span) % span - span / 2
+        const distance = Math.abs(x / step)
+        const curve = Math.min(distance, 4.5)
+        const depth = Math.max(0, 1 - curve / 4)
+        const z = compact ? 0 : -depth * 60
+        const scale = compact ? 1 : 0.64 + Math.min(curve / 4, 1) * 0.36
+        const brightness = compact ? 1 : Math.max(0.64, 1 - curve * 0.07)
+
+        card.style.transform = `translate(-50%, -50%) translate3d(${x}px, 0, ${z}px) rotateY(0deg) scale(${scale})`
+        card.style.opacity = distance <= (compact ? 2.05 : 5.2) ? '1' : '0'
+        card.style.filter = `brightness(${brightness})`
+        card.style.zIndex = String(20 - Math.round(distance))
+        card.setAttribute('aria-hidden', distance <= (compact ? 2.05 : 5.2) ? 'false' : 'true')
+      })
+    }
+
+    function layout({ preservePosition = true } = {}) {
+      compact = window.matchMedia('(max-width: 700px)').matches
+      step = compact ? window.innerWidth * 0.4 : Math.min(238, Math.max(196, window.innerWidth * 0.128))
+      if (!preservePosition || !Number.isFinite(offset)) offset = -2 * step
+      render()
+    }
+
+    function stopAnimation() {
+      if (frameId) cancelAnimationFrame(frameId)
+      frameId = 0
+    }
+
+    function animate(now) {
+      if (!visible || document.hidden) {
+        stopAnimation()
+        return
+      }
+      const delta = Math.min(Math.max(now - lastFrame, 0), 40)
+      lastFrame = now
+      if (!dragging) {
+        if (!reducedMotion) offset -= delta * (compact ? 0.018 : 0.024)
+        offset += velocity
+        velocity *= 0.93
+        if (Math.abs(velocity) < 0.01) velocity = 0
+        render()
+      }
+      frameId = requestAnimationFrame(animate)
+    }
+
+    function startAnimation() {
+      if (frameId || !visible || document.hidden || reducedMotion) return
+      lastFrame = performance.now()
+      frameId = requestAnimationFrame(animate)
+    }
+
+    function releasePointer(event) {
+      dragging = false
+      shell.classList.remove('is-dragging')
+      if (event && shell.hasPointerCapture?.(event.pointerId)) shell.releasePointerCapture(event.pointerId)
+      startAnimation()
+    }
+
+    shell.addEventListener('pointerdown', (event) => {
+      dragging = true
+      pointerX = event.clientX
+      velocity = 0
+      stopAnimation()
+      shell.classList.add('is-dragging')
+      shell.setPointerCapture?.(event.pointerId)
+    })
+    shell.addEventListener('pointermove', (event) => {
+      if (!dragging) return
+      const deltaX = event.clientX - pointerX
+      pointerX = event.clientX
+      offset += deltaX
+      velocity = deltaX * 0.13
+      render()
+    })
+    shell.addEventListener('pointerup', releasePointer)
+    shell.addEventListener('pointercancel', releasePointer)
+    shell.addEventListener('keydown', (event) => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home'].includes(event.key)) return
+      event.preventDefault()
+      if (event.key === 'Home') offset = -2 * step
+      else offset += event.key === 'ArrowLeft' ? step : -step
+      render()
+    })
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting
+        if (visible) startAnimation()
+        else stopAnimation()
+      }, { threshold: 0.05 }).observe(shell)
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopAnimation()
+      else startAnimation()
+    })
+    window.addEventListener('resize', () => layout({ preservePosition: true }), { passive: true })
+    window.addEventListener('pagehide', stopAnimation, { once: true })
+
+    layout({ preservePosition: false })
+    if (!reducedMotion) startAnimation()
+  })
+
+  document.querySelectorAll('.faq-item-big').forEach((item, index, items) => {
+    const trigger = item.querySelector('.faq-trigger-big')
+    const panel = item.querySelector('.faq-panel-big')
+    if (!trigger || !panel) return
+    const panelId = panel.id || `faq-panel-${index + 1}`
+    panel.id = panelId
+    trigger.setAttribute('aria-controls', panelId)
+
+    function setOpen(open) {
+      item.classList.toggle('open', open)
+      trigger.setAttribute('aria-expanded', String(open))
+      panel.setAttribute('aria-hidden', String(!open))
+    }
+
+    setOpen(index === 0)
+    trigger.addEventListener('click', () => {
+      const open = trigger.getAttribute('aria-expanded') !== 'true'
+      items.forEach((other) => {
+        const otherTrigger = other.querySelector('.faq-trigger-big')
+        const otherPanel = other.querySelector('.faq-panel-big')
+        other.classList.remove('open')
+        otherTrigger?.setAttribute('aria-expanded', 'false')
+        otherPanel?.setAttribute('aria-hidden', 'true')
+      })
+      if (open) setOpen(true)
+    })
+  })
+
+  const navToggle = document.getElementById('navToggle')
+  const mobileNav = document.getElementById('mobileNav')
+  const mobileNavClose = document.getElementById('mobileNavClose')
+  let navReturnFocus = null
+
+  if (navToggle && mobileNav) {
+    mobileNav.setAttribute('role', 'dialog')
+    mobileNav.setAttribute('aria-modal', 'true')
+    mobileNav.setAttribute('aria-label', navToggle.getAttribute('aria-label') || 'Menu')
+    mobileNav.setAttribute('aria-hidden', 'true')
+    navToggle.setAttribute('aria-controls', 'mobileNav')
+    navToggle.setAttribute('aria-expanded', 'false')
+
+    function setMobileNavOpen(open) {
+      mobileNav.classList.toggle('open', open)
+      navToggle.classList.toggle('on', open)
+      document.body.classList.toggle('nav-open', open)
+      navToggle.setAttribute('aria-expanded', String(open))
+      mobileNav.setAttribute('aria-hidden', String(!open))
+      if (open) {
+        navReturnFocus = document.activeElement
+        ;(mobileNavClose || app.focusableElements(mobileNav)[0])?.focus()
+      } else if (navReturnFocus instanceof HTMLElement) {
+        navReturnFocus.focus()
+      }
+    }
+
+    navToggle.addEventListener('click', () => setMobileNavOpen(!mobileNav.classList.contains('open')))
+    mobileNavClose?.addEventListener('click', () => setMobileNavOpen(false))
+    mobileNav.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMobileNavOpen(false)))
+    mobileNav.addEventListener('keydown', (event) => app.trapFocus(event, mobileNav))
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && mobileNav.classList.contains('open')) setMobileNavOpen(false)
+    })
+  }
+
+  let stickyTrigger = document.getElementById('stickyBarTrigger')
+  if (stickyTrigger && stickyTrigger.tagName !== 'BUTTON') {
+    const button = document.createElement('button')
+    button.type = 'button'
+    button.id = stickyTrigger.id
+    button.className = stickyTrigger.className
+    button.innerHTML = stickyTrigger.innerHTML
+    button.setAttribute('aria-haspopup', 'dialog')
+    stickyTrigger.replaceWith(button)
+    stickyTrigger = button
+  }
+
+  const popupOverlay = document.getElementById('popupOverlay')
+  const popupCard = document.getElementById('popupCard')
+  const popupClose = document.getElementById('popupClose')
+  let popupReturnFocus = null
+
+  if (stickyTrigger && popupOverlay && popupCard) {
+    popupOverlay.setAttribute('aria-hidden', 'true')
+    popupCard.setAttribute('aria-hidden', 'true')
+
+    function setPopupOpen(open) {
+      popupOverlay.classList.toggle('open', open)
+      popupCard.classList.toggle('open', open)
+      document.body.classList.toggle('popup-open', open)
+      popupOverlay.setAttribute('aria-hidden', String(!open))
+      popupCard.setAttribute('aria-hidden', String(!open))
+      if (open) {
+        popupReturnFocus = document.activeElement
+        ;(popupClose || app.focusableElements(popupCard)[0])?.focus()
+      } else if (popupReturnFocus instanceof HTMLElement) {
+        popupReturnFocus.focus()
+      }
+    }
+
+    stickyTrigger.addEventListener('click', () => setPopupOpen(true))
+    popupClose?.addEventListener('click', () => setPopupOpen(false))
+    popupOverlay.addEventListener('click', () => setPopupOpen(false))
+    popupCard.addEventListener('keydown', (event) => app.trapFocus(event, popupCard))
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && popupCard.classList.contains('open')) setPopupOpen(false)
+    })
+  }
+
+  document.querySelectorAll('.avatar-tip').forEach((tip) => {
+    const avatar = tip.querySelector('.avatar')
+    if (!avatar) return
+    if (!avatar.hasAttribute('tabindex')) avatar.tabIndex = 0
+    avatar.setAttribute('aria-expanded', 'false')
+
+    avatar.addEventListener('mousemove', (event) => {
+      if (reducedMotion) return
+      const rect = avatar.getBoundingClientRect()
+      const offsetX = event.clientX - rect.left - rect.width / 2
+      const rotation = Math.max(-20, Math.min(20, (offsetX / (rect.width / 2)) * 20))
+      tip.style.setProperty('--tip-rot', `${rotation}deg`)
+    })
+    avatar.addEventListener('mouseleave', () => tip.style.setProperty('--tip-rot', '0deg'))
+
+    function toggle() {
+      const next = !tip.classList.contains('is-active')
+      document.querySelectorAll('.avatar-tip').forEach((other) => {
+        other.classList.remove('is-active')
+        other.querySelector('.avatar')?.setAttribute('aria-expanded', 'false')
+      })
+      tip.classList.toggle('is-active', next)
+      avatar.setAttribute('aria-expanded', String(next))
+    }
+    avatar.addEventListener('click', (event) => {
+      event.stopPropagation()
+      toggle()
+    })
+    avatar.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault()
+        toggle()
+      }
+    })
+  })
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.avatar-tip').forEach((tip) => {
+      tip.classList.remove('is-active')
+      tip.querySelector('.avatar')?.setAttribute('aria-expanded', 'false')
+    })
+  })
+})()
