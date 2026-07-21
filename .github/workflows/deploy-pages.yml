@@ -36,6 +36,8 @@ jobs:
 
       - name: Prepare static site
         run: |
+          cp dist/card-fan-carousel.css dist/card-fan-carousel-a1cd1b.css
+          cp dist/card-fan-carousel.js dist/card-fan-carousel-a1cd1b.js
           mkdir -p _site
           rsync -a ./ _site/ \
             --exclude '.git/' \
@@ -52,13 +54,10 @@ jobs:
           from pathlib import Path
           page = Path('_site/index.html')
           html = page.read_text(encoding='utf-8')
-          if 'dist/card-fan-carousel.css' not in html:
-              html = html.replace('</head>', '  <link rel="stylesheet" href="dist/card-fan-carousel.css" />\n</head>')
-          if 'dist/card-fan-carousel.js' not in html:
-              html = html.replace('<script src="script.js"></script>', '<script src="dist/card-fan-carousel.js"></script>\n  <script src="script.js"></script>')
+          html = html.replace('</head>', '  <link rel="stylesheet" href="dist/card-fan-carousel-a1cd1b.css" />\n</head>')
+          html = html.replace('<script src="script.js"></script>', '<script src="dist/card-fan-carousel-a1cd1b.js"></script>\n  <script src="script.js"></script>')
           page.write_text(html, encoding='utf-8')
-          touch = Path('_site/.nojekyll')
-          touch.touch()
+          Path('_site/.nojekyll').touch()
           PY
 
       - name: Configure GitHub Pages
