@@ -11,7 +11,6 @@
     mentorship: 'https://t.me/mentor_tatoo_Viktoria_bot',
   }
   const copy = isUk ? {
-    expired: 'Уточніть актуальну ціну',
     order: 'Оформити участь у Telegram',
     orderNote: 'Telegram відкриється в новій вкладці. Адміністратор уточнить формат участі та оплату.',
     instagram: 'Instagram Вікторії Понікарової',
@@ -21,7 +20,6 @@
     previousCase: 'Попередній кейс',
     nextCase: 'Наступний кейс',
   } : {
-    expired: 'Уточните актуальную цену',
     order: 'Оформить участие в Telegram',
     orderNote: 'Telegram откроется в новой вкладке. Администратор уточнит формат участия и оплату.',
     instagram: 'Instagram Виктории Поникаровой',
@@ -87,7 +85,10 @@
 
     const orderLink = document.createElement('a')
     orderLink.className = 'btn btn-stardust btn-block'
-    orderLink.innerHTML = `<span class="btn-stardust-wrap">${copy.order}</span>`
+    const orderText = document.createElement('span')
+    orderText.className = 'btn-stardust-wrap'
+    orderText.textContent = copy.order
+    orderLink.appendChild(orderText)
     setExternalLink(orderLink, contacts.mentorship, copy.order)
 
     const note = document.createElement('p')
@@ -96,40 +97,6 @@
     form.append(orderLink, note)
     form.addEventListener('submit', (event) => event.preventDefault())
   })
-
-  const DEADLINE_KEY = 'vipTattooDeadline'
-  const DEADLINE_WINDOW_MS = 5 * 24 * 60 * 60 * 1000
-  function getDeadline() {
-    try {
-      const stored = Number(localStorage.getItem(DEADLINE_KEY))
-      if (Number.isFinite(stored) && stored > 0) return stored
-      const next = Date.now() + DEADLINE_WINDOW_MS
-      localStorage.setItem(DEADLINE_KEY, String(next))
-      return next
-    } catch (_) {
-      window.__vipTattooFallbackDeadline ||= Date.now() + DEADLINE_WINDOW_MS
-      return window.__vipTattooFallbackDeadline
-    }
-  }
-  const deadline = getDeadline()
-  const pad = (value) => String(value).padStart(2, '0')
-  function formatClock(ms) {
-    if (ms <= 0) return copy.expired
-    const days = Math.floor(ms / 86400000)
-    const hours = Math.floor((ms % 86400000) / 3600000)
-    const minutes = Math.floor((ms % 3600000) / 60000)
-    const seconds = Math.floor((ms % 60000) / 1000)
-    return `${days ? `${days}д ` : ''}${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
-  }
-  function updateClocks() {
-    const text = formatClock(deadline - Date.now())
-    ;['heroClock', 'stickyClock', 'popupClock', 'miniClock'].forEach((id) => {
-      const node = document.getElementById(id)
-      if (node) node.textContent = text
-    })
-  }
-  updateClocks()
-  window.setInterval(updateClocks, 1000)
 
   const hero = document.querySelector('.hero')
   const stickyBar = document.getElementById('stickyBar')
