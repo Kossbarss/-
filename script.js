@@ -4,10 +4,17 @@
   window.VIP_TATTOO_LOCALE = 'ru'
   const modules = ['site-core.js', 'site-interactions.js', 'site-cases.js']
 
+  function finish() {
+    const caseLayout = document.getElementById('caseFanLayout')
+    caseLayout?.setAttribute('role', 'group')
+    caseLayout?.querySelectorAll('.case-fan-card[role]').forEach((card) => card.removeAttribute('role'))
+    window.__vipTattooAppReady = true
+    document.dispatchEvent(new CustomEvent('vip:app-ready'))
+  }
+
   function load(index) {
     if (index >= modules.length) {
-      window.__vipTattooAppReady = true
-      document.dispatchEvent(new CustomEvent('vip:app-ready'))
+      finish()
       return
     }
 
