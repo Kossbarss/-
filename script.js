@@ -4,12 +4,6 @@
   window.VIP_TATTOO_LOCALE = 'ru'
   const modules = ['site-core.js', 'site-interactions.js', 'site-cases.js']
 
-  const casesStyle = document.createElement('link')
-  casesStyle.rel = 'stylesheet'
-  casesStyle.href = 'case-carousel-responsive.css'
-  casesStyle.dataset.vipCasesStyle = 'true'
-  document.head.appendChild(casesStyle)
-
   function finish() {
     const caseLayout = document.getElementById('caseFanLayout')
     caseLayout?.setAttribute('role', 'group')
