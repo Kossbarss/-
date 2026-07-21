@@ -14,6 +14,7 @@ permissions:
 
 jobs:
   build:
+    # Triggered after repository workflow permissions were updated.
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
