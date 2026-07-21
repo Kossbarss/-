@@ -1,6 +1,6 @@
 # VIP Tattoo School — unified build handoff
 
-Дата оновлення: 2026-07-20
+Дата оновлення: 2026-07-21
 
 ## Репозиторій
 
@@ -9,49 +9,68 @@
 - Не створювати нові гілки для дрібних змін.
 - Резервна гілка `vip-final-rebuild` залишається недоторканною.
 
-## Актуальні сторінки
+## Сторінки та стилі
 
 - RU: `index.html`
 - UA: `ua/index.html`
 - Основний CSS wrapper: `style.css`
 - Базові стилі: `style-base.css`
-- RU логіка: `script.js`
-- UA логіка: `ua/script.js`
-- RU loader ефектів: `particles.js`
-- UA loader: `ua/particles.js`
+- RU entry loader: `script.js`
+- UA entry loader: `ua/script.js`
+- Visual effects loader: `particles.js`
+- UA visual loader bridge: `ua/particles.js`
 
-## Локальні модулі ефектів
+## Основна логіка
 
-`particles.js` запускає модулі один раз і тільки в такому порядку:
+`script.js` і `ua/script.js` послідовно завантажують:
+
+1. `site-core.js` — локаль, перевірені контакти, реальні CTA, очищення placeholder-реквізитів, sticky-bar і статичні стрічки.
+2. `site-interactions.js` — hero carousel, FAQ, mobile menu, popup, focus management і keyboard/touch interaction.
+3. `site-cases.js` — RU/UA кейси з прямим ім’ям «Марго», без MutationObserver.
+
+Після завершення вони надсилають подію `vip:app-ready`.
+
+## Візуальні модулі
+
+`particles.js` чекає `vip:app-ready`, а потім запускає тільки локальні модулі:
 
 1. `hero-shader-background.js` — hero WebGL background.
 2. `pricing-reference.js` — pricing WebGL animation.
-3. `hero-front-facing.js` — локальне вирівнювання hero-карток.
-4. `case-name-margo.js` — безпечна заміна імені без нескінченного observer loop.
-5. `legacy-effects.js` — локальні footer particles і золота рамка галереї.
+3. `legacy-effects.js` — footer particles і золота рамка галереї; не запускається при `prefers-reduced-motion`.
 
-## Що виправлено
+Файли `hero-front-facing.js` та `case-name-margo.js` видалені як застарілі runtime-патчі.
 
-1. Default-гілка вирівняна з останнім підтвердженим snapshot.
-2. Прибрано зовнішнє завантаження старого `particles.js` через raw.githack.
-3. Прибрано запуск legacy-коду через `requestIdleCallback` і випадкові затримки.
-4. Усі модулі завантажуються локально, один раз і послідовно.
-5. Прибрано глобальне переписування `window.requestAnimationFrame`.
-6. Прибрано глобальне переписування `CSSStyleDeclaration.prototype.transform` та `setProperty`.
-7. Старий нескінченний цикл `levelCards` не перенесено в локальний файл.
-8. Виправлено нескінченний MutationObserver loop у блоці кейсів.
-9. Нижні секції RU та UA сторінок збережені в HTML.
-10. Типографічний експеримент RISE не підключений до `style.css`.
+## Виправлення поточного аудиту
+
+1. Прибрано дубльовані реалізації таймерів, hero carousel, меню, popup, FAQ і кейсів зі старих великих `script.js`.
+2. Прибрано штучний 10-хвилинний та персональний 5-денний countdown; непідтверджені таймери приховані.
+3. Непрацюючі форми замінюються на реальний Telegram CTA до `@mentor_tatoo_Viktoria_bot`.
+4. Instagram і Telegram-посилання отримують реальні адреси, `target="_blank"` та `rel="noopener noreferrer"`.
+5. Placeholder ІПН/РНОКПП `0000000000` і порожня оферта не показуються; замість них використовується перевірений контакт адміністратора.
+6. Hero carousel має одну реалізацію, прямий `rotateY(0deg)`, клавіатурне керування та зупинку rAF поза viewport/при прихованій вкладці.
+7. Mobile menu і popup мають ARIA-стани, Escape, focus trap і повернення фокуса.
+8. FAQ має `aria-expanded`, `aria-controls` та `aria-hidden`.
+9. Кейси мають кнопкову клавіатурну навігацію, локалізовані дані й не використовують observer для заміни імені.
+10. Footer canvas має статичний fallback-логотип; continuous canvas animation вимикається для reduced-motion.
+11. Injected mobile hero CSS перенесено в постійний `style.css`.
+12. Додано глобальний видимий `:focus-visible` і reset для runtime-кнопок.
+
+## Відомі межі
+
+- Проведена статична перевірка коду через GitHub connector.
+- Повна браузерна перевірка console/network, desktop/mobile layout та анімацій ще потрібна.
+- Дані про відгуки, партнерські студії, SafeInk, гарантію, кількість учнів і юридичні умови не підтверджені зовнішніми документами; не змінювати й не називати перевіреними без матеріалів користувача.
+- Для публічної оферти та юридичних реквізитів потрібні реальні дані власника.
 
 ## Правила подальшої роботи
 
 - Усі підтверджені зміни вносити в `claude/landing-page-redesign-bzy3r4`.
 - Не створювати окрему гілку для кожної зміни.
-- Не використовувати глобальні monkey patches браузерних API.
+- Не використовувати monkey patches браузерних API або MutationObserver для виправлення статичного контенту.
 - Не підключати код або стилі з інших комітів через CDN/raw.githack.
 - Після кожної зміни перевіряти RU і UA.
 - Не заявляти про візуальну справність без браузерної перевірки або скріншота.
 
 ## Запит для нового сеансу
 
-Відкрий репозиторій `Kossbarss/-`, default-гілку `claude/landing-page-redesign-bzy3r4`, прочитай `HANDOFF.md` і продовжуй роботу в цій самій гілці. Не створюй нову гілку без прямої команди користувача. Спочатку перевір RU та UA версії в браузері.
+Відкрий репозиторій `Kossbarss/-`, default-гілку `claude/landing-page-redesign-bzy3r4`, прочитай `HANDOFF.md` і продовжуй роботу в цій самій гілці. Не створюй нову гілку без прямої команди користувача. Спочатку перевір RU та UA версії в браузері, console і network.
