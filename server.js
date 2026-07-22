@@ -1,26 +1,24 @@
 const express = require('express')
-const fs = require('fs')
 const path = require('path')
 
 const app = express()
 const PORT = process.env.PORT || 3000
-const indexPath = path.join(__dirname, 'index.html')
+const siteRoot = path.join(__dirname, '_site')
 
-function sendBuiltLanding(_req, res, next) {
-  fs.readFile(indexPath, 'utf8', (error, html) => {
-    if (error) return next(error)
+app.use(express.static(siteRoot, { extensions: ['html'] }))
 
-    const page = html
-      .replace('</head>', '  <link rel="stylesheet" href="dist/card-fan-carousel.css" />\n</head>')
-      .replace('<script src="script.js"></script>', '<script src="dist/card-fan-carousel.js"></script>\n  <script src="script.js"></script>')
+app.get('*', (req, res, next) => {
+  if (req.path === '/' || req.path === '/index.html') {
+    return res.sendFile(path.join(siteRoot, 'index.html'))
+  }
 
-    res.type('html').send(page)
-  })
-}
+  if (req.path === '/ua' || req.path === '/ua/' || req.path === '/ua/index.html') {
+    return res.sendFile(path.join(siteRoot, 'ua', 'index.html'))
+  }
 
-app.get(['/', '/index.html'], sendBuiltLanding)
-app.use(express.static(path.join(__dirname)))
+  next()
+})
 
 app.listen(PORT, () => {
-  console.log(`VIP tattoo school landing running on port ${PORT}`)
+  console.log(`VIP tattoo school landing running at http://localhost:${PORT}`)
 })
