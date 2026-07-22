@@ -1,0 +1,138 @@
+/* Shared vertical rhythm and alignment grid for RU and UA landing pages. */
+
+:root {
+  --layout-section-y: clamp(3.25rem, 4vw, 4.5rem);
+  --layout-head-content: clamp(2.25rem, 3vw, 3rem);
+  --layout-kicker-title: clamp(0.875rem, 1vw, 1.125rem);
+  --layout-title-copy: 1rem;
+  --layout-group-gap: clamp(2rem, 2.8vw, 2.75rem);
+  --layout-major-gap: clamp(2.5rem, 3.5vw, 3.5rem);
+}
+
+/* Consistent section breathing room. Inline section exceptions remain intact. */
+.section {
+  padding-top: var(--layout-section-y);
+  padding-bottom: var(--layout-section-y);
+}
+
+/* One left grid and one heading rhythm for standard sections. */
+.section > .container > .section-head {
+  width: 100%;
+  max-width: min(48rem, 100%);
+  margin-top: 0;
+  margin-right: 0;
+  margin-bottom: var(--layout-head-content);
+  margin-left: 0;
+}
+
+.section-head .kicker {
+  margin-bottom: var(--layout-kicker-title);
+  line-height: 1.35;
+}
+
+.section-head h2 {
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.section-head p {
+  max-width: 44rem;
+  margin-top: var(--layout-title-copy);
+  line-height: 1.65;
+}
+
+/* Improve reading rhythm inside repeated content cards without changing their design. */
+.pain-card p,
+.feature-card p,
+.pillar-body p,
+.bonus-row p,
+.lesson-cell p,
+.case-carousel-detail p {
+  line-height: 1.6;
+}
+
+/* Hero: gallery, statistics and supporting copy must occupy separate rows. */
+@media (min-width: 701px) {
+  .hero-panorama-viewport {
+    transform: none !important;
+  }
+
+  .hero-panorama-shell {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .hero-stats {
+    margin-top: 1.75rem !important;
+    margin-bottom: 1.75rem !important;
+  }
+}
+
+/* Testimonial/cases section: heading, chat and cases share the same left edge. */
+.section-head:has(+ .chat-mock) {
+  max-width: min(50rem, 100%) !important;
+  margin-bottom: var(--layout-group-gap) !important;
+  text-align: left !important;
+}
+
+.section-head:has(+ .chat-mock) h2 {
+  max-width: 50rem !important;
+  line-height: 1.12 !important;
+  text-align: left !important;
+}
+
+.section-head + .chat-mock {
+  margin-top: 0 !important;
+  margin-right: 0 !important;
+  margin-bottom: var(--layout-major-gap) !important;
+  margin-left: 0 !important;
+  line-height: 1.55;
+}
+
+.chat-mock + .case-fan-head {
+  max-width: min(50rem, 100%) !important;
+  margin-top: 0 !important;
+  margin-right: 0 !important;
+  margin-bottom: var(--layout-head-content) !important;
+  margin-left: 0 !important;
+  text-align: left !important;
+}
+
+.chat-mock + .case-fan-head h2 {
+  line-height: 1.12 !important;
+  text-align: left !important;
+}
+
+.case-fan-wrap {
+  padding-top: 0 !important;
+}
+
+.case-fan-cta {
+  margin-top: var(--layout-group-gap) !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Keep CTA groups visually separate from following sections. */
+.section .btn + .contact-note,
+.section .avatar-row + .btn {
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --layout-section-y: clamp(2.5rem, 9vw, 3.5rem);
+    --layout-head-content: clamp(1.75rem, 7vw, 2.5rem);
+    --layout-group-gap: clamp(1.5rem, 6vw, 2rem);
+    --layout-major-gap: clamp(2rem, 8vw, 2.75rem);
+  }
+
+  .section-head h2,
+  .section-head:has(+ .chat-mock) h2,
+  .chat-mock + .case-fan-head h2 {
+    line-height: 1.15 !important;
+  }
+
+  .section-head + .chat-mock {
+    margin-top: 0 !important;
+  }
+}
