@@ -26,61 +26,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build cases carousel assets
+      - name: Build bilingual static site
         run: npm run build
-
-      - name: Prepare static site
-        run: |
-          mkdir -p _site
-          rsync -a ./ _site/ \
-            --exclude '.git/' \
-            --exclude '.github/' \
-            --exclude 'node_modules/' \
-            --exclude '_site/' \
-            --exclude 'src/' \
-            --exclude 'components/' \
-            --exclude 'package.json' \
-            --exclude 'package-lock.json' \
-            --exclude 'server.js' \
-            --exclude 'tsconfig.json'
-          python3 - <<'PY'
-          import os
-          from pathlib import Path
-
-          version = os.environ['GITHUB_SHA']
-
-          def inject_assets(path: Path, asset_prefix: str, extra_css: str | None = None) -> None:
-              html = path.read_text(encoding='utf-8')
-              carousel_css = f'  <link rel="stylesheet" href="{asset_prefix}dist/card-fan-carousel.css?v={version}" />'
-              shared_css = f'  <link rel="stylesheet" href="{asset_prefix}layout-rhythm.css?v={version}" />'
-              js_tag = f'<script src="{asset_prefix}dist/card-fan-carousel.js?v={version}"></script>'
-
-              if 'card-fan-carousel.css' not in html:
-                  html = html.replace('</head>', f'{carousel_css}\n</head>')
-
-              if extra_css and extra_css not in html:
-                  extra_css_tag = f'  <link rel="stylesheet" href="{extra_css}?v={version}" />'
-                  html = html.replace('</head>', f'{extra_css_tag}\n</head>')
-
-              if 'layout-rhythm.css' not in html:
-                  html = html.replace('</head>', f'{shared_css}\n</head>')
-
-              if 'card-fan-carousel.js' not in html:
-                  html = html.replace(
-                      '<script src="script.js"></script>',
-                      f'{js_tag}\n  <script src="script.js"></script>',
-                  )
-
-              path.write_text(html, encoding='utf-8')
-
-          inject_assets(Path('_site/index.html'), '')
-          inject_assets(Path('_site/ua/index.html'), '../', 'layout-fixes.css')
-          Path('_site/.nojekyll').touch()
-          PY
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
