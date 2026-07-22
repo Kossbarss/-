@@ -9,13 +9,19 @@
   --layout-major-gap: clamp(2.5rem, 3.5vw, 3.5rem);
 }
 
-/* Consistent section breathing room. Inline section exceptions remain intact. */
 .section {
   padding-top: var(--layout-section-y);
   padding-bottom: var(--layout-section-y);
 }
 
-/* One left grid and one heading rhythm for standard sections. */
+.section--paper-alt {
+  background: var(--paper-alt);
+}
+
+.section--centered {
+  text-align: center;
+}
+
 .section > .container > .section-head {
   width: 100%;
   max-width: min(48rem, 100%);
@@ -23,6 +29,28 @@
   margin-right: 0;
   margin-bottom: var(--layout-head-content);
   margin-left: 0;
+}
+
+.section-head--narrow {
+  max-width: min(45rem, 100%) !important;
+}
+
+.section-head--wide {
+  max-width: min(60rem, 100%) !important;
+}
+
+.section-head--centered {
+  margin-right: auto !important;
+  margin-left: auto !important;
+  text-align: center;
+}
+
+.section-head--flush {
+  margin-bottom: 0 !important;
+}
+
+.section-head--compact {
+  margin-bottom: 1.75rem !important;
 }
 
 .section-head .kicker {
@@ -41,7 +69,21 @@
   line-height: 1.65;
 }
 
-/* Improve reading rhythm inside repeated content cards without changing their design. */
+.section-head--centered p {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.section-cta {
+  margin-top: 2rem;
+}
+
+.guarantee-box--centered {
+  max-width: 45rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .pain-card p,
 .feature-card p,
 .pillar-body p,
@@ -51,7 +93,6 @@
   line-height: 1.6;
 }
 
-/* Hero: gallery, statistics and supporting copy must occupy separate rows. */
 @media (min-width: 701px) {
   .hero-panorama-viewport {
     transform: none !important;
@@ -68,37 +109,30 @@
   }
 }
 
-/* Testimonial/cases section: heading, chat and cases share the same left edge. */
-.section-head:has(+ .chat-mock) {
+.cases-section .cases-intro {
   max-width: min(50rem, 100%) !important;
   margin-bottom: var(--layout-group-gap) !important;
   text-align: left !important;
 }
 
-.section-head:has(+ .chat-mock) h2 {
+.cases-section .cases-intro h2 {
   max-width: 50rem !important;
   line-height: 1.12 !important;
   text-align: left !important;
 }
 
-.section-head + .chat-mock {
-  margin-top: 0 !important;
-  margin-right: 0 !important;
-  margin-bottom: var(--layout-major-gap) !important;
-  margin-left: 0 !important;
+.cases-section .chat-mock {
+  margin: 0 0 var(--layout-major-gap) !important;
   line-height: 1.55;
 }
 
-.chat-mock + .case-fan-head {
+.cases-section .case-fan-head {
   max-width: min(50rem, 100%) !important;
-  margin-top: 0 !important;
-  margin-right: 0 !important;
-  margin-bottom: var(--layout-head-content) !important;
-  margin-left: 0 !important;
+  margin: 0 0 var(--layout-head-content) !important;
   text-align: left !important;
 }
 
-.chat-mock + .case-fan-head h2 {
+.cases-section .case-fan-head h2 {
   line-height: 1.12 !important;
   text-align: left !important;
 }
@@ -112,7 +146,6 @@
   margin-bottom: 0.5rem !important;
 }
 
-/* Keep CTA groups visually separate from following sections. */
 .section .btn + .contact-note,
 .section .avatar-row + .btn {
   margin-top: 1.25rem;
@@ -127,12 +160,12 @@
   }
 
   .section-head h2,
-  .section-head:has(+ .chat-mock) h2,
-  .chat-mock + .case-fan-head h2 {
+  .cases-section .cases-intro h2,
+  .cases-section .case-fan-head h2 {
     line-height: 1.15 !important;
   }
 
-  .section-head + .chat-mock {
-    margin-top: 0 !important;
+  .section-cta {
+    margin-top: 1.5rem;
   }
 }
