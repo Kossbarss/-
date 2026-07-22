@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "build:types": "tsc --noEmit",
-    "build:styles": "tailwindcss -i ./src/card-fan-carousel.css -o ./dist/card-fan-carousel.css --minify",
+    "build:styles:prepare": "node scripts/prepare-carousel-css.mjs",
+    "build:styles": "npm run build:styles:prepare && tailwindcss -i ./.build/card-fan-carousel.css -o ./dist/card-fan-carousel.css --minify",
     "build:scripts": "esbuild ./src/case-carousel-entry.tsx --bundle --format=iife --platform=browser --target=es2020 --minify --outfile=./dist/card-fan-carousel.js",
-    "build": "npm run build:types && npm run build:styles && npm run build:scripts",
+    "build:site": "node scripts/build-site.mjs",
+    "build": "npm run build:types && npm run build:styles && npm run build:scripts && npm run build:site",
     "start": "npm run build && node server.js"
   },
   "dependencies": {
