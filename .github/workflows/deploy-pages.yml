@@ -55,15 +55,19 @@ jobs:
 
           def inject_assets(path: Path, asset_prefix: str, extra_css: str | None = None) -> None:
               html = path.read_text(encoding='utf-8')
-              css_tag = f'  <link rel="stylesheet" href="{asset_prefix}dist/card-fan-carousel.css?v={version}" />'
+              carousel_css = f'  <link rel="stylesheet" href="{asset_prefix}dist/card-fan-carousel.css?v={version}" />'
+              shared_css = f'  <link rel="stylesheet" href="{asset_prefix}layout-rhythm.css?v={version}" />'
               js_tag = f'<script src="{asset_prefix}dist/card-fan-carousel.js?v={version}"></script>'
 
               if 'card-fan-carousel.css' not in html:
-                  html = html.replace('</head>', f'{css_tag}\n</head>')
+                  html = html.replace('</head>', f'{carousel_css}\n</head>')
 
               if extra_css and extra_css not in html:
                   extra_css_tag = f'  <link rel="stylesheet" href="{extra_css}?v={version}" />'
                   html = html.replace('</head>', f'{extra_css_tag}\n</head>')
+
+              if 'layout-rhythm.css' not in html:
+                  html = html.replace('</head>', f'{shared_css}\n</head>')
 
               if 'card-fan-carousel.js' not in html:
                   html = html.replace(
