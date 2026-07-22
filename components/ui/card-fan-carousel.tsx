@@ -14,6 +14,9 @@ interface SocialCardsProps {
   onSelect?: (index: number) => void;
 }
 
+const MAX_VISIBLE = 7;
+const HALF = 3;
+
 const FAN_POSITIONS = [
   { rot: -21, scale: 0.7756, x: -30, y: 7.3, zIndex: 1 },
   { rot: -14, scale: 0.8498, x: -22, y: 4.0, zIndex: 2 },
@@ -24,59 +27,61 @@ const FAN_POSITIONS = [
   { rot: 21, scale: 0.7756, x: 30, y: 7.3, zIndex: 1 },
 ];
 
-function clamp(value: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, value));
+function getResponsiveMultiplier(width: number) {
+  if (width < 480) return 0.28;
+  if (width < 640) return 0.38;
+  if (width < 768) return 0.5;
+  if (width < 1024) return 0.75;
+  return 1.0;
 }
 
-function getVisibleCount(width: number) {
-  if (width < 640) return 3;
-  if (width < 1200) return 5;
-  return 7;
+function getHeightMultiplier(width: number) {
+  let idealPx: number;
+  if (width < 480) idealPx = 22 * 16;
+  else if (width < 640) idealPx = 26 * 16;
+  else if (width < 768) idealPx = 28 * 16;
+  else if (width < 1024) idealPx = 34 * 16;
+  else idealPx = 38 * 16;
+
+  const available = window.innerHeight * 0.7;
+  if (available >= idealPx) return 1;
+  return available / idealPx;
 }
 
-function getSlotConfig(visibleCount: number, slot: number) {
-  if (visibleCount === 7) return FAN_POSITIONS[slot];
-  if (visibleCount === 5) return FAN_POSITIONS[slot + 1];
-  if (visibleCount === 3) return FAN_POSITIONS[slot + 2];
-
-  const center = visibleCount >> 1;
-  const distance = visibleCount > 1 ? (slot - center) / center : 0;
+function getSlotConfig(totalCards: number, slot: number) {
+  if (totalCards >= MAX_VISIBLE) return FAN_POSITIONS[slot];
+  const center = totalCards >> 1;
+  const distance = totalCards > 1 ? (slot - center) / center : 0;
   const absDistance = Math.abs(distance);
   return {
     rot: distance * 21,
-    scale: 1 - 0.2244 * absDistance * absDistance,
+    scale: 1.0 - 0.2244 * absDistance * absDistance,
     x: distance * 30,
     y: absDistance * absDistance * 7.3,
     zIndex: 10 - Math.abs(slot - center),
   };
 }
 
-function getResponsiveMultiplier(width: number, visibleCount: number) {
-  if (visibleCount === 3) {
-    const cardWidthPx = (width < 480 ? 7.25 : 7.75) * 16;
-    const edgeHalfWidth = (cardWidthPx * 0.9346) / 2;
-    const targetCenter = width / 2 + 18 - edgeHalfWidth;
-    return clamp(targetCenter / (11 * 16), 0.68, 1.55);
-  }
-
-  if (visibleCount === 5) {
-    const cardWidthPx = 10.5 * 16;
-    const edgeHalfWidth = (cardWidthPx * 0.8498) / 2;
-    const targetCenter = width / 2 + 20 - edgeHalfWidth;
-    return clamp(targetCenter / (22 * 16), 0.72, 1.55);
-  }
-
-  const containerWidth = Math.min(1180, width - 48);
-  const cardWidthPx = 12.5 * 16;
-  const edgeHalfWidth = (cardWidthPx * 0.7756) / 2;
-  const targetCenter = containerWidth / 2 - 16 - edgeHalfWidth;
-  return clamp(targetCenter / (30 * 16), 0.82, 1);
+function getCardWidthRem(width: number) {
+  if (width < 480) return 6.5;
+  if (width < 640) return 7;
+  if (width < 768) return 8;
+  if (width < 1200) return 9.5;
+  return 11.5;
 }
 
-function getHeightMultiplier(width: number) {
-  const idealPx = width < 640 ? 20 * 16 : width < 1200 ? 27 * 16 : 32 * 16;
-  const available = window.innerHeight * 0.72;
-  return available >= idealPx ? 1 : available / idealPx;
+function getHorizontalEdgeAdjustment(width: number, baseX: number, multiplier: number) {
+  if (width >= 1200 || baseX === 0) return 0;
+
+  const cardWidthPx = getCardWidthRem(width) * 16;
+  const outerScale = FAN_POSITIONS[0].scale;
+  const halfOuterCardPx = (cardWidthPx * outerScale) / 2;
+  const desiredOuterCenterPx = width / 2 - halfOuterCardPx + 10;
+  const currentOuterCenterPx = Math.abs(FAN_POSITIONS[0].x * multiplier * 16);
+  const outerCorrectionRem = (desiredOuterCenterPx - currentOuterCenterPx) / 16;
+  const distanceRatio = Math.abs(baseX) / Math.abs(FAN_POSITIONS[0].x);
+
+  return Math.sign(baseX) * outerCorrectionRem * distanceRatio;
 }
 
 const ARROW_CLASSES =
@@ -90,19 +95,8 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
   const prevVisible = useRef<Set<number>>(new Set());
 
   const totalCards = cards.length;
-  const [viewportWidth, setViewportWidth] = useState(() =>
-    typeof window === "undefined" ? 1440 : window.innerWidth,
-  );
-  const visibleCount = Math.min(getVisibleCount(viewportWidth), Math.max(totalCards, 1));
-  const halfVisible = visibleCount >> 1;
-  const needsPagination = totalCards > visibleCount;
-  const [centerIndex, setCenterIndex] = useState(() => (totalCards ? Math.min(3, totalCards - 1) : 0));
-
-  useEffect(() => {
-    const handleResize = () => setViewportWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize, { passive: true });
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const needsPagination = totalCards > MAX_VISIBLE;
+  const [centerIndex, setCenterIndex] = useState(needsPagination ? HALF : totalCards >> 1);
 
   const getVisibleMap = useCallback(
     (center: number) => {
@@ -111,25 +105,26 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
         cards.forEach((_, index) => map.set(index, index));
         return map;
       }
-
-      for (let slot = 0; slot < visibleCount; slot++) {
-        const cardIndex = ((center + slot - halfVisible) % totalCards + totalCards) % totalCards;
-        map.set(cardIndex, slot);
+      for (let slot = 0; slot < MAX_VISIBLE; slot++) {
+        map.set(((center + slot - HALF) % totalCards + totalCards) % totalCards, slot);
       }
       return map;
     },
-    [cards, halfVisible, needsPagination, totalCards, visibleCount],
+    [totalCards, needsPagination, cards],
   );
 
   const selectCard = useCallback(
     (index: number) => {
       if (index < 0 || index >= totalCards) return;
-      onSelect?.(index);
-      if (index === centerIndex || isAnimating.current) return;
+      if (index === centerIndex) {
+        onSelect?.(index);
+        return;
+      }
+      if (isAnimating.current) return;
 
-      const clockwise = (index - centerIndex + totalCards) % totalCards;
-      const counterClockwise = (centerIndex - index + totalCards) % totalCards;
-      directionRef.current = clockwise <= counterClockwise ? "right" : "left";
+      const rightDistance = (index - centerIndex + totalCards) % totalCards;
+      const leftDistance = (centerIndex - index + totalCards) % totalCards;
+      directionRef.current = rightDistance <= leftDistance ? "right" : "left";
       isAnimating.current = true;
       setCenterIndex(index);
     },
@@ -138,14 +133,16 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
 
   const cycle = useCallback(
     (direction: "left" | "right") => {
-      if (isAnimating.current || totalCards < 2) return;
+      if (isAnimating.current || !needsPagination) return;
       isAnimating.current = true;
       directionRef.current = direction;
       setCenterIndex((previous) =>
-        direction === "right" ? (previous + 1) % totalCards : (previous - 1 + totalCards) % totalCards,
+        direction === "right"
+          ? (previous + 1) % totalCards
+          : (previous - 1 + totalCards) % totalCards,
       );
     },
-    [totalCards],
+    [totalCards, needsPagination],
   );
 
   useEffect(() => {
@@ -163,18 +160,20 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
     const previouslyVisible = prevVisible.current;
     const direction = directionRef.current;
     const isFirstMount = !hasEntered.current;
-    const multiplier = getResponsiveMultiplier(viewportWidth, visibleCount);
+    const viewportWidth = window.innerWidth;
+    const multiplier = getResponsiveMultiplier(viewportWidth);
     const heightMultiplier = getHeightMultiplier(viewportWidth);
-    const config = (slot: number) => getSlotConfig(visibleCount, slot);
+    const slotCount = needsPagination ? MAX_VISIBLE : totalCards;
+    const config = (slot: number) => getSlotConfig(slotCount, slot);
 
     if (isFirstMount) isAnimating.current = true;
 
     let completedCount = 0;
+    const visibleCount = visibleMap.size;
     const onCardDone = () => {
-      completedCount += 1;
-      if (completedCount >= visibleMap.size) {
+      if (++completedCount >= visibleCount) {
         isAnimating.current = false;
-        hasEntered.current = true;
+        if (isFirstMount) hasEntered.current = true;
       }
     };
 
@@ -184,8 +183,9 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
 
       if (slot !== undefined) {
         const { x, y, rot, scale, zIndex } = config(slot);
+        const edgeAdjustment = getHorizontalEdgeAdjustment(viewportWidth, x, multiplier);
         const target = {
-          x: `${x * multiplier}rem`,
+          x: `${x * multiplier + edgeAdjustment}rem`,
           y: `${y * heightMultiplier}rem`,
           rotation: rot,
           scale,
@@ -193,23 +193,25 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
           zIndex,
         };
 
+        card.style.pointerEvents = "auto";
+
         if (isFirstMount) {
           gsap.set(card, {
             x: 0,
-            y: `${10 * heightMultiplier}rem`,
+            y: `${12 * heightMultiplier}rem`,
             rotation: 0,
             scale: 0.5,
             opacity: 0,
           });
           gsap.to(card, {
             ...target,
-            duration: 1.05,
+            duration: 1.2,
             ease: "elastic.out(1.05,.78)",
-            delay: 0.16 + slot * 0.06,
+            delay: 0.2 + slot * 0.06,
             onComplete: onCardDone,
           });
         } else if (!wasVisible) {
-          const enterX = direction === "right" ? 36 : -36;
+          const enterX = direction === "right" ? 40 : -40;
           gsap.set(card, {
             x: `${enterX}rem`,
             y: `${y * heightMultiplier}rem`,
@@ -217,22 +219,34 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
             scale: 0.5,
             opacity: 0,
           });
-          gsap.to(card, { ...target, duration: 0.55, ease: "power2.out", onComplete: onCardDone });
+          gsap.to(card, {
+            ...target,
+            duration: 0.6,
+            ease: "power2.out",
+            onComplete: onCardDone,
+          });
         } else {
-          gsap.to(card, { ...target, duration: 0.48, ease: "power2.out", onComplete: onCardDone });
+          gsap.to(card, {
+            ...target,
+            duration: 0.5,
+            ease: "power2.out",
+            onComplete: onCardDone,
+          });
         }
       } else if (wasVisible) {
-        const exitX = direction === "right" ? -36 : 36;
+        const exitX = direction === "right" ? -40 : 40;
+        card.style.pointerEvents = "none";
         gsap.to(card, {
           x: `${exitX}rem`,
           opacity: 0,
           scale: 0.5,
           rotation: direction === "right" ? -30 : 30,
-          duration: 0.38,
+          duration: 0.4,
           ease: "power2.in",
           zIndex: 0,
         });
-      } else {
+      } else if (isFirstMount) {
+        card.style.pointerEvents = "none";
         gsap.set(card, { opacity: 0, scale: 0.3, x: 0, y: 0, zIndex: 0 });
       }
     });
@@ -251,27 +265,48 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
     const centerSlot = visibleEntries.length >> 1;
 
     const updateHoverLayout = (hoveredSlot: number | null) => {
-      const currentMultiplier = getResponsiveMultiplier(window.innerWidth, visibleEntries.length);
-      const currentHeightMultiplier = getHeightMultiplier(window.innerWidth);
+      const width = window.innerWidth;
+      const responsiveMultiplier = getResponsiveMultiplier(width);
+      const responsiveHeightMultiplier = getHeightMultiplier(width);
 
       visibleEntries.forEach(({ element, slot }) => {
         const base = config(slot);
-        let targetX = base.x * currentMultiplier;
-        let targetY = base.y * currentHeightMultiplier;
+        const edgeAdjustment = getHorizontalEdgeAdjustment(width, base.x, responsiveMultiplier);
+        let targetX = base.x * responsiveMultiplier + edgeAdjustment;
+        let targetY = base.y * responsiveHeightMultiplier;
         let targetRotation = base.rot;
         let targetScale = base.scale;
+        let delay = 0;
 
         if (hoveredSlot !== null) {
           const distance = Math.abs(slot - hoveredSlot);
+          delay = distance * 0.02;
+
           if (slot === hoveredSlot) {
-            targetY -= 1.5 * currentHeightMultiplier;
-            targetScale *= 1.045;
+            targetY -= 2.5 * responsiveHeightMultiplier;
+            targetScale *= 1.08;
           } else {
-            const pushStrength = visibleEntries.length === 7 ? 4.2 : visibleEntries.length === 5 ? 2.8 : 1.4;
-            if (slot < hoveredSlot) targetX -= pushStrength * currentMultiplier;
-            if (slot > hoveredSlot) targetX += pushStrength * currentMultiplier;
-            targetRotation += slot < centerSlot ? -1 / (distance + 1) : 1 / (distance + 1);
+            const normalized = centerSlot > 0 ? (slot - centerSlot) / centerSlot : 0;
+            const pushStrength =
+              8 * (1 - Math.abs(normalized)) * (1 + 0.2 * Math.max(0, 3 - distance));
+
+            if (slot < hoveredSlot) {
+              targetX -= pushStrength * responsiveMultiplier;
+              targetRotation -= 3 / (distance + 1);
+            } else {
+              targetX += pushStrength * responsiveMultiplier;
+              targetRotation += 3 / (distance + 1);
+            }
+
+            if (slot === visibleEntries.length - 1 && hoveredSlot < centerSlot) {
+              targetY -= 1 * responsiveHeightMultiplier;
+            }
+            if (slot === 0 && hoveredSlot > centerSlot) {
+              targetY -= 1 * responsiveHeightMultiplier;
+            }
           }
+        } else {
+          delay = Math.abs(slot - centerSlot) * 0.02;
         }
 
         gsap.to(element, {
@@ -279,8 +314,9 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
           y: `${targetY}rem`,
           rotation: targetRotation,
           scale: targetScale,
-          duration: 0.42,
-          ease: "elastic.out(1,.78)",
+          duration: 0.5,
+          delay,
+          ease: "elastic.out(1,.75)",
           overwrite: "auto",
         });
         gsap.set(element, { zIndex: base.zIndex });
@@ -290,9 +326,14 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
     const enterHandlers = visibleEntries.map(({ element, slot }) => {
       const handler = () => {
         if (isAnimating.current) return;
-        if (leaveTimer) clearTimeout(leaveTimer);
-        activeSlot = slot;
-        updateHoverLayout(slot);
+        if (leaveTimer) {
+          clearTimeout(leaveTimer);
+          leaveTimer = null;
+        }
+        if (activeSlot !== slot) {
+          activeSlot = slot;
+          updateHoverLayout(slot);
+        }
       };
       element.addEventListener("mouseenter", handler);
       return { element, handler };
@@ -308,12 +349,20 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
     };
     container.addEventListener("mouseleave", onMouseLeave);
 
+    const onResize = () => {
+      if (!isAnimating.current) updateHoverLayout(activeSlot);
+    };
+    window.addEventListener("resize", onResize);
+
     return () => {
-      enterHandlers.forEach(({ element, handler }) => element.removeEventListener("mouseenter", handler));
+      enterHandlers.forEach(({ element, handler }) =>
+        element.removeEventListener("mouseenter", handler),
+      );
       container.removeEventListener("mouseleave", onMouseLeave);
+      window.removeEventListener("resize", onResize);
       if (leaveTimer) clearTimeout(leaveTimer);
     };
-  }, [centerIndex, getVisibleMap, totalCards, viewportWidth, visibleCount]);
+  }, [centerIndex, totalCards, getVisibleMap, needsPagination]);
 
   if (!totalCards) return null;
 
@@ -332,9 +381,12 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
   );
 
   return (
-    <section className="flex flex-col items-center w-full py-4 lg:py-8 px-0 relative z-20 overflow-visible">
+    <section className="flex flex-col items-center w-full py-4 lg:py-8 px-4 md:px-8 relative z-20">
       <div className="flex items-center justify-center w-full max-w-[90rem] overflow-visible">
-        <div ref={containerRef} className="fan-layout flex relative justify-center items-center w-full max-w-[80rem] overflow-visible">
+        <div
+          ref={containerRef}
+          className="fan-layout flex relative justify-center items-center w-full max-w-[80rem] overflow-visible"
+        >
           {cards.map((card, index) => {
             const image = (
               <div className="relative w-full h-full overflow-hidden">
@@ -347,23 +399,19 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
               </div>
             );
 
-            if (card.linkUrl) {
-              return (
-                <a
-                  key={index}
-                  href={card.linkUrl}
-                  target={card.linkUrl.startsWith("http") ? "_blank" : "_self"}
-                  rel="noopener noreferrer"
-                  className="fan-card block cursor-pointer"
-                  data-card-index={index}
-                  onClick={() => onSelect?.(index)}
-                >
-                  {image}
-                </a>
-              );
-            }
-
-            return (
+            return card.linkUrl ? (
+              <a
+                key={index}
+                href={card.linkUrl}
+                target={card.linkUrl.startsWith("http") ? "_blank" : "_self"}
+                rel="noopener noreferrer"
+                className="fan-card block cursor-pointer"
+                data-card-index={index}
+                onClick={() => selectCard(index)}
+              >
+                {image}
+              </a>
+            ) : (
               <button
                 key={index}
                 type="button"
@@ -381,7 +429,7 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
       </div>
 
       {needsPagination && (
-        <div className="fan-controls flex items-center justify-center gap-4 mt-4 md:mt-6 z-30">
+        <div className="flex items-center justify-center gap-4 mt-4 md:mt-6 z-30">
           <button
             type="button"
             className={`${ARROW_CLASSES} w-10 h-10 md:w-12 md:h-12`}
@@ -392,13 +440,9 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
           </button>
           <div className="flex items-center gap-2">
             {cards.map((_, index) => (
-              <button
-                type="button"
+              <span
                 key={index}
-                aria-label={`Select card ${index + 1}`}
-                aria-current={index === centerIndex ? "true" : undefined}
-                onClick={() => selectCard(index)}
-                className={`block w-2 h-2 p-0 border-0 rounded-full transition-all duration-300 ${
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
                   index === centerIndex
                     ? "bg-black/70 dark:bg-white/80 scale-[1.3]"
                     : "bg-black/15 dark:bg-white/15"
