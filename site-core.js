@@ -15,7 +15,6 @@
     orderNote: 'Telegram відкриється в новій вкладці. Адміністратор уточнить формат участі та оплату.',
     instagram: 'Instagram Вікторії Понікарової',
     telegram: 'Telegram-адміністратор VIP tattoo school',
-    footerContact: 'Зв’язок з адміністратором',
     carousel: 'Фотогалерея навчання VIP tattoo school',
     previousCase: 'Попередній кейс',
     nextCase: 'Наступний кейс',
@@ -24,7 +23,6 @@
     orderNote: 'Telegram откроется в новой вкладке. Администратор уточнит формат участия и оплату.',
     instagram: 'Instagram Виктории Поникаровой',
     telegram: 'Telegram-администратор VIP tattoo school',
-    footerContact: 'Связаться с администратором',
     carousel: 'Фотогалерея обучения VIP tattoo school',
     previousCase: 'Предыдущий кейс',
     nextCase: 'Следующий кейс',
@@ -66,16 +64,6 @@
     link.href = window.location.href.split('#')[0]
     link.setAttribute('aria-current', 'page')
   })
-
-  const legalPlaceholder = [...document.querySelectorAll('.footer p')].find((node) => /0000000000/.test(node.textContent || ''))
-  if (legalPlaceholder) {
-    legalPlaceholder.replaceChildren()
-    const adminLink = document.createElement('a')
-    adminLink.className = 'legal-link'
-    adminLink.textContent = copy.footerContact
-    setExternalLink(adminLink, contacts.telegram, copy.telegram)
-    legalPlaceholder.appendChild(adminLink)
-  }
 
   document.querySelectorAll('.order-form, .popup-form').forEach((form) => {
     form.removeAttribute('onsubmit')
