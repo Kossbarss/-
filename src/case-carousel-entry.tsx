@@ -24,14 +24,16 @@ const CASES: CaseStudy[] = [
   { name: "Богдан, 27 лет", module: "Композиция · Модуль 7", text: "Перенёс навыки графического дизайна в тату и сформировал узнаваемую подачу.", stat: "18 работ в портфолио", accent: "#a62a21", dark: "#180a09" },
 ];
 
+const XML_ENTITIES: Record<string, string> = {
+  "<": "&lt;",
+  ">": "&gt;",
+  "&": "&amp;",
+  "'": "&apos;",
+  "\"": "&quot;",
+};
+
 function escapeXml(value: string) {
-  return value.replace(/[<>&'\"]/g, character => ({
-    "<": "&lt;",
-    ">": "&gt;",
-    "&": "&amp;",
-    "'": "&apos;",
-    "\"": "&quot;",
-  })[character] || character);
+  return value.replace(/[<>&'\"]/g, character => XML_ENTITIES[character] || character);
 }
 
 function createCaseImage(study: CaseStudy, index: number) {
