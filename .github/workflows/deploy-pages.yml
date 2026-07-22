@@ -48,17 +48,19 @@ jobs:
             --exclude 'server.js' \
             --exclude 'tsconfig.json'
           python3 - <<'PY'
+          import os
           from pathlib import Path
 
+          version = os.environ['GITHUB_SHA']
           page = Path('_site/index.html')
           html = page.read_text(encoding='utf-8')
           html = html.replace(
               '</head>',
-              '  <link rel="stylesheet" href="dist/card-fan-carousel.css" />\n</head>',
+              f'  <link rel="stylesheet" href="dist/card-fan-carousel.css?v={version}" />\n</head>',
           )
           html = html.replace(
               '<script src="script.js"></script>',
-              '<script src="dist/card-fan-carousel.js"></script>\n  <script src="script.js"></script>',
+              f'<script src="dist/card-fan-carousel.js?v={version}"></script>\n  <script src="script.js"></script>',
           )
           page.write_text(html, encoding='utf-8')
           Path('_site/.nojekyll').touch()
