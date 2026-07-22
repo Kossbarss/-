@@ -8,26 +8,29 @@
   max-width: 80rem;
   height: 38rem;
   margin-inline: auto;
-  overflow: hidden;
-  contain: layout paint;
+  overflow: visible;
+  contain: layout;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] > section {
   width: 100%;
   height: 100%;
   padding: 0 !important;
+  overflow: visible;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child {
   width: 100%;
-  height: 32rem;
+  height: 33rem;
+  overflow: visible;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
   position: relative;
   width: 100%;
   max-width: 80rem;
-  height: 32rem;
+  height: 33rem;
+  overflow: visible;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
@@ -35,15 +38,22 @@
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  width: 16rem;
+  width: 14rem;
   aspect-ratio: 9 / 16;
   overflow: hidden;
   border: 1px solid rgba(181, 126, 32, 0.34);
-  border-radius: 1.5rem;
+  border-radius: 1.4rem;
   background: #3b240f;
   box-shadow: 0 24px 50px -25px rgba(44, 24, 5, 0.72);
   transform-origin: 50% 90%;
   will-change: transform, opacity;
+  cursor: pointer;
+  outline: none;
+  touch-action: manipulation;
+}
+
+#caseFanLayout[data-card-fan-carousel="true"] .fan-card:focus-visible {
+  box-shadow: 0 0 0 3px rgba(181, 126, 32, 0.32), 0 24px 50px -25px rgba(44, 24, 5, 0.72);
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-card img {
@@ -72,31 +82,36 @@
 @media (max-width: 1023px) {
   #caseFanLayout[data-card-fan-carousel="true"] {
     height: 34rem;
+    overflow: visible;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
   #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-    height: 28rem;
+    height: 29rem;
+    overflow: visible;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 13rem;
+    width: 11.25rem;
+    border-radius: 1.2rem;
   }
 }
 
 @media (max-width: 767px) {
   #caseFanLayout[data-card-fan-carousel="true"] {
-    height: 29rem;
+    height: 30rem;
+    overflow: visible;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
   #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-    height: 23rem;
+    height: 25rem;
+    overflow: visible;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 10rem;
-    border-radius: 1.1rem;
+    width: 8.75rem;
+    border-radius: 1rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] > section > div:last-child {
@@ -110,16 +125,19 @@
 
 @media (max-width: 479px) {
   #caseFanLayout[data-card-fan-carousel="true"] {
-    height: 25rem;
+    height: 28rem;
+    overflow: visible;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
   #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-    height: 20rem;
+    height: 23rem;
+    overflow: visible;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 8rem;
+    width: 7.5rem;
+    border-radius: 0.9rem;
   }
 }
 
