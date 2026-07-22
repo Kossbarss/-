@@ -241,6 +241,29 @@
   transform: none;
 }
 
+/* Cases section spacing: heading, chat, subtitle and content form one balanced flow. */
+.section-head + .chat-mock {
+  margin-top: -1.25rem;
+}
+
+.chat-mock {
+  margin-bottom: 1.75rem;
+}
+
+.chat-mock + .case-fan-head {
+  margin-top: 0 !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.chat-mock + .case-fan-head .kicker {
+  margin-bottom: 0.75rem;
+}
+
+.case-fan-wrap {
+  padding-top: 0.25rem;
+  padding-bottom: 1.25rem;
+}
+
 @media (max-width: 1023px) {
   .case-fan-head {
     margin-bottom: 1.75rem !important;
@@ -260,6 +283,18 @@
 }
 
 @media (max-width: 767px) {
+  .section-head + .chat-mock {
+    margin-top: -0.75rem;
+  }
+
+  .chat-mock {
+    margin-bottom: 1.4rem;
+  }
+
+  .chat-mock + .case-fan-head {
+    margin-bottom: 1.25rem !important;
+  }
+
   .case-fan-head {
     margin-bottom: 1.5rem !important;
   }
