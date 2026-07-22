@@ -4,13 +4,15 @@
 
 .case-fan-head {
   position: relative;
-  z-index: 30;
-  margin-bottom: 2.25rem;
+  z-index: 2;
+  max-width: 44rem;
+  margin-bottom: 2rem !important;
 }
 
 .case-fan-wrap {
   position: relative;
-  z-index: 10;
+  z-index: 1;
+  display: block !important;
   width: 100%;
   margin-top: 0;
   overflow: visible;
@@ -18,35 +20,36 @@
 
 #caseFanLayout[data-card-fan-carousel="true"] {
   position: relative;
+  display: block !important;
+  align-items: initial !important;
+  justify-content: initial !important;
   width: 100%;
-  max-width: 62rem;
-  margin-inline: auto;
+  max-width: 64rem;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 auto;
   overflow: visible;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .case-carousel-demo,
-#caseFanLayout[data-card-fan-carousel="true"] .case-carousel-component,
-#caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
+#caseFanLayout[data-card-fan-carousel="true"] > .case-carousel-demo,
+#caseFanLayout[data-card-fan-carousel="true"] .case-carousel-component {
+  display: flex;
   width: 100%;
+  flex-direction: column;
+  align-items: center;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .case-carousel-demo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 1.25rem;
   min-height: 0;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .case-carousel-component {
-  padding: 0;
-}
-
 #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
   position: relative;
-  height: 21rem;
+  width: 100%;
   max-width: 58rem;
-  margin-inline: auto;
+  height: 18.5rem;
+  margin: 0 auto;
   overflow: visible;
 }
 
@@ -54,10 +57,10 @@
   position: absolute;
   top: 0;
   left: 50%;
-  width: 9.35rem;
-  aspect-ratio: 4 / 6.15;
+  width: 8.8rem;
+  aspect-ratio: 4 / 6;
   overflow: hidden;
-  border: 1px solid rgba(255, 244, 214, 0.16);
+  border: 1px solid rgba(255, 244, 214, 0.18);
   border-radius: 1rem;
   transform-origin: 50% 92%;
   will-change: transform, opacity;
@@ -77,59 +80,59 @@
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-card-shade {
-  background: linear-gradient(to top, rgba(7, 5, 5, 0.88) 0%, rgba(7, 5, 5, 0.18) 42%, transparent 68%);
+  background: linear-gradient(to top, rgba(7, 5, 5, 0.9) 0%, rgba(7, 5, 5, 0.22) 42%, transparent 70%);
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-card-copy {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  padding: 0.75rem 0.65rem 0.8rem;
+  gap: 0.18rem;
+  padding: 0.7rem 0.6rem 0.75rem;
   text-align: center;
   color: #fff;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-card-copy strong {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   line-height: 1.15;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-card-copy span {
-  color: rgba(255, 244, 216, 0.8);
-  font-size: 0.58rem;
+  color: rgba(255, 244, 216, 0.84);
+  font-size: 0.56rem;
   font-weight: 700;
   letter-spacing: 0.06em;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-pagination {
   position: relative;
-  z-index: 40;
+  z-index: 3;
   margin-top: 0.75rem;
   padding: 0.25rem 0;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-dots {
-  min-width: 8.5rem;
+  min-width: 8rem;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-arrow-control {
-  background: rgba(255, 252, 246, 0.96);
+  background: rgba(255, 252, 246, 0.97);
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .case-carousel-detail {
   position: relative;
-  z-index: 20;
+  z-index: 2;
   width: min(100%, 40rem);
   margin: 0 auto;
-  padding: 1.1rem 1.4rem 1.2rem;
+  padding: 1.15rem 1.45rem 1.25rem;
   text-align: center;
   border: 1px solid rgba(45, 32, 22, 0.1);
   border-radius: 1.2rem;
-  background: rgba(255, 252, 246, 0.9);
+  background: rgba(255, 252, 246, 0.94);
   box-shadow: 0 0.75rem 1.8rem rgba(35, 22, 12, 0.06);
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .case-carousel-detail span {
+#caseFanLayout[data-card-fan-carousel="true"] .case-carousel-detail-module {
   display: block;
   margin-bottom: 0.35rem;
   color: #9d281f;
@@ -147,99 +150,104 @@
 
 #caseFanLayout[data-card-fan-carousel="true"] .case-carousel-detail p {
   max-width: 34rem;
-  margin: 0.55rem auto 0;
+  margin: 0.6rem auto 0;
   color: rgba(26, 21, 18, 0.72);
   line-height: 1.5;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .case-carousel-detail strong {
   display: block;
-  margin-top: 0.65rem;
+  margin-top: 0.75rem;
   color: #d42e1f;
-  font-size: 0.92rem;
+  font-size: 0.94rem;
+}
+
+#caseFanDetail,
+#caseFanNav {
+  display: none !important;
 }
 
 .case-fan-cta {
-  position: relative;
-  z-index: 20;
-  display: flex;
+  position: relative !important;
+  z-index: 2;
+  display: flex !important;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 40rem;
-  margin: 1.35rem auto 0;
+  width: min(100%, 40rem);
+  margin: 1.5rem auto 0 !important;
   text-align: center;
+  transform: none !important;
 }
 
 .case-fan-cta .stars {
-  display: block;
+  position: static !important;
+  display: block !important;
+  margin: 0 !important;
   color: #c8952e;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   line-height: 1;
   letter-spacing: 0.14rem;
+  transform: none !important;
 }
 
 .case-fan-cta .avatar-row {
+  position: static !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  margin-top: 0.75rem;
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+  transform: none !important;
 }
 
 .case-fan-cta .avatars {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: 0.45rem;
 }
 
-.case-fan-cta .case-student-avatar {
-  display: grid;
-  place-items: center;
-  width: 2.35rem;
-  height: 2.35rem;
-  margin-left: -0.45rem;
+.case-fan-cta .avatar-tip {
+  position: relative;
+  margin-left: -0.5rem;
+}
+
+.case-fan-cta .avatar-tip:first-child {
+  margin-left: 0;
+}
+
+.case-fan-cta .avatar {
+  display: block;
+  width: 2.45rem;
+  height: 2.45rem;
   border: 2px solid #fffaf1;
   border-radius: 999px;
-  color: #fff;
-  background: linear-gradient(145deg, #8f211a, #ce9632);
-  font-size: 0.78rem;
-  font-weight: 800;
+  background-size: cover;
+  background-position: center;
   box-shadow: 0 0.35rem 0.8rem rgba(53, 26, 14, 0.16);
 }
 
 .case-fan-cta .count {
+  position: static !important;
   color: #221a16;
+  font-size: 1rem;
   font-weight: 800;
+  transform: none !important;
 }
 
 .case-fan-cta .btn {
+  position: relative !important;
   width: min(100%, 26rem);
-  margin-top: 1rem;
+  margin-top: 1.1rem !important;
+  transform: none;
 }
 
 @media (max-width: 1023px) {
   .case-fan-head {
-    margin-bottom: 2rem;
+    margin-bottom: 1.75rem !important;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] {
-    max-width: 52rem;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-    height: 19rem;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 8.6rem;
-  }
-}
-
-@media (max-width: 767px) {
-  .case-fan-head {
-    margin-bottom: 1.75rem;
+    max-width: 54rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
@@ -247,20 +255,30 @@
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 7.7rem;
+    width: 8rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .case-fan-head {
+    margin-bottom: 1.5rem !important;
+  }
+
+  #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
+    height: 15rem;
+  }
+
+  #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
+    width: 7rem;
     border-radius: 0.85rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card-copy strong {
-    font-size: 0.68rem;
+    font-size: 0.66rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card-copy span {
-    font-size: 0.5rem;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-pagination {
-    margin-top: 0.5rem;
+    font-size: 0.48rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .case-carousel-detail {
@@ -269,56 +287,45 @@
 }
 
 @media (max-width: 639px) {
-  .case-fan-head {
-    margin-bottom: 1.5rem;
-  }
-
   #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-    height: 14.5rem;
+    height: 13rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 6.45rem;
+    width: 6rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-dots {
-    min-width: 5.5rem;
+    min-width: 6rem;
     gap: 0.3rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-dots span {
-    width: 0.35rem;
-    height: 0.35rem;
+    width: 0.38rem;
+    height: 0.38rem;
   }
 
   .case-fan-cta {
-    margin-top: 1.1rem;
+    margin-top: 1.2rem !important;
   }
 }
 
 @media (max-width: 479px) {
   #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-    height: 12.75rem;
+    height: 11.5rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 5.65rem;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-card-copy {
-    padding: 0.5rem 0.35rem;
+    width: 5.35rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-pagination {
-    gap: 0.5rem;
+    gap: 0.45rem;
+    margin-top: 0.5rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-arrow-control {
     width: 2.25rem;
     height: 2.25rem;
-  }
-
-  .case-fan-cta .btn {
-    width: 100%;
   }
 }
