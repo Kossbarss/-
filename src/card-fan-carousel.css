@@ -6,31 +6,32 @@
   position: relative;
   width: 100%;
   max-width: 80rem;
-  height: 38rem;
+  height: 34rem;
   margin-inline: auto;
   overflow: visible;
   contain: layout;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] > section {
+#caseFanLayout[data-card-fan-carousel="true"] > section,
+#caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
+#caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
   width: 100%;
-  height: 100%;
-  padding: 0 !important;
   overflow: visible;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child {
-  width: 100%;
-  height: 33rem;
-  overflow: visible;
+#caseFanLayout[data-card-fan-carousel="true"] > section {
+  height: 100%;
+  padding: 0 !important;
+}
+
+#caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
+#caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
+  height: 29rem;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
   position: relative;
-  width: 100%;
   max-width: 80rem;
-  height: 33rem;
-  overflow: visible;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
@@ -38,13 +39,13 @@
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  width: 14rem;
+  width: 12.5rem;
   aspect-ratio: 9 / 16;
   overflow: hidden;
   border: 1px solid rgba(181, 126, 32, 0.34);
-  border-radius: 1.4rem;
+  border-radius: 1.25rem;
   background: #3b240f;
-  box-shadow: 0 24px 50px -25px rgba(44, 24, 5, 0.72);
+  box-shadow: 0 22px 46px -24px rgba(44, 24, 5, 0.68);
   transform-origin: 50% 90%;
   will-change: transform, opacity;
   cursor: pointer;
@@ -53,7 +54,7 @@
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-card:focus-visible {
-  box-shadow: 0 0 0 3px rgba(181, 126, 32, 0.32), 0 24px 50px -25px rgba(44, 24, 5, 0.72);
+  box-shadow: 0 0 0 3px rgba(181, 126, 32, 0.32), 0 22px 46px -24px rgba(44, 24, 5, 0.68);
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-card img {
@@ -64,7 +65,7 @@
   user-select: none;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] > section > div:last-child {
+#caseFanLayout[data-card-fan-carousel="true"] .fan-controls {
   margin-top: 0 !important;
 }
 
@@ -79,65 +80,64 @@
   border-color: rgba(35, 24, 17, 0.24);
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1199px) {
   #caseFanLayout[data-card-fan-carousel="true"] {
-    height: 34rem;
-    overflow: visible;
+    height: 31rem;
+    max-width: none;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
   #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-    height: 29rem;
-    overflow: visible;
+    height: 26rem;
+    max-width: none;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 11.25rem;
-    border-radius: 1.2rem;
+    width: 10.5rem;
+    border-radius: 1.1rem;
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 639px) {
   #caseFanLayout[data-card-fan-carousel="true"] {
-    height: 30rem;
-    overflow: visible;
+    height: 25rem;
+    width: 100%;
+    max-width: none;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
   #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-    height: 25rem;
-    overflow: visible;
+    height: 20rem;
+    width: 100%;
+    max-width: none;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 8.75rem;
-    border-radius: 1rem;
+    width: 7.75rem;
+    border-radius: 0.9rem;
   }
 
-  #caseFanLayout[data-card-fan-carousel="true"] > section > div:last-child {
+  #caseFanLayout[data-card-fan-carousel="true"] .fan-controls {
     gap: 0.65rem;
   }
 
-  #caseFanLayout[data-card-fan-carousel="true"] > section > div:last-child > div {
-    gap: 0.35rem;
+  #caseFanLayout[data-card-fan-carousel="true"] .fan-controls > div {
+    gap: 0.32rem;
   }
 }
 
 @media (max-width: 479px) {
   #caseFanLayout[data-card-fan-carousel="true"] {
-    height: 28rem;
-    overflow: visible;
+    height: 23.5rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
   #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-    height: 23rem;
-    overflow: visible;
+    height: 18.5rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 7.5rem;
-    border-radius: 0.9rem;
+    width: 7.25rem;
   }
 }
 
