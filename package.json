@@ -3,9 +3,24 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node server.js"
+    "build:types": "tsc --noEmit",
+    "build:styles": "tailwindcss -i ./src/card-fan-carousel.css -o ./dist/card-fan-carousel.css --minify",
+    "build:scripts": "esbuild ./src/case-carousel-entry.tsx --bundle --format=iife --platform=browser --target=es2020 --minify --outfile=./dist/card-fan-carousel.js",
+    "build": "npm run build:types && npm run build:styles && npm run build:scripts",
+    "start": "npm run build && node server.js"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "gsap": "^3.15.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "esbuild": "^0.25.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3"
   }
 }
