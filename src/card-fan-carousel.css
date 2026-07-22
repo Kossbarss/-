@@ -21,7 +21,7 @@
 
 #caseFanLayout[data-card-fan-carousel="true"] > section {
   height: 100%;
-  padding: 0 !important;
+  padding-inline: 0 !important;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
@@ -39,11 +39,11 @@
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  width: 12.5rem;
+  width: 11.5rem;
   aspect-ratio: 9 / 16;
   overflow: hidden;
   border: 1px solid rgba(181, 126, 32, 0.34);
-  border-radius: 1.25rem;
+  border-radius: 1.15rem;
   background: #3b240f;
   box-shadow: 0 22px 46px -24px rgba(44, 24, 5, 0.68);
   transform-origin: 50% 90%;
@@ -65,7 +65,7 @@
   user-select: none;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .fan-controls {
+#caseFanLayout[data-card-fan-carousel="true"] > section > div:last-child {
   margin-top: 0 !important;
 }
 
@@ -93,51 +93,68 @@
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 10.5rem;
-    border-radius: 1.1rem;
+    width: 9.5rem;
+    border-radius: 1rem;
   }
 }
 
-@media (max-width: 639px) {
+@media (max-width: 767px) {
   #caseFanLayout[data-card-fan-carousel="true"] {
-    height: 25rem;
-    width: 100%;
+    height: 28rem;
     max-width: none;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
   #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-    height: 20rem;
-    width: 100%;
+    height: 23rem;
     max-width: none;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 7.75rem;
-    border-radius: 0.9rem;
+    width: 8rem;
+    border-radius: 0.95rem;
+  }
+}
+
+@media (max-width: 639px) {
+  #caseFanLayout[data-card-fan-carousel="true"] {
+    height: 26rem;
+    width: 100%;
   }
 
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-controls {
+  #caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
+  #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
+    height: 21rem;
+    width: 100%;
+  }
+
+  #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
+    width: 7rem;
+    border-radius: 0.85rem;
+  }
+
+  #caseFanLayout[data-card-fan-carousel="true"] > section > div:last-child {
     gap: 0.65rem;
   }
 
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-controls > div {
+  #caseFanLayout[data-card-fan-carousel="true"] > section > div:last-child > div {
     gap: 0.32rem;
   }
 }
 
 @media (max-width: 479px) {
   #caseFanLayout[data-card-fan-carousel="true"] {
-    height: 23.5rem;
+    height: 24rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
   #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-    height: 18.5rem;
+    height: 19rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 7.25rem;
+    width: 6.5rem;
+    border-radius: 0.8rem;
   }
 }
 
