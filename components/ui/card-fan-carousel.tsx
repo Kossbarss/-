@@ -14,6 +14,9 @@ export interface CardItem {
 interface SocialCardsProps {
   cards: CardItem[];
   onActiveChange?: (index: number) => void;
+  previousLabel: string;
+  nextLabel: string;
+  cardLabel: string;
 }
 
 const MAX_VISIBLE = 7;
@@ -54,7 +57,7 @@ function getSlotConfig(totalCards: number, slot: number) {
 const ARROW_CLASSES =
   "fan-arrow-control relative flex items-center justify-center rounded-full border border-black/10 bg-white/95 text-black/55 cursor-pointer shrink-0 z-30 outline-none shadow-[0_6px_18px_rgba(0,0,0,0.10)] hover:border-black/25 hover:text-black/85 active:scale-95 transition-all duration-200";
 
-export default function SocialCards({ cards, onActiveChange }: SocialCardsProps) {
+export default function SocialCards({ cards, onActiveChange, previousLabel, nextLabel, cardLabel }: SocialCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isAnimating = useRef(false);
   const hasEntered = useRef(false);
@@ -234,7 +237,7 @@ export default function SocialCards({ cards, onActiveChange }: SocialCardsProps)
           {cards.map((card, index) => {
             const content = (
               <div className="fan-card-media relative h-full w-full overflow-hidden">
-                <img src={card.imgUrl} loading="lazy" alt={card.alt || `Кейс ${index + 1}`} className="absolute inset-0 h-full w-full object-cover" />
+                <img src={card.imgUrl} loading="lazy" alt={card.alt || `${cardLabel} ${index + 1}`} className="absolute inset-0 h-full w-full object-cover" />
                 <div className="fan-card-shade absolute inset-0" />
                 <div className="fan-card-copy absolute inset-x-0 bottom-0 z-20">
                   {card.title && <strong>{card.title}</strong>}
@@ -254,7 +257,7 @@ export default function SocialCards({ cards, onActiveChange }: SocialCardsProps)
 
       {needsPagination && (
         <div className="fan-pagination flex items-center justify-center gap-3">
-          <button className={`${ARROW_CLASSES} h-10 w-10`} onClick={() => cycle("left")} aria-label="Предыдущий кейс">
+          <button className={`${ARROW_CLASSES} h-10 w-10`} onClick={() => cycle("left")} aria-label={previousLabel}>
             {chevron("left")}
           </button>
           <div className="fan-dots flex items-center justify-center gap-1.5" aria-hidden="true">
@@ -262,7 +265,7 @@ export default function SocialCards({ cards, onActiveChange }: SocialCardsProps)
               <span key={index} className={`h-1.5 w-1.5 rounded-full transition-all duration-200 ${index === centerIndex ? "scale-125 bg-black/70" : "bg-black/15"}`} />
             ))}
           </div>
-          <button className={`${ARROW_CLASSES} h-10 w-10`} onClick={() => cycle("right")} aria-label="Следующий кейс">
+          <button className={`${ARROW_CLASSES} h-10 w-10`} onClick={() => cycle("right")} aria-label={nextLabel}>
             {chevron("right")}
           </button>
         </div>
