@@ -63,6 +63,9 @@ const UK_GRADUATES: Graduate[] = [
 
 const CASES = isUkrainian ? UK_CASES : RU_CASES;
 const GRADUATES = isUkrainian ? UK_GRADUATES : RU_GRADUATES;
+const labels = isUkrainian
+  ? { previous: "Попередній кейс", next: "Наступний кейс", card: "Кейс" }
+  : { previous: "Предыдущий кейс", next: "Следующий кейс", card: "Кейс" };
 
 const CARDS: CardItem[] = CASES.map(study => ({
   imgUrl: `${assetPrefix}${study.image}`,
@@ -77,7 +80,13 @@ function Demo() {
 
   return (
     <div className="case-carousel-demo">
-      <SocialCards cards={CARDS} onActiveChange={setActiveIndex} />
+      <SocialCards
+        cards={CARDS}
+        onActiveChange={setActiveIndex}
+        previousLabel={labels.previous}
+        nextLabel={labels.next}
+        cardLabel={labels.card}
+      />
       <article className="case-carousel-detail" aria-live="polite">
         <span className="case-carousel-detail-module">{activeCase.module}</span>
         <h3>{activeCase.name}</h3>
@@ -89,14 +98,10 @@ function Demo() {
 }
 
 const mountNode = document.getElementById("caseFanLayout");
-const legacyDetail = document.getElementById("caseFanDetail");
-const legacyNav = document.getElementById("caseFanNav");
 const stars = document.querySelector<HTMLElement>(".case-fan-cta .stars");
 const avatars = document.querySelector(".case-fan-cta .avatars");
 const count = document.querySelector<HTMLElement>(".case-fan-cta .count");
 
-if (legacyDetail) legacyDetail.hidden = true;
-if (legacyNav) legacyNav.hidden = true;
 if (stars) stars.textContent = "★★★★★";
 if (count) count.textContent = "300+";
 
