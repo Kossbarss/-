@@ -34,10 +34,10 @@ jobs:
       - name: Build cases carousel assets
         run: npm run build
 
-      - name: Prepare static site and source preview
+      - name: Prepare static site
         run: |
-          cp dist/card-fan-carousel.css dist/card-fan-carousel-69d448.css
-          cp dist/card-fan-carousel.js dist/card-fan-carousel-69d448.js
+          cp dist/card-fan-carousel.css dist/card-fan-carousel-source-v2.css
+          cp dist/card-fan-carousel.js dist/card-fan-carousel-source-v2.js
           mkdir -p _site
           rsync -a ./ _site/ \
             --exclude '.git/' \
@@ -52,18 +52,20 @@ jobs:
             --exclude 'tsconfig.json'
           python3 - <<'PY'
           from pathlib import Path
+
           page = Path('_site/index.html')
           html = page.read_text(encoding='utf-8')
-          html = html.replace('</head>', '  <link rel="stylesheet" href="dist/card-fan-carousel-69d448.css" />\n</head>')
-          html = html.replace('<script src="script.js"></script>', '<script src="dist/card-fan-carousel-69d448.js"></script>\n  <script src="script.js"></script>')
+          html = html.replace(
+              '</head>',
+              '  <link rel="stylesheet" href="dist/card-fan-carousel-source-v2.css" />\n</head>',
+          )
+          html = html.replace(
+              '<script src="script.js"></script>',
+              '<script src="dist/card-fan-carousel-source-v2.js"></script>\n  <script src="script.js"></script>',
+          )
           page.write_text(html, encoding='utf-8')
           Path('_site/.nojekyll').touch()
           PY
-          mkdir -p _source_preview
-          rsync -a _site/ _source_preview/
-          mkdir -p _site/cases-source-69d448
-          rsync -a _source_preview/ _site/cases-source-69d448/
-          rm -rf _source_preview
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
