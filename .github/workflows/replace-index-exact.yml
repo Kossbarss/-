@@ -91,11 +91,10 @@ jobs:
               raise SystemExit('Exact heading count verification failed')
           PY
 
-      - name: Commit rewritten index and remove workflow
+      - name: Commit rewritten index
         run: |
-          rm .github/workflows/replace-index-exact.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html .github/workflows/replace-index-exact.yml
+          git add index.html
           git commit -m "Replace index with exact provided cases section"
           git push origin HEAD:claude/landing-page-redesign-bzy3r4
