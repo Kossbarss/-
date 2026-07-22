@@ -36,8 +36,8 @@ jobs:
 
       - name: Prepare static site
         run: |
-          cp dist/card-fan-carousel.css dist/card-fan-carousel-source-v2.css
-          cp dist/card-fan-carousel.js dist/card-fan-carousel-source-v2.js
+          cp dist/card-fan-carousel.css dist/card-fan-carousel-final.css
+          cp dist/card-fan-carousel.js dist/card-fan-carousel-final.js
           mkdir -p _site
           rsync -a ./ _site/ \
             --exclude '.git/' \
@@ -57,11 +57,11 @@ jobs:
           html = page.read_text(encoding='utf-8')
           html = html.replace(
               '</head>',
-              '  <link rel="stylesheet" href="dist/card-fan-carousel-source-v2.css" />\n</head>',
+              '  <link rel="stylesheet" href="dist/card-fan-carousel-final.css" />\n</head>',
           )
           html = html.replace(
               '<script src="script.js"></script>',
-              '<script src="dist/card-fan-carousel-source-v2.js"></script>\n  <script src="script.js"></script>',
+              '<script src="dist/card-fan-carousel-final.js"></script>\n  <script src="script.js"></script>',
           )
           page.write_text(html, encoding='utf-8')
           Path('_site/.nojekyll').touch()
