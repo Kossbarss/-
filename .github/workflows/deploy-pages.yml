@@ -52,17 +52,25 @@ jobs:
           from pathlib import Path
 
           version = os.environ['GITHUB_SHA']
-          page = Path('_site/index.html')
-          html = page.read_text(encoding='utf-8')
-          html = html.replace(
-              '</head>',
-              f'  <link rel="stylesheet" href="dist/card-fan-carousel.css?v={version}" />\n</head>',
-          )
-          html = html.replace(
-              '<script src="script.js"></script>',
-              f'<script src="dist/card-fan-carousel.js?v={version}"></script>\n  <script src="script.js"></script>',
-          )
-          page.write_text(html, encoding='utf-8')
+
+          def inject_assets(path: Path, asset_prefix: str) -> None:
+              html = path.read_text(encoding='utf-8')
+              css_tag = f'  <link rel="stylesheet" href="{asset_prefix}dist/card-fan-carousel.css?v={version}" />'
+              js_tag = f'<script src="{asset_prefix}dist/card-fan-carousel.js?v={version}"></script>'
+
+              if 'card-fan-carousel.css' not in html:
+                  html = html.replace('</head>', f'{css_tag}\n</head>')
+
+              if 'card-fan-carousel.js' not in html:
+                  html = html.replace(
+                      '<script src="script.js"></script>',
+                      f'{js_tag}\n  <script src="script.js"></script>',
+                  )
+
+              path.write_text(html, encoding='utf-8')
+
+          inject_assets(Path('_site/index.html'), '')
+          inject_assets(Path('_site/ua/index.html'), '../')
           Path('_site/.nojekyll').touch()
           PY
 
