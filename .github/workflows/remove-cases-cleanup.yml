@@ -1,0 +1,234 @@
+name: Remove broken cases components
+
+on:
+  push:
+    branches:
+      - claude/landing-page-redesign-bzy3r4
+    paths:
+      - .github/workflows/remove-cases-cleanup.yml
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: claude/landing-page-redesign-bzy3r4
+          fetch-depth: 0
+
+      - name: Remove cases markup and obsolete code
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          import re
+
+          def remove_cases_markup(path: str) -> None:
+              file = Path(path)
+              text = file.read_text(encoding='utf-8')
+              start_marker = '      <div class="section-head case-fan-head">'
+              end_marker = '    </div>\n  </section>\n\n  <!-- ============ WHAT YOU GET'
+              start = text.find(start_marker)
+              end = text.find(end_marker, start)
+              if start < 0 or end < 0:
+                  raise RuntimeError(f'Cases markup markers not found in {path}')
+              text = text[:start] + text[end:]
+              text = text.replace(
+                  '<!-- ============ CHAT TESTIMONIAL + CASES ============ -->',
+                  '<!-- ============ CHAT TESTIMONIAL ============ -->',
+              )
+              file.write_text(text, encoding='utf-8')
+
+          remove_cases_markup('index.html')
+          remove_cases_markup('ua/index.html')
+
+          style_base = Path('style-base.css')
+          text = style_base.read_text(encoding='utf-8')
+          cases_marker = '/* ---------- Case studies: fan carousel ---------- */'
+          stars_marker = '.stars {'
+          cases_start = text.find(cases_marker)
+          stars_start = text.find(stars_marker, cases_start)
+          if cases_start < 0 or stars_start < 0:
+              raise RuntimeError('Case fan CSS markers not found in style-base.css')
+          text = text[:cases_start] + text[stars_start:]
+          avatar_start = text.find('.avatar-row {', cases_start)
+          testimonials_start = text.find('/* ---------- Testimonials ---------- */', avatar_start)
+          if avatar_start < 0 or testimonials_start < 0:
+              raise RuntimeError('Avatar CSS markers not found in style-base.css')
+          text = text[:avatar_start] + text[testimonials_start:]
+          style_base.write_text(text, encoding='utf-8')
+
+          style = Path('style.css')
+          text = style.read_text(encoding='utf-8')
+          text = text.replace(
+              '.sticky-bar-inner,\n.case-fan-card,\n.case-fan-dot {',
+              '.sticky-bar-inner {',
+          )
+          text = re.sub(
+              r'\n\.case-fan-card \{.*?\n\}\n\n\.case-fan-dot \{.*?\n\}\n',
+              '\n',
+              text,
+              count=1,
+              flags=re.S,
+          )
+          cases_start = text.find('/* Cases: one adaptive interaction model for touch, keyboard and pointer input. */')
+          contact_start = text.find('.contact-note {', cases_start)
+          if cases_start < 0 or contact_start < 0:
+              raise RuntimeError('Cases override markers not found in style.css')
+          text = text[:cases_start] + text[contact_start:]
+          responsive_start = text.find('/* Narrow phones: one dominant case with two readable neighbours. */')
+          hero_mobile_start = text.find('@media (max-width: 700px)', responsive_start)
+          if responsive_start < 0 or hero_mobile_start < 0:
+              raise RuntimeError('Responsive case CSS markers not found in style.css')
+          text = text[:responsive_start] + text[hero_mobile_start:]
+          text = re.sub(
+              r'\n\s*\.case-fan-card \{\n\s*transition: none;\n\s*\}\n',
+              '\n',
+              text,
+              count=1,
+          )
+          style.write_text(text, encoding='utf-8')
+
+          interactions = Path('site-interactions.js')
+          text = interactions.read_text(encoding='utf-8')
+          avatar_start = text.find("  document.querySelectorAll('.avatar-tip')")
+          closure = text.rfind('})()')
+          if avatar_start < 0 or closure < 0:
+              raise RuntimeError('Avatar interaction markers not found in site-interactions.js')
+          interactions.write_text(text[:avatar_start] + text[closure:], encoding='utf-8')
+
+          core = Path('site-core.js')
+          text = core.read_text(encoding='utf-8')
+          text = re.sub(r"\n\s*previousCase: '[^']*',", '', text)
+          text = re.sub(r"\n\s*nextCase: '[^']*',", '', text)
+          core.write_text(text, encoding='utf-8')
+
+          package = {
+              'name': 'vip-tattoo-school-landing',
+              'version': '1.0.0',
+              'private': True,
+              'scripts': {
+                  'start': 'node server.js',
+              },
+              'dependencies': {
+                  'express': '^4.19.2',
+              },
+          }
+          Path('package.json').write_text(json.dumps(package, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          deploy = '''name: Deploy landing to GitHub Pages
+
+          on:
+            push:
+              branches:
+                - claude/landing-page-redesign-bzy3r4
+            workflow_dispatch:
+
+          permissions:
+            contents: read
+            pages: write
+            id-token: write
+
+          concurrency:
+            group: pages
+            cancel-in-progress: true
+
+          jobs:
+            build:
+              runs-on: ubuntu-latest
+              steps:
+                - name: Checkout repository
+                  uses: actions/checkout@v4
+
+                - name: Prepare static site
+                  run: |
+                    mkdir -p _site
+                    rsync -a ./ _site/ \\
+                      --exclude '.git/' \\
+                      --exclude '.github/' \\
+                      --exclude 'node_modules/' \\
+                      --exclude '_site/' \\
+                      --exclude 'package.json' \\
+                      --exclude 'package-lock.json' \\
+                      --exclude 'server.js'
+                    touch _site/.nojekyll
+
+                - name: Configure GitHub Pages
+                  uses: actions/configure-pages@v5
+                  with:
+                    enablement: true
+
+                - name: Upload Pages artifact
+                  uses: actions/upload-pages-artifact@v3
+                  with:
+                    path: _site
+
+            deploy:
+              environment:
+                name: github-pages
+                url: ${{ steps.deployment.outputs.page_url }}
+              runs-on: ubuntu-latest
+              needs: build
+              steps:
+                - name: Deploy to GitHub Pages
+                  id: deployment
+                  uses: actions/deploy-pages@v4
+          '''
+          import textwrap
+          Path('.github/workflows/deploy-pages.yml').write_text(textwrap.dedent(deploy), encoding='utf-8')
+          PY
+
+          rm -f \
+            components/ui/card-fan-carousel.tsx \
+            src/case-carousel-entry.tsx \
+            src/case-fan-entry.tsx \
+            src/card-fan-carousel.css \
+            src/nodejs-timeout-compat.tsx \
+            site-cases.js \
+            case-fan-layout-fix.css \
+            case-name-margo.js \
+            tsconfig.json \
+            .github/workflows/build-check.yml
+
+          rm -f dist/card-fan-carousel*.css dist/card-fan-carousel*.js
+          rm -f assets/avatar-1.jpg assets/avatar-2.jpg assets/avatar-3.jpg assets/avatar-4.jpg assets/avatar-5.jpg
+          rmdir components/ui components src dist 2>/dev/null || true
+
+      - name: Refresh dependency lockfile
+        run: npm install --package-lock-only --ignore-scripts
+
+      - name: Verify all cases remnants are gone
+        run: |
+          rm -f .github/workflows/remove-cases-cleanup.yml
+
+          test ! -e components/ui/card-fan-carousel.tsx
+          test ! -e src/case-carousel-entry.tsx
+          test ! -e site-cases.js
+          test ! -e case-fan-layout-fix.css
+
+          for pattern in caseFan case-fan card-fan site-cases SocialCards previousCase nextCase avatar-tip; do
+            if grep -RIn --exclude-dir=.git --exclude='remove-cases-cleanup.yml' "$pattern" .; then
+              echo "Residual cases reference found: $pattern"
+              exit 1
+            fi
+          done
+
+          if grep -RIn '"gsap"\|"react"\|"react-dom"\|tailwindcss\|esbuild\|typescript' package.json package-lock.json; then
+            echo 'Residual component dependency found'
+            exit 1
+          fi
+
+          git diff --check
+
+      - name: Commit clean landing
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Remove broken cases carousel and all legacy remnants'
+          git push origin HEAD:claude/landing-page-redesign-bzy3r4
