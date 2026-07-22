@@ -120,38 +120,5 @@ if (mountNode) {
   mountNode.setAttribute("aria-label", document.documentElement.lang === "uk" ? "Кейси учнів" : "Кейсы учеников");
   if (legacyNav) legacyNav.hidden = true;
 
-  renderDetail(3);
-  createRoot(mountNode).render(<SocialCards cards={cards} />);
-
-  requestAnimationFrame(() => {
-    const cardElements = Array.from(mountNode.querySelectorAll<HTMLElement>(".fan-card"));
-    cardElements.forEach((card, index) => {
-      card.tabIndex = 0;
-      card.setAttribute("role", "button");
-      card.setAttribute("aria-label", studies[index]?.name || `Case ${index + 1}`);
-
-      const selectCard = () => renderDetail(index);
-      card.addEventListener("click", selectCard);
-      card.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          selectCard();
-        }
-      });
-    });
-
-    const previousButton = mountNode.querySelector<HTMLButtonElement>('button[aria-label="Previous"]');
-    const dotsContainer = previousButton?.nextElementSibling;
-    if (!dotsContainer) return;
-
-    const syncDetail = () => {
-      const dots = Array.from(dotsContainer.querySelectorAll("span"));
-      const activeIndex = dots.findIndex((dot) => dot.className.includes("scale-[1.3]"));
-      if (activeIndex >= 0) renderDetail(activeIndex);
-    };
-
-    const observer = new MutationObserver(syncDetail);
-    observer.observe(dotsContainer, { subtree: true, attributes: true, attributeFilter: ["class"] });
-    syncDetail();
-  });
+  createRoot(mountNode).render(<SocialCards cards={cards} onSelect={renderDetail} />);
 }
