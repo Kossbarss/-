@@ -6,10 +6,8 @@
   position: relative;
   width: 100%;
   max-width: 80rem;
-  height: 34rem;
   margin-inline: auto;
   overflow: visible;
-  contain: layout;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] > section,
@@ -19,147 +17,66 @@
   overflow: visible;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] > section {
-  height: 100%;
-  padding-inline: 0 !important;
-}
-
-#caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
-#caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-  height: 29rem;
-}
-
 #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
   position: relative;
-  max-width: 80rem;
+  height: 38rem;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
   position: absolute;
   top: 50%;
   left: 50%;
-  translate: -50% -50%;
-  width: 11.5rem;
-  aspect-ratio: 9 / 16;
+  width: 12rem;
+  aspect-ratio: 4 / 7;
   overflow: hidden;
-  border: 1px solid rgba(181, 126, 32, 0.34);
-  border-radius: 1.15rem;
-  background: #3b240f;
-  box-shadow: 0 22px 46px -24px rgba(44, 24, 5, 0.68);
   transform-origin: 50% 90%;
   will-change: transform, opacity;
-  cursor: pointer;
-  outline: none;
-  touch-action: manipulation;
-}
-
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card:focus-visible {
-  box-shadow: 0 0 0 3px rgba(181, 126, 32, 0.32), 0 22px 46px -24px rgba(44, 24, 5, 0.68);
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  pointer-events: none;
   user-select: none;
+  pointer-events: none;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] > section > div:last-child {
-  margin-top: 0 !important;
-}
-
-#caseFanLayout[data-card-fan-carousel="true"] button {
-  color: rgba(35, 24, 17, 0.7);
-  border-color: rgba(35, 24, 17, 0.12);
-  background: rgba(255, 255, 255, 0.56);
-}
-
-#caseFanLayout[data-card-fan-carousel="true"] button:hover {
-  color: rgba(35, 24, 17, 0.95);
-  border-color: rgba(35, 24, 17, 0.24);
-}
-
-@media (max-width: 1199px) {
-  #caseFanLayout[data-card-fan-carousel="true"] {
-    height: 31rem;
-    max-width: none;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
+@media (max-width: 1023px) {
   #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-    height: 26rem;
-    max-width: none;
+    height: 34rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 9.5rem;
-    border-radius: 1rem;
+    width: 11rem;
   }
 }
 
 @media (max-width: 767px) {
-  #caseFanLayout[data-card-fan-carousel="true"] {
-    height: 28rem;
-    max-width: none;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
   #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-    height: 23rem;
-    max-width: none;
+    height: 28rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 8rem;
-    border-radius: 0.95rem;
+    width: 10rem;
   }
 }
 
 @media (max-width: 639px) {
-  #caseFanLayout[data-card-fan-carousel="true"] {
-    height: 26rem;
-    width: 100%;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
   #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-    height: 21rem;
-    width: 100%;
+    height: 26rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 7rem;
-    border-radius: 0.85rem;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] > section > div:last-child {
-    gap: 0.65rem;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] > section > div:last-child > div {
-    gap: 0.32rem;
+    width: 9rem;
   }
 }
 
 @media (max-width: 479px) {
-  #caseFanLayout[data-card-fan-carousel="true"] {
-    height: 24rem;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] > section > div:first-child,
   #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
-    height: 19rem;
+    height: 22rem;
   }
 
   #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 6.5rem;
-    border-radius: 0.8rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    transition: none;
+    width: 8rem;
   }
 }
