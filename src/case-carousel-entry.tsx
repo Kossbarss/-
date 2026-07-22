@@ -91,8 +91,8 @@ const mountNode = document.getElementById("caseFanLayout");
 const detailNode = document.getElementById("caseFanDetail");
 const legacyNav = document.getElementById("caseFanNav");
 
-function renderDetail(index: number) {
-  const study = studies[index];
+function renderInitialDetail() {
+  const study = studies[3] || studies[0];
   if (!detailNode || !study) return;
   detailNode.replaceChildren();
 
@@ -120,5 +120,6 @@ if (mountNode) {
   mountNode.setAttribute("aria-label", document.documentElement.lang === "uk" ? "Кейси учнів" : "Кейсы учеников");
   if (legacyNav) legacyNav.hidden = true;
 
-  createRoot(mountNode).render(<SocialCards cards={cards} onSelect={renderDetail} />);
+  renderInitialDetail();
+  createRoot(mountNode).render(<SocialCards cards={cards} />);
 }
