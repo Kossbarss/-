@@ -14,9 +14,6 @@ interface SocialCardsProps {
   onSelect?: (index: number) => void;
 }
 
-const MAX_VISIBLE = 7;
-const HALF = 3;
-
 const FAN_POSITIONS = [
   { rot: -21, scale: 0.7756, x: -30, y: 7.3, zIndex: 1 },
   { rot: -14, scale: 0.8498, x: -22, y: 4.0, zIndex: 2 },
@@ -27,39 +24,59 @@ const FAN_POSITIONS = [
   { rot: 21, scale: 0.7756, x: 30, y: 7.3, zIndex: 1 },
 ];
 
-function getResponsiveMultiplier(width: number) {
-  if (width < 480) return 0.34;
-  if (width < 640) return 0.58;
-  if (width < 768) return 0.72;
-  if (width < 1024) return 0.94;
-  return 1.0;
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
 }
 
-function getHeightMultiplier(width: number) {
-  let idealPx: number;
-  if (width < 480) idealPx = 22 * 16;
-  else if (width < 640) idealPx = 26 * 16;
-  else if (width < 768) idealPx = 28 * 16;
-  else if (width < 1024) idealPx = 34 * 16;
-  else idealPx = 38 * 16;
-
-  const available = window.innerHeight * 0.7;
-  if (available >= idealPx) return 1;
-  return available / idealPx;
+function getVisibleCount(width: number) {
+  if (width < 640) return 3;
+  if (width < 1200) return 5;
+  return 7;
 }
 
-function getSlotConfig(totalCards: number, slot: number) {
-  if (totalCards >= MAX_VISIBLE) return FAN_POSITIONS[slot];
-  const center = totalCards >> 1;
-  const distance = totalCards > 1 ? (slot - center) / center : 0;
+function getSlotConfig(visibleCount: number, slot: number) {
+  if (visibleCount === 7) return FAN_POSITIONS[slot];
+  if (visibleCount === 5) return FAN_POSITIONS[slot + 1];
+  if (visibleCount === 3) return FAN_POSITIONS[slot + 2];
+
+  const center = visibleCount >> 1;
+  const distance = visibleCount > 1 ? (slot - center) / center : 0;
   const absDistance = Math.abs(distance);
   return {
     rot: distance * 21,
-    scale: 1.0 - 0.2244 * absDistance * absDistance,
+    scale: 1 - 0.2244 * absDistance * absDistance,
     x: distance * 30,
     y: absDistance * absDistance * 7.3,
     zIndex: 10 - Math.abs(slot - center),
   };
+}
+
+function getResponsiveMultiplier(width: number, visibleCount: number) {
+  if (visibleCount === 3) {
+    const cardWidthPx = (width < 480 ? 7.25 : 7.75) * 16;
+    const edgeHalfWidth = (cardWidthPx * 0.9346) / 2;
+    const targetCenter = width / 2 + 18 - edgeHalfWidth;
+    return clamp(targetCenter / (11 * 16), 0.68, 1.55);
+  }
+
+  if (visibleCount === 5) {
+    const cardWidthPx = 10.5 * 16;
+    const edgeHalfWidth = (cardWidthPx * 0.8498) / 2;
+    const targetCenter = width / 2 + 20 - edgeHalfWidth;
+    return clamp(targetCenter / (22 * 16), 0.72, 1.55);
+  }
+
+  const containerWidth = Math.min(1180, width - 48);
+  const cardWidthPx = 12.5 * 16;
+  const edgeHalfWidth = (cardWidthPx * 0.7756) / 2;
+  const targetCenter = containerWidth / 2 - 16 - edgeHalfWidth;
+  return clamp(targetCenter / (30 * 16), 0.82, 1);
+}
+
+function getHeightMultiplier(width: number) {
+  const idealPx = width < 640 ? 20 * 16 : width < 1200 ? 27 * 16 : 32 * 16;
+  const available = window.innerHeight * 0.72;
+  return available >= idealPx ? 1 : available / idealPx;
 }
 
 const ARROW_CLASSES =
@@ -73,29 +90,42 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
   const prevVisible = useRef<Set<number>>(new Set());
 
   const totalCards = cards.length;
-  const needsPagination = totalCards > MAX_VISIBLE;
-  const [centerIndex, setCenterIndex] = useState(needsPagination ? HALF : totalCards >> 1);
+  const [viewportWidth, setViewportWidth] = useState(() =>
+    typeof window === "undefined" ? 1440 : window.innerWidth,
+  );
+  const visibleCount = Math.min(getVisibleCount(viewportWidth), Math.max(totalCards, 1));
+  const halfVisible = visibleCount >> 1;
+  const needsPagination = totalCards > visibleCount;
+  const [centerIndex, setCenterIndex] = useState(() => (totalCards ? Math.min(3, totalCards - 1) : 0));
+
+  useEffect(() => {
+    const handleResize = () => setViewportWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize, { passive: true });
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const getVisibleMap = useCallback(
     (center: number) => {
       const map = new Map<number, number>();
       if (!needsPagination) {
-        cards.forEach((_, i) => map.set(i, i));
+        cards.forEach((_, index) => map.set(index, index));
         return map;
       }
-      for (let slot = 0; slot < MAX_VISIBLE; slot++) {
-        map.set(((center + slot - HALF) % totalCards + totalCards) % totalCards, slot);
+
+      for (let slot = 0; slot < visibleCount; slot++) {
+        const cardIndex = ((center + slot - halfVisible) % totalCards + totalCards) % totalCards;
+        map.set(cardIndex, slot);
       }
       return map;
     },
-    [totalCards, needsPagination, cards],
+    [cards, halfVisible, needsPagination, totalCards, visibleCount],
   );
 
   const selectCard = useCallback(
     (index: number) => {
       if (index < 0 || index >= totalCards) return;
       onSelect?.(index);
-      if (!needsPagination || index === centerIndex || isAnimating.current) return;
+      if (index === centerIndex || isAnimating.current) return;
 
       const clockwise = (index - centerIndex + totalCards) % totalCards;
       const counterClockwise = (centerIndex - index + totalCards) % totalCards;
@@ -103,21 +133,19 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
       isAnimating.current = true;
       setCenterIndex(index);
     },
-    [centerIndex, needsPagination, onSelect, totalCards],
+    [centerIndex, onSelect, totalCards],
   );
 
   const cycle = useCallback(
     (direction: "left" | "right") => {
-      if (isAnimating.current || !needsPagination) return;
+      if (isAnimating.current || totalCards < 2) return;
       isAnimating.current = true;
       directionRef.current = direction;
-      setCenterIndex((previous) => {
-        const next = direction === "right" ? (previous + 1) % totalCards : (previous - 1 + totalCards) % totalCards;
-        onSelect?.(next);
-        return next;
-      });
+      setCenterIndex((previous) =>
+        direction === "right" ? (previous + 1) % totalCards : (previous - 1 + totalCards) % totalCards,
+      );
     },
-    [totalCards, needsPagination, onSelect],
+    [totalCards],
   );
 
   useEffect(() => {
@@ -135,19 +163,18 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
     const previouslyVisible = prevVisible.current;
     const direction = directionRef.current;
     const isFirstMount = !hasEntered.current;
-    const multiplier = getResponsiveMultiplier(window.innerWidth);
-    const hMult = getHeightMultiplier(window.innerWidth);
-    const slotCount = needsPagination ? MAX_VISIBLE : totalCards;
-    const config = (slot: number) => getSlotConfig(slotCount, slot);
+    const multiplier = getResponsiveMultiplier(viewportWidth, visibleCount);
+    const heightMultiplier = getHeightMultiplier(viewportWidth);
+    const config = (slot: number) => getSlotConfig(visibleCount, slot);
 
     if (isFirstMount) isAnimating.current = true;
 
     let completedCount = 0;
-    const visibleCount = visibleMap.size;
     const onCardDone = () => {
-      if (++completedCount >= visibleCount) {
+      completedCount += 1;
+      if (completedCount >= visibleMap.size) {
         isAnimating.current = false;
-        if (isFirstMount) hasEntered.current = true;
+        hasEntered.current = true;
       }
     };
 
@@ -159,7 +186,7 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
         const { x, y, rot, scale, zIndex } = config(slot);
         const target = {
           x: `${x * multiplier}rem`,
-          y: `${y * hMult}rem`,
+          y: `${y * heightMultiplier}rem`,
           rotation: rot,
           scale,
           opacity: 1,
@@ -167,49 +194,55 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
         };
 
         if (isFirstMount) {
-          gsap.set(card, { x: 0, y: `${12 * hMult}rem`, rotation: 0, scale: 0.5, opacity: 0 });
+          gsap.set(card, {
+            x: 0,
+            y: `${10 * heightMultiplier}rem`,
+            rotation: 0,
+            scale: 0.5,
+            opacity: 0,
+          });
           gsap.to(card, {
             ...target,
-            duration: 1.2,
+            duration: 1.05,
             ease: "elastic.out(1.05,.78)",
-            delay: 0.2 + slot * 0.06,
+            delay: 0.16 + slot * 0.06,
             onComplete: onCardDone,
           });
         } else if (!wasVisible) {
-          const enterX = direction === "right" ? 40 : -40;
+          const enterX = direction === "right" ? 36 : -36;
           gsap.set(card, {
             x: `${enterX}rem`,
-            y: `${y * hMult}rem`,
+            y: `${y * heightMultiplier}rem`,
             rotation: direction === "right" ? 30 : -30,
             scale: 0.5,
             opacity: 0,
           });
-          gsap.to(card, { ...target, duration: 0.6, ease: "power2.out", onComplete: onCardDone });
+          gsap.to(card, { ...target, duration: 0.55, ease: "power2.out", onComplete: onCardDone });
         } else {
-          gsap.to(card, { ...target, duration: 0.5, ease: "power2.out", onComplete: onCardDone });
+          gsap.to(card, { ...target, duration: 0.48, ease: "power2.out", onComplete: onCardDone });
         }
       } else if (wasVisible) {
-        const exitX = direction === "right" ? -40 : 40;
+        const exitX = direction === "right" ? -36 : 36;
         gsap.to(card, {
           x: `${exitX}rem`,
           opacity: 0,
           scale: 0.5,
           rotation: direction === "right" ? -30 : 30,
-          duration: 0.4,
+          duration: 0.38,
           ease: "power2.in",
           zIndex: 0,
         });
-      } else if (isFirstMount) {
+      } else {
         gsap.set(card, { opacity: 0, scale: 0.3, x: 0, y: 0, zIndex: 0 });
       }
     });
 
     prevVisible.current = new Set(visibleMap.keys());
 
-    const visibleEntries: { el: HTMLElement; slot: number }[] = [];
+    const visibleEntries: { element: HTMLElement; slot: number }[] = [];
     cardElements.forEach((element, index) => {
       const slot = visibleMap.get(index);
-      if (slot !== undefined) visibleEntries.push({ el: element, slot });
+      if (slot !== undefined) visibleEntries.push({ element, slot });
     });
     visibleEntries.sort((a, b) => a.slot - b.slot);
 
@@ -218,71 +251,51 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
     const centerSlot = visibleEntries.length >> 1;
 
     const updateHoverLayout = (hoveredSlot: number | null) => {
-      const mult = getResponsiveMultiplier(window.innerWidth);
-      const hM = getHeightMultiplier(window.innerWidth);
+      const currentMultiplier = getResponsiveMultiplier(window.innerWidth, visibleEntries.length);
+      const currentHeightMultiplier = getHeightMultiplier(window.innerWidth);
 
-      visibleEntries.forEach(({ el, slot }) => {
+      visibleEntries.forEach(({ element, slot }) => {
         const base = config(slot);
-        let targetX = base.x * mult;
-        let targetY = base.y * hM;
-        let targetRot = base.rot;
+        let targetX = base.x * currentMultiplier;
+        let targetY = base.y * currentHeightMultiplier;
+        let targetRotation = base.rot;
         let targetScale = base.scale;
-        let delay = 0;
 
         if (hoveredSlot !== null) {
           const distance = Math.abs(slot - hoveredSlot);
-          delay = distance * 0.02;
-
           if (slot === hoveredSlot) {
-            targetY -= 2.5 * hM;
-            targetScale *= 1.08;
+            targetY -= 1.5 * currentHeightMultiplier;
+            targetScale *= 1.045;
           } else {
-            const normalized = centerSlot > 0 ? (slot - centerSlot) / centerSlot : 0;
-            const pushStrength = 8 * (1 - Math.abs(normalized)) * (1 + 0.2 * Math.max(0, 3 - distance));
-
-            if (slot < hoveredSlot) {
-              targetX -= pushStrength * mult;
-              targetRot -= 3 / (distance + 1);
-            } else {
-              targetX += pushStrength * mult;
-              targetRot += 3 / (distance + 1);
-            }
-
-            if (slot === visibleEntries.length - 1 && hoveredSlot < centerSlot) targetY -= 1 * hM;
-            if (slot === 0 && hoveredSlot > centerSlot) targetY -= 1 * hM;
+            const pushStrength = visibleEntries.length === 7 ? 4.2 : visibleEntries.length === 5 ? 2.8 : 1.4;
+            if (slot < hoveredSlot) targetX -= pushStrength * currentMultiplier;
+            if (slot > hoveredSlot) targetX += pushStrength * currentMultiplier;
+            targetRotation += slot < centerSlot ? -1 / (distance + 1) : 1 / (distance + 1);
           }
-        } else {
-          delay = Math.abs(slot - centerSlot) * 0.02;
         }
 
-        gsap.to(el, {
+        gsap.to(element, {
           x: `${targetX}rem`,
           y: `${targetY}rem`,
-          rotation: targetRot,
+          rotation: targetRotation,
           scale: targetScale,
-          duration: 0.5,
-          delay,
-          ease: "elastic.out(1,.75)",
+          duration: 0.42,
+          ease: "elastic.out(1,.78)",
           overwrite: "auto",
         });
-        gsap.set(el, { zIndex: base.zIndex });
+        gsap.set(element, { zIndex: base.zIndex });
       });
     };
 
-    const enterHandlers = visibleEntries.map(({ el, slot }) => {
+    const enterHandlers = visibleEntries.map(({ element, slot }) => {
       const handler = () => {
         if (isAnimating.current) return;
-        if (leaveTimer) {
-          clearTimeout(leaveTimer);
-          leaveTimer = null;
-        }
-        if (activeSlot !== slot) {
-          activeSlot = slot;
-          updateHoverLayout(slot);
-        }
+        if (leaveTimer) clearTimeout(leaveTimer);
+        activeSlot = slot;
+        updateHoverLayout(slot);
       };
-      el.addEventListener("mouseenter", handler);
-      return { el, handler };
+      element.addEventListener("mouseenter", handler);
+      return { element, handler };
     });
 
     const onMouseLeave = () => {
@@ -295,18 +308,12 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
     };
     container.addEventListener("mouseleave", onMouseLeave);
 
-    const onResize = () => {
-      if (!isAnimating.current) updateHoverLayout(activeSlot);
-    };
-    window.addEventListener("resize", onResize);
-
     return () => {
-      enterHandlers.forEach(({ el, handler }) => el.removeEventListener("mouseenter", handler));
+      enterHandlers.forEach(({ element, handler }) => element.removeEventListener("mouseenter", handler));
       container.removeEventListener("mouseleave", onMouseLeave);
-      window.removeEventListener("resize", onResize);
       if (leaveTimer) clearTimeout(leaveTimer);
     };
-  }, [centerIndex, totalCards, getVisibleMap, needsPagination]);
+  }, [centerIndex, getVisibleMap, totalCards, viewportWidth, visibleCount]);
 
   if (!totalCards) return null;
 
@@ -325,9 +332,9 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
   );
 
   return (
-    <section className="flex flex-col items-center w-full py-4 lg:py-8 px-4 md:px-8 relative z-20">
-      <div className="flex items-center justify-center w-full max-w-[90rem]">
-        <div ref={containerRef} className="fan-layout flex relative justify-center items-center w-full max-w-[80rem]">
+    <section className="flex flex-col items-center w-full py-4 lg:py-8 px-0 relative z-20 overflow-visible">
+      <div className="flex items-center justify-center w-full max-w-[90rem] overflow-visible">
+        <div ref={containerRef} className="fan-layout flex relative justify-center items-center w-full max-w-[80rem] overflow-visible">
           {cards.map((card, index) => {
             const image = (
               <div className="relative w-full h-full overflow-hidden">
@@ -374,7 +381,7 @@ export default function SocialCards({ cards, onSelect }: SocialCardsProps) {
       </div>
 
       {needsPagination && (
-        <div className="flex items-center justify-center gap-4 mt-4 md:mt-6 z-30">
+        <div className="fan-controls flex items-center justify-center gap-4 mt-4 md:mt-6 z-30">
           <button
             type="button"
             className={`${ARROW_CLASSES} w-10 h-10 md:w-12 md:h-12`}
