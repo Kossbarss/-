@@ -53,13 +53,17 @@ jobs:
 
           version = os.environ['GITHUB_SHA']
 
-          def inject_assets(path: Path, asset_prefix: str) -> None:
+          def inject_assets(path: Path, asset_prefix: str, extra_css: str | None = None) -> None:
               html = path.read_text(encoding='utf-8')
               css_tag = f'  <link rel="stylesheet" href="{asset_prefix}dist/card-fan-carousel.css?v={version}" />'
               js_tag = f'<script src="{asset_prefix}dist/card-fan-carousel.js?v={version}"></script>'
 
               if 'card-fan-carousel.css' not in html:
                   html = html.replace('</head>', f'{css_tag}\n</head>')
+
+              if extra_css and extra_css not in html:
+                  extra_css_tag = f'  <link rel="stylesheet" href="{extra_css}?v={version}" />'
+                  html = html.replace('</head>', f'{extra_css_tag}\n</head>')
 
               if 'card-fan-carousel.js' not in html:
                   html = html.replace(
@@ -70,7 +74,7 @@ jobs:
               path.write_text(html, encoding='utf-8')
 
           inject_assets(Path('_site/index.html'), '')
-          inject_assets(Path('_site/ua/index.html'), '../')
+          inject_assets(Path('_site/ua/index.html'), '../', 'layout-fixes.css')
           Path('_site/.nojekyll').touch()
           PY
 
