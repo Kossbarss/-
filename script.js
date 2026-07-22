@@ -2,18 +2,9 @@
   'use strict'
 
   window.VIP_TATTOO_LOCALE = 'ru'
-  const modules = ['site-core.js', 'site-interactions.js', 'site-cases.js']
-
-  const casesStyle = document.createElement('link')
-  casesStyle.rel = 'stylesheet'
-  casesStyle.href = 'case-fan-layout-fix.css'
-  casesStyle.dataset.vipCasesFanFix = 'true'
-  document.head.appendChild(casesStyle)
+  const modules = ['site-core.js', 'site-interactions.js']
 
   function finish() {
-    const caseLayout = document.getElementById('caseFanLayout')
-    caseLayout?.setAttribute('role', 'group')
-    caseLayout?.querySelectorAll('.case-fan-card[role]').forEach((card) => card.removeAttribute('role'))
     window.__vipTattooAppReady = true
     document.dispatchEvent(new CustomEvent('vip:app-ready'))
   }
