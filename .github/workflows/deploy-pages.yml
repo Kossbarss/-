@@ -34,10 +34,10 @@ jobs:
       - name: Build cases carousel assets
         run: npm run build
 
-      - name: Prepare static site and versioned preview
+      - name: Prepare static site and completed preview
         run: |
-          cp dist/card-fan-carousel.css dist/card-fan-carousel-897316.css
-          cp dist/card-fan-carousel.js dist/card-fan-carousel-897316.js
+          cp dist/card-fan-carousel.css dist/card-fan-carousel-62dd1c.css
+          cp dist/card-fan-carousel.js dist/card-fan-carousel-62dd1c.js
           mkdir -p _site
           rsync -a ./ _site/ \
             --exclude '.git/' \
@@ -54,16 +54,16 @@ jobs:
           from pathlib import Path
           page = Path('_site/index.html')
           html = page.read_text(encoding='utf-8')
-          html = html.replace('</head>', '  <link rel="stylesheet" href="dist/card-fan-carousel-897316.css" />\n</head>')
-          html = html.replace('<script src="script.js"></script>', '<script src="dist/card-fan-carousel-897316.js"></script>\n  <script src="script.js"></script>')
+          html = html.replace('</head>', '  <link rel="stylesheet" href="dist/card-fan-carousel-62dd1c.css" />\n</head>')
+          html = html.replace('<script src="script.js"></script>', '<script src="dist/card-fan-carousel-62dd1c.js"></script>\n  <script src="script.js"></script>')
           page.write_text(html, encoding='utf-8')
           Path('_site/.nojekyll').touch()
           PY
-          mkdir -p _preview_copy
-          rsync -a _site/ _preview_copy/
-          mkdir -p _site/cases-v2-897316
-          rsync -a _preview_copy/ _site/cases-v2-897316/
-          rm -rf _preview_copy
+          mkdir -p _completed_preview
+          rsync -a _site/ _completed_preview/
+          mkdir -p _site/cases-final-62dd1c
+          rsync -a _completed_preview/ _site/cases-final-62dd1c/
+          rm -rf _completed_preview
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
