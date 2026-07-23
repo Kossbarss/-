@@ -144,7 +144,11 @@ button {
   font-weight: 400;
   font-style: normal;
   font-size: 36px;
-  color: var(--blood);
+  background: linear-gradient(90deg, var(--gold-light), var(--gold-dark));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
   border-left: 2px solid var(--gold);
   padding-left: 12px;
   margin-bottom: 14px;
