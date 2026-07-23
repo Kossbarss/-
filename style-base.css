@@ -35,27 +35,9 @@
   --font-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
   --font-accent: 'Playfair Display', Georgia, serif;
   --font-body: 'Inter', system-ui, sans-serif;
-  --font-rise: 'Halvarbreitschrift', 'Arial Narrow', Arial, sans-serif;
+  --font-rise: 'Archivo', 'Arial Narrow', Arial, sans-serif;
   --font-sticky: 'Poppins', Arial, sans-serif;
   --font-hero: 'Instrument Serif', Georgia, serif;
-}
-
-/* The RISE reference serves Halvar Breitschrift in four weights. The hero uses
-   only Regular and Bold, so those are the two faces loaded here. */
-@font-face {
-  font-family: 'Halvarbreitschrift';
-  src: url('https://cdn.prod.website-files.com/6839de86f1e62cf3a6c69b60/69679521d3cf46020514d03c_HalvarBreitschrift-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Halvarbreitschrift';
-  src: url('https://cdn.prod.website-files.com/6839de86f1e62cf3a6c69b60/69679521166d9dd10fe4c2e5_HalvarBreitschrift-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
 }
 
 * {
