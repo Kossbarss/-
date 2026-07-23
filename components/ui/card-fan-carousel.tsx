@@ -60,6 +60,7 @@ const ARROW_CLASSES =
 export default function SocialCards({ cards, onActiveChange, previousLabel, nextLabel, cardLabel }: SocialCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const focusedSlot = useRef<number | null>(null);
+  const prevCenterIndex = useRef<number | null>(null);
 
   const totalCards = cards.length;
   const needsPagination = totalCards > MAX_VISIBLE;
@@ -148,6 +149,24 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
     return () => window.removeEventListener("resize", onResize);
   }, [applyLayout]);
 
+  // Positions never move (see applyLayout above), but swapping a slot's
+  // photo/name instantly still reads as a hard jump-cut. Cross-fade just the
+  // content of whichever slots actually changed data, in place.
+  useEffect(() => {
+    const container = containerRef.current;
+    const previous = prevCenterIndex.current;
+    prevCenterIndex.current = centerIndex;
+    if (previous === null || previous === centerIndex || !container) return;
+
+    for (let slot = 0; slot < visibleCount; slot += 1) {
+      const oldDataIndex = (((previous + slot - half) % totalCards) + totalCards) % totalCards;
+      const newDataIndex = (((centerIndex + slot - half) % totalCards) + totalCards) % totalCards;
+      if (oldDataIndex === newDataIndex) continue;
+      const media = container.querySelector<HTMLElement>(`.fan-card[data-slot="${slot}"] .fan-card-media`);
+      if (media) gsap.fromTo(media, { opacity: 0 }, { opacity: 1, duration: 0.28, ease: "power1.out" });
+    }
+  }, [centerIndex, half, totalCards, visibleCount]);
+
   const handleEnter = useCallback((slot: number) => {
     focusedSlot.current = slot;
     applyLayout(true);
@@ -190,6 +209,7 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
               return (
                 <a
                   key={slot}
+                  data-slot={slot}
                   href={card.linkUrl}
                   target={card.linkUrl.startsWith("http") ? "_blank" : "_self"}
                   rel="noopener noreferrer"
@@ -205,6 +225,7 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
             return (
               <button
                 key={slot}
+                data-slot={slot}
                 type="button"
                 className="fan-card"
                 onClick={() => selectSlot(slot, dataIndex)}
