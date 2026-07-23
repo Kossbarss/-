@@ -59,150 +59,104 @@ const ARROW_CLASSES =
 
 export default function SocialCards({ cards, onActiveChange, previousLabel, nextLabel, cardLabel }: SocialCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isAnimating = useRef(false);
-  const hasEntered = useRef(false);
-  const directionRef = useRef<"left" | "right" | null>(null);
-  const previousVisible = useRef<Set<number>>(new Set());
+  const focusedSlot = useRef<number | null>(null);
 
   const totalCards = cards.length;
   const needsPagination = totalCards > MAX_VISIBLE;
+  const visibleCount = needsPagination ? MAX_VISIBLE : totalCards;
+  const half = Math.floor(visibleCount / 2);
+
   const [centerIndex, setCenterIndex] = useState(needsPagination ? HALF : totalCards >> 1);
 
   useEffect(() => {
     if (totalCards) onActiveChange?.(centerIndex);
   }, [centerIndex, onActiveChange, totalCards]);
 
-  const getVisibleMap = useCallback((center: number) => {
-    const map = new Map<number, number>();
-    if (!needsPagination) {
-      cards.forEach((_, index) => map.set(index, index));
-      return map;
-    }
-    for (let slot = 0; slot < MAX_VISIBLE; slot += 1) {
-      map.set(((center + slot - HALF) % totalCards + totalCards) % totalCards, slot);
-    }
-    return map;
-  }, [cards, needsPagination, totalCards]);
+  // Each fan position is a fixed slot (0..visibleCount-1) that never moves;
+  // only the data item shown inside it changes. This mirrors the reference
+  // carousel exactly: repositioning is an instant content swap, never a
+  // slide, so there is nothing for cards to visibly cross paths over.
+  const slotToDataIndex = useCallback(
+    (slot: number) => (((centerIndex + slot - half) % totalCards) + totalCards) % totalCards,
+    [centerIndex, half, totalCards],
+  );
 
   const cycle = useCallback((direction: "left" | "right") => {
-    if (isAnimating.current || !needsPagination) return;
-    isAnimating.current = true;
-    directionRef.current = direction;
+    if (!needsPagination) return;
     setCenterIndex(previous =>
-      direction === "right"
-        ? (previous + 1) % totalCards
-        : (previous - 1 + totalCards) % totalCards,
+      direction === "right" ? (previous + 1) % totalCards : (previous - 1 + totalCards) % totalCards,
     );
   }, [needsPagination, totalCards]);
 
-  const selectCard = useCallback((index: number) => {
-    if (index === centerIndex) return;
-    let diff = index - centerIndex;
-    if (diff > totalCards / 2) diff -= totalCards;
-    if (diff < -totalCards / 2) diff += totalCards;
-    const direction: "left" | "right" = diff >= 0 ? "right" : "left";
-    let remaining = Math.abs(diff);
+  const selectSlot = useCallback((slot: number, dataIndex: number) => {
+    if (slot === half) return;
+    setCenterIndex(dataIndex);
+  }, [half]);
 
-    // Walk to the target one slot at a time, reusing the same single-step
-    // transition as the prev/next arrows, instead of repositioning every
-    // card in one jump -- a multi-slot jump animates several cards toward
-    // the same side at once and they visibly cross paths.
-    const step = () => {
-      if (remaining <= 0) return;
-      if (isAnimating.current) {
-        setTimeout(step, 50);
-        return;
-      }
-      remaining -= 1;
-      cycle(direction);
-      if (remaining > 0) setTimeout(step, 520);
-    };
-    step();
-  }, [centerIndex, totalCards, cycle]);
-
-  useEffect(() => {
+  // The only positional animation left: hovering a card lifts it and gently
+  // pushes its neighbors aside, using one uniform duration/ease for every
+  // card at once -- same as the reference's single `transition: transform
+  // 0.5s cubic-bezier(0.22, 1, 0.36, 1)` rule (power4.out == easeOutQuint).
+  const applyLayout = useCallback((animate: boolean) => {
     const container = containerRef.current;
-    if (!container || !totalCards) return;
-
+    if (!container) return;
     const cardElements = Array.from(container.querySelectorAll<HTMLElement>(".fan-card"));
-    if (!cardElements.length) return;
-
-    const visibleMap = getVisibleMap(centerIndex);
-    const wasVisible = previousVisible.current;
-    const direction = directionRef.current;
-    const firstMount = !hasEntered.current;
     const responsiveMultiplier = getResponsiveMultiplier(window.innerWidth);
-    const slotCount = needsPagination ? MAX_VISIBLE : totalCards;
-    const config = (slot: number) => getSlotConfig(slotCount, slot);
+    const centerSlot = (visibleCount - 1) / 2;
+    const focus = focusedSlot.current;
 
-    if (firstMount) isAnimating.current = true;
+    cardElements.forEach((card, slot) => {
+      const base = getSlotConfig(visibleCount, slot);
+      let x = base.x * responsiveMultiplier;
+      let y = base.y;
+      let rot = base.rot;
+      let scale = base.scale;
+      let zIndex = base.zIndex;
 
-    let completed = 0;
-    const complete = () => {
-      completed += 1;
-      if (completed >= visibleMap.size) {
-        isAnimating.current = false;
-        hasEntered.current = true;
-      }
-    };
-
-    cardElements.forEach((card, cardIndex) => {
-      const slot = visibleMap.get(cardIndex);
-      const previouslyVisible = wasVisible.has(cardIndex);
-
-      if (slot !== undefined) {
-        const { x, y, rot, scale, zIndex } = config(slot);
-        const target = {
-          xPercent: -50,
-          x: `${x * responsiveMultiplier}rem`,
-          y: `${y}rem`,
-          rotation: rot,
-          scale,
-          opacity: 1,
-          zIndex,
-        };
-
-        if (firstMount) {
-          gsap.set(card, { xPercent: -50, x: 0, y: "5rem", rotation: 0, scale: 0.72, opacity: 0 });
-          gsap.to(card, { ...target, duration: 0.85, ease: "power3.out", delay: 0.08 + slot * 0.045, onComplete: complete });
-        } else if (!previouslyVisible) {
-          const enterX = direction === "right" ? 18 : -18;
-          gsap.set(card, { xPercent: -50, x: `${enterX}rem`, y: `${y}rem`, rotation: direction === "right" ? 18 : -18, scale: 0.72, opacity: 0 });
-          gsap.to(card, { ...target, duration: 0.5, ease: "power4.out", onComplete: complete });
+      if (focus !== null) {
+        const distance = Math.abs(slot - focus);
+        if (slot === focus) {
+          y -= 0.9;
+          scale *= 1.1;
+          zIndex = 20;
         } else {
-          gsap.to(card, { ...target, duration: 0.5, ease: "power4.out", onComplete: complete });
+          const normalized = centerSlot > 0 ? (slot - centerSlot) / centerSlot : 0;
+          const push = 2.6 * (1 - Math.abs(normalized)) * (1 + 0.2 * Math.max(0, 3 - distance)) * responsiveMultiplier;
+          if (slot < focus) {
+            x -= push;
+            rot -= 3 / (distance + 1);
+          } else {
+            x += push;
+            rot += 3 / (distance + 1);
+          }
         }
-      } else if (previouslyVisible) {
-        const exitX = direction === "right" ? -18 : 18;
-        gsap.to(card, { xPercent: -50, x: `${exitX}rem`, opacity: 0, scale: 0.72, duration: 0.5, ease: "power4.out", zIndex: 0 });
-      } else if (firstMount) {
-        gsap.set(card, { xPercent: -50, opacity: 0, scale: 0.3, zIndex: 0 });
+      }
+
+      const target = { xPercent: -50, x: `${x}rem`, y: `${y}rem`, rotation: rot, scale, zIndex };
+      if (animate) {
+        gsap.to(card, { ...target, duration: 0.5, ease: "power4.out" });
+      } else {
+        gsap.set(card, target);
       }
     });
+  }, [visibleCount]);
 
-    previousVisible.current = new Set(visibleMap.keys());
-
-    const onResize = () => {
-      if (isAnimating.current) return;
-      cardElements.forEach((card, cardIndex) => {
-        const slot = visibleMap.get(cardIndex);
-        if (slot === undefined) return;
-        const base = config(slot);
-        gsap.set(card, {
-          xPercent: -50,
-          x: `${base.x * getResponsiveMultiplier(window.innerWidth)}rem`,
-          y: `${base.y}rem`,
-          rotation: base.rot,
-          scale: base.scale,
-        });
-      });
-    };
+  useEffect(() => {
+    applyLayout(false);
+    const onResize = () => applyLayout(false);
     window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [applyLayout]);
 
-    return () => {
-      window.removeEventListener("resize", onResize);
-    };
-  }, [centerIndex, getVisibleMap, needsPagination, totalCards]);
+  const handleEnter = useCallback((slot: number) => {
+    focusedSlot.current = slot;
+    applyLayout(true);
+  }, [applyLayout]);
+
+  const handleLeave = useCallback(() => {
+    focusedSlot.current = null;
+    applyLayout(true);
+  }, [applyLayout]);
 
   if (!totalCards) return null;
 
@@ -212,16 +166,18 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
     </svg>
   );
 
-  const visibleMap = getVisibleMap(centerIndex);
-
   return (
     <section className="case-carousel-component flex w-full flex-col items-center">
       <div className="w-full">
         <div ref={containerRef} className="fan-layout relative mx-auto w-full">
-          {cards.map((card, index) => {
+          {Array.from({ length: visibleCount }, (_, slot) => {
+            const dataIndex = slotToDataIndex(slot);
+            const card = cards[dataIndex];
+            const isCentered = slot === half;
+
             const content = (
               <div className="fan-card-media relative h-full w-full overflow-hidden">
-                <img src={card.imgUrl} loading="lazy" alt={card.alt || `${cardLabel} ${index + 1}`} className="absolute inset-0 h-full w-full object-cover" />
+                <img src={card.imgUrl} loading="lazy" alt={card.alt || `${cardLabel} ${dataIndex + 1}`} className="absolute inset-0 h-full w-full object-cover" />
                 <div className="fan-card-shade absolute inset-0" />
                 <div className="fan-card-copy absolute inset-x-0 bottom-0 z-20">
                   {card.title && <strong>{card.title}</strong>}
@@ -232,26 +188,33 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
 
             if (card.linkUrl) {
               return (
-                <a key={index} href={card.linkUrl} target={card.linkUrl.startsWith("http") ? "_blank" : "_self"} rel="noopener noreferrer" className="fan-card block cursor-pointer">{content}</a>
+                <a
+                  key={slot}
+                  href={card.linkUrl}
+                  target={card.linkUrl.startsWith("http") ? "_blank" : "_self"}
+                  rel="noopener noreferrer"
+                  className="fan-card block cursor-pointer"
+                  onMouseEnter={() => handleEnter(slot)}
+                  onMouseLeave={handleLeave}
+                >
+                  {content}
+                </a>
               );
             }
 
-            const isCentered = index === centerIndex;
-            const isSelectable = visibleMap.has(index);
-
-            return isSelectable ? (
+            return (
               <button
-                key={index}
+                key={slot}
                 type="button"
                 className="fan-card"
-                onClick={() => selectCard(index)}
+                onClick={() => selectSlot(slot, dataIndex)}
+                onMouseEnter={() => handleEnter(slot)}
+                onMouseLeave={handleLeave}
                 aria-pressed={isCentered}
-                aria-label={card.title ? `${cardLabel}: ${card.title}` : `${cardLabel} ${index + 1}`}
+                aria-label={card.title ? `${cardLabel}: ${card.title}` : `${cardLabel} ${dataIndex + 1}`}
               >
                 {content}
               </button>
-            ) : (
-              <div key={index} className="fan-card" aria-hidden="true">{content}</div>
             );
           })}
         </div>
