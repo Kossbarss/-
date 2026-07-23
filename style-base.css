@@ -32,12 +32,12 @@
   --border: rgba(21, 17, 15, 0.12);
   --shadow: 0 20px 45px -25px rgba(21, 17, 15, 0.35);
 
-  --font-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
-  --font-accent: 'Playfair Display', Georgia, serif;
+  --font-display: 'Unbounded', 'Arial Narrow', Arial, sans-serif;
+  --font-accent: 'Unbounded', 'Arial Narrow', Arial, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-rise: 'Unbounded', 'Arial Narrow', Arial, sans-serif;
-  --font-sticky: 'Poppins', Arial, sans-serif;
-  --font-hero: 'Instrument Serif', Georgia, serif;
+  --font-sticky: 'Inter', system-ui, sans-serif;
+  --font-hero: 'Unbounded', 'Arial Narrow', Arial, sans-serif;
 }
 
 * {
