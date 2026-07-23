@@ -3408,9 +3408,9 @@ body.popup-open {
   order: 1;
   width: min(1180px, 100%);
   margin: 0 auto clamp(28px, 2.15vw, 40px);
-  font-family: var(--font-rise);
+  font-family: 'Science Gothic', 'Arial Narrow', Arial, sans-serif;
   font-size: clamp(2.65rem, 2.7vw, 3.2rem);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 0.96;
   letter-spacing: -0.035em;
   color: #fff;
