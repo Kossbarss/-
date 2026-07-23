@@ -61,6 +61,7 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
   const containerRef = useRef<HTMLDivElement>(null);
   const focusedSlot = useRef<number | null>(null);
   const prevCenterIndex = useRef<number | null>(null);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const totalCards = cards.length;
   const needsPagination = totalCards > MAX_VISIBLE;
@@ -122,20 +123,20 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
           zIndex = 20;
         } else {
           const normalized = centerSlot > 0 ? (slot - centerSlot) / centerSlot : 0;
-          const push = 2.6 * (1 - Math.abs(normalized)) * (1 + 0.2 * Math.max(0, 3 - distance)) * responsiveMultiplier;
+          const push = 1.3 * (1 - Math.abs(normalized)) * (1 + 0.2 * Math.max(0, 3 - distance)) * responsiveMultiplier;
           if (slot < focus) {
             x -= push;
-            rot -= 3 / (distance + 1);
+            rot -= 1.5 / (distance + 1);
           } else {
             x += push;
-            rot += 3 / (distance + 1);
+            rot += 1.5 / (distance + 1);
           }
         }
       }
 
       const target = { xPercent: -50, x: `${x}rem`, y: `${y}rem`, rotation: rot, scale, zIndex };
       if (animate) {
-        gsap.to(card, { ...target, duration: 0.5, ease: "power4.out" });
+        gsap.to(card, { ...target, duration: 0.45, ease: "power4.out" });
       } else {
         gsap.set(card, target);
       }
@@ -167,12 +168,25 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
     }
   }, [centerIndex, half, totalCards, visibleCount]);
 
+  // A brief hover-intent delay: sweeping the cursor across the fan (the
+  // natural way to scan cards) shouldn't retrigger a full-fan reflow on
+  // every single card boundary crossed -- only a deliberate pause on one
+  // card should. Only a fast mouseleave right after clears the pending
+  // trigger; anything that actually stays feels the push.
   const handleEnter = useCallback((slot: number) => {
-    focusedSlot.current = slot;
-    applyLayout(true);
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => {
+      focusedSlot.current = slot;
+      applyLayout(true);
+    }, 90);
   }, [applyLayout]);
 
   const handleLeave = useCallback(() => {
+    if (hoverTimer.current) {
+      clearTimeout(hoverTimer.current);
+      hoverTimer.current = null;
+    }
+    if (focusedSlot.current === null) return;
     focusedSlot.current = null;
     applyLayout(true);
   }, [applyLayout]);
