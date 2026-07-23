@@ -38,6 +38,7 @@
   --font-rise: 'Roboto Flex', 'Arial Narrow', Arial, sans-serif;
   --font-sticky: 'Geologica', system-ui, sans-serif;
   --font-hero: 'Roboto Flex', 'Arial Narrow', Arial, sans-serif;
+  --font-hand: 'Marck Script', cursive;
 }
 
 * {
@@ -139,9 +140,10 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--font-accent);
-  font-style: italic;
-  font-size: 1rem;
+  font-family: var(--font-hand);
+  font-weight: 400;
+  font-style: normal;
+  font-size: 36px;
   color: var(--blood);
   border-left: 2px solid var(--gold);
   padding-left: 12px;
@@ -2389,8 +2391,7 @@ body.nav-open {
   background: var(--paper);
 }
 
-.rise-cycle-section .section-head h2,
-.rise-cycle-section .kicker {
+.rise-cycle-section .section-head h2 {
   font-family: var(--font-rise);
   font-style: normal;
 }
