@@ -167,45 +167,6 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
 
     previousVisible.current = new Set(visibleMap.keys());
 
-    const visibleEntries: { element: HTMLElement; slot: number }[] = [];
-    cardElements.forEach((element, index) => {
-      const slot = visibleMap.get(index);
-      if (slot !== undefined) visibleEntries.push({ element, slot });
-    });
-
-    const enterHandlers = visibleEntries.map(({ element, slot }) => {
-      const handler = () => {
-        if (isAnimating.current) return;
-        const base = config(slot);
-        gsap.to(element, {
-          xPercent: -50,
-          x: `${base.x * getResponsiveMultiplier(window.innerWidth)}rem`,
-          y: `${base.y - 0.55}rem`,
-          rotation: base.rot,
-          scale: base.scale * 1.035,
-          duration: 0.25,
-          ease: "power2.out",
-          overwrite: "auto",
-        });
-      };
-      const leave = () => {
-        const base = config(slot);
-        gsap.to(element, {
-          xPercent: -50,
-          x: `${base.x * getResponsiveMultiplier(window.innerWidth)}rem`,
-          y: `${base.y}rem`,
-          rotation: base.rot,
-          scale: base.scale,
-          duration: 0.25,
-          ease: "power2.out",
-          overwrite: "auto",
-        });
-      };
-      element.addEventListener("mouseenter", handler);
-      element.addEventListener("mouseleave", leave);
-      return { element, handler, leave };
-    });
-
     const onResize = () => {
       if (isAnimating.current) return;
       cardElements.forEach((card, cardIndex) => {
@@ -224,10 +185,6 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
     window.addEventListener("resize", onResize);
 
     return () => {
-      enterHandlers.forEach(({ element, handler, leave }) => {
-        element.removeEventListener("mouseenter", handler);
-        element.removeEventListener("mouseleave", leave);
-      });
       window.removeEventListener("resize", onResize);
     };
   }, [centerIndex, getVisibleMap, needsPagination, totalCards]);
