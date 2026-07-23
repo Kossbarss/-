@@ -95,16 +95,6 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
     );
   }, [needsPagination, totalCards]);
 
-  const selectCard = useCallback((index: number) => {
-    if (isAnimating.current || index === centerIndex) return;
-    isAnimating.current = true;
-    let diff = index - centerIndex;
-    if (diff > totalCards / 2) diff -= totalCards;
-    if (diff < -totalCards / 2) diff += totalCards;
-    directionRef.current = diff >= 0 ? "right" : "left";
-    setCenterIndex(index);
-  }, [centerIndex, totalCards]);
-
   useEffect(() => {
     const container = containerRef.current;
     if (!container || !totalCards) return;
@@ -240,8 +230,6 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
     </svg>
   );
 
-  const visibleMap = getVisibleMap(centerIndex);
-
   return (
     <section className="case-carousel-component flex w-full flex-col items-center">
       <div className="w-full">
@@ -258,28 +246,10 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
               </div>
             );
 
-            if (card.linkUrl) {
-              return (
-                <a key={index} href={card.linkUrl} target={card.linkUrl.startsWith("http") ? "_blank" : "_self"} rel="noopener noreferrer" className="fan-card block cursor-pointer">{content}</a>
-              );
-            }
-
-            const isCentered = index === centerIndex;
-            const isSelectable = visibleMap.has(index);
-
-            return isSelectable ? (
-              <button
-                key={index}
-                type="button"
-                className="fan-card"
-                onClick={() => selectCard(index)}
-                aria-pressed={isCentered}
-                aria-label={card.title ? `${cardLabel}: ${card.title}` : `${cardLabel} ${index + 1}`}
-              >
-                {content}
-              </button>
+            return card.linkUrl ? (
+              <a key={index} href={card.linkUrl} target={card.linkUrl.startsWith("http") ? "_blank" : "_self"} rel="noopener noreferrer" className="fan-card block cursor-pointer">{content}</a>
             ) : (
-              <div key={index} className="fan-card" aria-hidden="true">{content}</div>
+              <div key={index} className="fan-card">{content}</div>
             );
           })}
         </div>
