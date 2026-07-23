@@ -96,14 +96,29 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
   }, [needsPagination, totalCards]);
 
   const selectCard = useCallback((index: number) => {
-    if (isAnimating.current || index === centerIndex) return;
-    isAnimating.current = true;
+    if (index === centerIndex) return;
     let diff = index - centerIndex;
     if (diff > totalCards / 2) diff -= totalCards;
     if (diff < -totalCards / 2) diff += totalCards;
-    directionRef.current = diff >= 0 ? "right" : "left";
-    setCenterIndex(index);
-  }, [centerIndex, totalCards]);
+    const direction: "left" | "right" = diff >= 0 ? "right" : "left";
+    let remaining = Math.abs(diff);
+
+    // Walk to the target one slot at a time, reusing the same single-step
+    // transition as the prev/next arrows, instead of repositioning every
+    // card in one jump -- a multi-slot jump animates several cards toward
+    // the same side at once and they visibly cross paths.
+    const step = () => {
+      if (remaining <= 0) return;
+      if (isAnimating.current) {
+        setTimeout(step, 50);
+        return;
+      }
+      remaining -= 1;
+      cycle(direction);
+      if (remaining > 0) setTimeout(step, 450);
+    };
+    step();
+  }, [centerIndex, totalCards, cycle]);
 
   useEffect(() => {
     const container = containerRef.current;
