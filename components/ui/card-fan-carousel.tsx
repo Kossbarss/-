@@ -59,9 +59,6 @@ const ARROW_CLASSES =
 
 export default function SocialCards({ cards, onActiveChange, previousLabel, nextLabel, cardLabel }: SocialCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const focusedSlot = useRef<number | null>(null);
-  const prevCenterIndex = useRef<number | null>(null);
-  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const totalCards = cards.length;
   const needsPagination = totalCards > MAX_VISIBLE;
@@ -75,9 +72,11 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
   }, [centerIndex, onActiveChange, totalCards]);
 
   // Each fan position is a fixed slot (0..visibleCount-1) that never moves;
-  // only the data item shown inside it changes. This mirrors the reference
-  // carousel exactly: repositioning is an instant content swap, never a
-  // slide, so there is nothing for cards to visibly cross paths over.
+  // only the data item shown inside it changes, instantly, with no
+  // transition of any kind -- this matches the reference carousel exactly
+  // (verified frame-by-frame against a screen recording of it: the featured
+  // card's photo/name swap in a single frame, and hovering never moves any
+  // card at all).
   const slotToDataIndex = useCallback(
     (slot: number) => (((centerIndex + slot - half) % totalCards) + totalCards) % totalCards,
     [centerIndex, half, totalCards],
@@ -95,101 +94,30 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
     setCenterIndex(dataIndex);
   }, [half]);
 
-  // The only positional animation left: hovering a card lifts it and gently
-  // pushes its neighbors aside, using one uniform duration/ease for every
-  // card at once -- same as the reference's single `transition: transform
-  // 0.5s cubic-bezier(0.22, 1, 0.36, 1)` rule (power4.out == easeOutQuint).
-  const applyLayout = useCallback((animate: boolean) => {
+  useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
     const cardElements = Array.from(container.querySelectorAll<HTMLElement>(".fan-card"));
     const responsiveMultiplier = getResponsiveMultiplier(window.innerWidth);
-    const centerSlot = (visibleCount - 1) / 2;
-    const focus = focusedSlot.current;
 
-    cardElements.forEach((card, slot) => {
-      const base = getSlotConfig(visibleCount, slot);
-      let x = base.x * responsiveMultiplier;
-      let y = base.y;
-      let rot = base.rot;
-      let scale = base.scale;
-      let zIndex = base.zIndex;
+    const apply = () => {
+      cardElements.forEach((card, slot) => {
+        const base = getSlotConfig(visibleCount, slot);
+        gsap.set(card, {
+          xPercent: -50,
+          x: `${base.x * getResponsiveMultiplier(window.innerWidth)}rem`,
+          y: `${base.y}rem`,
+          rotation: base.rot,
+          scale: base.scale,
+          zIndex: base.zIndex,
+        });
+      });
+    };
 
-      if (focus !== null) {
-        const distance = Math.abs(slot - focus);
-        if (slot === focus) {
-          y -= 0.9;
-          scale *= 1.1;
-          zIndex = 20;
-        } else {
-          const normalized = centerSlot > 0 ? (slot - centerSlot) / centerSlot : 0;
-          const push = 1.3 * (1 - Math.abs(normalized)) * (1 + 0.2 * Math.max(0, 3 - distance)) * responsiveMultiplier;
-          if (slot < focus) {
-            x -= push;
-            rot -= 1.5 / (distance + 1);
-          } else {
-            x += push;
-            rot += 1.5 / (distance + 1);
-          }
-        }
-      }
-
-      const target = { xPercent: -50, x: `${x}rem`, y: `${y}rem`, rotation: rot, scale, zIndex };
-      if (animate) {
-        gsap.to(card, { ...target, duration: 0.45, ease: "power4.out" });
-      } else {
-        gsap.set(card, target);
-      }
-    });
+    apply();
+    window.addEventListener("resize", apply);
+    return () => window.removeEventListener("resize", apply);
   }, [visibleCount]);
-
-  useEffect(() => {
-    applyLayout(false);
-    const onResize = () => applyLayout(false);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, [applyLayout]);
-
-  // Positions never move (see applyLayout above), but swapping a slot's
-  // photo/name instantly still reads as a hard jump-cut. Cross-fade just the
-  // content of whichever slots actually changed data, in place.
-  useEffect(() => {
-    const container = containerRef.current;
-    const previous = prevCenterIndex.current;
-    prevCenterIndex.current = centerIndex;
-    if (previous === null || previous === centerIndex || !container) return;
-
-    for (let slot = 0; slot < visibleCount; slot += 1) {
-      const oldDataIndex = (((previous + slot - half) % totalCards) + totalCards) % totalCards;
-      const newDataIndex = (((centerIndex + slot - half) % totalCards) + totalCards) % totalCards;
-      if (oldDataIndex === newDataIndex) continue;
-      const media = container.querySelector<HTMLElement>(`.fan-card[data-slot="${slot}"] .fan-card-media`);
-      if (media) gsap.fromTo(media, { opacity: 0 }, { opacity: 1, duration: 0.28, ease: "power1.out" });
-    }
-  }, [centerIndex, half, totalCards, visibleCount]);
-
-  // A brief hover-intent delay: sweeping the cursor across the fan (the
-  // natural way to scan cards) shouldn't retrigger a full-fan reflow on
-  // every single card boundary crossed -- only a deliberate pause on one
-  // card should. Only a fast mouseleave right after clears the pending
-  // trigger; anything that actually stays feels the push.
-  const handleEnter = useCallback((slot: number) => {
-    if (hoverTimer.current) clearTimeout(hoverTimer.current);
-    hoverTimer.current = setTimeout(() => {
-      focusedSlot.current = slot;
-      applyLayout(true);
-    }, 90);
-  }, [applyLayout]);
-
-  const handleLeave = useCallback(() => {
-    if (hoverTimer.current) {
-      clearTimeout(hoverTimer.current);
-      hoverTimer.current = null;
-    }
-    if (focusedSlot.current === null) return;
-    focusedSlot.current = null;
-    applyLayout(true);
-  }, [applyLayout]);
 
   if (!totalCards) return null;
 
@@ -228,8 +156,6 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
                   target={card.linkUrl.startsWith("http") ? "_blank" : "_self"}
                   rel="noopener noreferrer"
                   className="fan-card block cursor-pointer"
-                  onMouseEnter={() => handleEnter(slot)}
-                  onMouseLeave={handleLeave}
                 >
                   {content}
                 </a>
@@ -243,8 +169,6 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
                 type="button"
                 className="fan-card"
                 onClick={() => selectSlot(slot, dataIndex)}
-                onMouseEnter={() => handleEnter(slot)}
-                onMouseLeave={handleLeave}
                 aria-pressed={isCentered}
                 aria-label={card.title ? `${cardLabel}: ${card.title}` : `${cardLabel} ${dataIndex + 1}`}
               >
