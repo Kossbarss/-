@@ -57,20 +57,78 @@
   position: absolute;
   top: 0;
   left: 50%;
+  display: block;
   width: 8.8rem;
   aspect-ratio: 4 / 6;
   overflow: hidden;
-  border: 1px solid rgba(255, 244, 214, 0.18);
+  padding: 2px;
+  border: none;
   border-radius: 1rem;
+  background: none;
+  font: inherit;
+  color: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
   transform-origin: 50% 92%;
   will-change: transform, opacity;
   box-shadow: 0 1rem 2.2rem rgba(28, 17, 10, 0.18);
+}
+
+div.fan-card {
+  cursor: default;
+}
+
+/* Rotating gold "foil" ring: an oversized conic-gradient sits behind the
+   card, clipped down to a thin edge by the media wrapper's own corners on
+   top. Only transform is animated so the spin is pure GPU compositing. */
+#caseFanLayout[data-card-fan-carousel="true"] .fan-card::before {
+  content: '';
+  position: absolute;
+  inset: -65%;
+  z-index: 0;
+  background: conic-gradient(
+    from 0deg,
+    var(--gold-dark) 0%,
+    var(--gold) 25%,
+    var(--gold-light) 50%,
+    var(--gold) 75%,
+    var(--gold-dark) 100%
+  );
+  animation: fan-card-ring-spin 3.4s linear infinite;
+  will-change: transform;
+}
+
+/* Stagger by DOM position so the rings don't all spin in lockstep. */
+#caseFanLayout[data-card-fan-carousel="true"] .fan-card:nth-child(7n + 1)::before { animation-delay: -2.9s; }
+#caseFanLayout[data-card-fan-carousel="true"] .fan-card:nth-child(7n + 2)::before { animation-delay: -2.4s; }
+#caseFanLayout[data-card-fan-carousel="true"] .fan-card:nth-child(7n + 3)::before { animation-delay: -1.7s; }
+#caseFanLayout[data-card-fan-carousel="true"] .fan-card:nth-child(7n + 4)::before { animation-delay: -1s; }
+#caseFanLayout[data-card-fan-carousel="true"] .fan-card:nth-child(7n + 5)::before { animation-delay: -0.4s; }
+#caseFanLayout[data-card-fan-carousel="true"] .fan-card:nth-child(7n + 6)::before { animation-delay: -2.1s; }
+#caseFanLayout[data-card-fan-carousel="true"] .fan-card:nth-child(7n + 7)::before { animation-delay: -1.4s; }
+
+@keyframes fan-card-ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #caseFanLayout[data-card-fan-carousel="true"] .fan-card::before {
+    animation: none;
+  }
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-card-media,
 #caseFanLayout[data-card-fan-carousel="true"] .fan-card img {
   width: 100%;
   height: 100%;
+}
+
+#caseFanLayout[data-card-fan-carousel="true"] .fan-card-media {
+  position: relative;
+  z-index: 1;
+  border-radius: inherit;
 }
 
 #caseFanLayout[data-card-fan-carousel="true"] .fan-card img {
