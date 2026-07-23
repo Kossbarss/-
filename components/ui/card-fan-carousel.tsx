@@ -115,7 +115,7 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
       }
       remaining -= 1;
       cycle(direction);
-      if (remaining > 0) setTimeout(step, 450);
+      if (remaining > 0) setTimeout(step, 520);
     };
     step();
   }, [centerIndex, totalCards, cycle]);
@@ -168,13 +168,13 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
         } else if (!previouslyVisible) {
           const enterX = direction === "right" ? 18 : -18;
           gsap.set(card, { xPercent: -50, x: `${enterX}rem`, y: `${y}rem`, rotation: direction === "right" ? 18 : -18, scale: 0.72, opacity: 0 });
-          gsap.to(card, { ...target, duration: 0.45, ease: "power2.out", onComplete: complete });
+          gsap.to(card, { ...target, duration: 0.5, ease: "power4.out", onComplete: complete });
         } else {
-          gsap.to(card, { ...target, duration: 0.4, ease: "power2.out", onComplete: complete });
+          gsap.to(card, { ...target, duration: 0.5, ease: "power4.out", onComplete: complete });
         }
       } else if (previouslyVisible) {
         const exitX = direction === "right" ? -18 : 18;
-        gsap.to(card, { xPercent: -50, x: `${exitX}rem`, opacity: 0, scale: 0.72, duration: 0.3, ease: "power2.in", zIndex: 0 });
+        gsap.to(card, { xPercent: -50, x: `${exitX}rem`, opacity: 0, scale: 0.72, duration: 0.5, ease: "power4.out", zIndex: 0 });
       } else if (firstMount) {
         gsap.set(card, { xPercent: -50, opacity: 0, scale: 0.3, zIndex: 0 });
       }
