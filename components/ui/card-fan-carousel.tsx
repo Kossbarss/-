@@ -59,6 +59,8 @@ const ARROW_CLASSES =
 
 export default function SocialCards({ cards, onActiveChange, previousLabel, nextLabel, cardLabel }: SocialCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const focusedSlot = useRef<number | null>(null);
+  const supportsHover = useRef(true);
 
   const totalCards = cards.length;
   const needsPagination = totalCards > MAX_VISIBLE;
@@ -71,12 +73,12 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
     if (totalCards) onActiveChange?.(centerIndex);
   }, [centerIndex, onActiveChange, totalCards]);
 
-  // Each fan position is a fixed slot (0..visibleCount-1) that never moves;
-  // only the data item shown inside it changes, instantly, with no
-  // transition of any kind -- this matches the reference carousel exactly
-  // (verified frame-by-frame against a screen recording of it: the featured
-  // card's photo/name swap in a single frame, and hovering never moves any
-  // card at all).
+  useEffect(() => {
+    supportsHover.current = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  }, []);
+
+  // Each fan position is a fixed slot (0..visibleCount-1); only the data item
+  // shown inside it changes when the structural center moves (prev/next).
   const slotToDataIndex = useCallback(
     (slot: number) => (((centerIndex + slot - half) % totalCards) + totalCards) % totalCards,
     [centerIndex, half, totalCards],
@@ -89,35 +91,78 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
     );
   }, [needsPagination, totalCards]);
 
-  const selectSlot = useCallback((slot: number, dataIndex: number) => {
-    if (slot === half) return;
-    setCenterIndex(dataIndex);
-  }, [half]);
-
-  useEffect(() => {
+  // Hovering a card (desktop) or tapping it (touch, since there's no hover)
+  // temporarily lifts it to full prominence in front of the others, which
+  // shuffle back to make room -- purely visual, reversible on
+  // mouseleave/second tap. This never touches centerIndex; only the prev/
+  // next arrows change which item is structurally centered.
+  const applyLayout = useCallback((animate: boolean) => {
     const container = containerRef.current;
     if (!container) return;
     const cardElements = Array.from(container.querySelectorAll<HTMLElement>(".fan-card"));
     const responsiveMultiplier = getResponsiveMultiplier(window.innerWidth);
+    const focus = focusedSlot.current;
 
-    const apply = () => {
-      cardElements.forEach((card, slot) => {
-        const base = getSlotConfig(visibleCount, slot);
-        gsap.set(card, {
-          xPercent: -50,
-          x: `${base.x * getResponsiveMultiplier(window.innerWidth)}rem`,
-          y: `${base.y}rem`,
-          rotation: base.rot,
-          scale: base.scale,
-          zIndex: base.zIndex,
-        });
-      });
-    };
+    cardElements.forEach((card, slot) => {
+      const base = getSlotConfig(visibleCount, slot);
+      let x = base.x * responsiveMultiplier;
+      let y = base.y;
+      let rot = base.rot;
+      let scale = base.scale;
+      let zIndex = base.zIndex;
 
-    apply();
-    window.addEventListener("resize", apply);
-    return () => window.removeEventListener("resize", apply);
+      if (focus !== null) {
+        if (slot === focus) {
+          x = 0;
+          y = -1.6;
+          rot = 0;
+          scale = 1.18;
+          zIndex = 40;
+        } else {
+          const distance = slot - focus;
+          const dir = Math.sign(distance);
+          const absDist = Math.abs(distance);
+          x += dir * ((3.2 * responsiveMultiplier) / absDist);
+          rot += dir * (6 / absDist);
+          scale *= 0.88;
+          zIndex = Math.max(1, base.zIndex - 3);
+        }
+      }
+
+      const target = { xPercent: -50, x: `${x}rem`, y: `${y}rem`, rotation: rot, scale, zIndex };
+      if (animate) {
+        gsap.to(card, { ...target, duration: 0.4, ease: "power3.out" });
+      } else {
+        gsap.set(card, target);
+      }
+    });
   }, [visibleCount]);
+
+  useEffect(() => {
+    applyLayout(false);
+    const onResize = () => applyLayout(false);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [applyLayout]);
+
+  const handleEnter = useCallback((slot: number) => {
+    if (!supportsHover.current) return;
+    focusedSlot.current = slot;
+    applyLayout(true);
+  }, [applyLayout]);
+
+  const handleLeave = useCallback(() => {
+    if (!supportsHover.current) return;
+    if (focusedSlot.current === null) return;
+    focusedSlot.current = null;
+    applyLayout(true);
+  }, [applyLayout]);
+
+  const handleTap = useCallback((slot: number) => {
+    if (supportsHover.current) return;
+    focusedSlot.current = focusedSlot.current === slot ? null : slot;
+    applyLayout(true);
+  }, [applyLayout]);
 
   if (!totalCards) return null;
 
@@ -156,6 +201,8 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
                   target={card.linkUrl.startsWith("http") ? "_blank" : "_self"}
                   rel="noopener noreferrer"
                   className="fan-card block cursor-pointer"
+                  onMouseEnter={() => handleEnter(slot)}
+                  onMouseLeave={handleLeave}
                 >
                   {content}
                 </a>
@@ -168,7 +215,9 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
                 data-slot={slot}
                 type="button"
                 className="fan-card"
-                onClick={() => selectSlot(slot, dataIndex)}
+                onClick={() => handleTap(slot)}
+                onMouseEnter={() => handleEnter(slot)}
+                onMouseLeave={handleLeave}
                 aria-pressed={isCentered}
                 aria-label={card.title ? `${cardLabel}: ${card.title}` : `${cardLabel} ${dataIndex + 1}`}
               >
