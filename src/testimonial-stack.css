@@ -56,25 +56,27 @@
    --------------------------------------------------------------- */
 
 .testimonials-stack {
-  /* Cards are position:absolute so the stack needs an explicit height,
-     but it should match the actual content, not an arbitrary guess:
-     measured tallest real card content is 310px (Дмитрий, RU/UA), so
-     320px covers it with a small safety margin instead of leaving a
-     large empty gap under shorter cards. */
+  /* A fixed pixel height (previously guessed at one viewport width) only
+     ever matches content at that exact width -- text wraps to more lines
+     on narrower screens, so any hardcoded number overflows somewhere.
+     CSS Grid's "stack in one cell" pattern instead sizes the container to
+     whichever card is actually tallest AT THE CURRENT viewport, with no
+     guessed number at all: every card shares grid-area 1/1, so the row
+     auto-sizes to the tallest one, at every breakpoint. */
+  display: grid;
   width: 100%;
   max-width: 640px;
-  min-height: 320px;
   margin: 0 auto;
 }
 
 .testimonial-card {
-  position: absolute;
-  inset: 0;
+  grid-area: 1 / 1;
   width: 100%;
   border-radius: var(--radius);
   cursor: grab;
   transition: transform 0.3s ease, opacity 0.3s ease;
   touch-action: pan-y;
+  overflow: hidden;
 }
 
 .testimonial-card.is-dragging {
