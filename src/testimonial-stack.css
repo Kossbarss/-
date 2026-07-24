@@ -143,3 +143,17 @@
   opacity: 1;
   transform: scale(1.25);
 }
+
+/* Each card's own accent color (used by the "featured" tag's
+   bg-primary/text-primary/border-primary classes) matches that same
+   card's avatar gradient, instead of every card sharing one shared blue
+   --primary. React renders .testimonial-card elements in a fixed order
+   (testimonials.map by array index, not by the visual stack position),
+   so nth-child reliably targets the same person regardless of which
+   card is currently active. Colors are the same tokens each person's
+   avatarGradient already uses in src/testimonial-stack-entry.tsx. */
+.testimonials-stack .testimonial-card:nth-child(1) { --primary: var(--gold-dark); }
+.testimonials-stack .testimonial-card:nth-child(2) { --primary: var(--blood-dark); }
+.testimonials-stack .testimonial-card:nth-child(3) { --primary: var(--periwinkle-dark); }
+.testimonials-stack .testimonial-card:nth-child(4) { --primary: var(--sage); }
+.testimonials-stack .testimonial-card:nth-child(5) { --primary: var(--blood-light); }
