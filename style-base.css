@@ -2907,38 +2907,14 @@ body.nav-open {
   color: var(--gold-light);
 }
 
-.certificate-badge {
-  aspect-ratio: 1;
-  max-width: 300px;
-  margin-inline: auto;
-  border-radius: 999px;
-  border: 2px dashed rgba(201, 162, 74, 0.5);
-  display: grid;
-  place-items: center;
-  padding: 28px;
-}
-
-.certificate-badge .inner {
-  border: 1px solid rgba(201, 162, 74, 0.5);
-  border-radius: 999px;
+.certificate-tilt-mount {
   width: 100%;
-  height: 100%;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  padding: 20px;
+  max-width: 480px;
+  margin-inline: auto;
 }
 
-.certificate-badge h3 {
-  color: var(--gold-light);
-  font-size: 1.3rem;
-  margin-bottom: 6px;
-}
-
-.certificate-badge p {
-  color: rgba(250, 246, 239, 0.7);
-  font-size: 0.82rem;
-  text-transform: none;
+.certificate-tilt-mount img {
+  border-radius: inherit;
 }
 
 /* ---------- FAQ (big typographic accordion, adapted from 21st.dev accordion-05) ---------- */
