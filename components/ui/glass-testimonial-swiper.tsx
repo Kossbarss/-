@@ -110,22 +110,22 @@ export const TestimonialStack = ({ testimonials, visibleBehind = 2 }: Testimonia
             onMouseDown={(e) => handleDragStart(e, index)}
             onTouchStart={(e) => handleDragStart(e, index)}
           >
-            <div className="p-6 md:p-8">
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <div className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center text-white font-semibold text-base" style={{ background: testimonial.avatarGradient }}>
+            <div className="p-4 md:p-5">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white font-semibold text-sm" style={{ background: testimonial.avatarGradient }}>
                     {testimonial.initials}
                   </div>
                   <div>
-                    <h3 className="text-card-foreground font-medium text-lg">{testimonial.name}</h3>
-                    <p className="text-sm text-muted-foreground mt-1">{testimonial.role}</p>
+                    <h3 className="text-card-foreground font-medium text-sm">{testimonial.name}</h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">{testimonial.role}</p>
                   </div>
                 </div>
               </div>
 
-              <blockquote className="text-card-foreground/90 leading-relaxed text-lg mb-6">"{testimonial.quote}"</blockquote>
+              <blockquote className="text-card-foreground/90 leading-relaxed text-sm mb-4">"{testimonial.quote}"</blockquote>
 
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between border-t border-border pt-4 gap-4">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between border-t border-border pt-3 gap-3">
                 <div className="flex flex-wrap gap-2">
                   {testimonial.tags.map((tag, i) => (
                     <span key={i} className={['text-xs', 'px-2', 'py-1', 'rounded-md', tagClasses(tag.type)].join(' ')}>
@@ -133,12 +133,12 @@ export const TestimonialStack = ({ testimonials, visibleBehind = 2 }: Testimonia
                     </span>
                   ))}
                 </div>
-                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                <div className="flex items-center gap-3 text-xs text-muted-foreground">
                   {testimonial.stats.map((stat, i) => {
                     const IconComponent = stat.icon;
                     return (
                       <span key={i} className="flex items-center">
-                        <IconComponent className="mr-1.5 h-3.5 w-3.5" />
+                        <IconComponent className="mr-1 h-3 w-3" />
                         {stat.text}
                       </span>
                     );

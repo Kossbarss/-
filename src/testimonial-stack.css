@@ -65,7 +65,7 @@
      auto-sizes to the tallest one, at every breakpoint. */
   display: grid;
   width: 100%;
-  max-width: 640px;
+  max-width: 480px;
   margin: 0 auto;
 }
 
