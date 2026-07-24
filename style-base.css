@@ -2875,6 +2875,24 @@ body.nav-open {
   .certificate-layout {
     grid-template-columns: 1fr;
   }
+
+  .certificate-copy {
+    display: contents;
+  }
+
+  .certificate-copy .section-head,
+  .certificate-copy .certificate-checklist {
+    order: 1;
+  }
+
+  .certificate-tilt-mount {
+    order: 2;
+  }
+
+  .certificate-cta {
+    order: 3;
+    justify-self: center;
+  }
 }
 
 .certificate-section h2 {
