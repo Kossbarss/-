@@ -72,6 +72,7 @@ img {
 h1, h2, h3, h4 {
   margin: 0;
   font-family: var(--font-display);
+  font-variation-settings: "wdth" 124, "opsz" 64;
   letter-spacing: 0.01em;
   color: var(--ink);
   text-transform: uppercase;
@@ -186,7 +187,7 @@ button {
 .btn-stardust {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(155deg, #dd0003 0%, #fe5200 100%);
+  background: linear-gradient(105deg, #F98658 0%, #F25832 24%, #E62115 52%, #F25832 78%, #F98658 100%);
   color: var(--white);
   border-radius: 999px;
   box-shadow: 0 16px 26px -14px rgba(221, 0, 3, 0.55);
@@ -1303,8 +1304,39 @@ body.nav-open {
   }
 }
 
+.pain-grid {
+  counter-reset: pain-index;
+}
+
 .pain-card {
-  padding: 26px;
+  position: relative;
+  padding: 40px 26px 26px;
+}
+
+/* notched-card signature: a small trapezoid cut into the top edge,
+   painted in the section's own background so it reads as a notch
+   rather than a shape sitting on top of the card */
+.pain-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 24px;
+  width: 56px;
+  height: 16px;
+  background: var(--paper);
+  clip-path: polygon(18% 0, 82% 0, 100% 100%, 0 100%);
+}
+
+.pain-card::after {
+  counter-increment: pain-index;
+  content: '/' counter(pain-index, decimal-leading-zero);
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-family: var(--font-accent);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: var(--muted);
 }
 
 .pain-icon {
@@ -2786,11 +2818,14 @@ body.nav-open {
 
 .comparison-col li {
   display: flex;
-  gap: 12px;
-  align-items: flex-start;
+  gap: 14px;
+  align-items: center;
   line-height: 1.5;
   text-transform: none;
   font-size: 0.95rem;
+  background: var(--paper-alt);
+  border-radius: 999px;
+  padding: 14px 20px;
 }
 
 .comparison-good {
@@ -2798,16 +2833,25 @@ body.nav-open {
   background: linear-gradient(180deg, #fff, var(--paper-alt));
 }
 
+.check-icon,
+.minus-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--ink);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
 .comparison-good .check-icon {
   color: var(--sage);
-  font-weight: 700;
-  flex-shrink: 0;
 }
 
 .comparison-bad .minus-icon {
   color: var(--blood);
-  font-weight: 700;
-  flex-shrink: 0;
 }
 
 .comparison-bad li {
@@ -2966,6 +3010,7 @@ body.nav-open {
 }
 
 .faq-trigger-big {
+  position: relative;
   width: 100%;
   display: flex;
   align-items: baseline;
@@ -2973,8 +3018,31 @@ body.nav-open {
   background: none;
   border: none;
   text-align: left;
-  padding: 22px 0;
+  padding: 22px 56px 22px 0;
   cursor: pointer;
+}
+
+/* dark circular chevron button, RISE-style FAQ affordance */
+.faq-trigger-big::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background-color: var(--ink);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 6 15 12 9 18'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+  transform: translateY(-50%) rotate(0deg);
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.24s ease;
+}
+
+.faq-item-big.open .faq-trigger-big::after {
+  transform: translateY(-50%) rotate(90deg);
+  background-color: var(--blood);
 }
 
 .faq-num-big {
@@ -3409,6 +3477,7 @@ body.popup-open {
   width: min(1180px, 100%);
   margin: 0 auto clamp(28px, 2.15vw, 40px);
   font-family: 'Science Gothic', 'Arial Narrow', Arial, sans-serif;
+  font-variation-settings: normal;
   font-size: clamp(2.65rem, 2.7vw, 3.2rem);
   font-weight: 500;
   line-height: 0.96;
