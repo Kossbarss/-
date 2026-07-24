@@ -72,10 +72,14 @@ img {
 h1, h2, h3, h4 {
   margin: 0;
   font-family: var(--font-display);
-  font-variation-settings: "wdth" 124, "opsz" 64;
+  font-variation-settings: "wdth" 116, "opsz" 36;
   letter-spacing: 0.01em;
   color: var(--ink);
   text-transform: none;
+}
+
+h2 {
+  font-variation-settings: "wdth" 124, "opsz" 64;
 }
 
 p {
