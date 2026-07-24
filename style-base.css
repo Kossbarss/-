@@ -1998,49 +1998,6 @@ body.nav-open {
   }
 }
 
-/* ---------- Testimonials ---------- */
-.testimonial-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-
-@media (max-width: 900px) {
-  .testimonial-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.testimonial-card {
-  padding: 28px;
-}
-
-.testimonial-card p {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: var(--ink-soft);
-  text-transform: none;
-  margin: 14px 0 20px;
-}
-
-.testimonial-author {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.testimonial-author strong {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  color: var(--ink);
-}
-
-.testimonial-author span {
-  font-size: 0.82rem;
-  color: var(--muted);
-  text-transform: none;
-}
-
 /* ---------- Feature cards ---------- */
 .feature-grid {
   display: grid;

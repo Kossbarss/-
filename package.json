@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "build:types": "tsc --noEmit",
-    "build:styles": "tailwindcss -i ./src/card-fan-carousel.css -o ./dist/card-fan-carousel.css --minify",
-    "build:scripts": "esbuild ./src/case-carousel-entry.tsx --bundle --format=iife --platform=browser --target=es2020 --minify --outfile=./dist/card-fan-carousel.js",
+    "build:styles": "tailwindcss -i ./src/card-fan-carousel.css -o ./dist/card-fan-carousel.css --minify && tailwindcss -i ./src/testimonial-stack.css -o ./dist/testimonial-stack.css --minify",
+    "build:scripts": "esbuild ./src/case-carousel-entry.tsx --bundle --format=iife --platform=browser --target=es2020 --minify --outfile=./dist/card-fan-carousel.js && esbuild ./src/testimonial-stack-entry.tsx --bundle --format=iife --platform=browser --target=es2020 --minify --outfile=./dist/testimonial-stack.js",
     "build:site": "node scripts/build-site.mjs",
     "build": "npm run build:types && npm run build:styles && npm run build:scripts && npm run build:site",
     "start": "npm run build && node server.js"
@@ -13,6 +13,7 @@
   "dependencies": {
     "express": "^4.19.2",
     "gsap": "^3.15.0",
+    "lucide-react": "^0.545.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },

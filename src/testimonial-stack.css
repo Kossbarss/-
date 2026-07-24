@@ -1,0 +1,89 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@source "../components/**/*.tsx";
+@source "./**/*.tsx";
+
+:root {
+  --radius: 1rem;
+  --primary: oklch(0.64 0.22 265);
+}
+
+.dark {
+  --background: oklch(0.05 0.01 240);
+  --foreground: oklch(0.9 0.01 240);
+  --card: oklch(0.1 0.02 240);
+  --card-foreground: oklch(0.9 0.01 240);
+  --popover: oklch(0.1 0.02 240);
+  --popover-foreground: oklch(0.9 0.01 240);
+  --primary: oklch(0.72 0.2 265);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.15 0.02 240);
+  --muted-foreground: oklch(0.6 0.01 240);
+  --accent: oklch(0.15 0.02 240);
+  --border: oklch(1 0 0 / 15%);
+  --ring: oklch(0.72 0.2 265);
+}
+
+/* ---------------------------------------------------------------
+   Minimal structural CSS for the pasted TestimonialStack component.
+   The classNames below (testimonials-stack / testimonial-card /
+   glass-effect / pagination / pagination-dot / is-dragging) are
+   referenced by the component's JSX as given, but were not included
+   in the supplied code -- without this the cards have no stacking
+   layout, no glass background and no visible pagination dots.
+   --------------------------------------------------------------- */
+
+.testimonials-stack {
+  width: 100%;
+  max-width: 640px;
+  min-height: 420px;
+  margin: 0 auto;
+}
+
+.testimonial-card {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  border-radius: var(--radius);
+  cursor: grab;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  touch-action: pan-y;
+}
+
+.testimonial-card.is-dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+.glass-effect {
+  background: color-mix(in oklch, var(--card) 70%, transparent);
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 45px -25px rgba(0, 0, 0, 0.45);
+}
+
+.pagination {
+  position: absolute;
+  bottom: -8px;
+}
+
+.pagination-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: none;
+  padding: 0;
+  /* the dots sit below the card, on the page background rather than
+     the card's own dark surface, so the inactive state uses the
+     site's own muted token (defined in style-base.css :root) instead
+     of the shadcn --border value, which is only readable on dark */
+  background: var(--muted, var(--border));
+  opacity: 0.5;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+}
+
+.pagination-dot.active {
+  background: var(--primary);
+  opacity: 1;
+  transform: scale(1.25);
+}
