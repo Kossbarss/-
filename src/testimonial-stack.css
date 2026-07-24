@@ -56,9 +56,14 @@
    --------------------------------------------------------------- */
 
 .testimonials-stack {
+  /* Cards are position:absolute so the stack needs an explicit height,
+     but it should match the actual content, not an arbitrary guess:
+     measured tallest real card content is 310px (Дмитрий, RU/UA), so
+     320px covers it with a small safety margin instead of leaving a
+     large empty gap under shorter cards. */
   width: 100%;
   max-width: 640px;
-  min-height: 420px;
+  min-height: 320px;
   margin: 0 auto;
 }
 
