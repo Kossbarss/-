@@ -67,6 +67,11 @@
   width: 100%;
   max-width: 480px;
   margin: 0 auto;
+  /* Stacked cards behind the active one peek upward via translateY, up to
+     -4rem (2 cards * -2rem, the component's own default visibleBehind=2)
+     -- without room above the container, that peek overlaps whatever
+     sits right above it (here, the section heading). */
+  margin-top: 80px;
 }
 
 .testimonial-card {
