@@ -72,6 +72,7 @@ img {
 h1, h2, h3, h4 {
   margin: 0;
   font-family: var(--font-display);
+  font-weight: 700;
   font-variation-settings: "wdth" 116, "opsz" 36;
   letter-spacing: 0.01em;
   color: var(--ink);
@@ -79,6 +80,7 @@ h1, h2, h3, h4 {
 }
 
 h2 {
+  font-weight: 740;
   font-variation-settings: "wdth" 124, "opsz" 64;
 }
 
