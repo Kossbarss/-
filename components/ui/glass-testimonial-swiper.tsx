@@ -110,8 +110,8 @@ export const TestimonialStack = ({ testimonials, visibleBehind = 2 }: Testimonia
             onMouseDown={(e) => handleDragStart(e, index)}
             onTouchStart={(e) => handleDragStart(e, index)}
           >
-            <div className="p-4 md:p-5">
-              <div className="flex items-start justify-between mb-4">
+            <div className="p-4">
+              <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <div className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white font-semibold text-sm" style={{ background: testimonial.avatarGradient }}>
                     {testimonial.initials}
@@ -123,9 +123,9 @@ export const TestimonialStack = ({ testimonials, visibleBehind = 2 }: Testimonia
                 </div>
               </div>
 
-              <blockquote className="text-card-foreground/90 leading-relaxed text-sm mb-4">"{testimonial.quote}"</blockquote>
+              <blockquote className="text-card-foreground/90 leading-snug text-sm mb-3">"{testimonial.quote}"</blockquote>
 
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between border-t border-border pt-3 gap-3">
+              <div className="flex flex-row items-center justify-between border-t border-border pt-2 gap-2">
                 <div className="flex flex-wrap gap-2">
                   {testimonial.tags.map((tag, i) => (
                     <span key={i} className={['text-xs', 'px-2', 'py-1', 'rounded-md', tagClasses(tag.type)].join(' ')}>
