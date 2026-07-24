@@ -3,7 +3,29 @@
 @source "../components/**/*.tsx";
 @source "./**/*.tsx";
 
+/* Standard shadcn/ui default light-theme tokens. The task's own CSS
+   snippet ("extend existing Tailwind 4 index.css") only overrides
+   --radius/--primary at :root and adds a .dark variant, assuming a
+   shadcn project that already ships the base light palette below --
+   this codebase has no such base, so without these tokens --card,
+   --card-foreground, --secondary, --border, etc. are undefined at
+   :root and the component has no light-mode appearance at all. */
 :root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --border: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+
+  /* explicit overrides given in the task's CSS snippet */
   --radius: 1rem;
   --primary: oklch(0.64 0.22 265);
 }
@@ -72,12 +94,8 @@
   border-radius: 999px;
   border: none;
   padding: 0;
-  /* the dots sit below the card, on the page background rather than
-     the card's own dark surface, so the inactive state uses the
-     site's own muted token (defined in style-base.css :root) instead
-     of the shadcn --border value, which is only readable on dark */
-  background: var(--muted, var(--border));
-  opacity: 0.5;
+  background: var(--border);
+  opacity: 1;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
 }
