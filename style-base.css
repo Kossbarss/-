@@ -3712,3 +3712,73 @@ body.popup-open {
     display: block;
   }
 }
+
+/* ---------- Seam dividers (section-boundary accent line + logo badge) ----------
+   Sits at the DOM boundary between two <section>s, height:0 so it never adds
+   layout space; each section's own light<->dark fade band straddles this
+   boundary asymmetrically (fade lives inside whichever side is dark), so the
+   modifier classes below nudge the whole unit toward the fade's visual
+   midpoint without touching document flow. */
+.seam-divider {
+  position: relative;
+  height: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.seam-divider--in-60 {
+  transform: translateY(30px);
+}
+
+.seam-divider--in-30 {
+  transform: translateY(15px);
+}
+
+.seam-divider--out-60 {
+  transform: translateY(-30px);
+}
+
+.seam-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, transparent, var(--blood) 12%, var(--blood-light) 50%, var(--blood) 88%, transparent);
+  box-shadow: 0 0 10px 1px rgba(255, 0, 3, 0.55), 0 0 34px 6px rgba(255, 0, 3, 0.22);
+}
+
+.seam-badge-container {
+  position: relative;
+  height: 0;
+}
+
+.seam-badge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(0, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 1.5px solid var(--blood-light);
+  box-shadow: 0 0 8px 1px rgba(255, 0, 3, 0.5), 0 0 22px 5px rgba(255, 0, 3, 0.26), inset 0 0 6px rgba(0, 0, 0, 0.65);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.seam-badge img {
+  width: 58%;
+  height: 58%;
+  object-fit: contain;
+}
+
+@media (max-width: 640px) {
+  .seam-badge {
+    width: 34px;
+    height: 34px;
+  }
+}
