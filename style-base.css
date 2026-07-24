@@ -84,6 +84,12 @@ h2 {
   font-variation-settings: "wdth" 124, "opsz" 64;
 }
 
+h3, h4 {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-variation-settings: "slnt" 0, "SHRP" 6;
+}
+
 p {
   margin: 0;
 }
@@ -3029,7 +3035,7 @@ body.nav-open {
 
 .faq-title-big {
   margin: 0;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: clamp(1.4rem, 4vw, 2.6rem);
   line-height: 1;
   letter-spacing: 0.01em;
