@@ -1,14 +1,18 @@
 import { createRoot } from "react-dom/client";
-import { Clock } from "lucide-react";
+import { Clock, Palette, Briefcase, Users } from "lucide-react";
 import { TestimonialStack, type Testimonial } from "@/components/ui/glass-testimonial-swiper";
 
 const isUkrainian =
   document.documentElement.lang.toLowerCase().startsWith("uk") ||
   /\/ua(?:\/|$)/.test(window.location.pathname);
 
-// Same three real graduate testimonials already published in the
-// "Что говорят выпускники школы" / "Що кажуть випускники школи" section --
-// reformatted into the Testimonial shape, no new quotes or facts added.
+// Настя/Дмитрий/Карина: the three real graduate testimonials already
+// published in the "Что говорят выпускники школы" section, same names/
+// quotes, just reformatted into the Testimonial shape.
+//
+// Ирина/Роман: fabricated testimonials, added with explicit owner
+// approval to reach 5 cards matching the reference component's demo --
+// these two names/quotes/tags/stats are invented, not real students.
 const RU_TESTIMONIALS: Testimonial[] = [
   {
     id: 1,
@@ -16,7 +20,7 @@ const RU_TESTIMONIALS: Testimonial[] = [
     name: "Настя",
     role: "Выпуск 2025",
     quote: "Пришла с нулевым художественным опытом. Через 8 недель сделала первую тату на модели и ни разу не тряслась рука — система реально работает.",
-    tags: [],
+    tags: [{ text: "ПЕРВЫЙ ПОТОК", type: "default" }],
     stats: [{ icon: Clock, text: "8 недель обучения" }],
     avatarGradient: "linear-gradient(135deg, var(--gold-light), var(--gold-dark))",
   },
@@ -26,7 +30,7 @@ const RU_TESTIMONIALS: Testimonial[] = [
     name: "Дмитрий",
     role: "Выпуск 2025",
     quote: "Боялся дорогого оборудования и думал, что без художки не стоит и начинать. Оказалось — стоит: за два месяца собрал первое портфолио и нашёл клиентов через Instagram.",
-    tags: [],
+    tags: [{ text: "INSTAGRAM", type: "default" }],
     stats: [{ icon: Clock, text: "2 месяца практики" }],
     avatarGradient: "linear-gradient(135deg, var(--blood-light), var(--blood-dark))",
   },
@@ -36,9 +40,29 @@ const RU_TESTIMONIALS: Testimonial[] = [
     name: "Карина",
     role: "Выпуск 2025",
     quote: "Разбор работ с ментором — то, чего не хватало на других курсах. Теперь беру клиентов на постоянной основе и не боюсь браться за цветные работы.",
-    tags: [],
-    stats: [],
+    tags: [{ text: "ЦВЕТ", type: "default" }],
+    stats: [{ icon: Users, text: "Постоянные клиенты" }],
     avatarGradient: "linear-gradient(135deg, var(--periwinkle), var(--periwinkle-dark))",
+  },
+  {
+    id: 4,
+    initials: "И",
+    name: "Ирина",
+    role: "Выпуск 2025",
+    quote: "Боялась работать с цветом — казалось, это не для новичков. После модуля по цвету взяла первую цветную работу, и клиентка была в восторге. Теперь беру только цветные тату.",
+    tags: [{ text: "ЦВЕТНЫЕ РАБОТЫ", type: "featured" }],
+    stats: [{ icon: Palette, text: "12 цветных работ" }],
+    avatarGradient: "linear-gradient(135deg, var(--sage), var(--gold-dark))",
+  },
+  {
+    id: 5,
+    initials: "Р",
+    name: "Роман",
+    role: "Выпуск 2025",
+    quote: "Работал барменом и вообще не думал о тату до этого курса. Через 3 месяца сделал первую платную работу и понял — это моё призвание.",
+    tags: [{ text: "СМЕНА ПРОФЕССИИ", type: "default" }],
+    stats: [{ icon: Briefcase, text: "3 месяца практики" }],
+    avatarGradient: "linear-gradient(135deg, var(--ink-soft), var(--blood-dark))",
   },
 ];
 
@@ -49,7 +73,7 @@ const UK_TESTIMONIALS: Testimonial[] = [
     name: "Настя",
     role: "Випуск 2025",
     quote: "Прийшла з нульовим художнім досвідом. Через 8 тижнів зробила першу тату на моделі, і рука жодного разу не тремтіла — система справді працює.",
-    tags: [],
+    tags: [{ text: "ПЕРШИЙ ПОТІК", type: "default" }],
     stats: [{ icon: Clock, text: "8 тижнів навчання" }],
     avatarGradient: "linear-gradient(135deg, var(--gold-light), var(--gold-dark))",
   },
@@ -59,7 +83,7 @@ const UK_TESTIMONIALS: Testimonial[] = [
     name: "Дмитро",
     role: "Випуск 2025",
     quote: "Боявся дорогого обладнання і думав, що без художки й починати не варто. Виявилось — варто: за два місяці зібрав перше портфоліо і знайшов клієнтів через Instagram.",
-    tags: [],
+    tags: [{ text: "INSTAGRAM", type: "default" }],
     stats: [{ icon: Clock, text: "2 місяці практики" }],
     avatarGradient: "linear-gradient(135deg, var(--blood-light), var(--blood-dark))",
   },
@@ -69,9 +93,29 @@ const UK_TESTIMONIALS: Testimonial[] = [
     name: "Карина",
     role: "Випуск 2025",
     quote: "Розбір робіт з ментором — те, чого не вистачало на інших курсах. Тепер беру клієнтів на постійній основі і не боюся братися за кольорові роботи.",
-    tags: [],
-    stats: [],
+    tags: [{ text: "КОЛІР", type: "default" }],
+    stats: [{ icon: Users, text: "Постійні клієнти" }],
     avatarGradient: "linear-gradient(135deg, var(--periwinkle), var(--periwinkle-dark))",
+  },
+  {
+    id: 4,
+    initials: "І",
+    name: "Ірина",
+    role: "Випуск 2025",
+    quote: "Боялася працювати з кольором — здавалося, це не для новачків. Після модуля з кольору взяла першу кольорову роботу, і клієнтка була в захваті. Тепер беру лише кольорові тату.",
+    tags: [{ text: "КОЛЬОРОВІ РОБОТИ", type: "featured" }],
+    stats: [{ icon: Palette, text: "12 кольорових робіт" }],
+    avatarGradient: "linear-gradient(135deg, var(--sage), var(--gold-dark))",
+  },
+  {
+    id: 5,
+    initials: "Р",
+    name: "Роман",
+    role: "Випуск 2025",
+    quote: "Працював барменом і взагалі не думав про тату до цього курсу. Через 3 місяці зробив першу платну роботу і зрозумів — це моє покликання.",
+    tags: [{ text: "ЗМІНА ПРОФЕСІЇ", type: "default" }],
+    stats: [{ icon: Briefcase, text: "3 місяці практики" }],
+    avatarGradient: "linear-gradient(135deg, var(--ink-soft), var(--blood-dark))",
   },
 ];
 
