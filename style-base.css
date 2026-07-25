@@ -2976,6 +2976,12 @@ body.nav-open {
   color: var(--gold-light);
 }
 
+.certificate-cta {
+  display: flex;
+  width: fit-content;
+  margin-inline: auto;
+}
+
 .certificate-tilt-mount {
   width: 88%;
   max-width: 400px;
