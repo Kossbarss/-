@@ -2931,6 +2931,10 @@ body.nav-open {
     order: 1;
   }
 
+  .certificate-copy .section-head {
+    margin-bottom: 12px !important;
+  }
+
   .certificate-copy .certificate-checklist {
     margin-bottom: 12px;
   }
