@@ -353,6 +353,7 @@
       const maskId = `glare-mask-${uid}`
       const path = svg.querySelector('.section-edge-glare-path')
       const radius = parseFloat(svg.dataset.radius) || 24
+      const edge = svg.dataset.edge === 'bottom' ? 'bottom' : 'top'
 
       const defs = document.createElementNS(svg.namespaceURI, 'defs')
       defs.innerHTML = `
@@ -369,18 +370,20 @@
       path.setAttribute('mask', `url(#${maskId})`)
       const gradient = defs.querySelector('linearGradient')
       const rect = defs.querySelector('rect')
-      return { svg, path, gradient, rect, radius, length: 0, pos: 0 }
+      return { svg, path, gradient, rect, radius, edge, length: 0, pos: 0 }
     })
     if (glares.length) {
       function layout(g) {
         const width = g.svg.getBoundingClientRect().width
         if (!(width > 0)) return
         const r = g.radius
-        g.path.setAttribute(
-          'd',
-          `M0,${r} A${r},${r} 0 0 1 ${r},0 L${Math.max(r, width - r)},0 A${r},${r} 0 0 1 ${width},${r}`
-        )
-        g.svg.setAttribute('viewBox', `0 0 ${width} ${r + 6}`)
+        const h = r + 6
+        const d =
+          g.edge === 'bottom'
+            ? `M0,${h - r} A${r},${r} 0 0 0 ${r},${h} L${Math.max(r, width - r)},${h} A${r},${r} 0 0 0 ${width},${h - r}`
+            : `M0,${r} A${r},${r} 0 0 1 ${r},0 L${Math.max(r, width - r)},0 A${r},${r} 0 0 1 ${width},${r}`
+        g.path.setAttribute('d', d)
+        g.svg.setAttribute('viewBox', `0 0 ${width} ${h}`)
         g.length = width
         g.rect.setAttribute('width', String(WINDOW_WIDTH))
       }
