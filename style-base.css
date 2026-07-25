@@ -2575,37 +2575,13 @@ body.nav-open {
 /* ---------- Pricing / order form ---------- */
 .pricing-section {
   position: relative;
-  /* a vertical fade-to-transparent layer on top of the original diagonal
-     gradient — a single angled gradient can't give full-width top/bottom
-     bands (the tilt concentrates 0%/100% in the corners instead) */
-  background: linear-gradient(180deg, var(--paper) 0, transparent 60px, transparent calc(100% - 60px), var(--paper) 100%),
-    linear-gradient(155deg, var(--ink) 0%, var(--blood-dark) 55%, var(--blood) 100%);
+  background: linear-gradient(155deg, var(--ink) 0%, var(--blood-dark) 55%, var(--blood) 100%);
+  border-radius: 24px;
 }
 
 .pricing-section .section-clip {
   position: relative;
   overflow: hidden;
-}
-
-/* overhanging seam-cover strips, see the long comment on
-   .instructor-section above — both neighbours here are plain --paper */
-.pricing-section::before,
-.pricing-section::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 6px;
-  background: var(--paper);
-  z-index: 2;
-}
-
-.pricing-section::before {
-  top: -3px;
-}
-
-.pricing-section::after {
-  bottom: -3px;
 }
 
 .pricing-watermark {
