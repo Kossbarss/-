@@ -2982,6 +2982,7 @@ body.nav-open {
   flex-shrink: 0;
   width: 10px;
   height: 10px;
+  margin-right: 8px;
   border-radius: 50%;
   background: radial-gradient(circle, var(--gold-light) 0%, var(--gold) 70%);
   box-shadow: 0 0 6px 1px rgba(253, 144, 77, 0.65);
