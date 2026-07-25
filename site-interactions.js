@@ -345,7 +345,7 @@
   // own, independent of scroll.
   if (!reducedMotion) {
     const WINDOW_WIDTH = 130
-    const BASE_SPEED = 0.12
+    const BASE_SPEED = 0.16
     let uid = 0
     const glares = [...document.querySelectorAll('.section-edge-glare')].map((svg) => {
       uid += 1
