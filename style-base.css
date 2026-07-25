@@ -2831,37 +2831,83 @@ body.nav-open {
 /* ---------- Certificate ---------- */
 .certificate-section {
   position: relative;
-  background: linear-gradient(180deg, var(--paper) 0, transparent 60px, transparent calc(100% - 60px), var(--paper) 100%),
+  --notch-fill: var(--ink);
+  background: linear-gradient(180deg, transparent 0, transparent calc(100% - 60px), var(--paper) 100%),
     linear-gradient(135deg, var(--ink), #2a221c);
+  border-radius: 24px 24px 0 0;
   color: var(--paper);
 }
 
+/* the rounded top corners cut away this section's own background right at
+   the corner, revealing whatever sits behind in paint order — which,
+   without this, is the plain page background (white), not the previous
+   section's own --paper-alt. A negative-z-index pseudo-element does NOT
+   work here: per the CSS stacking spec, a stacking context's own
+   background paints first and negative-z-index children paint *after*
+   it (on top), so it would cover the rounded corners instead of sitting
+   behind them. A real DOM sibling placed earlier, pulled under this
+   section with a matching negative margin, paints behind it instead. */
 .certificate-section .section-clip {
   position: relative;
   overflow: hidden;
 }
 
-/* overhanging seam-cover strips, see the long comment on
-   .instructor-section above — top neighbour here is the testimonials
-   section (--paper-alt), bottom neighbour is plain --paper */
-.certificate-section::before,
+/* overhanging seam-cover strip, see the long comment on
+   .instructor-section above — bottom neighbour is plain --paper.
+   (top no longer needs one: the fade is gone, replaced by the card's
+   own rounded top edge + border, see PROTOTYPE comment above) */
 .certificate-section::after {
   content: '';
   position: absolute;
   left: 0;
   right: 0;
+  bottom: -3px;
   height: 6px;
   z-index: 2;
+  background: var(--paper);
 }
 
-.certificate-section::before {
-  top: -3px;
+.section-backdrop-strip {
+  height: 26px;
+  margin-bottom: -26px;
   background: var(--paper-alt);
 }
 
-.certificate-section::after {
-  bottom: -3px;
-  background: var(--paper);
+.section-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(70%, 640px);
+  max-height: 85%;
+  object-fit: contain;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Travelling glare that traces the section's actual top-corner path (an
+   SVG path built in site-interactions.js from the section's live width +
+   corner radius, so it genuinely curves through the rounded corners
+   instead of sliding under them on a straight line). A moving gradient
+   mask (dim -> bright core -> dim) reveals the solid stroke underneath,
+   driven every frame as a slow constant drift, independent of scrolling. */
+.section-edge-glare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.section-edge-glare-path {
+  fill: none;
+  stroke: rgba(232, 213, 168, 1);
+  stroke-width: 3;
+  stroke-linecap: round;
+  filter: blur(1px) drop-shadow(0 0 6px rgba(253, 144, 77, 0.6)) drop-shadow(0 0 3px rgba(201, 162, 74, 0.5));
 }
 
 .certificate-layout {
@@ -2929,6 +2975,14 @@ body.nav-open {
   width: 88%;
   max-width: 400px;
   margin-inline: auto;
+}
+
+@media (min-width: 861px) {
+  .certificate-tilt-mount {
+    max-width: 347px;
+    align-self: start;
+    margin-top: 191px;
+  }
 }
 
 .certificate-tilt-mount img {
