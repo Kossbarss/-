@@ -2976,6 +2976,50 @@ body.nav-open {
   color: var(--gold-light);
 }
 
+.signal-dot {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold-light) 0%, var(--gold) 70%);
+  box-shadow: 0 0 6px 1px rgba(253, 144, 77, 0.65);
+}
+
+.signal-dot::before,
+.signal-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold-light);
+  animation: signal-ping 2.4s cubic-bezier(0, 0, 0.3, 1) infinite;
+}
+
+.signal-dot::after {
+  animation-delay: 1.2s;
+}
+
+@keyframes signal-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(3.4);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signal-dot::before,
+  .signal-dot::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
 .certificate-cta {
   display: flex;
   width: fit-content;
