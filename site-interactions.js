@@ -282,6 +282,59 @@
     })
   })
 
+  // Certificate image sizing/position: on the two-column desktop layout,
+  // keep the gap above the image (to the first checklist row) and below it
+  // (to the last checklist row) equal at GAP px, at every width — not just
+  // the reference width the numbers were tuned at. A fixed CSS margin only
+  // matches one width; the checklist's own height changes whenever its
+  // text re-wraps at a narrower column, so this recomputes the image's
+  // height (to always exactly span the checklist) and margin-top (to
+  // start GAP px above it) from live measurements instead.
+  ;(function () {
+    const mount = document.querySelector('.certificate-tilt-mount')
+    const checklist = document.querySelector('.certificate-checklist')
+    const copy = document.querySelector('.certificate-copy')
+    if (!mount || !checklist || !copy) return
+    const GAP = 60
+    const desktopQuery = window.matchMedia('(min-width: 1024px)')
+    let naturalRatio = 0 // width / height of the certificate image itself
+
+    function sync() {
+      if (!desktopQuery.matches) {
+        mount.style.maxWidth = ''
+        mount.style.marginTop = ''
+        return
+      }
+      const rows = checklist.querySelectorAll('.check-row')
+      if (!rows.length) return
+      const firstRowTop = rows[0].getBoundingClientRect().top
+      const lastRowBottom = rows[rows.length - 1].getBoundingClientRect().bottom
+      const copyTop = copy.getBoundingClientRect().top
+      const targetHeight = lastRowBottom - firstRowTop
+      if (!(targetHeight > 0)) return
+      if (!naturalRatio) {
+        const img = mount.querySelector('img')
+        const r = mount.getBoundingClientRect()
+        if (img && img.naturalWidth && r.height > 0) naturalRatio = r.width / r.height
+      }
+      if (naturalRatio) mount.style.maxWidth = `${Math.round(targetHeight * naturalRatio)}px`
+      mount.style.marginTop = `${(firstRowTop - GAP - copyTop).toFixed(2)}px`
+    }
+
+    let resizeTimer = 0
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(sync, 120)
+    })
+    new ResizeObserver(() => sync()).observe(checklist)
+    const img = mount.querySelector('img')
+    if (img) {
+      if (img.complete) sync()
+      else img.addEventListener('load', sync, { once: true })
+    }
+    sync()
+  })()
+
   // Section-edge glare: a solid-color outline of the section's actual
   // top-corner shape (so it genuinely curves through the rounded corners)
   // revealed through a soft moving gradient mask — dim, brightening to a

@@ -2917,7 +2917,7 @@ body.nav-open {
   align-items: center;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1023px) {
   .certificate-layout {
     grid-template-columns: 1fr;
   }
@@ -2931,8 +2931,13 @@ body.nav-open {
     order: 1;
   }
 
+  .certificate-copy .certificate-checklist {
+    margin-bottom: 12px;
+  }
+
   .certificate-tilt-mount {
     order: 2;
+    margin-bottom: 12px;
   }
 
   .certificate-cta {
@@ -2977,11 +2982,11 @@ body.nav-open {
   margin-inline: auto;
 }
 
-@media (min-width: 861px) {
+@media (min-width: 1024px) {
   .certificate-tilt-mount {
     max-width: 347px;
     align-self: start;
-    margin-top: 191px;
+    margin-top: 185.75px;
   }
 }
 
