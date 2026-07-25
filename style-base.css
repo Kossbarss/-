@@ -2826,24 +2826,12 @@ body.nav-open {
   bottom: 0;
 }
 
-.edge-glare-clip {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  border-radius: inherit;
-  pointer-events: none;
-}
-
 .section-edge-glare-path {
   fill: none;
   stroke: rgba(232, 213, 168, 1);
   stroke-width: 3.3;
   stroke-linecap: round;
   filter: blur(1px) drop-shadow(0 0 7px rgba(253, 144, 77, 0.72)) drop-shadow(0 0 4px rgba(201, 162, 74, 0.62));
-}
-
-.pricing-section .section-edge-glare-path {
-  filter: none;
 }
 
 .certificate-layout {
