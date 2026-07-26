@@ -354,6 +354,13 @@
   // a simple analog rect gradient (no discrete banding), only *where*
   // it's placed on screen per unit time is now geometry-correct.
   // Drifts slowly and constantly on its own, independent of scroll.
+  //
+  // CONFIRMED CORRECT -- do not change WINDOW_WIDTH, BASE_SPEED, the
+  // gradient stops, or the mask/getPointAtLength approach below without
+  // an explicit request. Width/softness matched against the pre-fix
+  // version side by side, the stall-at-corners and jump-between-corners
+  // bugs were both root-caused and fixed (see git history on this file),
+  // and BASE_SPEED=0.32 is the user-approved final speed.
   if (!reducedMotion) {
     const WINDOW_WIDTH = 130
     const BASE_SPEED = 0.32
