@@ -351,12 +351,14 @@
   // dash can't reproduce on its own.
   // Drifts slowly and constantly on its own, independent of scroll.
   if (!reducedMotion) {
-    const HIGHLIGHT_LENGTH = 56
+    const HIGHLIGHT_LENGTH = 130
     const BASE_SPEED = 0.16
     const LAYERS = [
-      { len: HIGHLIGHT_LENGTH, opacity: 0.28 },
-      { len: HIGHLIGHT_LENGTH * 0.6, opacity: 0.55 },
-      { len: HIGHLIGHT_LENGTH * 0.28, opacity: 1 },
+      { len: HIGHLIGHT_LENGTH, opacity: 0.14 },
+      { len: HIGHLIGHT_LENGTH * 0.72, opacity: 0.22 },
+      { len: HIGHLIGHT_LENGTH * 0.46, opacity: 0.36 },
+      { len: HIGHLIGHT_LENGTH * 0.24, opacity: 0.55 },
+      { len: HIGHLIGHT_LENGTH * 0.1, opacity: 0.8 },
     ]
     const glares = [...document.querySelectorAll('.section-edge-glare')].map((svg) => {
       const basePath = svg.querySelector('.section-edge-glare-path')
