@@ -203,6 +203,31 @@
 
     resize()
     frameId = requestAnimationFrame(render)
+
+    // TEMPORARY on-page diagnostic overlay -- remove once the missing-ring
+    // issue in the published preview is understood. Avoids needing DevTools.
+    window.setTimeout(function () {
+      const rect = canvas.getBoundingClientRect()
+      const pixels = new Uint8Array(4)
+      let pixelInfo = 'n/a'
+      try {
+        gl.readPixels(Math.floor(canvas.width / 2), Math.floor(canvas.height / 2), 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels)
+        pixelInfo = Array.from(pixels).join(',')
+      } catch (e) {
+        pixelInfo = 'readPixels error: ' + e.message
+      }
+      const badge = document.createElement('div')
+      badge.textContent =
+        'DIAG: canvas=' + canvas.width + 'x' + canvas.height +
+        ' rect=' + Math.round(rect.width) + 'x' + Math.round(rect.height) +
+        ' gl=' + (!!gl) +
+        ' reducedMotion=' + reducedMotion +
+        ' centerPixel=' + pixelInfo
+      badge.style.cssText =
+        'position:relative;z-index:99;background:#0f0;color:#000;' +
+        'font:12px monospace;padding:6px 10px;word-break:break-all;'
+      clip.insertBefore(badge, clip.firstChild.nextSibling)
+    }, 800)
   }
 
   if (document.readyState === 'loading') {
