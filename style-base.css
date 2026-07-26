@@ -2605,11 +2605,11 @@ body.nav-open {
 .order-box {
   position: relative;
   z-index: 1;
-  max-width: 640px;
+  max-width: 480px;
   margin-inline: auto;
   padding: 40px;
   border: 2px solid var(--gold);
-  background: var(--white);
+  background: rgba(255, 253, 250, 0.92);
   text-align: center;
 }
 

@@ -62,7 +62,7 @@
 
         vec2 center=vec2(aspect*.5,.5);
         vec2 shifted=uv-center;
-        float radius=.34;
+        float radius=.46;
         float mask=0.0;
         mask+=circle(uv,center,radius,.038);
         mask+=circle(uv,center,radius-.022,.012);
