@@ -453,4 +453,30 @@
       requestAnimationFrame(tick)
     }
   }
+
+  // Sticky pillar-card stack: each card sticks under the header as the
+  // next one scrolls up and covers it (position: sticky in the CSS).
+  // Cards hold different amounts of text, so left to their natural
+  // height a shorter card wouldn't fully cover a taller one underneath,
+  // leaving a sliver of its content peeking out below. Equalize them to
+  // the tallest card's natural height so each fully hides the last.
+  ;(function () {
+    const cards = [...document.querySelectorAll('.pillar-card')]
+    if (!cards.length) return
+
+    function equalize() {
+      cards.forEach((card) => { card.style.minHeight = '' })
+      const tallest = Math.max(...cards.map((card) => card.getBoundingClientRect().height))
+      cards.forEach((card) => { card.style.minHeight = `${Math.ceil(tallest)}px` })
+    }
+
+    equalize()
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(equalize)
+
+    let resizeTimer = 0
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(equalize, 150)
+    })
+  })()
 })()

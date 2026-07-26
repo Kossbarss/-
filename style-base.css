@@ -2022,12 +2022,19 @@ body.nav-open {
 .pillar-card {
   border-radius: 18px;
   padding: 34px 38px;
-  margin-top: -16px;
-  position: relative;
+  margin-bottom: 24px;
+  position: sticky;
+  top: 104px;
 }
 
-.pillar-card:first-child {
-  margin-top: 0;
+.pillar-card:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .pillar-card {
+    top: 88px;
+  }
 }
 
 .pillar-tone-sand {
