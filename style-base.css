@@ -2318,7 +2318,7 @@ body.nav-open {
 .rise-cycle-section .section-clip {
   position: relative;
   overflow: hidden;
-  padding-bottom: 100px;
+  padding-bottom: 55px;
 }
 
 .rise-cycle-section::before {
