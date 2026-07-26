@@ -29,7 +29,7 @@
     canvas.setAttribute('aria-hidden', 'true')
     clip.insertBefore(canvas, clip.firstChild)
 
-    const gl = canvas.getContext('webgl', { alpha: true, antialias: false })
+    const gl = canvas.getContext('webgl', { alpha: true, antialias: false, preserveDrawingBuffer: true })
     if (!gl) return
 
     const vertexSource = 'attribute vec2 aPosition; void main(){ gl_Position=vec4(aPosition,0.0,1.0); }'
