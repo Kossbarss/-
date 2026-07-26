@@ -78,6 +78,10 @@ export interface TiltCardProps {
   max?: number;
   glare?: boolean;
   className?: string;
+  /** Bump this (e.g. a counter) to play a brief automatic tilt sweep --
+   * used on touch devices where there's no hover to discover the effect
+   * with, so a "press" affordance can demo it on demand instead. */
+  demoTrigger?: number;
 }
 
 export function TiltCard({
@@ -85,11 +89,13 @@ export function TiltCard({
   max = 12,
   glare = true,
   className,
+  demoTrigger,
 }: TiltCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const canHover = useHoverCapable();
   const enabled = !reduce && canHover;
+  const touchEnabled = !reduce;
 
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
@@ -99,14 +105,13 @@ export function TiltCard({
   const srx = useSpring(rx, SPRING_MOUSE);
   const sry = useSpring(ry, SPRING_MOUSE);
 
-  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const setFromPoint = (clientX: number, clientY: number) => {
     const el = ref.current;
-
-    if (!el || !enabled) return;
+    if (!el) return;
 
     const rect = el.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width;
-    const py = (e.clientY - rect.top) / rect.height;
+    const px = (clientX - rect.left) / rect.width;
+    const py = (clientY - rect.top) / rect.height;
 
     ry.set((px - 0.5) * max);
     rx.set((0.5 - py) * max);
@@ -114,10 +119,44 @@ export function TiltCard({
     gy.set(py * 100);
   };
 
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!enabled) return;
+    setFromPoint(e.clientX, e.clientY);
+  };
+
   const onLeave = () => {
     rx.set(0);
     ry.set(0);
   };
+
+  const onTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!touchEnabled) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+    setFromPoint(touch.clientX, touch.clientY);
+  };
+
+  // Touch devices have no hover to discover the tilt with, so a "press"
+  // affordance elsewhere can bump demoTrigger to play a short automatic
+  // sweep -- same rx/ry motion values, so it blends into a real drag if
+  // the visitor keeps their finger on the card afterwards.
+  useEffect(() => {
+    if (demoTrigger === undefined || demoTrigger === 0 || reduce) return;
+    const steps = [
+      [max * 0.7, -max * 0.7],
+      [-max * 0.7, max * 0.7],
+      [max * 0.5, max * 0.5],
+      [0, 0],
+    ];
+    const timers = steps.map(([stepRx, stepRy], i) =>
+      setTimeout(() => {
+        rx.set(stepRx);
+        ry.set(stepRy);
+      }, 220 * (i + 1)),
+    );
+    return () => timers.forEach(clearTimeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [demoTrigger]);
 
   const transform = useMotionTemplate`perspective(1000px) rotateX(${srx}deg) rotateY(${sry}deg)`;
   const glareBg = useMotionTemplate`radial-gradient(circle at ${gx}% ${gy}%, var(--foreground), transparent 50%)`;
@@ -127,6 +166,8 @@ export function TiltCard({
       ref={ref}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onLeave}
       style={{ transform, transformStyle: "preserve-3d" }}
       className={cn(
         "relative overflow-hidden rounded-2xl will-change-transform",
@@ -135,7 +176,7 @@ export function TiltCard({
     >
       {children}
 
-      {glare && enabled ? (
+      {glare && (enabled || touchEnabled) ? (
         <motion.div
           aria-hidden
           style={{ background: glareBg }}
