@@ -397,6 +397,20 @@
         g.svg.setAttribute('viewBox', `0 0 ${width} ${h}`)
         g.length = g.path.getTotalLength()
         g.rect.setAttribute('width', String(WINDOW_WIDTH))
+        // Cache the path's start/end x for the lead-in/trail-out phases
+        // below, where the highlight is still sliding toward/away from
+        // the path rather than sampling a point on it -- getPointAtLength
+        // itself only accepts values inside [0, length]. A local-tangent
+        // extrapolation was tried here first, but a rounded corner's
+        // tangent right at the tip is close to vertical (near-zero dx per
+        // unit of arc-length), which made that extrapolation barely move
+        // in x -- reproducing the exact stall it was meant to fix. Plain
+        // 1:1 arc-length-as-pixels avoids that: it's already exact on the
+        // straight edges the lead-in/trail-out abut, so it lines up with
+        // zero discontinuity at 0 and length without depending on the
+        // corner's local geometry at all.
+        g.startX = g.path.getPointAtLength(0).x
+        g.endX = g.path.getPointAtLength(g.length).x
       }
       glares.forEach(layout)
 
@@ -412,11 +426,17 @@
           const span = g.length + WINDOW_WIDTH * 2
           g.pos = (g.pos + BASE_SPEED) % span
           // pos is an arc-length position along the curve, offset so the
-          // window starts fully before the path and ends fully after it;
-          // clamp into [0, length] before sampling so getPointAtLength
-          // never receives an out-of-range value during that lead/trail.
-          const arcPos = Math.min(Math.max(g.pos - WINDOW_WIDTH, 0), g.length)
-          const screenX = g.path.getPointAtLength(arcPos).x - WINDOW_WIDTH / 2
+          // window starts fully before the path and ends fully after it.
+          const arcPos = g.pos - WINDOW_WIDTH
+          let x
+          if (arcPos < 0) {
+            x = g.startX + arcPos
+          } else if (arcPos > g.length) {
+            x = g.endX + (arcPos - g.length)
+          } else {
+            x = g.path.getPointAtLength(arcPos).x
+          }
+          const screenX = x - WINDOW_WIDTH / 2
           g.gradient.setAttribute('x1', String(screenX))
           g.gradient.setAttribute('x2', String(screenX + WINDOW_WIDTH))
           g.rect.setAttribute('x', String(screenX))
