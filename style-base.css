@@ -2318,7 +2318,7 @@ body.nav-open {
 .rise-cycle-section .section-clip {
   position: relative;
   overflow: hidden;
-  padding-bottom: 55px;
+  padding-bottom: 24px;
 }
 
 .rise-cycle-section::before {
@@ -2405,9 +2405,10 @@ body.nav-open {
   background: linear-gradient(235deg, #fd904d, #e00103 50%, #fd904d);
   border-color: transparent;
   box-shadow:
-    rgba(255, 0, 3, 0.28) 0 0 35px 18px,
-    rgba(255, 0, 3, 0.14) 0 0 90px 45px,
-    inset 0 -32px 30px -8px rgba(50, 5, 5, 0.85);
+    rgba(255, 0, 3, 0.22) 0 0 8px 3px,
+    rgba(255, 0, 3, 0.16) 0 0 14px 6px,
+    rgba(255, 0, 3, 0.1) 0 0 20px 9px,
+    inset 0 -18px 18px -5px rgba(50, 5, 5, 0.85);
 }
 
 /* soft static highlight, top-left, on every cell */
