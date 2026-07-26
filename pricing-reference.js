@@ -50,8 +50,8 @@
       float circle(vec2 uv,vec2 center,float rad,float width){
         vec2 diff=center-uv;
         float len=length(diff);
-        len+=variation(diff,vec2(0.0,1.0),5.0,1.6);
-        len-=variation(diff,vec2(1.0,0.0),5.0,1.4);
+        len+=variation(diff,vec2(0.0,1.0),5.0,2.0);
+        len-=variation(diff,vec2(1.0,0.0),5.0,2.0);
         return smoothstep(rad-width,rad,len)-smoothstep(rad,rad+width,len);
       }
 
@@ -60,7 +60,7 @@
         float aspect=iResolution.x/max(iResolution.y,1.0);
         uv.x*=aspect;
 
-        vec2 center=vec2(aspect*.52,.5);
+        vec2 center=vec2(aspect*.5,.5);
         vec2 shifted=uv-center;
         float radius=.34;
         float mask=0.0;
@@ -68,41 +68,32 @@
         mask+=circle(uv,center,radius-.022,.012);
         mask+=circle(uv,center,radius+.022,.006);
 
-        vec2 v=rotate2d(iTime*.16)*shifted;
-        float sweep=.5+.5*sin(iTime*.55+v.x*4.5-v.y*3.0);
-        float pulse=.5+.5*cos(iTime*.34+v.y*3.6);
+        vec2 v=rotate2d(iTime*.20)*shifted;
+        float sweep=.5+.5*sin(iTime*.72+v.x*5.2-v.y*3.4);
+        float pulse=.5+.5*cos(iTime*.48+v.y*4.1);
 
-        vec3 nearBlack=vec3(.025,.004,.002);
-        vec3 darkRed=vec3(.13,.020,.008);
-        vec3 warmRed=vec3(.34,.065,.018);
-        vec3 bronze=vec3(.55,.25,.045);
-        vec3 gold=vec3(.92,.62,.20);
-        vec3 paleGold=vec3(1.0,.82,.43);
+        vec3 deepBurgundy=vec3(.055,.004,.010);
+        vec3 burgundy=vec3(.24,.008,.016);
+        vec3 redColor=vec3(.95,.035,.015);
+        vec3 orangeColor=vec3(1.0,.28,.10);
+        vec3 goldColor=vec3(.93,.61,.22);
 
-        float radialWarmth=exp(-length(shifted)*1.8);
-        float sideWarmth=smoothstep(0.0,1.0,uv.x/aspect);
-        vec3 bg=mix(nearBlack,darkRed,radialWarmth*.78);
-        bg=mix(bg,warmRed,sideWarmth*.24);
-        bg=mix(bg,bronze,pulse*.055);
+        float horizontalGlow=smoothstep(aspect*.95,aspect*.28,abs(shifted.x));
+        float verticalGlow=smoothstep(.82,.10,abs(shifted.y));
+        vec3 bg=mix(deepBurgundy,burgundy,clamp(horizontalGlow*.42+verticalGlow*.16,0.0,1.0));
+        bg=mix(bg,redColor,clamp((uv.x/aspect)*.16,0.0,.16));
 
-        vec3 ringColor=mix(warmRed,gold,sweep);
-        ringColor=mix(ringColor,paleGold,pulse*.28);
+        vec3 ringColor=mix(redColor,orangeColor,sweep);
+        ringColor=mix(ringColor,goldColor,pulse*.48);
 
         float ringDistance=abs(length(shifted)-radius);
-        float halo=exp(-ringDistance*16.0);
-
-        float glintTrack=shifted.x*.62+shifted.y*.88;
-        float glintCenter=sin(iTime*.28)*.42;
-        float glint=exp(-pow(glintTrack-glintCenter,2.0)*34.0);
-        glint*=smoothstep(.86,.06,length(shifted));
-
+        float halo=exp(-ringDistance*18.0);
         vec3 color=bg;
-        color+=ringColor*(mask*.9+halo*.2);
-        color+=paleGold*circle(uv,center,radius,.003)*.68;
-        color+=paleGold*glint*.055;
+        color+=ringColor*(mask*.92+halo*.24);
+        color+=goldColor*circle(uv,center,radius,.003)*.72;
 
-        float vignette=smoothstep(1.06,.25,length(vec2(shifted.x/max(aspect,1.0),shifted.y)));
-        color*=.7+.3*vignette;
+        float vignette=smoothstep(1.05,.24,length(vec2(shifted.x/max(aspect,1.0),shifted.y)));
+        color*=.72+.28*vignette;
 
         gl_FragColor=vec4(color,1.0);
       }
@@ -203,31 +194,6 @@
 
     resize()
     frameId = requestAnimationFrame(render)
-
-    // TEMPORARY on-page diagnostic overlay -- remove once the missing-ring
-    // issue in the published preview is understood. Avoids needing DevTools.
-    window.setTimeout(function () {
-      const rect = canvas.getBoundingClientRect()
-      const pixels = new Uint8Array(4)
-      let pixelInfo = 'n/a'
-      try {
-        gl.readPixels(Math.floor(canvas.width / 2), Math.floor(canvas.height / 2), 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels)
-        pixelInfo = Array.from(pixels).join(',')
-      } catch (e) {
-        pixelInfo = 'readPixels error: ' + e.message
-      }
-      const badge = document.createElement('div')
-      badge.textContent =
-        'DIAG: canvas=' + canvas.width + 'x' + canvas.height +
-        ' rect=' + Math.round(rect.width) + 'x' + Math.round(rect.height) +
-        ' gl=' + (!!gl) +
-        ' reducedMotion=' + reducedMotion +
-        ' centerPixel=' + pixelInfo
-      badge.style.cssText =
-        'position:relative;z-index:99;background:#0f0;color:#000;' +
-        'font:12px monospace;padding:6px 10px;word-break:break-all;'
-      clip.insertBefore(badge, clip.firstChild.nextSibling)
-    }, 800)
   }
 
   if (document.readyState === 'loading') {
