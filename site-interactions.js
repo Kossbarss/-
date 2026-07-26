@@ -337,22 +337,42 @@
 
   // Section-edge glare: a solid-color outline of the section's actual
   // top-corner shape (so it genuinely curves through the rounded corners),
-  // with a short highlight segment travelling along it. The segment is
-  // drawn with stroke-dasharray/stroke-dashoffset directly on the path,
-  // so its position and length are measured in real arc-length via
-  // path.getTotalLength() -- unlike an x-position-driven mask, this makes
-  // it hug the curve at the corners at the same visual speed and size as
-  // on the straight edge, instead of flooding the whole (short) corner
-  // radius at once because the highlight window was wider than the curve.
+  // with a short highlight travelling along it. Position is driven by
+  // stroke-dasharray/stroke-dashoffset on real arc-length (path.getTotalLength())
+  // rather than x-position, so it hugs the curve at the corners at the same
+  // visual speed and size as on the straight edge instead of flooding the
+  // whole (short) corner radius at once.
+  //
+  // The travelling highlight itself is three concentric dashes of the same
+  // center but shrinking length and rising opacity (a dim wide layer, a
+  // brighter mid layer, a small hot core) -- stroke-dasharray only supports
+  // a flat on/off pattern, so this approximates the soft brighten-then-dim
+  // gradient the original x-position mask had, which a single flat-opacity
+  // dash can't reproduce on its own.
   // Drifts slowly and constantly on its own, independent of scroll.
   if (!reducedMotion) {
     const HIGHLIGHT_LENGTH = 56
     const BASE_SPEED = 0.16
+    const LAYERS = [
+      { len: HIGHLIGHT_LENGTH, opacity: 0.28 },
+      { len: HIGHLIGHT_LENGTH * 0.6, opacity: 0.55 },
+      { len: HIGHLIGHT_LENGTH * 0.28, opacity: 1 },
+    ]
     const glares = [...document.querySelectorAll('.section-edge-glare')].map((svg) => {
-      const path = svg.querySelector('.section-edge-glare-path')
+      const basePath = svg.querySelector('.section-edge-glare-path')
       const radius = parseFloat(svg.dataset.radius) || 24
       const edge = svg.dataset.edge === 'bottom' ? 'bottom' : 'top'
-      return { svg, path, radius, edge, length: 0, pos: 0 }
+      const layerEls = LAYERS.map((layer, i) => {
+        const el = i === 0 ? basePath : basePath.cloneNode(false)
+        el.style.opacity = String(layer.opacity)
+        if (i > 0) {
+          el.removeAttribute('class')
+          el.classList.add('section-edge-glare-path', 'section-edge-glare-path--core')
+          basePath.after(el)
+        }
+        return el
+      })
+      return { svg, layerEls, radius, edge, length: 0, pos: 0 }
     })
     if (glares.length) {
       function layout(g) {
@@ -364,10 +384,12 @@
           g.edge === 'bottom'
             ? `M0,${h - r} A${r},${r} 0 0 0 ${r},${h} L${Math.max(r, width - r)},${h} A${r},${r} 0 0 0 ${width},${h - r}`
             : `M0,${r} A${r},${r} 0 0 1 ${r},0 L${Math.max(r, width - r)},0 A${r},${r} 0 0 1 ${width},${r}`
-        g.path.setAttribute('d', d)
         g.svg.setAttribute('viewBox', `0 0 ${width} ${h}`)
-        g.length = g.path.getTotalLength()
-        g.path.style.strokeDasharray = `${HIGHLIGHT_LENGTH} ${Math.max(g.length, 1) * 2}`
+        g.layerEls.forEach((el) => el.setAttribute('d', d))
+        g.length = g.layerEls[0].getTotalLength()
+        g.layerEls.forEach((el, i) => {
+          el.style.strokeDasharray = `${LAYERS[i].len} ${Math.max(g.length, 1) * 2}`
+        })
       }
       glares.forEach(layout)
 
@@ -382,8 +404,11 @@
           if (!g.length) return
           const span = g.length + HIGHLIGHT_LENGTH * 2
           g.pos = (g.pos + BASE_SPEED) % span
-          const offset = HIGHLIGHT_LENGTH - g.pos
-          g.path.style.strokeDashoffset = String(offset)
+          const center = g.pos - HIGHLIGHT_LENGTH / 2
+          g.layerEls.forEach((el, i) => {
+            const len = LAYERS[i].len
+            el.style.strokeDashoffset = String(len * 1.5 - center)
+          })
         })
         requestAnimationFrame(tick)
       }

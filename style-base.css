@@ -2852,6 +2852,10 @@ body.nav-open {
   filter: none;
 }
 
+.section-edge-glare-path--core {
+  filter: none;
+}
+
 .certificate-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
