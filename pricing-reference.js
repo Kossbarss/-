@@ -179,7 +179,28 @@
       }, { threshold: .02 }).observe(section)
     }
 
-    window.addEventListener('resize', resize, { passive: true })
+    function drawFrame() {
+      resize()
+      gl.uniform1f(timeLocation, performance.now() * .001)
+      gl.uniform2f(resolutionLocation, canvas.width, canvas.height)
+      gl.drawArrays(gl.TRIANGLES, 0, 6)
+    }
+
+    // The canvas can only size itself correctly once .section-clip has its
+    // final layout box, which may not be true yet at init time (fonts/images
+    // still loading). Under prefers-reduced-motion there is no continuous
+    // rAF loop to self-correct a stale/zero size later, so redraw on every
+    // layout change the section box goes through, not just on window resize.
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(drawFrame).observe(clip)
+    } else {
+      window.addEventListener('resize', drawFrame, { passive: true })
+    }
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(drawFrame)
+    }
+    window.addEventListener('load', drawFrame, { once: true })
+
     resize()
     frameId = requestAnimationFrame(render)
   }
