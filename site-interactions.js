@@ -337,44 +337,51 @@
 
   // Section-edge glare: a solid-color outline of the section's actual
   // top-corner shape (so it genuinely curves through the rounded corners),
-  // with a short highlight travelling along it. Position is driven by
-  // stroke-dasharray/stroke-dashoffset on real arc-length (path.getTotalLength())
-  // rather than x-position, so it hugs the curve at the corners at the same
-  // visual speed and size as on the straight edge instead of flooding the
-  // whole (short) corner radius at once.
+  // revealed through a moving gradient mask -- dim, brightening to a
+  // full-strength core, dimming again -- for a truly continuous (not
+  // stepped) brightness profile, same as the original design.
   //
-  // The travelling highlight itself is three concentric dashes of the same
-  // center but shrinking length and rising opacity (a dim wide layer, a
-  // brighter mid layer, a small hot core) -- stroke-dasharray only supports
-  // a flat on/off pattern, so this approximates the soft brighten-then-dim
-  // gradient the original x-position mask had, which a single flat-opacity
-  // dash can't reproduce on its own.
+  // The mask itself is still a plain axis-aligned rect + horizontal
+  // gradient, which only "means" x-position, not distance along the
+  // curve. Driving that rect's x directly from a constant px/frame speed
+  // (the original bug) made equal *time* cover very unequal *arc length*
+  // at the corner (24px of curve there is ~37.7px of actual arc, thanks
+  // to the quarter-circle), so the highlight visually pooled/slowed at
+  // every corner instead of sweeping through it. Fix: advance position in
+  // real arc-length units via path.getTotalLength(), then convert that
+  // arc-length to the matching on-screen x via path.getPointAtLength(pos).x
+  // each frame before writing it to the mask -- the gradient itself stays
+  // a simple analog rect gradient (no discrete banding), only *where*
+  // it's placed on screen per unit time is now geometry-correct.
   // Drifts slowly and constantly on its own, independent of scroll.
   if (!reducedMotion) {
-    const HIGHLIGHT_LENGTH = 130
+    const WINDOW_WIDTH = 130
     const BASE_SPEED = 0.16
-    const LAYERS = [
-      { len: HIGHLIGHT_LENGTH, opacity: 0.14 },
-      { len: HIGHLIGHT_LENGTH * 0.72, opacity: 0.22 },
-      { len: HIGHLIGHT_LENGTH * 0.46, opacity: 0.36 },
-      { len: HIGHLIGHT_LENGTH * 0.24, opacity: 0.55 },
-      { len: HIGHLIGHT_LENGTH * 0.1, opacity: 0.8 },
-    ]
+    let uid = 0
     const glares = [...document.querySelectorAll('.section-edge-glare')].map((svg) => {
-      const basePath = svg.querySelector('.section-edge-glare-path')
+      uid += 1
+      const gradientId = `glare-gradient-${uid}`
+      const maskId = `glare-mask-${uid}`
+      const path = svg.querySelector('.section-edge-glare-path')
       const radius = parseFloat(svg.dataset.radius) || 24
       const edge = svg.dataset.edge === 'bottom' ? 'bottom' : 'top'
-      const layerEls = LAYERS.map((layer, i) => {
-        const el = i === 0 ? basePath : basePath.cloneNode(false)
-        el.style.opacity = String(layer.opacity)
-        if (i > 0) {
-          el.removeAttribute('class')
-          el.classList.add('section-edge-glare-path', 'section-edge-glare-path--core')
-          basePath.after(el)
-        }
-        return el
-      })
-      return { svg, layerEls, radius, edge, length: 0, pos: 0 }
+
+      const defs = document.createElementNS(svg.namespaceURI, 'defs')
+      defs.innerHTML = `
+        <linearGradient id="${gradientId}" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#fff" stop-opacity="0" />
+          <stop offset="50%" stop-color="#fff" stop-opacity="1" />
+          <stop offset="100%" stop-color="#fff" stop-opacity="0" />
+        </linearGradient>
+        <mask id="${maskId}" maskUnits="userSpaceOnUse">
+          <rect class="glare-mask-rect" y="-10" height="1000" fill="url(#${gradientId})" />
+        </mask>
+      `
+      svg.prepend(defs)
+      path.setAttribute('mask', `url(#${maskId})`)
+      const gradient = defs.querySelector('linearGradient')
+      const rect = defs.querySelector('rect')
+      return { svg, path, gradient, rect, radius, edge, length: 0, pos: 0 }
     })
     if (glares.length) {
       function layout(g) {
@@ -386,12 +393,10 @@
           g.edge === 'bottom'
             ? `M0,${h - r} A${r},${r} 0 0 0 ${r},${h} L${Math.max(r, width - r)},${h} A${r},${r} 0 0 0 ${width},${h - r}`
             : `M0,${r} A${r},${r} 0 0 1 ${r},0 L${Math.max(r, width - r)},0 A${r},${r} 0 0 1 ${width},${r}`
+        g.path.setAttribute('d', d)
         g.svg.setAttribute('viewBox', `0 0 ${width} ${h}`)
-        g.layerEls.forEach((el) => el.setAttribute('d', d))
-        g.length = g.layerEls[0].getTotalLength()
-        g.layerEls.forEach((el, i) => {
-          el.style.strokeDasharray = `${LAYERS[i].len} ${Math.max(g.length, 1) * 2}`
-        })
+        g.length = g.path.getTotalLength()
+        g.rect.setAttribute('width', String(WINDOW_WIDTH))
       }
       glares.forEach(layout)
 
@@ -404,13 +409,17 @@
       function tick() {
         glares.forEach((g) => {
           if (!g.length) return
-          const span = g.length + HIGHLIGHT_LENGTH * 2
+          const span = g.length + WINDOW_WIDTH * 2
           g.pos = (g.pos + BASE_SPEED) % span
-          const center = g.pos - HIGHLIGHT_LENGTH / 2
-          g.layerEls.forEach((el, i) => {
-            const len = LAYERS[i].len
-            el.style.strokeDashoffset = String(len * 1.5 - center)
-          })
+          // pos is an arc-length position along the curve, offset so the
+          // window starts fully before the path and ends fully after it;
+          // clamp into [0, length] before sampling so getPointAtLength
+          // never receives an out-of-range value during that lead/trail.
+          const arcPos = Math.min(Math.max(g.pos - WINDOW_WIDTH, 0), g.length)
+          const screenX = g.path.getPointAtLength(arcPos).x - WINDOW_WIDTH / 2
+          g.gradient.setAttribute('x1', String(screenX))
+          g.gradient.setAttribute('x2', String(screenX + WINDOW_WIDTH))
+          g.rect.setAttribute('x', String(screenX))
         })
         requestAnimationFrame(tick)
       }
