@@ -2310,7 +2310,7 @@ body.nav-open {
 
 /* ---------- 14-day cycle grid (identical block/palette/logo-placement to RISE) ---------- */
 .rise-cycle-section {
-  background: radial-gradient(circle at bottom left, rgba(255, 0, 3, 0.3) 0%, rgba(224, 1, 3, 0.14) 30%, transparent 55%), #0d0b0a;
+  background: radial-gradient(circle at bottom left, rgba(255, 0, 3, 0.3) 0%, rgba(224, 1, 3, 0.14) 30%, transparent 85%), #0d0b0a;
   border-radius: 0 0 24px 24px;
   position: relative;
 }
