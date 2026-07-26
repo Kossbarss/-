@@ -8,6 +8,7 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const modules = [
     'hero-shader-background.js',
+    'pricing-reference.js',
   ]
   if (!reducedMotion) modules.push('legacy-effects.js')
 

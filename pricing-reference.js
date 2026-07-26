@@ -1,64 +1,18 @@
-// Isolated reference-inspired animation for the existing single pricing card.
+// Animated ring/glow canvas behind the pricing card. Deliberately does not
+// touch .pricing-section or .order-box styling -- those stay on the plain
+// site CSS. This module only adds the WebGL canvas layer.
 ;(function () {
-  function initPricingReference() {
+  function initPricingGlow() {
     const section = document.getElementById('pricing')
-    if (!section || section.dataset.pricingReferenceReady === 'true') return
+    if (!section || section.dataset.pricingGlowReady === 'true') return
 
     const clip = section.querySelector('.section-clip') || section
-    const card = section.querySelector('.order-box')
-    const button = section.querySelector('.order-form button')
-    if (!card) return
-
-    section.dataset.pricingReferenceReady = 'true'
-    section.classList.add('pricing-reference-single')
-    card.classList.add('pricing-reference-card')
+    section.dataset.pricingGlowReady = 'true'
 
     const style = document.createElement('style')
-    style.dataset.feature = 'pricing-reference-single-plan'
+    style.dataset.feature = 'pricing-glow-canvas'
     style.textContent = `
-      .pricing-reference-single {
-        background: linear-gradient(180deg,
-          var(--paper) 0,
-          #160503 62px,
-          #160503 calc(100% - 62px),
-          var(--paper) 100%) !important;
-      }
-
-      .pricing-reference-single .section-clip {
-        position: relative;
-        isolation: isolate;
-        min-height: 560px;
-        display: grid;
-        align-items: center;
-        overflow: hidden;
-        background:
-          radial-gradient(circle at 68% 38%, rgba(240,179,82,.20), transparent 30%),
-          radial-gradient(circle at 26% 62%, rgba(126,24,9,.34), transparent 44%),
-          linear-gradient(135deg, #0b0201 0%, #210604 40%, #4a1007 72%, #7d2c08 112%);
-      }
-
-      .pricing-reference-single .section-clip::before,
-      .pricing-reference-single .section-clip::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        height: 72px;
-        z-index: 1;
-        pointer-events: none;
-      }
-
-      .pricing-reference-single .section-clip::before {
-        top: 0;
-        background: linear-gradient(180deg, rgba(9,1,1,.96), transparent);
-      }
-
-      .pricing-reference-single .section-clip::after {
-        bottom: 0;
-        background: linear-gradient(0deg, rgba(9,1,1,.96), transparent);
-      }
-
-      .pricing-reference-canvas {
+      .pricing-glow-canvas {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -67,152 +21,16 @@
         pointer-events: none;
         display: block;
       }
-
-      .pricing-reference-single .pricing-watermark {
-        z-index: 1;
-        color: #d6a34e;
-        opacity: .18;
-        mix-blend-mode: screen;
-        filter: drop-shadow(0 0 24px rgba(222,164,68,.18));
-      }
-
-      .pricing-reference-single .container {
-        position: relative;
-        z-index: 2;
-        width: min(1180px, 100% - 48px);
-      }
-
-      .pricing-reference-single .pricing-reference-card {
-        position: relative;
-        overflow: hidden;
-        max-width: 640px;
-        border: 1px solid rgba(237,197,112,.82);
-        border-radius: 22px;
-        background:
-          linear-gradient(145deg, rgba(255,252,245,.90), rgba(250,230,213,.76));
-        -webkit-backdrop-filter: blur(16px) saturate(1.2);
-        backdrop-filter: blur(16px) saturate(1.2);
-        box-shadow:
-          0 34px 80px -32px rgba(0,0,0,.9),
-          inset 0 1px 0 rgba(255,255,255,.86),
-          0 0 0 1px rgba(143,59,13,.22),
-          0 0 48px rgba(220,154,54,.16);
-        transform: translateZ(0);
-      }
-
-      .pricing-reference-single .pricing-reference-card::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        z-index: 0;
-        pointer-events: none;
-        background:
-          radial-gradient(circle at 18% 12%, rgba(255,255,255,.74), transparent 34%),
-          radial-gradient(circle at 80% 68%, rgba(230,161,65,.15), transparent 34%),
-          linear-gradient(112deg, transparent 16%, rgba(255,244,214,.22) 48%, transparent 76%);
-      }
-
-      .pricing-reference-single .pricing-reference-card::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        z-index: 4;
-        padding: 1px;
-        border-radius: inherit;
-        pointer-events: none;
-        background: linear-gradient(115deg,#4b1608,#ad4d14,#efc46d,#7b250b,#d79a3d,#4b1608);
-        background-size: 280% 280%;
-        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-        -webkit-mask-composite: xor;
-        mask-composite: exclude;
-        animation: pricingReferenceBorder 5.4s linear infinite;
-      }
-
-      .pricing-reference-single .pricing-reference-card > * {
-        position: relative;
-        z-index: 2;
-      }
-
-      .pricing-reference-single .order-form input {
-        background: rgba(255,255,255,.82);
-        border-color: rgba(94,42,12,.2);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,.84);
-      }
-
-      .pricing-reference-single .order-form input:focus {
-        outline: none;
-        border-color: rgba(211,151,55,.9);
-        box-shadow: 0 0 0 3px rgba(211,151,55,.17);
-      }
-
-      .pricing-reference-ripple-button {
-        position: relative !important;
-        overflow: hidden !important;
-        isolation: isolate;
-      }
-
-      .pricing-reference-ripple {
-        position: absolute;
-        z-index: 1;
-        border-radius: 999px;
-        pointer-events: none;
-        transform: scale(0);
-        background: rgba(255,225,164,.56);
-        animation: pricingReferenceRipple .65s ease-out forwards;
-      }
-
-      @keyframes pricingReferenceRipple {
-        from { transform: scale(0); opacity: .9; }
-        to { transform: scale(1); opacity: 0; }
-      }
-
-      @keyframes pricingReferenceBorder {
-        from { background-position: 0% 50%; }
-        to { background-position: 200% 50%; }
-      }
-
-      @media (max-width: 700px) {
-        .pricing-reference-single .section-clip { min-height: 520px; }
-        .pricing-reference-single .container { width: min(1180px, 100% - 32px); }
-        .pricing-reference-single .pricing-reference-card {
-          padding: 28px 18px;
-          border-radius: 18px;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .pricing-reference-single .pricing-reference-card::after,
-        .pricing-reference-ripple { animation: none; }
-      }
     `
     document.head.appendChild(style)
 
     const canvas = document.createElement('canvas')
-    canvas.className = 'pricing-reference-canvas'
+    canvas.className = 'pricing-glow-canvas'
     canvas.setAttribute('aria-hidden', 'true')
     clip.insertBefore(canvas, clip.firstChild)
 
-    if (button) {
-      button.classList.add('pricing-reference-ripple-button')
-      button.addEventListener('pointerdown', function (event) {
-        const rect = button.getBoundingClientRect()
-        const size = Math.max(rect.width, rect.height) * 2
-        const ripple = document.createElement('span')
-        ripple.className = 'pricing-reference-ripple'
-        ripple.style.width = size + 'px'
-        ripple.style.height = size + 'px'
-        ripple.style.left = event.clientX - rect.left - size / 2 + 'px'
-        ripple.style.top = event.clientY - rect.top - size / 2 + 'px'
-        button.appendChild(ripple)
-        window.setTimeout(function () { ripple.remove() }, 700)
-      })
-    }
-
     const gl = canvas.getContext('webgl', { alpha: true, antialias: false })
-    if (!gl) {
-      canvas.style.background = 'radial-gradient(circle at 56% 42%, rgba(236,184,88,.36), transparent 27%), radial-gradient(circle at 36% 58%, rgba(116,27,8,.42), transparent 38%), linear-gradient(145deg,#090101,#260704 48%,#5d1708 82%,#9b470f 125%)'
-      return
-    }
+    if (!gl) return
 
     const vertexSource = 'attribute vec2 aPosition; void main(){ gl_Position=vec4(aPosition,0.0,1.0); }'
     const fragmentSource = `
@@ -367,8 +185,8 @@
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPricingReference, { once: true })
+    document.addEventListener('DOMContentLoaded', initPricingGlow, { once: true })
   } else {
-    initPricingReference()
+    initPricingGlow()
   }
 })()
