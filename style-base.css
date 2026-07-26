@@ -2021,7 +2021,7 @@ body.nav-open {
 
 .pillar-card {
   border-radius: 18px;
-  padding: 34px 38px;
+  padding: 22px 32px;
   margin-bottom: 24px;
   position: sticky;
   top: 104px;
@@ -2054,8 +2054,9 @@ body.nav-open {
 
 .pillar-top {
   display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
+  gap: 20px;
+  flex-wrap: nowrap;
+  align-items: baseline;
 }
 
 .pillar-num {
@@ -2064,16 +2065,21 @@ body.nav-open {
   font-size: 1.8rem;
   opacity: 0.6;
   text-transform: none;
+  flex: 0 0 auto;
+}
+
+.pillar-body {
+  min-width: 0;
 }
 
 .pillar-body h3 {
   font-size: 1.5rem;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .pillar-body p {
   max-width: 560px;
-  line-height: 1.6;
+  line-height: 1.55;
   opacity: 0.92;
   text-transform: none;
   font-size: 0.98rem;
@@ -2083,7 +2089,7 @@ body.nav-open {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 12px;
 }
 
 /* ---------- Lesson program grid ---------- */
