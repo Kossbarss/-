@@ -479,4 +479,32 @@
       resizeTimer = setTimeout(equalize, 150)
     })
   })()
+
+  // "Структура курса" rise-grid: reveal the 15 cells with a staggered
+  // fade+rise-up as the grid scrolls into view (each cell's own
+  // transition-delay is set from its index below), instead of the
+  // grid just appearing instantly. Progressive enhancement: the
+  // hidden-until-revealed state only exists once JS adds .js-animate
+  // (see the matching CSS), so a no-JS/no-IntersectionObserver visitor
+  // always sees the cells fully visible, never stuck invisible.
+  ;(function () {
+    const grid = document.querySelector('.rise-grid')
+    if (!grid || reducedMotion || !('IntersectionObserver' in window)) return
+    const cells = [...grid.querySelectorAll('.rise-cell')]
+    if (!cells.length) return
+
+    cells.forEach((cell, index) => {
+      cell.style.transitionDelay = `${Math.min(index * 0.05, 0.6)}s`
+    })
+    grid.classList.add('js-animate')
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return
+        grid.classList.add('is-revealed')
+        observer.disconnect()
+      })
+    }, { threshold: 0.15 })
+    observer.observe(grid)
+  })()
 })()

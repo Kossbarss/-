@@ -2391,6 +2391,27 @@ body.nav-open {
   gap: 0.28vw;
 }
 
+/* Staggered reveal, added by JS only (see site-interactions.js) so a
+   no-JS visitor always gets the cells fully visible by default. Each
+   cell's transition-delay is set inline from its index. The `transition`
+   property lives ONLY on the .is-revealed rule, not on the plain
+   .js-animate hidden state -- if both the opacity:0 and the transition
+   were on the same rule, adding .js-animate itself would animate every
+   cell fading from its default opacity:1 down to 0 (visible on page
+   load, before the user ever scrolls), which then fights the real
+   reveal transition a moment later. With transition only on
+   .is-revealed, the initial hide is an instant, unanimated snap. */
+.rise-grid.js-animate .rise-cell {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.rise-grid.js-animate.is-revealed .rise-cell {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 @media (max-width: 900px) {
   .rise-grid {
     grid-template-columns: repeat(4, 1fr);
