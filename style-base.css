@@ -2092,6 +2092,33 @@ body.nav-open {
   margin-top: 12px;
 }
 
+/* Below desktop (matches the site's own nav breakpoint), unwrap
+   .pillar-body so the paragraph and tags become direct flex items of
+   .pillar-top instead of a column boxed in beside .pillar-num -- that
+   lets them force their own full-width line, starting flush at the
+   card's own left edge instead of being offset by the number column,
+   while the number+title stay together on the first line. */
+@media (max-width: 1024px) {
+  .pillar-body {
+    display: contents;
+  }
+
+  .pillar-top {
+    flex-wrap: wrap;
+  }
+
+  .pillar-body p {
+    flex: 1 1 100%;
+    max-width: none;
+    text-align: left;
+  }
+
+  .pillar-tags {
+    flex: 1 1 100%;
+    justify-content: flex-start;
+  }
+}
+
 /* ---------- Lesson program grid ---------- */
 .lesson-grid {
   display: grid;
