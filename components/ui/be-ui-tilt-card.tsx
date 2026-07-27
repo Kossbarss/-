@@ -136,6 +136,17 @@ export function TiltCard({
     setFromPoint(touch.clientX, touch.clientY);
   };
 
+  // Without this, a plain tap (touchstart immediately followed by
+  // touchend, no touchmove in between) never moved the tilt at all --
+  // only an actual drag did, since setFromPoint only ran from
+  // onTouchMove. Every touch should react right away, drag or not.
+  const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!touchEnabled) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+    setFromPoint(touch.clientX, touch.clientY);
+  };
+
   // Touch devices have no hover to discover the tilt with, so a "press"
   // affordance elsewhere can bump demoTrigger to play a short automatic
   // sweep -- same rx/ry motion values, so it blends into a real drag if
@@ -166,6 +177,7 @@ export function TiltCard({
       ref={ref}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
+      onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onLeave}
       style={{ transform, transformStyle: "preserve-3d" }}
