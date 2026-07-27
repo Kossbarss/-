@@ -2186,6 +2186,77 @@ body.nav-open {
   color: var(--white);
 }
 
+/* Card 3's AI-assistant chip: stacks under the tags below the same
+   1024px breakpoint the pillar text itself unwraps at (see the
+   .pillar-body display:contents rule above), then sits beside the
+   text once there's room for both side by side. */
+.pillar-ai-wrap {
+  position: relative;
+  display: block;
+  flex: 1 1 100%;
+  max-width: 210px;
+  margin: 18px auto 0;
+}
+
+.pillar-ai-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  animation: ai-chip-pulse 2.6s ease-in-out infinite;
+}
+
+/* A second glow layered over the chip's own turquoise ring (see the
+   sampled center/color below) so that highlight pulses in place too,
+   not just the halo around the photo's outer edge. */
+.pillar-ai-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: radial-gradient(circle at 51% 52%, rgba(141, 211, 234, 0.95) 0%, rgba(141, 211, 234, 0.5) 16%, transparent 40%);
+  mix-blend-mode: screen;
+  animation: ai-chip-glow-pulse 2.6s ease-in-out infinite;
+}
+
+@media (min-width: 1025px) {
+  .pillar-top-ai {
+    align-items: center;
+  }
+
+  .pillar-ai-wrap {
+    flex: 0 0 180px;
+    max-width: 180px;
+    margin: 0 0 0 28px;
+  }
+}
+
+/* Echoes the turquoise glow already inside the chip artwork so it
+   reads as alive rather than a static photo. */
+@keyframes ai-chip-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(141, 211, 234, 0.35));
+  }
+  50% {
+    filter: drop-shadow(0 0 22px rgba(141, 211, 234, 0.9));
+  }
+}
+
+@keyframes ai-chip-glow-pulse {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pillar-ai-image,
+  .pillar-ai-glow {
+    animation: none;
+  }
+}
+
 /* ---------- Lesson program grid ---------- */
 .lesson-grid {
   display: grid;
