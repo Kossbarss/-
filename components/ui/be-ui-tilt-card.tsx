@@ -105,7 +105,15 @@ export function TiltCard({
   const srx = useSpring(rx, SPRING_MOUSE);
   const sry = useSpring(ry, SPRING_MOUSE);
 
-  const setFromPoint = (clientX: number, clientY: number) => {
+  // A mouse can reach the card's actual corners, so the full +/-max
+  // swing only shows up right at the edge -- fine for a cursor. A
+  // finger touching anywhere reasonable (not hugging the very edge)
+  // should still feel as dramatic as the demoTrigger sweep (which
+  // peaks at max*0.7), so touch gets its own multiplier on top of the
+  // same 0-1 position math.
+  const TOUCH_STRENGTH = 2.2;
+
+  const setFromPoint = (clientX: number, clientY: number, strength = 1) => {
     const el = ref.current;
     if (!el) return;
 
@@ -113,8 +121,8 @@ export function TiltCard({
     const px = (clientX - rect.left) / rect.width;
     const py = (clientY - rect.top) / rect.height;
 
-    ry.set((px - 0.5) * max);
-    rx.set((0.5 - py) * max);
+    ry.set((px - 0.5) * max * strength);
+    rx.set((0.5 - py) * max * strength);
     gx.set(px * 100);
     gy.set(py * 100);
   };
@@ -133,7 +141,7 @@ export function TiltCard({
     if (!touchEnabled) return;
     const touch = e.touches[0];
     if (!touch) return;
-    setFromPoint(touch.clientX, touch.clientY);
+    setFromPoint(touch.clientX, touch.clientY, TOUCH_STRENGTH);
   };
 
   // Without this, a plain tap (touchstart immediately followed by
@@ -144,7 +152,7 @@ export function TiltCard({
     if (!touchEnabled) return;
     const touch = e.touches[0];
     if (!touch) return;
-    setFromPoint(touch.clientX, touch.clientY);
+    setFromPoint(touch.clientX, touch.clientY, TOUCH_STRENGTH);
   };
 
   // Touch devices have no hover to discover the tilt with, so a "press"
