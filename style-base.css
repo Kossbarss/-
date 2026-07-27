@@ -2019,6 +2019,23 @@ body.nav-open {
   flex-direction: column;
 }
 
+/* Narrower than the site's usual 1180px container: the full-bleed
+   photos are 1400x933 (landscape), and at the container's full width
+   each card's box is so much wider than it is tall that object-fit:cover
+   has to crop away most of the photo's height to fill it. Capping the
+   width here keeps the card's own box closer to the photo's own
+   proportions, so less of it needs to be cropped away. */
+@media (min-width: 1025px) {
+  .pillars-stack {
+    max-width: 820px;
+    margin-inline: auto;
+  }
+}
+
+.section-cta {
+  text-align: center;
+}
+
 .pillar-card {
   border-radius: 18px;
   padding: 22px 32px;
@@ -2779,13 +2796,27 @@ body.nav-open {
 /* ---------- Pricing / order form ---------- */
 .pricing-section {
   position: relative;
-  background: var(--ink);
+  background: #2a0806;
   border-radius: 24px;
 }
 
+/* .section's own top/bottom padding is --layout-section-y (see
+   layout-rhythm.css, a responsive clamp() -- not a fixed value), but
+   the WebGL glow canvas (pricing-reference.js) is inset:0 within this
+   div, so without correcting for that padding here the canvas only
+   ever covers the inner content box -- leaving a bare strip of the
+   flat fallback color exposed above and below it, at the block's own
+   top and bottom edges. The negative margin bleeds this div back out
+   through that padding (full section height) while the matching
+   padding keeps .container's own children exactly where they were.
+   Referencing the same variable (instead of hardcoding a px value)
+   keeps this in sync at every breakpoint automatically. */
 .pricing-section .section-clip {
   position: relative;
   overflow: hidden;
+  border-radius: inherit;
+  margin-block: calc(var(--layout-section-y) * -1);
+  padding-block: var(--layout-section-y);
 }
 
 .pricing-watermark {
@@ -2870,6 +2901,14 @@ body.nav-open {
   border-radius: 8px;
   font-family: inherit;
   font-size: 0.95rem;
+}
+
+/* This one button's gradient only -- the shared .btn-stardust gradient
+   elsewhere on the site keeps its light peach fade at the rounded
+   ends; here that fade is dropped so the burgundy-red reaches all the
+   way to the pill's curved edges. */
+.order-form .btn-stardust {
+  background: linear-gradient(105deg, #F25832 0%, #E62115 50%, #F25832 100%);
 }
 
 /* ---------- Comparison ---------- */
