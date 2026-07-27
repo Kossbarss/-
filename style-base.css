@@ -871,6 +871,14 @@ body.nav-open {
   transform-style: preserve-3d;
   backface-visibility: hidden;
   transform-origin: center center;
+  /* The carousel's own positioning (site-interactions.js) sets this
+     same transform inline once it runs, which always wins over this
+     rule -- but until that JS executes, top/left:50% alone only moves
+     each card's top-left CORNER to center, leaving every photo piled
+     up toward the bottom-right instead of centered. This keeps the
+     gallery looking like a plain stacked photo (not broken) for the
+     brief window before the carousel script takes over. */
+  transform: translate(-50%, -50%);
 }
 
 .hero-shot::after {
