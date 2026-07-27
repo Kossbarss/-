@@ -6,8 +6,13 @@
 
   const prefix = location.pathname.includes('/ua/') ? '../' : ''
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  // hero-shader-background.js has its own <script> tag (loaded early,
+  // in parallel with script.js) instead of going through this chain --
+  // it doesn't depend on site-core.js/site-interactions.js at all, and
+  // waiting for the vip:app-ready chain to finish first was adding a
+  // few hundred ms of pure network/parse delay before the hero
+  // background could even start.
   const modules = [
-    'hero-shader-background.js',
     'pricing-reference.js',
   ]
   if (!reducedMotion) modules.push('legacy-effects.js')

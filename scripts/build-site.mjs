@@ -158,6 +158,7 @@ function injectAssets(html, assetPrefix) {
   const carouselJs = `<script src="${assetPrefix}dist/card-fan-carousel.js?v=${version}"></script>`
   const testimonialJs = `<script src="${assetPrefix}dist/testimonial-stack.js?v=${version}"></script>`
   const certificateJs = `<script src="${assetPrefix}dist/certificate-tilt.js?v=${version}"></script>`
+  const heroShaderJs = `<script src="${assetPrefix}hero-shader-background.js?v=${version}"></script>`
 
   html = html
     // style.css has no cache-busting query string in the source HTML
@@ -172,9 +173,10 @@ function injectAssets(html, assetPrefix) {
     .replace(/\s*<script src="(?:\.\.\/)?dist\/card-fan-carousel\.js[^\n]*<\/script>\n?/g, '\n')
     .replace(/\s*<script src="(?:\.\.\/)?dist\/testimonial-stack\.js[^\n]*<\/script>\n?/g, '\n')
     .replace(/\s*<script src="(?:\.\.\/)?dist\/certificate-tilt\.js[^\n]*<\/script>\n?/g, '\n')
+    .replace(/\s*<script src="(?:\.\.\/)?hero-shader-background\.js[^\n]*<\/script>\n?/g, '\n')
 
   html = html.replace('</head>', `${mainCss}\n${carouselCss}\n${rhythmCss}\n${testimonialCss}\n</head>`)
-  html = html.replace('<script src="script.js"></script>', `${carouselJs}\n  ${testimonialJs}\n  ${certificateJs}\n  <script src="script.js"></script>`)
+  html = html.replace('<script src="script.js"></script>', `${carouselJs}\n  ${testimonialJs}\n  ${certificateJs}\n  ${heroShaderJs}\n  <script src="script.js"></script>`)
   return html
 }
 

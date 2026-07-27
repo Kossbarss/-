@@ -159,13 +159,19 @@ void main(){
   let frameTimeTotal = 0
   let stableSamples = 0
   let smoothedDelta = 16.67
+  let cooldownBatches = 0
 
+  // desynchronized:true trades presentation sync for lower input
+  // latency -- a real win for a canvas the user is actively drawing on,
+  // but this one is a passive background nobody touches, so it was
+  // only paying that flag's cost: on several mobile GPU drivers,
+  // decoupling the canvas from the compositor like this is a known
+  // source of visible tearing/stutter.
   const contextOptions = {
     alpha: true,
     antialias: false,
     depth: false,
     stencil: false,
-    desynchronized: true,
     powerPreference: 'high-performance',
     preserveDrawingBuffer: false,
   }
@@ -283,10 +289,22 @@ void main(){
     frameSamples = 0
     frameTimeTotal = 0
 
+    // Each quality change forces a canvas resize (a real reallocation,
+    // not free), so on a device whose frame time hovers right at the
+    // threshold this loop could otherwise flip quality up and down
+    // every batch, resizing every time -- reading as a stutter that
+    // repeats roughly once a second. Holding off on re-evaluating for
+    // a few batches after any change breaks that oscillation.
+    if (cooldownBatches > 0) {
+      cooldownBatches -= 1
+      return
+    }
+
     if (average > 22 && quality > 0.58) {
       quality = Math.max(0.58, quality * 0.84)
       resizePending = true
       stableSamples = 0
+      cooldownBatches = 3
       return
     }
 
@@ -296,6 +314,7 @@ void main(){
         quality = Math.min(0.94, quality + 0.06)
         resizePending = true
         stableSamples = 0
+        cooldownBatches = 3
       }
     } else {
       stableSamples = 0
@@ -314,8 +333,8 @@ void main(){
     const rawDelta = Math.min(Math.max(now - lastTime, 0), 32)
     lastTime = now
     smoothedDelta += (rawDelta - smoothedDelta) * 0.18
-    baseFrame += smoothedDelta * 0.3
-    overlayFrame += smoothedDelta * 0.2
+    baseFrame += smoothedDelta * 0.9
+    overlayFrame += smoothedDelta * 0.6
 
     renderCurrentFrame()
     adaptQuality(rawDelta)
