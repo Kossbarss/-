@@ -1080,10 +1080,7 @@ body.nav-open {
 }
 
 .hero-kicker,
-.hero h1,
-.hero-sub,
 .hero-cta-row,
-.hero-panorama-shell,
 .hero-lede,
 .hero-tags {
   animation: heroFadeSlideIn 0.7s ease both;
@@ -1093,20 +1090,8 @@ body.nav-open {
   animation-delay: 0s;
 }
 
-.hero h1 {
-  animation-delay: 0.08s;
-}
-
-.hero-sub {
-  animation-delay: 0.16s;
-}
-
 .hero-cta-row {
   animation-delay: 0.24s;
-}
-
-.hero-panorama-shell {
-  animation-delay: 0.32s;
 }
 
 .hero-lede {
@@ -1117,15 +1102,58 @@ body.nav-open {
   animation-delay: 0.48s;
 }
 
+/* The gallery gets the same word-appear mechanism as the title/subtitle
+   (blur + scale + fade, not just slide+fade), timed to start once the
+   subtitle's own words have mostly settled (last hero-sub word starts
+   at 1885ms + ~0.4s to read as "arrived"). */
+.hero-panorama-shell {
+  animation: word-appear 1s ease-out both;
+  animation-delay: 2100ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-kicker,
-  .hero h1,
-  .hero-sub,
   .hero-cta-row,
   .hero-panorama-shell,
   .hero-lede,
   .hero-tags {
     animation: none;
+  }
+}
+
+/* .hero h1 and .hero-sub animate word-by-word instead (see
+   .word-animate below) -- each word carries its own animation-delay
+   inline in the markup, so this is pure CSS with no JS dependency
+   (learned from the hero gallery flash: relying on JS for the initial
+   visual state is fragile). */
+.word-animate {
+  display: inline-block;
+  opacity: 0;
+  animation: word-appear 0.8s ease-out both;
+}
+
+@keyframes word-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.8);
+    filter: blur(10px);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(10px) scale(0.95);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word-animate {
+    animation: none;
+    opacity: 1;
   }
 }
 
@@ -3729,7 +3757,7 @@ body.popup-open {
   color: #fff;
 }
 
-.hero h1 span {
+.hero h1 > span {
   display: block;
   white-space: nowrap;
 }
@@ -3909,7 +3937,7 @@ body.popup-open {
     letter-spacing: -0.035em;
   }
 
-  .hero h1 span {
+  .hero h1 > span {
     width: 100%;
     white-space: normal;
     text-align: center;
@@ -4007,7 +4035,7 @@ body.popup-open {
     font-size: clamp(2.25rem, 5.2vw, 2.75rem);
   }
 
-  .hero h1 span {
+  .hero h1 > span {
     width: 100%;
     white-space: normal;
     text-align: center;

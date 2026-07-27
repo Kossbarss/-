@@ -151,6 +151,7 @@ function fixLanguageContent(html, locale) {
 }
 
 function injectAssets(html, assetPrefix) {
+  const mainCss = `  <link rel="stylesheet" href="${assetPrefix}style.css?v=${version}" />`
   const carouselCss = `  <link rel="stylesheet" href="${assetPrefix}dist/card-fan-carousel.css?v=${version}" />`
   const rhythmCss = `  <link rel="stylesheet" href="${assetPrefix}layout-rhythm.css?v=${version}" />`
   const testimonialCss = `  <link rel="stylesheet" href="${assetPrefix}dist/testimonial-stack.css?v=${version}" />`
@@ -159,6 +160,11 @@ function injectAssets(html, assetPrefix) {
   const certificateJs = `<script src="${assetPrefix}dist/certificate-tilt.js?v=${version}"></script>`
 
   html = html
+    // style.css has no cache-busting query string in the source HTML
+    // (unlike the others below), so a browser/CDN caching it from a
+    // prior deploy would keep serving stale CSS after a fix landed
+    // here -- give it the same versioned treatment.
+    .replace(/\s*<link rel="stylesheet" href="(?:\.\.\/)?style\.css[^\n]*\n?/g, '\n')
     .replace(/\s*<link rel="stylesheet" href="(?:\.\.\/)?dist\/card-fan-carousel\.css[^\n]*\n?/g, '\n')
     .replace(/\s*<link rel="stylesheet" href="(?:\.\.\/)?layout-rhythm\.css[^\n]*\n?/g, '\n')
     .replace(/\s*<link rel="stylesheet" href="layout-fixes\.css[^\n]*\n?/g, '\n')
@@ -167,7 +173,7 @@ function injectAssets(html, assetPrefix) {
     .replace(/\s*<script src="(?:\.\.\/)?dist\/testimonial-stack\.js[^\n]*<\/script>\n?/g, '\n')
     .replace(/\s*<script src="(?:\.\.\/)?dist\/certificate-tilt\.js[^\n]*<\/script>\n?/g, '\n')
 
-  html = html.replace('</head>', `${carouselCss}\n${rhythmCss}\n${testimonialCss}\n</head>`)
+  html = html.replace('</head>', `${mainCss}\n${carouselCss}\n${rhythmCss}\n${testimonialCss}\n</head>`)
   html = html.replace('<script src="script.js"></script>', `${carouselJs}\n  ${testimonialJs}\n  ${certificateJs}\n  <script src="script.js"></script>`)
   return html
 }
