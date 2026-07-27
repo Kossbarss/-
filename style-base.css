@@ -2085,6 +2085,16 @@ body.nav-open {
   font-size: 0.98rem;
 }
 
+/* Same warm gradient as .btn-stardust, clipped to the text itself. */
+.stardust-highlight {
+  font-weight: 700;
+  background: linear-gradient(105deg, #F98658 0%, #F25832 24%, #E62115 52%, #F25832 78%, #F98658 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
 .pillar-tags {
   display: flex;
   flex-wrap: wrap;
