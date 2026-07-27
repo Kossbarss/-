@@ -2107,6 +2107,21 @@ body.nav-open {
     flex-wrap: wrap;
   }
 
+  /* flex-basis:auto (the default) makes a wrapping flex container
+     decide whether an item fits a line using that item's max-content
+     size -- the title's FULL unwrapped text width -- regardless of
+     min-width. That's almost always wider than what's left next to
+     .pillar-num, so the whole title kept wrapping away to its own
+     line instead of just wrapping its own text. flex-basis:0 (via the
+     shorthand) gives it a hypothetical size of 0 instead, so the
+     fits-on-this-line check always passes; flex-grow:1 then lets it
+     actually fill the remaining space, and min-width:0 lets it shrink
+     below its longest word so the text wraps internally there. */
+  .pillar-body h3 {
+    flex: 1 1 0%;
+    min-width: 0;
+  }
+
   .pillar-body p {
     flex: 1 1 100%;
     max-width: none;
@@ -2117,6 +2132,48 @@ body.nav-open {
     flex: 1 1 100%;
     justify-content: flex-start;
   }
+}
+
+/* Card 1's photo: edge-to-edge cropped background on every breakpoint,
+   desktop included. Text sits on top of a dark scrim so it stays
+   readable over the photo regardless of the card's own tone color. */
+.pillar-has-photo {
+  overflow: hidden;
+  color: var(--white);
+  /* Solid fallback behind the photo/scrim for the instant before the
+     image itself has loaded/painted. */
+  background: #171310;
+}
+
+.pillar-photo {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.pillar-has-photo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 8, 6, 0.22) 0%, rgba(10, 8, 6, 0.42) 100%);
+  z-index: 1;
+}
+
+.pillar-has-photo .pillar-top {
+  position: relative;
+  z-index: 2;
+}
+
+/* h1-h4 all set their own color:var(--ink) globally, which wins over
+   the inherited white from .pillar-has-photo since a direct rule on
+   the element always beats an inherited one -- override it explicitly
+   here so the title reads white over the photo. */
+.pillar-has-photo h3 {
+  color: var(--white);
 }
 
 /* ---------- Lesson program grid ---------- */
