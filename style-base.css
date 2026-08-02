@@ -1106,8 +1106,8 @@ body.nav-open {
    (blur + scale + fade, not just slide+fade), timed to start once the
    subtitle's own words have mostly settled. */
 .hero-panorama-shell {
-  animation: word-appear 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 1000ms;
+  animation: word-appear 0.9s ease-out both;
+  animation-delay: 1900ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1128,20 +1128,20 @@ body.nav-open {
 .word-animate {
   display: inline-block;
   opacity: 0;
-  animation: word-appear 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: word-appear 0.8s ease-out both;
   will-change: opacity, transform, filter;
 }
 
 @keyframes word-appear {
   0% {
     opacity: 0;
-    transform: translateY(16px) scale(0.94);
-    filter: blur(6px);
+    transform: translateY(30px) scale(0.8);
+    filter: blur(10px);
   }
   50% {
-    opacity: 0.85;
-    transform: translateY(6px) scale(0.97);
-    filter: blur(1.5px);
+    opacity: 0.8;
+    transform: translateY(10px) scale(0.95);
+    filter: blur(2px);
   }
   100% {
     opacity: 1;
