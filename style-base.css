@@ -1083,7 +1083,7 @@ body.nav-open {
 .hero-cta-row,
 .hero-lede,
 .hero-tags {
-  animation: heroFadeSlideIn 0.7s ease both;
+  animation: heroFadeSlideIn 0.55s ease both;
 }
 
 .hero-kicker {
@@ -1091,24 +1091,23 @@ body.nav-open {
 }
 
 .hero-cta-row {
-  animation-delay: 0.24s;
+  animation-delay: 0.15s;
 }
 
 .hero-lede {
-  animation-delay: 0.4s;
+  animation-delay: 0.25s;
 }
 
 .hero-tags {
-  animation-delay: 0.48s;
+  animation-delay: 0.32s;
 }
 
 /* The gallery gets the same word-appear mechanism as the title/subtitle
    (blur + scale + fade, not just slide+fade), timed to start once the
-   subtitle's own words have mostly settled (last hero-sub word starts
-   at 1885ms + ~0.4s to read as "arrived"). */
+   subtitle's own words have mostly settled. */
 .hero-panorama-shell {
-  animation: word-appear 1s ease-out both;
-  animation-delay: 2100ms;
+  animation: word-appear 0.7s ease-out both;
+  animation-delay: 1150ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1129,7 +1128,8 @@ body.nav-open {
 .word-animate {
   display: inline-block;
   opacity: 0;
-  animation: word-appear 0.8s ease-out both;
+  animation: word-appear 0.55s ease-out both;
+  will-change: opacity, transform, filter;
 }
 
 @keyframes word-appear {
