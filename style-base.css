@@ -1030,16 +1030,23 @@ body.nav-open {
   order: 6;
   position: relative;
   z-index: 2;
-  background: linear-gradient(155deg, var(--gold-light) 0%, var(--gold) 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   font-weight: 600;
   font-size: 1rem;
   line-height: 1.6;
   max-width: 760px;
   margin: 0 auto 28px;
   text-transform: none;
+}
+
+/* .hero-lede's words animate individually (see .word-animate), so the
+   gradient text-fill has to live on each word's own inline-block box
+   instead of the paragraph's -- background-clip:text doesn't reliably
+   clip through a nested inline-block descendant. */
+.hero-lede .word-animate {
+  background: linear-gradient(155deg, var(--gold-light) 0%, var(--gold) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero-tags {
@@ -1081,7 +1088,6 @@ body.nav-open {
 
 .hero-kicker,
 .hero-cta-row,
-.hero-lede,
 .hero-tags {
   animation: heroFadeSlideIn 0.55s ease both;
 }
@@ -1092,10 +1098,6 @@ body.nav-open {
 
 .hero-cta-row {
   animation-delay: 0.15s;
-}
-
-.hero-lede {
-  animation-delay: 0.25s;
 }
 
 .hero-tags {
@@ -1114,7 +1116,6 @@ body.nav-open {
   .hero-kicker,
   .hero-cta-row,
   .hero-panorama-shell,
-  .hero-lede,
   .hero-tags {
     animation: none;
   }
