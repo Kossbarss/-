@@ -4,10 +4,24 @@
 
   const hero = document.querySelector('.hero')
   if (!hero || hero.dataset.paperMeshExact) return
+
+  // This shader does real per-pixel work -- up to ~20 pow()+trig calls
+  // per pixel across roughly a million pixels, every frame, for two
+  // full mesh layers (base + overlay). Plenty of phone GPUs can't
+  // sustain that: the adaptive quality step below already tries to
+  // cope by shrinking the canvas's real resolution (while it stays
+  // stretched to the same CSS size via width/height:100%), which is
+  // exactly what reads as the render turning blocky/pixelated, and on
+  // hardware where even its lowest floor isn't enough, that fight
+  // never resolves -- the stutter just continues. Skip WebGL
+  // entirely below the same width this file already treats as
+  // "mobile" and keep the plain CSS gradient there instead; it has
+  // no such failure mode because there's nothing to fall behind on.
+  if (window.matchMedia('(max-width: 700px)').matches) return
+
   hero.dataset.paperMeshExact = 'loading'
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const mobileQuery = window.matchMedia('(max-width: 700px)')
 
   const VS = `#version 300 es
 precision mediump float;
@@ -154,7 +168,7 @@ void main(){
   let disposed = false
   let ready = false
   let resizePending = true
-  let quality = mobileQuery.matches ? 0.78 : 0.9
+  let quality = 0.9
   let frameSamples = 0
   let frameTimeTotal = 0
   let stableSamples = 0
@@ -177,13 +191,12 @@ void main(){
   }
 
   function maxPixelCount() {
-    return mobileQuery.matches ? 1280 * 720 : 1920 * 1080
+    return 1920 * 1080
   }
 
   function renderScale() {
     const dpr = Math.max(1, window.devicePixelRatio || 1)
-    const maximum = mobileQuery.matches ? 1.15 : 1.4
-    return Math.min(dpr, maximum) * quality
+    return Math.min(dpr, 1.4) * quality
   }
 
   function destroyResources() {
@@ -430,7 +443,6 @@ void main(){
     updateActivity()
   }
 
-  mobileQuery.addEventListener?.('change', handleViewportChange)
   document.addEventListener('visibilitychange', updateActivity)
   window.addEventListener('orientationchange', handleViewportChange, { passive: true })
 
