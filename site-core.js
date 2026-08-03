@@ -148,8 +148,8 @@
       dotLogo.src = `${assetsPrefix}logo-mark-black.png`
       dotLogo.alt = ''
       dotLogo.setAttribute('aria-hidden', 'true')
-      dotLogo.width = 22
-      dotLogo.height = 22
+      dotLogo.width = 28
+      dotLogo.height = 28
       dot.appendChild(dotLogo)
       item.appendChild(dot)
       ribbonTrack.appendChild(item)
