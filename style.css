@@ -435,6 +435,25 @@ body {
     transition-duration: 0.001ms !important;
   }
 
+  /* Deliberate exception: the mobile hero background blobs are purely
+     decorative (no parallax, no scroll-linking, slow blurred drift) and
+     the client wants them running for every visitor, so they opt back
+     out of the reduce-motion kill switch above. */
+  .hero::before {
+    animation-duration: 7s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .hero::after {
+    animation-duration: 8.5s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .hero > .hero-glow {
+    animation-duration: 10s !important;
+    animation-iteration-count: infinite !important;
+  }
+
   #logoParticles {
     background-size: 58%;
   }
