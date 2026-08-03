@@ -61,6 +61,12 @@ if (countriesMount) {
 // animation.tsx) because at 1.1 the digit boxes were visibly taller
 // than the surrounding sentence's line height, making the number
 // stick up above the text baseline instead of sitting in line with it.
+// 0.9 is a deliberate compromise, not the tightest possible fit -- a
+// first attempt at 0.68 shaved the gap to near-zero but shrank each
+// digit's box shorter than its own glyph, so overflow:hidden clipped
+// the numerals themselves (looked "squeezed"). 0.9 leaves a small
+// (~2px) gap above the surrounding text instead, which is far less
+// noticeable than a clipped digit.
 const ledeCountriesMount = document.getElementById("heroLedeCountriesNumber");
 if (ledeCountriesMount) {
   createRoot(ledeCountriesMount).render(
@@ -72,7 +78,7 @@ if (ledeCountriesMount) {
       suffix="+"
       duration={2.2}
       stagger={0.15}
-      digitHeightEm={0.68}
+      digitHeightEm={0.9}
     />
   );
 }

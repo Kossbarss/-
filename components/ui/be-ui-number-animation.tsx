@@ -41,7 +41,12 @@ export interface NumberTickerProps {
    * as its own block), the box's extra height above the digit glyphs
    * makes it visually stick up above the surrounding text's line,
    * reading as misaligned/"jumping" even though its bottom edge lines
-   * up fine. Pass something closer to 1 (e.g. 0.95) in that case.
+   * up fine. Pass something closer to 1 (e.g. 0.9) in that case --
+   * don't go much below ~0.85, though: overflow:hidden on this box
+   * clips its content, so if it's shorter than the digit glyph's own
+   * rendered height, the numeral itself gets visibly cropped ("22"
+   * looking squeezed/flattened), which is worse than the alignment gap
+   * this prop is meant to fix.
    */
   digitHeightEm?: number;
 }
