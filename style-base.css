@@ -1251,6 +1251,12 @@ body.nav-open {
   align-items: flex-start;
 }
 
+@media (max-width: 900px) {
+  .bonus-callout {
+    flex-direction: column;
+  }
+}
+
 .bonus-callout .emoji {
   font-size: 1.3rem;
 }
