@@ -354,6 +354,66 @@ body {
   .hero-shot::after {
     z-index: 3;
   }
+
+  /* The WebGL mesh-gradient shader is skipped entirely below 700px (see
+     hero-shader-background.js) because it stutters and pixelates on weak
+     mobile GPUs. This is a cheap, compositor-only replacement: three
+     blurred radial-gradient blobs drifting via `transform` only (no
+     canvas, no per-pixel repaint, nothing that can fall behind and turn
+     blocky) layered on top of the static fallback gradient above so the
+     mobile hero isn't fully static either. */
+  .hero::before,
+  .hero::after {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    width: 78vw;
+    height: 78vw;
+    border-radius: 50%;
+    filter: blur(46px);
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .hero::before {
+    top: -6vw;
+    left: -16vw;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.55) 0%, rgba(6, 182, 212, 0.22) 45%, transparent 74%);
+    animation: hero-mobile-blob-a 16s ease-in-out infinite;
+  }
+
+  .hero::after {
+    top: 14vw;
+    right: -20vw;
+    background: radial-gradient(circle, rgba(249, 115, 22, 0.5) 0%, rgba(249, 115, 22, 0.2) 45%, transparent 74%);
+    animation: hero-mobile-blob-b 19s ease-in-out infinite;
+  }
+
+  .hero > .hero-glow {
+    display: block !important;
+    top: 62% !important;
+    left: 48% !important;
+    width: 82vw !important;
+    height: 82vw !important;
+    background: radial-gradient(circle, rgba(8, 145, 178, 0.5) 0%, rgba(8, 145, 178, 0.2) 45%, transparent 74%) !important;
+    filter: blur(46px) !important;
+    animation: hero-mobile-blob-c 22s ease-in-out infinite;
+  }
+
+  @keyframes hero-mobile-blob-a {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(9vw, 7vw) scale(1.14); }
+  }
+
+  @keyframes hero-mobile-blob-b {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-8vw, 9vw) scale(1.1); }
+  }
+
+  @keyframes hero-mobile-blob-c {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-44%, -56%) scale(1.12); }
+  }
 }
 
 @media (max-width: 640px) {
