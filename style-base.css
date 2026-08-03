@@ -1190,6 +1190,10 @@ body.nav-open {
   background: rgba(255, 255, 255, 0.04);
 }
 
+.hero-price-box {
+  text-align: center;
+}
+
 .price-box-promise {
   font-family: var(--font-display);
   font-size: 1.1rem;
@@ -1199,12 +1203,13 @@ body.nav-open {
   margin-bottom: 20px;
 }
 
-.price-box-row {
+.price-box-timer-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  justify-content: center;
+  align-items: baseline;
+  gap: 8px;
   flex-wrap: wrap;
+  margin-bottom: 16px;
 }
 
 .price-box-timer {
@@ -1222,8 +1227,10 @@ body.nav-open {
 
 .price-box-price {
   display: flex;
+  justify-content: center;
   align-items: baseline;
   gap: 12px;
+  margin-bottom: 20px;
 }
 
 .price-box-price .old {
@@ -1243,43 +1250,35 @@ body.nav-open {
   color: var(--gold-light);
 }
 
+.hero-price-box .btn.btn-stardust {
+  margin-bottom: 4px;
+}
+
 .price-box hr {
   border: none;
   border-top: 1px solid rgba(255, 255, 255, 0.14);
   margin: 20px 0;
 }
 
-.bonus-callout {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
+.bonus-callout-lead {
+  color: rgba(250, 246, 239, 0.7);
+  font-size: 0.95rem;
+  margin-bottom: 6px;
 }
 
-.bonus-callout .emoji {
-  font-size: 1.3rem;
-}
-
-.bonus-callout strong {
+.bonus-callout-label {
   font-family: var(--font-display);
-  font-size: 1.1rem;
-  display: block;
-  margin-bottom: 4px;
-  text-transform: none;
-  color: var(--white);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  margin-bottom: 8px;
 }
 
-.bonus-callout p {
+.bonus-callout-text {
   color: var(--white);
   font-size: 0.95rem;
   font-weight: 600;
   line-height: 1.6;
-}
-
-@media (max-width: 900px) {
-  .bonus-callout p {
-    margin-left: -38px;
-    width: calc(100% + 38px);
-  }
 }
 
 /* ---------- Ribbon (kept from MCMM) ---------- */
