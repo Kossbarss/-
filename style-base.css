@@ -3994,8 +3994,8 @@ body.popup-open {
 }
 
 .hero .hero-topline p:last-child {
-  font-weight: 400;
-  color: rgba(250, 246, 239, 0.85);
+  font-weight: 500;
+  color: rgba(250, 246, 239, 0.96);
 }
 
 .hero-lede {
