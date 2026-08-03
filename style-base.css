@@ -39,6 +39,7 @@
   --font-sticky: 'Geologica', system-ui, sans-serif;
   --font-hero: 'Roboto Flex', 'Arial Narrow', Arial, sans-serif;
   --font-hand: 'Marck Script', cursive;
+  --font-topline: 'Playfair Display', Georgia, 'Times New Roman', serif;
 }
 
 * {
@@ -3885,10 +3886,22 @@ body.popup-open {
 }
 
 .hero .hero-topline p {
-  font-family: var(--font-rise);
+  font-family: var(--font-topline);
+  font-style: italic;
   font-size: 0.82rem;
   line-height: 1.35;
   color: rgba(255, 255, 255, 0.48);
+}
+
+.hero .hero-topline p:first-child {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(250, 246, 239, 0.92);
+  margin-bottom: 2px;
+}
+
+.hero .hero-topline p:last-child {
+  font-weight: 400;
 }
 
 .hero-lede {
