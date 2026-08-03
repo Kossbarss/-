@@ -1272,8 +1272,6 @@ body.nav-open {
   background: transparent;
   padding: 6px 0 14px;
   margin: -12px 0;
-  overflow-x: hidden;
-  overflow-y: visible;
 }
 
 .ribbon {
