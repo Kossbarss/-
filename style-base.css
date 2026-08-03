@@ -1281,7 +1281,6 @@ body.nav-open {
   transform: rotate(-1.2deg);
   margin: 0 -40px;
   padding: 16px 0;
-  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
   overflow: hidden;
 }
 
