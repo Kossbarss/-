@@ -1271,13 +1271,20 @@ body.nav-open {
   z-index: 2;
   background: transparent;
   padding: 6px 0 14px;
-  margin: -12px 0;
+  margin: -20px 0;
 }
 
 .ribbon {
   position: relative;
   background: linear-gradient(90deg, var(--gold-light), var(--gold) 50%, var(--gold-light));
-  transform: rotate(-1.2deg);
+  /* A real rotate() on a full-bleed-width element needs a taller
+     bounding box as the viewport gets wider (the classic
+     width*sin(angle) blowout), which is what clipped the ribbon's
+     top/bottom on wide screens. clip-path in fixed px keeps the same
+     8px diagonal shift at every width instead, matching how this
+     looked on mobile (where the old rotation's excursion happened to
+     be about that small anyway). */
+  clip-path: polygon(0 8px, 100% 0, 100% calc(100% - 8px), 0 100%);
   margin: 0 -40px;
   padding: 16px 0;
   overflow: hidden;
