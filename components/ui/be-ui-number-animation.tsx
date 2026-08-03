@@ -33,9 +33,20 @@ export interface NumberTickerProps {
   digitClassName?: string;
   locale?: boolean;
   format?: (value: number) => string;
+  /**
+   * Height of each digit's box, in em (relative to that digit's own
+   * font-size). 1.1 by default -- enough breathing room for a
+   * standalone display number, but taller than a real line of text.
+   * When the ticker sits inline inside a normal sentence (rather than
+   * as its own block), the box's extra height above the digit glyphs
+   * makes it visually stick up above the surrounding text's line,
+   * reading as misaligned/"jumping" even though its bottom edge lines
+   * up fine. Pass something closer to 1 (e.g. 0.95) in that case.
+   */
+  digitHeightEm?: number;
 }
 
-const DIGIT_HEIGHT_EM = 1.1;
+const DEFAULT_DIGIT_HEIGHT_EM = 1.1;
 const DIGITS = Array.from({ length: 10 }, (_, n) => n);
 
 function formatValue(
@@ -68,6 +79,7 @@ export function NumberTicker({
   digitClassName,
   locale,
   format,
+  digitHeightEm = DEFAULT_DIGIT_HEIGHT_EM,
 }: NumberTickerProps) {
   const containerRef = useRef<HTMLSpanElement>(null);
   const inView = useInView(containerRef, { once: true, amount: 0.6 });
@@ -158,6 +170,7 @@ export function NumberTicker({
               duration={duration}
               blur={blur}
               className={digitClassName}
+              heightEm={digitHeightEm}
             />
           );
         })}
@@ -175,6 +188,7 @@ function Digit({
   duration,
   blur,
   className,
+  heightEm,
 }: {
   digit: number;
   startDigit: number;
@@ -182,6 +196,7 @@ function Digit({
   duration: number;
   blur: boolean;
   className?: string;
+  heightEm: number;
 }) {
   const reduce = useReducedMotion();
   const columnRef = useRef<HTMLSpanElement>(null);
@@ -211,12 +226,12 @@ function Digit({
   return (
     <span
       className={cn("relative inline-block overflow-hidden", className)}
-      style={{ height: `${DIGIT_HEIGHT_EM}em`, width: "1ch" }}
+      style={{ height: `${heightEm}em`, width: "1ch" }}
     >
       <motion.span
         ref={columnRef}
-        initial={{ y: `-${startDigit * DIGIT_HEIGHT_EM}em` }}
-        animate={{ y: `-${digit * DIGIT_HEIGHT_EM}em` }}
+        initial={{ y: `-${startDigit * heightEm}em` }}
+        animate={{ y: `-${digit * heightEm}em` }}
         transition={
           reduce ? { duration: 0 } : { duration, delay, ease: EASE_OUT }
         }
@@ -225,7 +240,8 @@ function Digit({
         {DIGITS.map((n) => (
           <span
             key={n}
-            className="flex h-[1.1em] items-center justify-center leading-none"
+            className="flex items-center justify-center leading-none"
+            style={{ height: `${heightEm}em` }}
           >
             {n}
           </span>

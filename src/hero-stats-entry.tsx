@@ -57,6 +57,10 @@ if (countriesMount) {
 // its own animation-delay (4670ms) as part of that paragraph's word-
 // by-word cascade -- no need to invent a new one, just start the roll
 // once that word's own fade finishes (4670 + 800ms duration = 5470).
+// digitHeightEm is shrunk from the 1.1 default (see be-ui-number-
+// animation.tsx) because at 1.1 the digit boxes were visibly taller
+// than the surrounding sentence's line height, making the number
+// stick up above the text baseline instead of sitting in line with it.
 const ledeCountriesMount = document.getElementById("heroLedeCountriesNumber");
 if (ledeCountriesMount) {
   createRoot(ledeCountriesMount).render(
@@ -68,6 +72,7 @@ if (ledeCountriesMount) {
       suffix="+"
       duration={2.2}
       stagger={0.15}
+      digitHeightEm={0.68}
     />
   );
 }

@@ -1055,17 +1055,17 @@ body.nav-open {
    nested column/track structure -- too deep for the gradient
    background-clip:text above to reliably clip through (same reason the
    comment above moved the gradient down to word level instead of the
-   whole paragraph). Give it a plain solid color instead of fighting
-   that, using the same font-family/weight as the hero-stat counters it
-   matches ("300+"/"22+" above) rather than the surrounding gradient. */
+   whole paragraph). Give it a plain solid gold instead of fighting
+   that -- close to the gradient's own tone, so it reads as part of the
+   same sentence instead of a mismatched white insert. */
 #heroLedeCountriesNumber {
   font-family: 'Science Gothic', 'Arial Narrow', Arial, sans-serif;
   font-weight: 500;
   background: none;
   -webkit-background-clip: initial;
   background-clip: initial;
-  -webkit-text-fill-color: var(--white);
-  color: var(--white);
+  -webkit-text-fill-color: var(--gold-light);
+  color: var(--gold-light);
 }
 
 .hero-tags {
