@@ -1051,6 +1051,23 @@ body.nav-open {
   -webkit-text-fill-color: transparent;
 }
 
+/* The "22+" ticker digit-roll (see hero-stats-entry.tsx) renders its own
+   nested column/track structure -- too deep for the gradient
+   background-clip:text above to reliably clip through (same reason the
+   comment above moved the gradient down to word level instead of the
+   whole paragraph). Give it a plain solid color instead of fighting
+   that, using the same font-family/weight as the hero-stat counters it
+   matches ("300+"/"22+" above) rather than the surrounding gradient. */
+#heroLedeCountriesNumber {
+  font-family: 'Science Gothic', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 500;
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  -webkit-text-fill-color: var(--white);
+  color: var(--white);
+}
+
 .hero-tags {
   order: 7;
   overflow: hidden;
