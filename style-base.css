@@ -1265,9 +1265,13 @@ body.nav-open {
 }
 
 .bonus-callout p {
-  color: rgba(250, 246, 239, 0.6);
-  font-size: 0.9rem;
-  line-height: 1.5;
+  color: var(--white);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.6;
+  text-decoration: underline;
+  text-decoration-color: var(--gold-light);
+  text-underline-offset: 3px;
 }
 
 /* ---------- Ribbon (kept from MCMM) ---------- */
