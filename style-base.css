@@ -3912,6 +3912,10 @@ body.popup-open {
   order: 8;
 }
 
+.hero-price-box {
+  margin-top: 28px;
+}
+
 /* The promotional bar remains available after the hero, but no longer
    obscures the gallery or its statistics while the hero is on screen. */
 .sticky-bar {
