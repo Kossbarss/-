@@ -137,13 +137,20 @@
     const items = isUk
       ? ['8 тижнів навчання', '40+ годин практики', '300+ випускників', 'Сертифікат VIP Tattoo School', 'Довічний доступ до записів', '11+ країн, де цінують роботи', 'Особистий фідбек від куратора', 'Практика на моделях']
       : ['8 недель обучения', '40+ часов практики', '300+ выпускников', 'Сертификат VIP Tattoo School', 'Пожизненный доступ к записям', '11+ стран, где ценят работы', 'Личная обратная связь от куратора', 'Практика на моделях']
+    const assetsPrefix = isUk ? '../assets/' : 'assets/'
     ribbonTrack.replaceChildren()
     ;[...items, ...items].forEach((text) => {
       const item = document.createElement('span')
       item.append(document.createTextNode(text))
       const dot = document.createElement('span')
       dot.className = 'dot'
-      dot.textContent = ' ✦ '
+      const dotLogo = document.createElement('img')
+      dotLogo.src = `${assetsPrefix}logo-mark-black.png`
+      dotLogo.alt = ''
+      dotLogo.setAttribute('aria-hidden', 'true')
+      dotLogo.width = 22
+      dotLogo.height = 22
+      dot.appendChild(dotLogo)
       item.appendChild(dot)
       ribbonTrack.appendChild(item)
     })
