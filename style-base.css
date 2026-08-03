@@ -1239,6 +1239,10 @@ body.nav-open {
   color: var(--blood-light);
 }
 
+.hero-price-box .price-box-price .new {
+  color: var(--gold-light);
+}
+
 .price-box hr {
   border: none;
   border-top: 1px solid rgba(255, 255, 255, 0.14);
