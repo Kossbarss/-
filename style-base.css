@@ -1296,7 +1296,7 @@ body.nav-open {
 
 .ribbon {
   position: relative;
-  background: linear-gradient(90deg, var(--gold-light), var(--gold) 50%, var(--gold-light));
+  background: var(--gold);
   /* Straight band -- no rotate()/clip-path tilt -- so the height is
      exactly identical at both edges at every viewport width, with
      nothing that scales with element width to fight with. */
