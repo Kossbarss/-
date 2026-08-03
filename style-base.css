@@ -1251,12 +1251,6 @@ body.nav-open {
   align-items: flex-start;
 }
 
-@media (max-width: 900px) {
-  .bonus-callout {
-    flex-direction: column;
-  }
-}
-
 .bonus-callout .emoji {
   font-size: 1.3rem;
 }
@@ -1275,6 +1269,13 @@ body.nav-open {
   font-size: 0.95rem;
   font-weight: 600;
   line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .bonus-callout p {
+    margin-left: -38px;
+    width: calc(100% + 38px);
+  }
 }
 
 /* ---------- Ribbon (kept from MCMM) ---------- */
