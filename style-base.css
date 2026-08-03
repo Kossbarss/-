@@ -1274,17 +1274,38 @@ body.nav-open {
   margin: -20px 0;
 }
 
+/* Fade the scrolling ticker text into solid gold right at the visible
+   edges instead of letting words cut off mid-letter. These sit still
+   (unlike .ribbon-track, which scrolls) and paint gold-to-transparent,
+   so the gold band itself stays solid edge-to-edge -- only the text
+   underneath appears to fade out. */
+.ribbon-wrap::before,
+.ribbon-wrap::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  bottom: 14px;
+  width: 72px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.ribbon-wrap::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--gold-light), transparent);
+}
+
+.ribbon-wrap::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--gold-light), transparent);
+}
+
 .ribbon {
   position: relative;
   background: linear-gradient(90deg, var(--gold-light), var(--gold) 50%, var(--gold-light));
-  /* A real rotate() on a full-bleed-width element needs a taller
-     bounding box as the viewport gets wider (the classic
-     width*sin(angle) blowout), which is what clipped the ribbon's
-     top/bottom on wide screens. clip-path in fixed px keeps the same
-     8px diagonal shift at every width instead, matching how this
-     looked on mobile (where the old rotation's excursion happened to
-     be about that small anyway). */
-  clip-path: polygon(0 8px, 100% 0, 100% calc(100% - 8px), 0 100%);
+  /* Straight band -- no rotate()/clip-path tilt -- so the height is
+     exactly identical at both edges at every viewport width, with
+     nothing that scales with element width to fight with. */
   margin: 0 -40px;
   padding: 16px 0;
   overflow: hidden;
