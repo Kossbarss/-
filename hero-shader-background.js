@@ -346,8 +346,8 @@ void main(){
     const rawDelta = Math.min(Math.max(now - lastTime, 0), 32)
     lastTime = now
     smoothedDelta += (rawDelta - smoothedDelta) * 0.18
-    baseFrame += smoothedDelta * 0.9
-    overlayFrame += smoothedDelta * 0.6
+    baseFrame += smoothedDelta * 0.3
+    overlayFrame += smoothedDelta * 0.2
 
     renderCurrentFrame()
     adaptQuality(rawDelta)
