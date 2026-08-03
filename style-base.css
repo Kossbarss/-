@@ -3971,7 +3971,7 @@ body.popup-open {
 }
 
 .hero .hero-topline {
-  order: 6;
+  order: 7;
   width: min(820px, 100%);
   margin: 0 auto 26px;
   padding: 0;
@@ -3998,7 +3998,7 @@ body.popup-open {
 }
 
 .hero-lede {
-  order: 7;
+  order: 6;
 }
 
 .hero-tags {
@@ -4127,12 +4127,12 @@ body.popup-open {
   }
 
   .hero .hero-topline {
-    order: 6;
+    order: 7;
     margin-bottom: 24px;
   }
 
   .hero-lede {
-    order: 7;
+    order: 6;
   }
 
   .hero-tags {
