@@ -1294,32 +1294,6 @@ body.nav-open {
   margin: -20px 0;
 }
 
-/* Fade the scrolling ticker text into solid gold right at the visible
-   edges instead of letting words cut off mid-letter. These sit still
-   (unlike .ribbon-track, which scrolls) and paint gold-to-transparent,
-   so the gold band itself stays solid edge-to-edge -- only the text
-   underneath appears to fade out. */
-.ribbon-wrap::before,
-.ribbon-wrap::after {
-  content: '';
-  position: absolute;
-  top: 6px;
-  bottom: 14px;
-  width: 72px;
-  z-index: 3;
-  pointer-events: none;
-}
-
-.ribbon-wrap::before {
-  left: 0;
-  background: linear-gradient(90deg, var(--gold-light), transparent);
-}
-
-.ribbon-wrap::after {
-  right: 0;
-  background: linear-gradient(270deg, var(--gold-light), transparent);
-}
-
 .ribbon {
   position: relative;
   background: linear-gradient(90deg, var(--gold-light), var(--gold) 50%, var(--gold-light));
@@ -1329,6 +1303,22 @@ body.nav-open {
   margin: 0 -40px;
   padding: 16px 0;
   overflow: hidden;
+}
+
+/* Slight left-down tilt on mobile/tablet only, so the band visibly
+   reads as resting diagonally across the hero/next-section seam on
+   narrower screens. clip-path (not transform: rotate()) so there's no
+   width-dependent bounding-box growth -- the extra 6px of bottom
+   padding gives the polygon room to shift the left edge down without
+   thinning that side; both edges keep the same vertical thickness
+   (100% - 6px in the taller, padded box). Desktop stays flat/untilted
+   per the note above -- this range is narrow enough (max 900px) that
+   the tilt looks consistent across it. */
+@media (max-width: 900px) {
+  .ribbon {
+    padding: 16px 0 22px;
+    clip-path: polygon(0 6px, 100% 0, 100% calc(100% - 6px), 0 100%);
+  }
 }
 
 .ribbon::after {
