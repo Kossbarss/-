@@ -718,6 +718,7 @@ body.nav-open {
 .hero-copy {
   width: 100%;
   max-width: none;
+  min-width: 0;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -1052,11 +1053,32 @@ body.nav-open {
 
 .hero-tags {
   order: 7;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
+  overflow: hidden;
+  width: 100%;
   margin-top: 22px;
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.hero-tags-track {
+  display: flex;
+  justify-content: center;
+  width: max-content;
+  gap: 8px;
+  animation: hero-tags-marquee 24s linear infinite;
+}
+
+.hero-tags-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes hero-tags-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .hero-tag {
@@ -1072,6 +1094,7 @@ body.nav-open {
   letter-spacing: 0.01em;
   color: rgba(250, 246, 239, 0.82);
   text-transform: none;
+  white-space: nowrap;
 }
 
 /* staggered entrance for the hero copy, echoing the reference
@@ -1117,7 +1140,8 @@ body.nav-open {
   .hero-kicker,
   .hero-cta-row,
   .hero-panorama-shell,
-  .hero-tags {
+  .hero-tags,
+  .hero-tags-track {
     animation: none;
   }
 }
