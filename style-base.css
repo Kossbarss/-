@@ -3955,7 +3955,7 @@ body.popup-open {
 }
 
 .hero-stat strong {
-  font-size: clamp(1.9rem, 2.3vw, 2.4rem);
+  font-size: clamp(2.65rem, 2.7vw, 3.2rem);
   font-weight: 600;
   color: var(--white);
 }
@@ -4106,7 +4106,7 @@ body.popup-open {
   }
 
   .hero-stat strong {
-    font-size: clamp(1.7rem, 7vw, 2.1rem);
+    font-size: clamp(1.28rem, 5.8vw, 2.35rem);
   }
 
   .hero-stat span {
@@ -4137,6 +4137,10 @@ body.popup-open {
 @media (min-width: 701px) and (max-width: 900px) {
   .hero h1 {
     width: 100%;
+    font-size: clamp(2.25rem, 5.2vw, 2.75rem);
+  }
+
+  .hero-stat strong {
     font-size: clamp(2.25rem, 5.2vw, 2.75rem);
   }
 

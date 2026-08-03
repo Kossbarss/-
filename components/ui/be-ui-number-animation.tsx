@@ -15,6 +15,13 @@ export interface NumberTickerProps {
   value: number;
   /** Starting number the digits roll up from, instead of the default 0. */
   from?: number;
+  /**
+   * Milliseconds to hold on the "from" value, fully visible, before the
+   * roll to "value" begins. 0 by default (rolls immediately once in
+   * view) -- bump this when the starting number itself needs to be
+   * legible, not just a blur the eye catches mid-motion.
+   */
+  startDelay?: number;
   pad?: number;
   duration?: number;
   stagger?: number;
@@ -49,6 +56,7 @@ function formatValue(
 export function NumberTicker({
   value,
   from,
+  startDelay = 0,
   pad,
   duration = 0.9,
   stagger = 0.04,
@@ -63,11 +71,18 @@ export function NumberTicker({
 }: NumberTickerProps) {
   const containerRef = useRef<HTMLSpanElement>(null);
   const inView = useInView(containerRef, { once: true, amount: 0.6 });
-  const [armed, setArmed] = useState(!startOnView);
+  const shouldWatch = startOnView ? inView : true;
+  const [armed, setArmed] = useState(!startOnView && startDelay === 0);
 
   useEffect(() => {
-    if (startOnView && inView) setArmed(true);
-  }, [startOnView, inView]);
+    if (!shouldWatch) return;
+    if (startDelay <= 0) {
+      setArmed(true);
+      return;
+    }
+    const timer = window.setTimeout(() => setArmed(true), startDelay);
+    return () => window.clearTimeout(timer);
+  }, [shouldWatch, startDelay]);
 
   const text = useMemo(
     () => formatValue(value, pad, locale, format),
