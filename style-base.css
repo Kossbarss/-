@@ -3955,8 +3955,14 @@ body.popup-open {
 }
 
 .hero-stat strong {
+  /* Same font-family/weight as .hero h1, not just the same font-size --
+     Science Gothic and the default Roboto Flex (--font-rise) render at
+     very different visual sizes for an identical font-size value, so
+     matching only the number wasn't enough to look "the same size" as
+     the heading. */
+  font-family: 'Science Gothic', 'Arial Narrow', Arial, sans-serif;
   font-size: clamp(2.65rem, 2.7vw, 3.2rem);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--white);
 }
 
