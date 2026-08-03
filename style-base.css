@@ -1262,9 +1262,16 @@ body.nav-open {
 }
 
 /* ---------- Ribbon (kept from MCMM) ---------- */
+/* Lives between .hero and the next section (not inside .hero, which
+   clips overflow) and straddles the seam via negative margins so the
+   rotated gold band visually crosses both blocks instead of sitting
+   flush inside the dark one. */
 .ribbon-wrap {
-  background: var(--ink);
+  position: relative;
+  z-index: 2;
+  background: transparent;
   padding: 6px 0 14px;
+  margin: -36px 0;
   overflow: hidden;
 }
 
