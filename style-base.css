@@ -1297,7 +1297,7 @@ body.nav-open {
 .ribbon {
   position: relative;
   background: var(--gold);
-  /* Straight band -- no rotate()/clip-path tilt -- so the height is
+  /* Straight band on desktop -- no rotate() -- so the height is
      exactly identical at both edges at every viewport width, with
      nothing that scales with element width to fight with. */
   margin: 0 -40px;
@@ -1307,17 +1307,27 @@ body.nav-open {
 
 /* Slight left-down tilt on mobile/tablet only, so the band visibly
    reads as resting diagonally across the hero/next-section seam on
-   narrower screens. clip-path (not transform: rotate()) so there's no
-   width-dependent bounding-box growth -- the extra 6px of bottom
-   padding gives the polygon room to shift the left edge down without
-   thinning that side; both edges keep the same vertical thickness
-   (100% - 6px in the taller, padded box). Desktop stays flat/untilted
-   per the note above -- this range is narrow enough (max 900px) that
-   the tilt looks consistent across it. */
+   narrower screens. This rotates .ribbon itself -- band background,
+   overflow:hidden clip, and the scrolling .ribbon-track text inside
+   all rotate together as one rigid unit, so the text always reads as
+   part of the same continuous tilted strip instead of tilting
+   separately from the band. (An earlier attempt rotated each ticker
+   item individually to dodge the vertical-drift issue below, but that
+   made each word tilt around its own center independently, producing
+   a "staircase" of misaligned words instead of one flat diagonal
+   line -- wrong tradeoff. Rotating .ribbon as a whole doesn't have
+   that drift problem in the first place: the overflow:hidden clip
+   rotates along with its content since they're the same element, so
+   there's no separate fixed clip frame for the sliding text to drift
+   out of.) Scoped to max-width:900px specifically because rotating a
+   full-bleed-width element needs a taller bounding box as it widens
+   (excursion ~= width * sin(angle)) -- this narrow range keeps that
+   bounded and the tilt angle visually consistent across it; widening
+   this query without re-verifying reintroduces the wide-viewport bug
+   this codebase already hit once with the old full-desktop rotate(). */
 @media (max-width: 900px) {
   .ribbon {
-    padding: 16px 0 22px;
-    clip-path: polygon(0 6px, 100% 0, 100% calc(100% - 6px), 0 100%);
+    transform: rotate(-1deg);
   }
 }
 
@@ -1380,22 +1390,6 @@ body.nav-open {
   display: block;
   width: 22px;
   height: 22px;
-}
-
-/* Tilt the text itself to match the band's mobile/tablet clip-path
-   tilt above. Each item is rotated individually (not the whole,
-   very-wide .ribbon-track as one rigid body) -- rotating the full
-   track would work at the moment it's centered under the fixed
-   viewing window, but as it scrolls the crossing height of a long
-   tilted line drifts, eventually carrying the text out of the
-   clipped band vertically. Rotating each ~150-250px item in place
-   keeps the excursion small (well within the padding) and constant
-   regardless of scroll position. */
-@media (max-width: 900px) {
-  .ribbon-track > span {
-    display: inline-block;
-    transform: rotate(-1deg);
-  }
 }
 
 @keyframes scroll-left {
