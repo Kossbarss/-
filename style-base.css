@@ -137,9 +137,24 @@ button {
   margin-bottom: 44px;
 }
 
+/* Slightly smaller and softer than the sitewide h1-h4 default -- the
+   client felt these section titles read too large/too starkly black.
+   color uses the existing --ink-soft token (already used elsewhere for
+   secondary dark text) instead of the harsher --ink, so it stays
+   consistent with the rest of the palette rather than inventing a new
+   shade. Placed before the per-section overrides further down
+   (certificate-section, rise-cycle-section) so those still win for
+   their own colors; the few headings styled inline (color on the <h2>
+   itself, e.g. instructor-section) are untouched by this since inline
+   style always wins over an external rule regardless of specificity --
+   this only affects the size, which those inline styles don't set.
+   Deliberately NOT scoped to any breakpoint -- unlike the hero-block
+   locks elsewhere in this file, .section-head is outside .hero and the
+   client asked for this to apply everywhere, mobile through desktop. */
 .section-head h2 {
-  font-size: clamp(2rem, 4vw, 3.1rem);
+  font-size: clamp(1.8rem, 3.6vw, 2.8rem);
   line-height: 1.05;
+  color: var(--ink-soft);
 }
 
 .section-head p {
