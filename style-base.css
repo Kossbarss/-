@@ -1609,8 +1609,18 @@ body.nav-open {
    it down to the visual center of just the first line: measured gap
    between the dot's default top-aligned position and the first line's
    text-center at this list's 16px/1.5 line-height was 6.5px. */
+/* .signal-dot's default gradient (gold-light center fading to gold)
+   was tuned for the certificate checklist's dark background, where
+   gold pops on its own. .fit-list's background (--paper-alt, a light
+   cream) is close in tone to --gold-light itself, so the same dot read
+   as washed-out/semi-transparent here even though it's fully opaque --
+   the contrast against the background was just too low. Deepen the
+   gradient to gold/gold-dark and strengthen the glow so it reads
+   clearly against a light background too. */
 .fit-list .signal-dot {
   margin-top: 6.5px;
+  background: radial-gradient(circle, var(--gold) 0%, var(--gold-dark) 70%);
+  box-shadow: 0 0 6px 1px rgba(169, 128, 58, 0.55);
 }
 
 .fit-list .arrow {
