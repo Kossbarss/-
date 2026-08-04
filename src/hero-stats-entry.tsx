@@ -51,3 +51,28 @@ if (countriesMount) {
     />
   );
 }
+
+// The "22+" inside the hero-lede sentence ("...наши работы ценятся в
+// 22+ странах мира.") gets the same ticker treatment. It already had
+// its own animation-delay (4670ms) as part of that paragraph's word-
+// by-word cascade -- no need to invent a new one, just start the roll
+// once that word's own fade finishes (4670 + 800ms duration = 5470).
+// digitHeightEm is shrunk from the 1.1 default (see be-ui-number-
+// animation.tsx) because at 1.1 the digit boxes were visibly taller
+// than the surrounding sentence's line height, making the number
+// stick up above the text baseline instead of sitting in line with it.
+const ledeCountriesMount = document.getElementById("heroLedeCountriesNumber");
+if (ledeCountriesMount) {
+  createRoot(ledeCountriesMount).render(
+    <NumberTicker
+      value={22}
+      from={12}
+      startOnView={false}
+      startDelay={5470}
+      suffix="+"
+      duration={2.2}
+      stagger={0.15}
+      digitHeightEm={0.9}
+    />
+  );
+}
