@@ -1594,10 +1594,23 @@ body.nav-open {
 
 .fit-list li {
   display: flex;
+  align-items: flex-start;
   gap: 10px;
   padding: 8px 0;
   text-transform: none;
   line-height: 1.5;
+}
+
+/* align-items:center (tried first) centered the dot against the whole
+   flex row's cross-axis extent, which for the multi-line items here
+   means the middle of the block, not the first line -- reads like it
+   floats away from the text mid-paragraph instead of marking the
+   start. flex-start anchors it to the top instead, then this nudges
+   it down to the visual center of just the first line: measured gap
+   between the dot's default top-aligned position and the first line's
+   text-center at this list's 16px/1.5 line-height was 6.5px. */
+.fit-list .signal-dot {
+  margin-top: 6.5px;
 }
 
 .fit-list .arrow {
