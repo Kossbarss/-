@@ -4095,9 +4095,10 @@ body.popup-open {
 
 /* Desktop-only size bump for the hero-stats numbers/labels, the
    hero-lede paragraph, the hero-topline lines, the hero-tags pills,
-   and the price-box promise/bonus copy -- the client said these read
-   too small on desktop/wide screens (price and CTA button explicitly
-   excluded from this request). Scoped to min-width:1025px specifically
+   the price-box promise/bonus copy, and the price itself ("125€
+   499€") -- the client said these read too small on desktop/wide
+   screens. The CTA button ("Присоединиться сейчас") is the one thing
+   still explicitly excluded. Scoped to min-width:1025px specifically
    so it cannot touch mobile or tablet, which are locked (see "Hero
    block ... mobile -- client-confirmed final, HARD LOCK" above): every
    value below this breakpoint is left completely untouched, both here
@@ -4144,6 +4145,14 @@ body.popup-open {
 
   .bonus-callout-text {
     font-size: clamp(0.95rem, 0.9vw, 1.2rem);
+  }
+
+  .price-box-price .old {
+    font-size: clamp(1.3rem, 1.1vw, 1.6rem);
+  }
+
+  .price-box-price .new {
+    font-size: clamp(2.4rem, 2vw, 3rem);
   }
 }
 
