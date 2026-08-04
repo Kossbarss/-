@@ -3292,6 +3292,67 @@ body.nav-open {
   background: var(--paper-alt);
 }
 
+.section-backdrop-strip--paper {
+  background: var(--paper);
+}
+
+/* Same reveal problem as .section-backdrop-strip above (border-radius cuts
+   a small wedge out of the section's own background at each rounded
+   corner -- outside the curve, inside the box's bounding square -- and
+   without a fix, that wedge shows whatever paints behind the section
+   instead of the neighbouring section's actual colour), but for corners
+   the sibling-strip technique can't reach: that trick only works because a
+   section painted *after* the strip naturally covers it except at its own
+   clipped corner, which only happens for a section's TOP edge (a plain DOM
+   sibling can't sit "behind" a section's BOTTOM corners the same way).
+   These patches fix either edge instead: a small square, masked with a
+   radial gradient centred exactly on the section's own corner arc, so the
+   mask is transparent over the curve itself (the section's real rounded
+   corner still renders normally, untouched) and opaque only in the wedge
+   outside it -- filled with the correct neighbouring colour. Needs the
+   section itself to be position:relative (already true for every section
+   these are used on). */
+.corner-fix {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  pointer-events: none;
+  mask-mode: alpha;
+  -webkit-mask-mode: alpha;
+}
+
+.corner-fix--tl {
+  top: 0;
+  left: 0;
+  mask-image: radial-gradient(circle at 24px 24px, transparent 24px, black 24.5px);
+  -webkit-mask-image: radial-gradient(circle at 24px 24px, transparent 24px, black 24.5px);
+}
+
+.corner-fix--tr {
+  top: 0;
+  right: 0;
+  mask-image: radial-gradient(circle at 2px 24px, transparent 24px, black 24.5px);
+  -webkit-mask-image: radial-gradient(circle at 2px 24px, transparent 24px, black 24.5px);
+}
+
+.corner-fix--bl {
+  bottom: 0;
+  left: 0;
+  mask-image: radial-gradient(circle at 24px 2px, transparent 24px, black 24.5px);
+  -webkit-mask-image: radial-gradient(circle at 24px 2px, transparent 24px, black 24.5px);
+}
+
+.corner-fix--br {
+  bottom: 0;
+  right: 0;
+  mask-image: radial-gradient(circle at 2px 2px, transparent 24px, black 24.5px);
+  -webkit-mask-image: radial-gradient(circle at 2px 2px, transparent 24px, black 24.5px);
+}
+
+.corner-fix--paper {
+  background: var(--paper);
+}
+
 .section-watermark {
   position: absolute;
   top: 50%;
