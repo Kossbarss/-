@@ -1056,18 +1056,39 @@ body.nav-open {
    background-clip:text above to reliably clip through (same reason the
    comment above moved the gradient down to word level instead of the
    whole paragraph). Give it a plain solid gold instead of fighting
-   that -- close to the gradient's own tone, so it reads as part of the
-   same sentence instead of a mismatched white insert.
+   that. #d8bb79 is a measured match, not a guess: sampled the actual
+   rendered pixels of the neighboring word "странах" (which the 155deg
+   gold-light -> gold gradient happens to land on roughly midway, at
+   this word's position in the sentence) and used that color directly
+   -- neither design token alone matched. --gold-light alone read pale
+   and washed-out (almost white) next to it; --gold alone read
+   noticeably darker/more saturated.
    Font is left to inherit from .hero-lede (Roboto Flex, weight 600)
-   rather than overridden -- matching the paragraph's own font means
-   matching baseline metrics for free, no vertical-align correction
-   needed. */
+   rather than overridden -- same font as its neighbors rules out a
+   font-metrics mismatch as the cause of any baseline gap.
+   vertical-align below compensates for a *structural* gap instead: the
+   digit's rolling track (see be-ui-number-animation.tsx) is absolutely
+   positioned, so it has no in-flow baseline of its own -- the digit
+   box's CSS baseline synthesizes to its bottom margin edge per spec,
+   and the glyph centered inside that box sits above that edge rather
+   than flush with it. This holds regardless of font, so re-tune this
+   value if digitHeightEm changes, not if the paragraph's font ever
+   does.
+   Measure this against a letter with no descender, like "в" or "с" --
+   Cyrillic "р" (as in "странах") does have a descender in this font,
+   so its own rendered bottom sits below the real baseline. An earlier
+   pass measured against "странах" as a whole word and landed on
+   -0.375em, which looked flush against that word's lowest pixel but
+   was actually overshooting the true baseline by the height of "р"'s
+   descender (~3px at this font-size). -0.19em is flush against "в"/
+   "с" specifically. */
 #heroLedeCountriesNumber {
   background: none;
   -webkit-background-clip: initial;
   background-clip: initial;
-  -webkit-text-fill-color: var(--gold-light);
-  color: var(--gold-light);
+  -webkit-text-fill-color: #d8bb79;
+  color: #d8bb79;
+  vertical-align: -0.19em;
 }
 
 .hero-tags {
