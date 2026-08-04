@@ -3353,6 +3353,39 @@ body.nav-open {
   background: var(--paper);
 }
 
+.corner-fix--paper-alt {
+  background: var(--paper-alt);
+}
+
+/* A flat neighbour colour is only correct when the neighbour actually IS
+   flat. Two of the sections we're patching sit next to a neighbour with
+   its own radial-gradient tint positioned "at top right" / "at bottom
+   right" -- exactly at the corner we're patching, where that gradient is
+   at its strongest (its 0% stop). Measured by sampling the neighbour's own
+   rendered pixels right at that corner and cross-checked against the
+   gradient's own rgba/stop values composited over its base colour:
+   - testimonials section (before certificate-section) has
+     radial-gradient(circle at bottom right, rgba(143,153,207,.32) 0%...)
+     over --paper-alt -- certificate-section's top-right corner needs this
+     tint, not flat --paper-alt (its top-left corner is far enough from
+     that gradient's own top-left counterpart to stay effectively flat).
+   - the section after pricing-section has
+     radial-gradient(circle at top right, rgba(253,144,77,.15) 0%...)
+     over --paper -- pricing-section's bottom-right corner sits right at
+     that gradient's focal point (strongest tint); its bottom-left picks up
+     a lighter falloff of the same gradient. */
+.corner-fix--cert-top-right {
+  background: rgb(210, 207, 214);
+}
+
+.corner-fix--pricing-bottom-left {
+  background: rgb(246, 238, 224);
+}
+
+.corner-fix--pricing-bottom-right {
+  background: rgb(250, 231, 215);
+}
+
 .section-watermark {
   position: absolute;
   top: 50%;
