@@ -1066,6 +1066,16 @@ body.nav-open {
   background-clip: initial;
   -webkit-text-fill-color: var(--gold-light);
   color: var(--gold-light);
+  /* Science Gothic's own baseline-to-box-bottom metrics differ from
+     the surrounding paragraph font -- even with the ticker's bounding
+     box bottom pixel-matched to its neighboring word's (confirmed via
+     getBoundingClientRect), the actual rendered glyphs sat visibly
+     higher, like superscript, because the box's "empty" descender
+     space is bigger. Measured the real pixel gap between the two
+     words' lowest rendered pixels (not bounding boxes) at 6px and
+     nudge down by that same amount, in em so it stays correct if this
+     paragraph's font-size ever changes. */
+  vertical-align: -0.375em;
 }
 
 .hero-tags {
