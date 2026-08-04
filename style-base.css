@@ -4093,6 +4093,38 @@ body.popup-open {
   color: rgba(250, 246, 239, 0.96);
 }
 
+/* Desktop-only size bump for the hero-stats numbers/labels, the
+   hero-lede paragraph, and the hero-topline lines -- the client said
+   these read too small on desktop/wide screens. Scoped to
+   min-width:1025px specifically so it cannot touch mobile or tablet,
+   which are locked (see "Hero block ... mobile -- client-confirmed
+   final, HARD LOCK" above): every value below this breakpoint is left
+   completely untouched, both here and in the base rules above. Placed
+   after the base .hero-topline p:first-child/:last-child rules on
+   purpose -- an earlier position was overridden by them regardless of
+   the media query, since a later same-specificity rule always wins. */
+@media (min-width: 1025px) {
+  .hero-stat strong {
+    font-size: clamp(2.65rem, 2.7vw, 4rem);
+  }
+
+  .hero-stat span {
+    font-size: clamp(1.15rem, 1.5vw, 1.9rem);
+  }
+
+  .hero-lede {
+    font-size: clamp(1rem, 1.15vw, 1.45rem);
+  }
+
+  .hero .hero-topline p:first-child {
+    font-size: clamp(1rem, 1vw, 1.3rem);
+  }
+
+  .hero .hero-topline p:last-child {
+    font-size: clamp(0.82rem, 0.85vw, 1.05rem);
+  }
+}
+
 .hero-lede {
   order: 6;
 }
