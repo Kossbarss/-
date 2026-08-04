@@ -1058,26 +1058,18 @@ body.nav-open {
    whole paragraph). Give it a plain solid gold instead of fighting
    that -- close to the gradient's own tone, so it reads as part of the
    same sentence instead of a mismatched white insert. */
+/* Uses the paragraph's own font (inherited -- no font-family/weight/size
+   override here) instead of Science Gothic. The earlier Science Gothic
+   version needed a hand-tuned vertical-align to fake its baseline into
+   matching the surrounding text, because the two fonts' baseline-to-
+   box-bottom metrics differ; same font as its neighbors means matching
+   metrics for free, no correction needed. */
 #heroLedeCountriesNumber {
-  font-family: 'Science Gothic', 'Arial Narrow', Arial, sans-serif;
-  font-weight: 500;
   background: none;
   -webkit-background-clip: initial;
   background-clip: initial;
   -webkit-text-fill-color: var(--gold-light);
   color: var(--gold-light);
-  /* Science Gothic's own baseline-to-box-bottom metrics differ from
-     the surrounding paragraph font -- even with the ticker's bounding
-     box bottom pixel-matched to its neighboring word's (confirmed via
-     getBoundingClientRect), the actual rendered glyphs sat visibly
-     higher, like superscript, because the box's "empty" descender
-     space is bigger. An earlier pass overcorrected (-0.375em put the
-     digits visibly below the line); this value was re-tuned by
-     overlaying a ruler line at the neighboring word's lowest rendered
-     pixel row and nudging until the digits' rendered bottoms sit
-     flush against it, in em so it stays correct if this paragraph's
-     font-size ever changes. */
-  vertical-align: -0.32em;
 }
 
 .hero-tags {
