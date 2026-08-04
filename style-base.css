@@ -3378,8 +3378,23 @@ body.nav-open {
   background: rgb(210, 207, 214);
 }
 
+/* Unlike the two corners above (which sit exactly at their gradient's own
+   0% focal point, so the composited colour is the same regardless of
+   viewport size), this corner catches the *falloff* of the same
+   pricing-section-neighbour gradient -- and a radial-gradient's percentage
+   stops are relative to the element's own farthest-corner distance, so how
+   much tint reaches this opposite corner shrinks as the section gets wider
+   relative to its height. Measured: still close to this tinted value up to
+   ~480px, but the tint has faded to flat --paper by ~768px and stays flat
+   the rest of the way up to 2560px. */
 .corner-fix--pricing-bottom-left {
   background: rgb(246, 238, 224);
+}
+
+@media (min-width: 481px) {
+  .corner-fix--pricing-bottom-left {
+    background: var(--paper);
+  }
 }
 
 .corner-fix--pricing-bottom-right {
