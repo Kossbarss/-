@@ -1071,11 +1071,13 @@ body.nav-open {
      box bottom pixel-matched to its neighboring word's (confirmed via
      getBoundingClientRect), the actual rendered glyphs sat visibly
      higher, like superscript, because the box's "empty" descender
-     space is bigger. Measured the real pixel gap between the two
-     words' lowest rendered pixels (not bounding boxes) at 6px and
-     nudge down by that same amount, in em so it stays correct if this
-     paragraph's font-size ever changes. */
-  vertical-align: -0.375em;
+     space is bigger. An earlier pass overcorrected (-0.375em put the
+     digits visibly below the line); this value was re-tuned by
+     overlaying a ruler line at the neighboring word's lowest rendered
+     pixel row and nudging until the digits' rendered bottoms sit
+     flush against it, in em so it stays correct if this paragraph's
+     font-size ever changes. */
+  vertical-align: -0.32em;
 }
 
 .hero-tags {
