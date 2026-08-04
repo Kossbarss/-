@@ -500,6 +500,26 @@ button {
   transform: translateY(-9px) rotate(-45deg);
 }
 
+/* .header-brand groups the logo with a compact copy of the RU/UA
+   switch (.lang-switch-mobile) so it can travel with "VIP tattoo
+   school" on mobile/tablet, where .lang-switch-desktop hides below.
+   display:contents on desktop keeps it invisible to the header's own
+   flex layout -- .logo lands exactly where it always did, since
+   .lang-switch-mobile is display:none there regardless. */
+.header-brand {
+  display: contents;
+}
+
+/* .lang-switch.lang-switch-mobile (2 classes), not .lang-switch-mobile
+   alone: this element also carries .lang-toggle, and .lang-switch
+   .lang-toggle {display:inline-flex} (higher specificity than a
+   single class) would otherwise win over a plain .lang-switch-mobile
+   override regardless of source order -- same reason
+   .lang-switch-desktop below is written as a compound selector too. */
+.lang-switch.lang-switch-mobile {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .nav-links,
   .nav-cta,
@@ -508,6 +528,40 @@ button {
   }
   .nav-toggle {
     display: block;
+  }
+
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  .lang-switch.lang-switch-mobile {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 60px;
+    height: 24px;
+  }
+
+  .lang-switch-mobile .lang-toggle-opt {
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .header-brand {
+    gap: 8px;
+  }
+
+  .lang-switch.lang-switch-mobile {
+    width: 52px;
+    height: 22px;
+  }
+
+  .lang-switch-mobile .lang-toggle-opt {
+    font-size: 0.54rem;
+    letter-spacing: 0;
   }
 }
 
