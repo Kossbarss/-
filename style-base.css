@@ -1051,27 +1051,6 @@ body.nav-open {
   -webkit-text-fill-color: transparent;
 }
 
-/* The "22+" ticker digit-roll (see hero-stats-entry.tsx) renders its own
-   nested column/track structure -- too deep for the gradient
-   background-clip:text above to reliably clip through (same reason the
-   comment above moved the gradient down to word level instead of the
-   whole paragraph). Give it a plain solid gold instead of fighting
-   that -- close to the gradient's own tone, so it reads as part of the
-   same sentence instead of a mismatched white insert. */
-/* Uses the paragraph's own font (inherited -- no font-family/weight/size
-   override here) instead of Science Gothic. The earlier Science Gothic
-   version needed a hand-tuned vertical-align to fake its baseline into
-   matching the surrounding text, because the two fonts' baseline-to-
-   box-bottom metrics differ; same font as its neighbors means matching
-   metrics for free, no correction needed. */
-#heroLedeCountriesNumber {
-  background: none;
-  -webkit-background-clip: initial;
-  background-clip: initial;
-  -webkit-text-fill-color: var(--gold-light);
-  color: var(--gold-light);
-}
-
 .hero-tags {
   order: 7;
   overflow: hidden;
