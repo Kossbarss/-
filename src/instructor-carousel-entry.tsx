@@ -38,7 +38,7 @@ const UK_TESTIMONIALS: Testimonial[] = [
   },
   {
     name: "Вікторія Понікарова",
-    designation: "Обличчя цифрової обкладинки Bomond VIP fashion magazine",
+    designation: "Обличчя обкладинки Bomond VIP fashion magazine",
     quote: "Для мене краса без сенсу — порожня, а сенс без краси — німий.",
     src: `${assetPrefix}instructor-bomond-cover.jpg`,
   },
