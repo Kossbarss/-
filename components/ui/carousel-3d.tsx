@@ -9,7 +9,6 @@ import {
   useState,
 } from "react";
 import {
-  AnimatePresence,
   motion,
   useAnimation,
   useMotionValue,
@@ -48,11 +47,9 @@ export interface Carousel3DItem {
 interface Carousel3DProps {
   items: Carousel3DItem[];
   onActiveChange?: (index: number) => void;
-  closeLabel: string;
 }
 
 const faceTransition = { duration: 0.15, ease: [0.32, 0.72, 0, 1] as const };
-const overlayTransition = { duration: 0.5, ease: [0.32, 0.72, 0, 1] as const };
 
 // Face width is derived from the viewport's actual height (via ResizeObserver)
 // rather than hard-coded per breakpoint, so it always matches whatever
@@ -60,22 +57,23 @@ const overlayTransition = { duration: 0.5, ease: [0.32, 0.72, 0, 1] as const };
 // out of sync with each other over time.
 const Drum = memo(function Drum({
   items,
-  isActive,
   rotation,
   controls,
-  onFaceClick,
   onActiveChange,
 }: {
   items: Carousel3DItem[];
-  isActive: boolean;
   rotation: MotionValue<number>;
   controls: AnimationControls;
-  onFaceClick: (index: number) => void;
   onActiveChange?: (index: number) => void;
 }) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const [viewportHeight, setViewportHeight] = useState(0);
   const isCompact = useMediaQuery("(max-width: 640px)");
+  // Desktop/tablet-and-up gets a wider, flatter, edge-cropped band (bigger
+  // radius -> gentler curve per face at the same 360/faceCount angle,
+  // matching the client's reference screenshot) instead of the narrower,
+  // more tightly-curved mobile layout.
+  const isWideDesktop = useMediaQuery("(min-width: 1024px)");
   const lastReported = useRef(-1);
   const rafId = useRef<number | null>(null);
 
@@ -92,9 +90,9 @@ const Drum = memo(function Drum({
   // Rather than deriving the "front" face from the rotation value via trig
   // (fragile: has to mirror the exact rotateY sign/handedness the browser
   // actually renders with), ask the browser directly which face is under
-  // the viewport's center point -- the same hit-test a real click there
-  // would resolve to, so the detail panel below can never disagree with
-  // what clicking the center face actually opens.
+  // the viewport's center point -- the same point a real click there would
+  // resolve to, so the detail panel below can never disagree with what's
+  // actually centered.
   const reportFrontFace = useCallback(() => {
     const el = viewportRef.current;
     if (!el || !onActiveChange) return;
@@ -128,15 +126,20 @@ const Drum = memo(function Drum({
   }, [reportFrontFace, rotation, viewportHeight]);
 
   const faceCount = items.length;
-  const faceWidth = viewportHeight ? viewportHeight * (isCompact ? 0.62 : 0.67) : 0;
+  const widthRatio = isWideDesktop ? 0.8 : isCompact ? 0.62 : 0.67;
+  const faceWidth = viewportHeight ? viewportHeight * widthRatio : 0;
   const cylinderWidth = faceWidth * faceCount;
   const radius = cylinderWidth / (2 * Math.PI);
   // Scaled to viewportHeight rather than a fixed px value -- a constant
   // perspective distance only looks right at the one container size it was
   // tuned for; at any other, the foreshortening ratio is off and the front
   // (translateZ'd closest) face renders visibly larger than its own layout
-  // box, spilling into whatever sits above/below the carousel.
-  const perspective = viewportHeight * 5;
+  // box, spilling into whatever sits above/below the carousel. Desktop's
+  // wider drum (bigger radius) also needs a proportionally larger
+  // perspective/radius ratio -- otherwise the close-to-camera front face
+  // gets foreshortened into dominating the whole band instead of the flat,
+  // evenly-sized row of photos in the reference screenshot.
+  const perspective = viewportHeight * (isWideDesktop ? 14 : 5);
   const transform = useTransform(rotation, (value) => `rotate3d(0, 1, 0, ${value}deg)`);
 
   return (
@@ -144,7 +147,7 @@ const Drum = memo(function Drum({
       {viewportHeight > 0 && (
         <div className="carousel3d-stage" style={{ perspective: `${perspective}px` }}>
           <motion.div
-            drag={isActive ? "x" : false}
+            drag="x"
             dragElastic={0.08}
             className="carousel3d-drum"
             style={{
@@ -158,10 +161,9 @@ const Drum = memo(function Drum({
               // is cumulative since drag start, so adding it on each event would
               // compound. info.delta is the per-event increment -- what should
               // actually be added to the running rotation each time.
-              isActive && rotation.set(rotation.get() + info.delta.x * 0.05)
+              rotation.set(rotation.get() + info.delta.x * 0.05)
             }
             onDragEnd={(_, info) =>
-              isActive &&
               controls.start({
                 rotateY: rotation.get() + info.velocity.x * 0.05,
                 transition: { type: "spring", stiffness: 100, damping: 30, mass: 0.1 },
@@ -170,8 +172,7 @@ const Drum = memo(function Drum({
             animate={controls}
           >
             {items.map((item, i) => (
-              <motion.button
-                type="button"
+              <div
                 key={`${item.src}-${i}`}
                 data-carousel3d-index={i}
                 className="carousel3d-face"
@@ -184,13 +185,10 @@ const Drum = memo(function Drum({
                   // sits half a face-width off from where it should be.
                   transform: `translateX(-50%) rotateY(${i * (360 / faceCount)}deg) translateZ(${radius}px)`,
                 }}
-                onClick={() => onFaceClick(i)}
-                aria-label={item.name}
               >
                 <motion.img
                   src={item.src}
                   alt={item.alt}
-                  layoutId={`carousel3d-img-${item.src}`}
                   className="carousel3d-face-img"
                   initial={{ filter: "blur(4px)" }}
                   animate={{ filter: "blur(0px)" }}
@@ -201,7 +199,7 @@ const Drum = memo(function Drum({
                   <strong>{item.name}</strong>
                   <span>{item.subtitle}</span>
                 </div>
-              </motion.button>
+              </div>
             ))}
           </motion.div>
         </div>
@@ -210,89 +208,16 @@ const Drum = memo(function Drum({
   );
 });
 
-export function Carousel3D({ items, onActiveChange, closeLabel }: Carousel3DProps) {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [isDrumActive, setIsDrumActive] = useState(true);
+export function Carousel3D({ items, onActiveChange }: Carousel3DProps) {
   const controls = useAnimation();
   const rotation = useMotionValue(0);
-  const faceCount = items.length;
 
-  const handleFaceClick = useCallback(
-    (index: number) => {
-      setActiveIndex(index);
-      setIsDrumActive(false);
-      controls.stop();
-    },
-    [controls]
-  );
-
-  const handleClose = useCallback(() => {
-    setActiveIndex(null);
-    setIsDrumActive(true);
-  }, []);
-
-  useEffect(() => {
-    if (activeIndex === null) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") handleClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [activeIndex, handleClose]);
-
-  if (!faceCount) return null;
-
-  const activeItem = activeIndex !== null ? items[activeIndex] : null;
+  if (!items.length) return null;
 
   return (
-    <motion.div layout className="carousel3d-root">
-      <AnimatePresence mode="sync">
-        {activeItem && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={handleClose}
-            className="carousel3d-lightbox"
-            transition={overlayTransition}
-          >
-            <motion.div
-              layoutId={`carousel3d-img-container-${activeItem.src}`}
-              className="carousel3d-lightbox-inner"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <motion.img
-                layoutId={`carousel3d-img-${activeItem.src}`}
-                src={activeItem.src}
-                alt={activeItem.alt}
-                className="carousel3d-lightbox-img"
-                transition={faceTransition}
-              />
-              <div className="carousel3d-lightbox-copy">
-                <strong>{activeItem.name}</strong>
-                <span>{activeItem.subtitle}</span>
-              </div>
-              <button
-                type="button"
-                className="carousel3d-lightbox-close"
-                onClick={handleClose}
-                aria-label={closeLabel}
-              >
-                &times;
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <Drum
-        items={items}
-        isActive={isDrumActive}
-        rotation={rotation}
-        controls={controls}
-        onFaceClick={handleFaceClick}
-        onActiveChange={onActiveChange}
-      />
-    </motion.div>
+    <div className="carousel3d-root">
+      <Drum items={items} rotation={rotation} controls={controls} onActiveChange={onActiveChange} />
+    </div>
   );
 }
 

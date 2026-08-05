@@ -63,9 +63,6 @@ const UK_GRADUATES: Graduate[] = [
 
 const CASES = isUkrainian ? UK_CASES : RU_CASES;
 const GRADUATES = isUkrainian ? UK_GRADUATES : RU_GRADUATES;
-const labels = isUkrainian
-  ? { close: "Закрити" }
-  : { close: "Закрыть" };
 
 const CAROUSEL_ITEMS: Carousel3DItem[] = CASES.map(study => ({
   src: `${assetPrefix}${study.image}`,
@@ -80,11 +77,7 @@ function Demo() {
 
   return (
     <div className="case-carousel-demo">
-      <Carousel3D
-        items={CAROUSEL_ITEMS}
-        onActiveChange={setActiveIndex}
-        closeLabel={labels.close}
-      />
+      <Carousel3D items={CAROUSEL_ITEMS} onActiveChange={setActiveIndex} />
       <article className="case-carousel-detail" aria-live="polite">
         <span className="case-carousel-detail-module">{activeCase.module}</span>
         <h3>{activeCase.name}</h3>
