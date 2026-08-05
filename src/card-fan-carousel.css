@@ -54,7 +54,7 @@
   position: relative;
   width: 100%;
   max-width: 68rem;
-  height: 16rem;
+  height: 17rem;
   margin: 0 auto;
   /* Desktop/tablet-and-up: crop the wider drum at the container edges
      (matches the client's reference -- photos extend past the frame and
@@ -105,6 +105,31 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Desktop/tablet-and-up (>=1024px) variant, matching the reference
+   component verbatim: a flex-centered square photo (aspect-square) with
+   an 8px padding "frame" (p-2) around it instead of a card that fills its
+   whole box -- no gold border/box-shadow, since the reference has neither. */
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-face--square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 0.75rem;
+  background: var(--ink);
+  box-shadow: none;
+}
+
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-face-img-square {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  display: block;
   user-select: none;
   pointer-events: none;
 }

@@ -126,20 +126,33 @@ const Drum = memo(function Drum({
   }, [reportFrontFace, rotation, viewportHeight]);
 
   const faceCount = items.length;
-  const widthRatio = isWideDesktop ? 0.8 : isCompact ? 0.62 : 0.67;
-  const faceWidth = viewportHeight ? viewportHeight * widthRatio : 0;
-  const cylinderWidth = faceWidth * faceCount;
-  const radius = cylinderWidth / (2 * Math.PI);
-  // Scaled to viewportHeight rather than a fixed px value -- a constant
-  // perspective distance only looks right at the one container size it was
-  // tuned for; at any other, the foreshortening ratio is off and the front
-  // (translateZ'd closest) face renders visibly larger than its own layout
-  // box, spilling into whatever sits above/below the carousel. Desktop's
-  // wider drum (bigger radius) also needs a proportionally larger
-  // perspective/radius ratio -- otherwise the close-to-camera front face
-  // gets foreshortened into dominating the whole band instead of the flat,
-  // evenly-sized row of photos in the reference screenshot.
-  const perspective = viewportHeight * (isWideDesktop ? 14 : 5);
+
+  // Desktop/tablet-and-up follows the reference component's own sizing
+  // scheme verbatim -- a fixed 1800px cylinder and fixed 1000px perspective,
+  // independent of container height, with square (aspect-square) photos.
+  // Mobile/tablet below 1024px keeps the original viewportHeight-derived,
+  // portrait-cropped sizing untouched.
+  const REFERENCE_CYLINDER_WIDTH = 1800;
+  const REFERENCE_PERSPECTIVE = 1000;
+
+  let faceWidth: number;
+  let cylinderWidth: number;
+  let radius: number;
+  let perspective: number;
+
+  if (isWideDesktop) {
+    cylinderWidth = REFERENCE_CYLINDER_WIDTH;
+    faceWidth = cylinderWidth / faceCount;
+    radius = cylinderWidth / (2 * Math.PI);
+    perspective = REFERENCE_PERSPECTIVE;
+  } else {
+    const widthRatio = isCompact ? 0.62 : 0.67;
+    faceWidth = viewportHeight ? viewportHeight * widthRatio : 0;
+    cylinderWidth = faceWidth * faceCount;
+    radius = cylinderWidth / (2 * Math.PI);
+    perspective = viewportHeight * 5;
+  }
+
   const transform = useTransform(rotation, (value) => `rotate3d(0, 1, 0, ${value}deg)`);
 
   return (
@@ -175,7 +188,7 @@ const Drum = memo(function Drum({
               <div
                 key={`${item.src}-${i}`}
                 data-carousel3d-index={i}
-                className="carousel3d-face"
+                className={isWideDesktop ? "carousel3d-face carousel3d-face--square" : "carousel3d-face"}
                 style={{
                   width: `${faceWidth}px`,
                   // .carousel3d-face is positioned with CSS left:50%, which
@@ -186,19 +199,32 @@ const Drum = memo(function Drum({
                   transform: `translateX(-50%) rotateY(${i * (360 / faceCount)}deg) translateZ(${radius}px)`,
                 }}
               >
-                <motion.img
-                  src={item.src}
-                  alt={item.alt}
-                  className="carousel3d-face-img"
-                  initial={{ filter: "blur(4px)" }}
-                  animate={{ filter: "blur(0px)" }}
-                  transition={faceTransition}
-                />
-                <div className="carousel3d-face-shade" aria-hidden="true" />
-                <div className="carousel3d-face-copy">
-                  <strong>{item.name}</strong>
-                  <span>{item.subtitle}</span>
-                </div>
+                {isWideDesktop ? (
+                  <motion.img
+                    src={item.src}
+                    alt={item.alt}
+                    className="carousel3d-face-img-square"
+                    initial={{ filter: "blur(4px)" }}
+                    animate={{ filter: "blur(0px)" }}
+                    transition={faceTransition}
+                  />
+                ) : (
+                  <>
+                    <motion.img
+                      src={item.src}
+                      alt={item.alt}
+                      className="carousel3d-face-img"
+                      initial={{ filter: "blur(4px)" }}
+                      animate={{ filter: "blur(0px)" }}
+                      transition={faceTransition}
+                    />
+                    <div className="carousel3d-face-shade" aria-hidden="true" />
+                    <div className="carousel3d-face-copy">
+                      <strong>{item.name}</strong>
+                      <span>{item.subtitle}</span>
+                    </div>
+                  </>
+                )}
               </div>
             ))}
           </motion.div>
