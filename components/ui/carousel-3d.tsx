@@ -127,16 +127,14 @@ const Drum = memo(function Drum({
 
   const faceCount = items.length;
 
-  // Desktop/tablet-and-up follows the reference component's own sizing
-  // scheme verbatim -- fixed 1000px perspective, independent of container
-  // height, with square (aspect-square) photos. The reference's own cards
-  // are cylinderWidth/faceCount = 1800/14 ~= 128.57px each; matched here by
-  // per-photo size (not the reference's 14-face total drum width) since our
-  // 10 real cases would otherwise render each photo ~40% larger than the
-  // reference's own screenshot, dominating the row instead of sitting
-  // evenly alongside 5-6 others. Mobile/tablet below 1024px keeps the
-  // original viewportHeight-derived, portrait-cropped sizing untouched.
-  const REFERENCE_FACE_WIDTH = 1800 / 14;
+  // Desktop/tablet-and-up: fixed 1000px perspective, independent of
+  // container height, with square (aspect-square) photos -- following the
+  // reference component's scheme, but scaled up (client feedback: the
+  // reference's own per-photo size, ~128.57px = 1800/14, read as too small
+  // next to this section and the rest of the page). Mobile/tablet below
+  // 1024px keeps the original viewportHeight-derived, portrait-cropped
+  // sizing untouched.
+  const REFERENCE_FACE_WIDTH = 220;
   const REFERENCE_PERSPECTIVE = 1000;
 
   let faceWidth: number;

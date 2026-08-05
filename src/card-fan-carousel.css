@@ -25,7 +25,7 @@
   align-items: initial !important;
   justify-content: initial !important;
   width: 100%;
-  max-width: 70rem;
+  max-width: 73rem;
   height: auto !important;
   min-height: 0 !important;
   margin: 0 auto;
@@ -53,8 +53,8 @@
 #caseFanLayout[data-case-carousel-3d="true"] .carousel3d-viewport {
   position: relative;
   width: 100%;
-  max-width: 68rem;
-  height: 17rem;
+  max-width: 72rem;
+  height: 24rem;
   margin: 0 auto;
   /* Desktop/tablet-and-up: crop the wider drum at the container edges
      (matches the client's reference -- photos extend past the frame and
@@ -109,29 +109,23 @@
   pointer-events: none;
 }
 
-/* Desktop/tablet-and-up (>=1024px) variant, matching the reference
-   component verbatim: a flex-centered square photo (aspect-square) with
-   an 8px padding "frame" (p-2) around it instead of a card that fills its
-   whole box -- no gold border/box-shadow, since the reference has neither.
-   top/height override the base .carousel3d-face rule: that rule stretches
-   to the full (much taller) viewport height and top-pins each face, which
-   left a solid dark band above/below every square photo (the --ink
-   background showing through the empty space above/below each square
-   within its own full-height box). Auto-height + vertical centering (paired
-   with the matching translateY(-50%) in the inline transform) makes each
-   face's own box match its square photo instead, and a transparent
-   background lets the page's own paper color show through the gaps between
-   cards -- exactly like the reference screenshot, which has no visible
-   frame color at all. */
+/* Desktop/tablet-and-up (>=1024px) variant: a flex-centered square photo
+   (aspect-square). top/height override the base .carousel3d-face rule:
+   that rule stretches to the full (much taller) viewport height and
+   top-pins each face, which left a solid dark band above/below every
+   square photo (the --ink background showing through the empty space
+   above/below each square within its own full-height box). Auto-height +
+   vertical centering (paired with the matching translateY(-50%) in the
+   inline transform) makes each face's own box match its square photo
+   instead, and a transparent background lets the page's own paper color
+   show through the gaps between cards. */
 #caseFanLayout[data-case-carousel-3d="true"] .carousel3d-face--square {
   top: 50%;
   height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem;
   border: none;
-  border-radius: 0.75rem;
   background: transparent;
   box-shadow: none;
 }
@@ -139,6 +133,8 @@
 #caseFanLayout[data-case-carousel-3d="true"] .carousel3d-face-img-square {
   width: 100%;
   aspect-ratio: 1 / 1;
+  border: 1px solid rgba(201, 162, 74, 0.45);
+  box-shadow: 0 1rem 2.2rem rgba(28, 17, 10, 0.28);
   object-fit: cover;
   border-radius: 0.75rem;
   display: block;
