@@ -22,14 +22,19 @@ interface SocialCardsProps {
 const MAX_VISIBLE = 7;
 const HALF = 3;
 
+// Wider spread than the original tuning (rot/x reach +~35%, y +~15% --
+// the y bump is kept modest because, unlike a borderless full-height demo
+// section, .fan-layout here has a fixed CSS height per breakpoint
+// (11.5rem at <=479px up to 18.5rem at >=1024px); this max still leaves a
+// comfortable margin below the tallest fan-card at every breakpoint.
 const FAN_POSITIONS = [
-  { rot: -14, scale: 0.86, x: -22, y: 2.6, zIndex: 1 },
-  { rot: -9, scale: 0.91, x: -15, y: 1.5, zIndex: 2 },
-  { rot: -4.5, scale: 0.96, x: -8, y: 0.6, zIndex: 3 },
+  { rot: -19, scale: 0.82, x: -28, y: 3.0, zIndex: 1 },
+  { rot: -12, scale: 0.87, x: -19, y: 1.7, zIndex: 2 },
+  { rot: -6, scale: 0.945, x: -10, y: 0.7, zIndex: 3 },
   { rot: 0, scale: 1, x: 0, y: 0, zIndex: 10 },
-  { rot: 4.5, scale: 0.96, x: 8, y: 0.6, zIndex: 3 },
-  { rot: 9, scale: 0.91, x: 15, y: 1.5, zIndex: 2 },
-  { rot: 14, scale: 0.86, x: 22, y: 2.6, zIndex: 1 },
+  { rot: 6, scale: 0.945, x: 10, y: 0.7, zIndex: 3 },
+  { rot: 12, scale: 0.87, x: 19, y: 1.7, zIndex: 2 },
+  { rot: 19, scale: 0.82, x: 28, y: 3.0, zIndex: 1 },
 ];
 
 function getResponsiveMultiplier(width: number) {
@@ -46,10 +51,10 @@ function getSlotConfig(totalCards: number, slot: number) {
   const distance = totalCards > 1 ? (slot - center) / center : 0;
   const absDistance = Math.abs(distance);
   return {
-    rot: distance * 14,
-    scale: 1 - 0.14 * absDistance * absDistance,
-    x: distance * 22,
-    y: absDistance * absDistance * 2.6,
+    rot: distance * 19,
+    scale: 1 - 0.18 * absDistance * absDistance,
+    x: distance * 28,
+    y: absDistance * absDistance * 3.0,
     zIndex: 10 - Math.abs(slot - center),
   };
 }
@@ -110,20 +115,23 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
       let rot = base.rot;
       let scale = base.scale;
       let zIndex = base.zIndex;
+      let delay = 0;
 
       if (focus !== null) {
+        const distance = slot - focus;
+        const absDist = Math.abs(distance);
+        delay = absDist * 0.02;
+
         if (slot === focus) {
           x = 0;
-          y = -1.6;
+          y = -2;
           rot = 0;
           scale = 1.18;
           zIndex = 40;
         } else {
-          const distance = slot - focus;
           const dir = Math.sign(distance);
-          const absDist = Math.abs(distance);
-          x += dir * ((3.2 * responsiveMultiplier) / absDist);
-          rot += dir * (6 / absDist);
+          x += dir * ((4.4 * responsiveMultiplier) / absDist);
+          rot += dir * (7 / absDist);
           scale *= 0.88;
           zIndex = Math.max(1, base.zIndex - 3);
         }
@@ -131,7 +139,7 @@ export default function SocialCards({ cards, onActiveChange, previousLabel, next
 
       const target = { xPercent: -50, x: `${x}rem`, y: `${y}rem`, rotation: rot, scale, zIndex };
       if (animate) {
-        gsap.to(card, { ...target, duration: 0.4, ease: "power3.out" });
+        gsap.to(card, { ...target, duration: 0.4, delay, ease: "power3.out" });
       } else {
         gsap.set(card, target);
       }
