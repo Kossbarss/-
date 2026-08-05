@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import SocialCards, { type CardItem } from "@/components/ui/card-fan-carousel";
+import Carousel3D, { type Carousel3DItem } from "@/components/ui/carousel-3d";
 
 type CaseStudy = {
   name: string;
@@ -64,28 +64,26 @@ const UK_GRADUATES: Graduate[] = [
 const CASES = isUkrainian ? UK_CASES : RU_CASES;
 const GRADUATES = isUkrainian ? UK_GRADUATES : RU_GRADUATES;
 const labels = isUkrainian
-  ? { previous: "Попередній кейс", next: "Наступний кейс", card: "Кейс" }
-  : { previous: "Предыдущий кейс", next: "Следующий кейс", card: "Кейс" };
+  ? { close: "Закрити" }
+  : { close: "Закрыть" };
 
-const CARDS: CardItem[] = CASES.map(study => ({
-  imgUrl: `${assetPrefix}${study.image}`,
+const CAROUSEL_ITEMS: Carousel3DItem[] = CASES.map(study => ({
+  src: `${assetPrefix}${study.image}`,
   alt: `${study.name}. ${study.stat}`,
-  title: study.name,
+  name: study.name,
   subtitle: study.style,
 }));
 
 function Demo() {
-  const [activeIndex, setActiveIndex] = useState(3);
+  const [activeIndex, setActiveIndex] = useState(0);
   const activeCase = CASES[activeIndex] || CASES[0];
 
   return (
     <div className="case-carousel-demo">
-      <SocialCards
-        cards={CARDS}
+      <Carousel3D
+        items={CAROUSEL_ITEMS}
         onActiveChange={setActiveIndex}
-        previousLabel={labels.previous}
-        nextLabel={labels.next}
-        cardLabel={labels.card}
+        closeLabel={labels.close}
       />
       <article className="case-carousel-detail" aria-live="polite">
         <span className="case-carousel-detail-module">{activeCase.module}</span>
@@ -127,6 +125,6 @@ if (avatars) {
 
 if (mountNode) {
   mountNode.replaceChildren();
-  mountNode.setAttribute("data-card-fan-carousel", "true");
+  mountNode.setAttribute("data-case-carousel-3d", "true");
   createRoot(mountNode).render(<Demo />);
 }

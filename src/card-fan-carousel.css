@@ -19,7 +19,7 @@
   overflow: visible;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] {
+#caseFanLayout[data-case-carousel-3d="true"] {
   position: relative;
   display: block !important;
   align-items: initial !important;
@@ -32,149 +32,193 @@
   overflow: visible;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] > .case-carousel-demo,
-#caseFanLayout[data-card-fan-carousel="true"] .case-carousel-component {
+#caseFanLayout[data-case-carousel-3d="true"] > .case-carousel-demo,
+#caseFanLayout[data-case-carousel-3d="true"] .case-carousel-component {
   display: flex;
   width: 100%;
   flex-direction: column;
   align-items: center;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .case-carousel-demo {
+#caseFanLayout[data-case-carousel-3d="true"] .case-carousel-demo {
   gap: 1.25rem;
   min-height: 0;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-root {
   position: relative;
   width: 100%;
-  max-width: 58rem;
+}
+
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-viewport {
+  position: relative;
+  width: 100%;
+  max-width: 46rem;
   height: 18.5rem;
   margin: 0 auto;
   overflow: visible;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card {
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1400px;
+}
+
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-drum {
+  position: relative;
+  height: 100%;
+  cursor: grab;
+}
+
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-drum:active {
+  cursor: grabbing;
+}
+
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-face {
   position: absolute;
   top: 0;
   left: 50%;
-  display: block;
-  width: 8.8rem;
-  aspect-ratio: 4 / 6;
+  height: 100%;
   overflow: hidden;
-  padding: 2px;
-  border: none;
+  padding: 0;
+  border: 1px solid rgba(201, 162, 74, 0.35);
   border-radius: 1rem;
-  background: none;
+  background: var(--ink);
   font: inherit;
   color: inherit;
   appearance: none;
   -webkit-appearance: none;
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
-  transform-origin: 50% 92%;
-  will-change: transform, opacity;
-  box-shadow: 0 1rem 2.2rem rgba(28, 17, 10, 0.18);
-}
-
-/* Rotating gold "foil" ring: an oversized conic-gradient sits behind the
-   card, clipped down to a thin edge by the media wrapper's own corners on
-   top. Only transform is animated so the spin is pure GPU compositing. */
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card::before {
-  content: '';
-  position: absolute;
-  inset: -65%;
-  z-index: 0;
-  background: conic-gradient(
-    from 0deg,
-    var(--gold-dark) 0%,
-    var(--gold) 25%,
-    var(--gold-light) 50%,
-    var(--gold) 75%,
-    var(--gold-dark) 100%
-  );
-  animation: fan-card-ring-spin 3.4s linear infinite;
   will-change: transform;
+  box-shadow: 0 1rem 2.2rem rgba(28, 17, 10, 0.28);
 }
 
-/* Stagger by DOM position so the rings don't all spin in lockstep. */
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card:nth-child(7n + 1)::before { animation-delay: -2.9s; }
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card:nth-child(7n + 2)::before { animation-delay: -2.4s; }
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card:nth-child(7n + 3)::before { animation-delay: -1.7s; }
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card:nth-child(7n + 4)::before { animation-delay: -1s; }
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card:nth-child(7n + 5)::before { animation-delay: -0.4s; }
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card:nth-child(7n + 6)::before { animation-delay: -2.1s; }
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card:nth-child(7n + 7)::before { animation-delay: -1.4s; }
-
-@keyframes fan-card-ring-spin {
-  to { transform: rotate(360deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-card::before {
-    animation: none;
-  }
-}
-
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card-media,
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card img {
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-face-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-}
-
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card-media {
-  position: relative;
-  z-index: 1;
-  border-radius: inherit;
-}
-
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card img {
   object-fit: cover;
   user-select: none;
   pointer-events: none;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card-shade {
-  background: linear-gradient(to top, rgba(7, 5, 5, 0.9) 0%, rgba(7, 5, 5, 0.22) 42%, transparent 70%);
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-face-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(7, 5, 5, 0.88) 0%, rgba(7, 5, 5, 0.2) 45%, transparent 72%);
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card-copy {
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-face-copy {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 0.18rem;
-  padding: 0.7rem 0.6rem 0.75rem;
+  padding: 0.7rem 0.55rem 0.75rem;
   text-align: center;
   color: #fff;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card-copy strong {
-  font-size: 0.76rem;
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-face-copy strong {
+  font-size: 0.74rem;
   line-height: 1.15;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .fan-card-copy span {
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-face-copy span {
   color: rgba(255, 244, 216, 0.84);
-  font-size: 0.56rem;
+  font-size: 0.54rem;
   font-weight: 700;
   letter-spacing: 0.06em;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .fan-pagination {
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(10, 7, 5, 0.72);
+  backdrop-filter: blur(6px);
+  cursor: zoom-out;
+}
+
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-lightbox-inner {
   position: relative;
-  z-index: 3;
-  margin-top: 0.75rem;
-  padding: 0.25rem 0;
+  max-width: min(92vw, 28rem);
+  max-height: 86vh;
+  border-radius: 1.2rem;
+  overflow: hidden;
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.45);
+  cursor: default;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .fan-dots {
-  min-width: 8rem;
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-lightbox-img {
+  display: block;
+  width: 100%;
+  max-height: 86vh;
+  object-fit: cover;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .fan-arrow-control {
-  background: rgba(255, 252, 246, 0.97);
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-lightbox-copy {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1.5rem 1.25rem 1.1rem;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(to top, rgba(7, 5, 5, 0.92) 0%, rgba(7, 5, 5, 0.35) 55%, transparent 100%);
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .case-carousel-detail {
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-lightbox-copy strong {
+  font-size: 1.05rem;
+}
+
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-lightbox-copy span {
+  color: rgba(255, 244, 216, 0.88);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-lightbox-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: none;
+  border-radius: 999px;
+  background: rgba(21, 17, 15, 0.55);
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#caseFanLayout[data-case-carousel-3d="true"] .carousel3d-lightbox-close:hover {
+  background: rgba(21, 17, 15, 0.8);
+}
+
+#caseFanLayout[data-case-carousel-3d="true"] .case-carousel-detail {
   position: relative;
   z-index: 2;
   width: min(100%, 40rem);
@@ -187,7 +231,7 @@
   box-shadow: 0 0.75rem 1.8rem rgba(35, 22, 12, 0.06);
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .case-carousel-detail-module {
+#caseFanLayout[data-case-carousel-3d="true"] .case-carousel-detail-module {
   display: block;
   margin-bottom: 0.35rem;
   color: #9d281f;
@@ -197,20 +241,20 @@
   text-transform: uppercase;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .case-carousel-detail h3 {
+#caseFanLayout[data-case-carousel-3d="true"] .case-carousel-detail h3 {
   margin: 0;
   font-size: clamp(1.25rem, 2vw, 1.65rem);
   line-height: 1.15;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .case-carousel-detail p {
+#caseFanLayout[data-case-carousel-3d="true"] .case-carousel-detail p {
   max-width: 34rem;
   margin: 0.6rem auto 0;
   color: rgba(26, 21, 18, 0.72);
   line-height: 1.5;
 }
 
-#caseFanLayout[data-card-fan-carousel="true"] .case-carousel-detail strong {
+#caseFanLayout[data-case-carousel-3d="true"] .case-carousel-detail strong {
   display: block;
   margin-top: 0.75rem;
   color: #d42e1f;
@@ -324,16 +368,12 @@
     margin-bottom: 1.75rem !important;
   }
 
-  #caseFanLayout[data-card-fan-carousel="true"] {
+  #caseFanLayout[data-case-carousel-3d="true"] {
     max-width: 54rem;
   }
 
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
+  #caseFanLayout[data-case-carousel-3d="true"] .carousel3d-viewport {
     height: 17rem;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 8rem;
   }
 }
 
@@ -354,45 +394,26 @@
     margin-bottom: 1.5rem !important;
   }
 
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
+  #caseFanLayout[data-case-carousel-3d="true"] .carousel3d-viewport {
     height: 15rem;
   }
 
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 7rem;
-    border-radius: 0.85rem;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-card-copy strong {
+  #caseFanLayout[data-case-carousel-3d="true"] .carousel3d-face-copy strong {
     font-size: 0.66rem;
   }
 
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-card-copy span {
+  #caseFanLayout[data-case-carousel-3d="true"] .carousel3d-face-copy span {
     font-size: 0.48rem;
   }
 
-  #caseFanLayout[data-card-fan-carousel="true"] .case-carousel-detail {
+  #caseFanLayout[data-case-carousel-3d="true"] .case-carousel-detail {
     padding: 1rem;
   }
 }
 
 @media (max-width: 639px) {
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
+  #caseFanLayout[data-case-carousel-3d="true"] .carousel3d-viewport {
     height: 13rem;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 6rem;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-dots {
-    min-width: 6rem;
-    gap: 0.3rem;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-dots span {
-    width: 0.38rem;
-    height: 0.38rem;
   }
 
   .case-fan-cta {
@@ -401,21 +422,13 @@
 }
 
 @media (max-width: 479px) {
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-layout {
+  #caseFanLayout[data-case-carousel-3d="true"] .carousel3d-viewport {
     height: 11.5rem;
   }
 
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-card {
-    width: 5.35rem;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-pagination {
-    gap: 0.45rem;
-    margin-top: 0.5rem;
-  }
-
-  #caseFanLayout[data-card-fan-carousel="true"] .fan-arrow-control {
-    width: 2.25rem;
-    height: 2.25rem;
+  #caseFanLayout[data-case-carousel-3d="true"] .carousel3d-lightbox-close {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.2rem;
   }
 }
