@@ -1678,6 +1678,88 @@ body.nav-open {
   display: block;
 }
 
+/* Circular-testimonials carousel mount (components/ui/circular-testimonials.tsx),
+   replacing the single static .instructor-photo. Its own reference styling
+   (a "<style jsx>" block, not usable outside Next.js) is reimplemented here
+   with the same class names the component renders, forced to a single
+   column always -- this sits in the narrower left slot of .instructor-layout
+   (0.85fr of the grid), not as its own full-width two-column section like
+   the original reference demo. */
+.instructor-carousel-mount .testimonial-container {
+  width: 100%;
+}
+
+.instructor-carousel-mount .testimonial-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  /* The reference component's side (left/right) photos are meant to peek
+     out beside the active one -- fine in its own full-width demo section,
+     but this mount sits in the narrower left column of .instructor-layout
+     right next to the bio text, so an unclipped peek would visually spill
+     onto that text. Clipping here (rather than on .image-container itself)
+     keeps the peek effect while containing it to this column. */
+  overflow: hidden;
+}
+
+.instructor-carousel-mount .image-container {
+  position: relative;
+  width: 82%;
+  margin: 0 auto;
+  aspect-ratio: 4/5;
+  perspective: 1000px;
+}
+
+.instructor-carousel-mount .testimonial-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(201, 162, 74, 0.4);
+}
+
+.instructor-carousel-mount .testimonial-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.instructor-carousel-mount .name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.instructor-carousel-mount .designation {
+  margin: 0 0 14px;
+  line-height: 1.4;
+}
+
+.instructor-carousel-mount .quote {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.instructor-carousel-mount .arrow-buttons {
+  display: flex;
+  gap: 12px;
+  padding-top: 18px;
+}
+
+.instructor-carousel-mount .arrow-button {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border: none;
+}
+
 .instructor-identity {
   display: flex;
   align-items: center;
