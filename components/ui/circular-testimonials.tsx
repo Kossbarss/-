@@ -202,12 +202,6 @@ export const CircularTestimonials = ({
               exit="exit"
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
-              <h3
-                className="name"
-                style={{ color: colorName, fontSize: fontSizeName }}
-              >
-                {activeTestimonial.name}
-              </h3>
               <p
                 className="designation"
                 style={{ color: colorDesignation, fontSize: fontSizeDesignation }}
