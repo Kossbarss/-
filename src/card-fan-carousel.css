@@ -112,15 +112,27 @@
 /* Desktop/tablet-and-up (>=1024px) variant, matching the reference
    component verbatim: a flex-centered square photo (aspect-square) with
    an 8px padding "frame" (p-2) around it instead of a card that fills its
-   whole box -- no gold border/box-shadow, since the reference has neither. */
+   whole box -- no gold border/box-shadow, since the reference has neither.
+   top/height override the base .carousel3d-face rule: that rule stretches
+   to the full (much taller) viewport height and top-pins each face, which
+   left a solid dark band above/below every square photo (the --ink
+   background showing through the empty space above/below each square
+   within its own full-height box). Auto-height + vertical centering (paired
+   with the matching translateY(-50%) in the inline transform) makes each
+   face's own box match its square photo instead, and a transparent
+   background lets the page's own paper color show through the gaps between
+   cards -- exactly like the reference screenshot, which has no visible
+   frame color at all. */
 #caseFanLayout[data-case-carousel-3d="true"] .carousel3d-face--square {
+  top: 50%;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0.5rem;
   border: none;
   border-radius: 0.75rem;
-  background: var(--ink);
+  background: transparent;
   box-shadow: none;
 }
 

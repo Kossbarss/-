@@ -128,11 +128,15 @@ const Drum = memo(function Drum({
   const faceCount = items.length;
 
   // Desktop/tablet-and-up follows the reference component's own sizing
-  // scheme verbatim -- a fixed 1800px cylinder and fixed 1000px perspective,
-  // independent of container height, with square (aspect-square) photos.
-  // Mobile/tablet below 1024px keeps the original viewportHeight-derived,
-  // portrait-cropped sizing untouched.
-  const REFERENCE_CYLINDER_WIDTH = 1800;
+  // scheme verbatim -- fixed 1000px perspective, independent of container
+  // height, with square (aspect-square) photos. The reference's own cards
+  // are cylinderWidth/faceCount = 1800/14 ~= 128.57px each; matched here by
+  // per-photo size (not the reference's 14-face total drum width) since our
+  // 10 real cases would otherwise render each photo ~40% larger than the
+  // reference's own screenshot, dominating the row instead of sitting
+  // evenly alongside 5-6 others. Mobile/tablet below 1024px keeps the
+  // original viewportHeight-derived, portrait-cropped sizing untouched.
+  const REFERENCE_FACE_WIDTH = 1800 / 14;
   const REFERENCE_PERSPECTIVE = 1000;
 
   let faceWidth: number;
@@ -141,8 +145,8 @@ const Drum = memo(function Drum({
   let perspective: number;
 
   if (isWideDesktop) {
-    cylinderWidth = REFERENCE_CYLINDER_WIDTH;
-    faceWidth = cylinderWidth / faceCount;
+    faceWidth = REFERENCE_FACE_WIDTH;
+    cylinderWidth = faceWidth * faceCount;
     radius = cylinderWidth / (2 * Math.PI);
     perspective = REFERENCE_PERSPECTIVE;
   } else {
@@ -195,8 +199,13 @@ const Drum = memo(function Drum({
                   // places its *left edge* at the drum's midline; translateX(-50%)
                   // shifts it back by half its own width so the rotation pivot
                   // (and translateZ) is centered instead, otherwise every face
-                  // sits half a face-width off from where it should be.
-                  transform: `translateX(-50%) rotateY(${i * (360 / faceCount)}deg) translateZ(${radius}px)`,
+                  // sits half a face-width off from where it should be. The
+                  // square desktop variant is also top:50% (auto height, see
+                  // the --square CSS), so it additionally needs translateY(-50%)
+                  // to center vertically the same way.
+                  transform: isWideDesktop
+                    ? `translate(-50%, -50%) rotateY(${i * (360 / faceCount)}deg) translateZ(${radius}px)`
+                    : `translateX(-50%) rotateY(${i * (360 / faceCount)}deg) translateZ(${radius}px)`,
                 }}
               >
                 {isWideDesktop ? (
