@@ -1698,13 +1698,16 @@ body.nav-open {
      but this mount sits in the narrower left column of .instructor-layout
      right next to the bio text, so an unclipped peek would visually spill
      onto that text. Clipping here (rather than on .image-container itself)
-     keeps the peek effect while containing it to this column. */
+     keeps the peek effect while containing it to this column. Side photos
+     also translateY upward when peeking, so the top padding gives that
+     lift room instead of getting clipped by the same overflow. */
   overflow: hidden;
+  padding-top: 56px;
 }
 
 .instructor-carousel-mount .image-container {
   position: relative;
-  width: 82%;
+  width: 70%;
   margin: 0 auto;
   aspect-ratio: 4/5;
   perspective: 1000px;
