@@ -75,7 +75,6 @@ const Drum = memo(function Drum({
   // more tightly-curved mobile layout.
   const isWideDesktop = useMediaQuery("(min-width: 1024px)");
   const lastReported = useRef(-1);
-  const rafId = useRef<number | null>(null);
 
   useIsomorphicLayoutEffect(() => {
     const el = viewportRef.current;
@@ -112,16 +111,41 @@ const Drum = memo(function Drum({
     // can land before there's anything to hit-test; re-running whenever
     // viewportHeight changes covers that first real paint too.
     reportFrontFace();
+
+    // document.elementFromPoint forces a layout/hit-test pass -- cheap once,
+    // but rotation.on("change") can fire dozens of times per frame while
+    // actively dragging, and running a layout-forcing call that often
+    // competes with the drum's own 3D transform rendering for main-thread
+    // time, which is very plausibly the "laggy drag" the client reported
+    // (especially on touch devices with less headroom than desktop). A
+    // ~80ms time-based throttle (leading call immediately, trailing call
+    // once things settle) keeps the detail panel close enough in sync --
+    // text catching up 80ms late is imperceptible -- without competing with
+    // every single drag frame.
+    const THROTTLE_MS = 80;
+    let lastRun = 0;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    const runThrottled = () => {
+      timeoutId = null;
+      lastRun = performance.now();
+      reportFrontFace();
+    };
+
     const unsubscribe = rotation.on("change", () => {
-      if (rafId.current !== null) return;
-      rafId.current = requestAnimationFrame(() => {
-        rafId.current = null;
+      const now = performance.now();
+      const elapsed = now - lastRun;
+      if (elapsed >= THROTTLE_MS) {
+        lastRun = now;
         reportFrontFace();
-      });
+      } else if (timeoutId === null) {
+        timeoutId = setTimeout(runThrottled, THROTTLE_MS - elapsed);
+      }
     });
+
     return () => {
       unsubscribe();
-      if (rafId.current !== null) cancelAnimationFrame(rafId.current);
+      if (timeoutId !== null) clearTimeout(timeoutId);
     };
   }, [reportFrontFace, rotation, viewportHeight]);
 
@@ -167,6 +191,14 @@ const Drum = memo(function Drum({
           <motion.div
             drag="x"
             dragElastic={0.08}
+            // Framer's own drag inertia would animate its internal x/y after
+            // release *in addition to* the onDragEnd spring below (which
+            // drives our custom rotateY, not x/y) -- two animations racing
+            // for the same gesture on every release, wasted work at best and
+            // a plausible source of the reported "delayed" release feel at
+            // worst. We roll our own release physics via onDragEnd, so
+            // Framer's built-in momentum should stay off entirely.
+            dragMomentum={false}
             className="carousel3d-drum"
             style={{
               transform,
