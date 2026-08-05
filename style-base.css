@@ -1661,12 +1661,46 @@ body.nav-open {
   display: grid;
   place-items: center;
   border: 1px solid rgba(201, 162, 74, 0.4);
+  overflow: hidden;
 }
 
 .instructor-photo .initials {
   font-family: var(--font-display);
   font-size: 4rem;
   color: var(--gold-light);
+}
+
+.instructor-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  display: block;
+}
+
+.instructor-identity {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.instructor-identity .instructor-name-badge {
+  margin-bottom: 0;
+}
+
+.instructor-instagram {
+  color: var(--gold-light);
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(232, 213, 168, 0.4);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.instructor-instagram:hover {
+  color: var(--gold);
+  border-color: var(--gold);
 }
 
 .instructor-name-badge {
