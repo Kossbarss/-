@@ -1839,6 +1839,10 @@ body.nav-open {
   border-top: 1px solid rgba(201, 162, 74, 0.25);
 }
 
+.stat-item {
+  text-align: center;
+}
+
 @media (max-width: 900px) {
   .stats-row {
     grid-template-columns: repeat(2, 1fr);
@@ -1852,7 +1856,13 @@ body.nav-open {
 }
 
 .stat-value {
-  font-family: var(--font-display);
+  /* Same typographic treatment as .hero h1 (--font-rise currently
+     resolves to the same font stack as --font-display, so the visible
+     difference is weight/spacing/case, not the family itself). */
+  font-family: var(--font-rise);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
   font-size: 1.8rem;
   color: var(--gold-light);
   margin-bottom: 6px;
