@@ -131,12 +131,18 @@ const Drum = memo(function Drum({
   const faceWidth = viewportHeight ? viewportHeight * (isCompact ? 0.62 : 0.67) : 0;
   const cylinderWidth = faceWidth * faceCount;
   const radius = cylinderWidth / (2 * Math.PI);
+  // Scaled to viewportHeight rather than a fixed px value -- a constant
+  // perspective distance only looks right at the one container size it was
+  // tuned for; at any other, the foreshortening ratio is off and the front
+  // (translateZ'd closest) face renders visibly larger than its own layout
+  // box, spilling into whatever sits above/below the carousel.
+  const perspective = viewportHeight * 5;
   const transform = useTransform(rotation, (value) => `rotate3d(0, 1, 0, ${value}deg)`);
 
   return (
     <div ref={viewportRef} className="carousel3d-viewport">
       {viewportHeight > 0 && (
-        <div className="carousel3d-stage">
+        <div className="carousel3d-stage" style={{ perspective: `${perspective}px` }}>
           <motion.div
             drag={isActive ? "x" : false}
             dragElastic={0.08}

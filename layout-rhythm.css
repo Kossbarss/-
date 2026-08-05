@@ -126,9 +126,14 @@
   line-height: 1.55;
 }
 
+/* Wider than --layout-head-content (shared with every other section) --
+   client feedback specifically on this gallery: the 3D carousel's photos
+   read as almost touching the heading above and the detail card below at
+   the shared rhythm value, so this section gets its own, more generous
+   gap instead of changing the variable other sections still rely on. */
 .cases-section .case-fan-head {
   max-width: min(50rem, 100%) !important;
-  margin: 0 0 var(--layout-head-content) !important;
+  margin: 0 0 clamp(2.75rem, 4vw, 4rem) !important;
   text-align: left !important;
 }
 
@@ -163,6 +168,10 @@
   .cases-section .cases-intro h2,
   .cases-section .case-fan-head h2 {
     line-height: 1.15 !important;
+  }
+
+  .cases-section .case-fan-head {
+    margin-bottom: clamp(2.25rem, 7vw, 3rem) !important;
   }
 
   .section-cta {

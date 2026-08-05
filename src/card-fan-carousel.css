@@ -25,7 +25,7 @@
   align-items: initial !important;
   justify-content: initial !important;
   width: 100%;
-  max-width: 64rem;
+  max-width: 70rem;
   height: auto !important;
   min-height: 0 !important;
   margin: 0 auto;
@@ -41,7 +41,7 @@
 }
 
 #caseFanLayout[data-case-carousel-3d="true"] .case-carousel-demo {
-  gap: 1.25rem;
+  gap: 2.25rem;
   min-height: 0;
 }
 
@@ -53,8 +53,8 @@
 #caseFanLayout[data-case-carousel-3d="true"] .carousel3d-viewport {
   position: relative;
   width: 100%;
-  max-width: 46rem;
-  height: 18.5rem;
+  max-width: 62rem;
+  height: 26rem;
   margin: 0 auto;
   overflow: visible;
 }
@@ -66,7 +66,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 1400px;
+  /* perspective is set inline (proportional to viewportHeight) -- a fixed
+     px value here looked right at one container size but under-scales the
+     3D foreshortening at any other, making the front card render visually
+     larger than its layout box and spill into neighboring sections. */
 }
 
 #caseFanLayout[data-case-carousel-3d="true"] .carousel3d-drum {
@@ -373,6 +376,7 @@
   }
 
   #caseFanLayout[data-case-carousel-3d="true"] .carousel3d-viewport {
+    max-width: 46rem;
     height: 17rem;
   }
 }
