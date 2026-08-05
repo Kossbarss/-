@@ -127,15 +127,18 @@ const Drum = memo(function Drum({
 
   const faceCount = items.length;
 
-  // Desktop/tablet-and-up: fixed 1000px perspective, independent of
-  // container height, with square (aspect-square) photos -- following the
-  // reference component's scheme, but scaled up (client feedback: the
-  // reference's own per-photo size, ~128.57px = 1800/14, read as too small
-  // next to this section and the rest of the page). Mobile/tablet below
-  // 1024px keeps the original viewportHeight-derived, portrait-cropped
-  // sizing untouched.
+  // Desktop/tablet-and-up: square (aspect-square) photos, sized up from the
+  // reference component's own ~128.57px (1800/14 -- read as too small next
+  // to this section) to 220px per client feedback. Perspective is scaled
+  // to radius (not the reference's fixed 1000px) for two reasons: (1) radius
+  // grows with faceWidth, so a fixed perspective made the enlarged cards
+  // foreshorten far more aggressively than the original 128.57px version;
+  // (2) our 10 real cases sit 36deg apart (360/10) versus the reference's
+  // 25.7deg (360/14), a wider gap per card that itself needs *more*
+  // flattening to read as "3 near-flat cards + 2 angled ones", the pattern
+  // in the client's reference screenshot, rather than only 2.
   const REFERENCE_FACE_WIDTH = 220;
-  const REFERENCE_PERSPECTIVE = 1000;
+  const PERSPECTIVE_TO_RADIUS_RATIO = 5.4;
 
   let faceWidth: number;
   let cylinderWidth: number;
@@ -146,7 +149,7 @@ const Drum = memo(function Drum({
     faceWidth = REFERENCE_FACE_WIDTH;
     cylinderWidth = faceWidth * faceCount;
     radius = cylinderWidth / (2 * Math.PI);
-    perspective = REFERENCE_PERSPECTIVE;
+    perspective = radius * PERSPECTIVE_TO_RADIUS_RATIO;
   } else {
     const widthRatio = isCompact ? 0.62 : 0.67;
     faceWidth = viewportHeight ? viewportHeight * widthRatio : 0;
