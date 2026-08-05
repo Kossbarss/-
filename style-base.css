@@ -1791,7 +1791,10 @@ body.nav-open {
 
 .instructor-name-badge {
   display: inline-block;
-  background: var(--blood);
+  /* Same red -> orange -> gold palette as the pricing-section WebGL glow
+     (pricing-reference.js: redColor #f20904, orangeColor #ff471a,
+     goldColor #ed9c38), as a static gradient here. */
+  background: linear-gradient(90deg, #f20904 0%, #ff471a 55%, #ed9c38 100%);
   color: var(--white);
   padding: 10px 20px;
   border-radius: 8px;
