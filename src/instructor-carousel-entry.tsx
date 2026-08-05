@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { CircularTestimonials, type Testimonial } from "@/components/ui/circular-testimonials";
+import { NumberTicker } from "@/components/ui/be-ui-number-animation";
 
 const isUkrainian =
   document.documentElement.lang.toLowerCase().startsWith("uk") ||
@@ -70,4 +71,26 @@ if (mountNode) {
       }}
     />
   );
+}
+
+// Same rolling-digit mechanism as the hero's "300+"/"22+" counters
+// (components/ui/be-ui-number-animation.tsx), reused here for the
+// stats-row. Unlike the hero (always above the fold, so it uses a
+// fixed startDelay tied to the hero's own word-reveal timeline),
+// this section scrolls into view, so the default startOnView
+// behaviour is the right trigger here instead.
+const statsToMount: Array<{ id: string; value: number; suffix?: string }> = [
+  { id: "instructorStatMakeup", value: 80, suffix: "%" },
+  { id: "instructorStatGraduates", value: 300, suffix: "+" },
+  { id: "instructorStatWorks", value: 2000, suffix: "+" },
+  { id: "instructorStatPartners", value: 12 },
+];
+
+for (const stat of statsToMount) {
+  const node = document.getElementById(stat.id);
+  if (node) {
+    createRoot(node).render(
+      <NumberTicker value={stat.value} suffix={stat.suffix} duration={2.2} stagger={0.15} />
+    );
+  }
 }
