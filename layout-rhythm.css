@@ -146,6 +146,30 @@
   padding-top: 0 !important;
 }
 
+/* Visually center the pagination roller (dots + arrows) between the
+   gallery and the detail card. The .case-carousel-demo gap treats both
+   neighbors' layout boxes as the reference edge, but the real rendered
+   edge differs from that box on both ends: desktop's fixed-height
+   viewport leaves empty space below the auto-sized square photo (so the
+   roller reads too close to the card), while the front face's 3D
+   perspective scales it past its own layout box on mobile (so the roller
+   reads too close to the gallery instead). Shifting only the roller
+   (desktop) or only the detail card (mobile) -- with a matching opposite
+   margin so the following element's position doesn't move -- balances
+   the visible gap without touching the shared rhythm gap itself. */
+@media (min-width: 1024px) {
+  #caseFanLayout[data-case-carousel-3d="true"] .case-carousel-dots {
+    margin-top: -1.78125rem !important;
+    margin-bottom: 1.78125rem !important;
+  }
+}
+
+@media (max-width: 767px) {
+  #caseFanLayout[data-case-carousel-3d="true"] .case-carousel-detail {
+    margin-top: -2rem !important;
+  }
+}
+
 /* Gap between the carousel and the detail card below it -- client feedback
    on the real-photo gallery: at the shared .case-carousel-demo gap (2.25rem)
    the white detail card reads as touching the bottom row of photos on
