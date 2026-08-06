@@ -10,9 +10,10 @@ const isUkrainian =
 // marquee replaces. Настя/Дмитрий/Карина are the same real testimonials
 // used in the "Что говорят выпускники курса" stack below.
 //
-// Ирина/Роман: fabricated testimonials, added with explicit owner
-// approval (same two used in the stack below) -- names/quotes invented,
-// not real students.
+// Оля/Андрей: also real graduates -- same two people (name/city/quote)
+// already published in the "Кейсы учеников" case carousel, sourced
+// from the client-provided document. Replaces the two placeholder
+// (fabricated) cards that used to sit here.
 const RU_TESTIMONIALS: Testimonial[] = [
   {
     id: "marta",
@@ -52,19 +53,19 @@ const RU_TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 4,
-    initials: "И",
-    name: "Ирина",
-    role: "Выпуск 2025",
-    quote: "Боялась работать с цветом — казалось, это не для новичков. После модуля по цвету взяла первую цветную работу, и клиентка была в восторге. Теперь беру только цветные тату.",
+    initials: "О",
+    name: "Оля, 42 года",
+    role: "Gdansk",
+    quote: "Важно никогда не отказываться от своей мечты 💫 Превращение художественного хобби в собственную тату-студию — иногда новые знакомства дарят нам новые пути и образ жизни 😊",
     avatarGradient: "linear-gradient(135deg, var(--sage), var(--gold-dark))",
     rating: 3.8,
   },
   {
     id: 5,
-    initials: "Р",
-    name: "Роман",
-    role: "Выпуск 2025",
-    quote: "Работал барменом и вообще не думал о тату до этого курса. Через 3 месяца сделал первую платную работу и понял — это моё призвание.",
+    initials: "А",
+    name: "Андрей, 33 года",
+    role: "Kyiv",
+    quote: "Тату — это современное искусство. И как художник (теперь по совместительству и тату-мастер) я всегда стараюсь делать свою работу так, чтобы клиент радовался новому имиджу.",
     avatarGradient: "linear-gradient(135deg, var(--ink-soft), var(--blood-dark))",
     rating: 4.3,
   },
@@ -109,19 +110,19 @@ const UK_TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 4,
-    initials: "І",
-    name: "Ірина",
-    role: "Випуск 2025",
-    quote: "Боялася працювати з кольором — здавалося, це не для новачків. Після модуля з кольору взяла першу кольорову роботу, і клієнтка була в захваті. Тепер беру лише кольорові тату.",
+    initials: "О",
+    name: "Оля, 42 роки",
+    role: "Gdansk",
+    quote: "Важливо ніколи не відмовлятися від своєї мрії 💫 Перетворення художнього хобі на власну тату-студію — іноді нові знайомства дарують нам нові шляхи й спосіб життя 😊",
     avatarGradient: "linear-gradient(135deg, var(--sage), var(--gold-dark))",
     rating: 3.8,
   },
   {
     id: 5,
-    initials: "Р",
-    name: "Роман",
-    role: "Випуск 2025",
-    quote: "Працював барменом і взагалі не думав про тату до цього курсу. Через 3 місяці зробив першу платну роботу і зрозумів — це моє покликання.",
+    initials: "А",
+    name: "Андрій, 33 роки",
+    role: "Kyiv",
+    quote: "Тату — це сучасне мистецтво. І як художник (тепер за сумісництвом і тату-майстер) я завжди намагаюся робити свою роботу так, щоб клієнт радів новому іміджу.",
     avatarGradient: "linear-gradient(135deg, var(--ink-soft), var(--blood-dark))",
     rating: 4.3,
   },
@@ -130,6 +131,9 @@ const UK_TESTIMONIALS: Testimonial[] = [
 const mountNode = document.getElementById("casesTestimonialMarquee");
 if (mountNode) {
   createRoot(mountNode).render(
-    <TestimonialMarquee testimonials={isUkrainian ? UK_TESTIMONIALS : RU_TESTIMONIALS} />
+    <TestimonialMarquee
+      testimonials={isUkrainian ? UK_TESTIMONIALS : RU_TESTIMONIALS}
+      verifiedLabel={isUkrainian ? "Верифіковано" : "Верифицировано"}
+    />
   );
 }
