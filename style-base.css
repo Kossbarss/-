@@ -2213,9 +2213,11 @@ body.nav-open {
   font-size: 1.3rem;
 }
 
-/* ---------- Avatar hover tooltip (ported from an "animated tooltip"
-   React/framer-motion component to plain CSS + a small mousemove
-   handler in script.js — see the tilt logic there) ---------- */
+/* ---------- Avatar name/city bubble. Visibility is driven only by
+   .is-active (auto-cycled on a timer in case-carousel-entry.tsx, or set
+   directly on click in site-interactions.js) -- no separate :hover/
+   :focus-visible trigger, so there's only ever one path turning a bubble
+   on and no chance of two bubbles showing at once. ---------- */
 .avatar-tip {
   position: relative;
   margin-left: -14px;
@@ -2225,7 +2227,7 @@ body.nav-open {
      would silently swallow a transform-based entrance. .is-visible is
      added once by an IntersectionObserver in case-carousel-entry.tsx. */
   opacity: 0;
-  transition: opacity 0.6s ease-out;
+  transition: opacity 0.25s ease-out;
   transition-delay: var(--reveal-delay, 0s);
   /* gentle idle float so the row feels alive at rest — transform-only,
      so it's pure GPU compositing (no repaint), same reasoning as the
@@ -2264,8 +2266,6 @@ body.nav-open {
   }
 }
 
-.avatar-tip:hover .avatar,
-.avatar-tip:focus-visible .avatar,
 .avatar-tip.is-active .avatar {
   transform: scale(1.1) translateY(-2px);
   z-index: 30;
@@ -2330,8 +2330,6 @@ body.nav-open {
   margin-top: 2px;
 }
 
-.avatar-tip:hover .avatar-tip-bubble,
-.avatar-tip:focus-visible .avatar-tip-bubble,
 .avatar-tip.is-active .avatar-tip-bubble {
   opacity: 1;
   transform: translate(-50%, 0) scale(1) rotate(var(--tip-rot, 0deg));

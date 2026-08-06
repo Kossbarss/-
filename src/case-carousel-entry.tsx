@@ -109,7 +109,7 @@ if (avatars) {
   GRADUATES.forEach((graduate, i) => {
     const item = document.createElement("div");
     item.className = "avatar-tip";
-    item.style.setProperty("--reveal-delay", `${i * 0.12}s`);
+    item.style.setProperty("--reveal-delay", `${i * 0.06}s`);
 
     const bubble = document.createElement("div");
     bubble.className = "avatar-tip-bubble";

@@ -246,15 +246,6 @@
     if (!avatar.hasAttribute('tabindex')) avatar.tabIndex = 0
     avatar.setAttribute('aria-expanded', 'false')
 
-    avatar.addEventListener('mousemove', (event) => {
-      if (reducedMotion) return
-      const rect = avatar.getBoundingClientRect()
-      const offsetX = event.clientX - rect.left - rect.width / 2
-      const rotation = Math.max(-20, Math.min(20, (offsetX / (rect.width / 2)) * 20))
-      tip.style.setProperty('--tip-rot', `${rotation}deg`)
-    })
-    avatar.addEventListener('mouseleave', () => tip.style.setProperty('--tip-rot', '0deg'))
-
     function toggle() {
       const next = !tip.classList.contains('is-active')
       document.querySelectorAll('.avatar-tip').forEach((other) => {
