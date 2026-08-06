@@ -536,4 +536,8 @@
   // "Формат обучения" ("Что вы получите на курсе?"): heading, then each
   // of the 4 feature-cards.
   setupBlurCascadeReveal('#whatYouGet', ['.section-head', '.feature-card'])
+
+  // "При оплате до конца предзаписи" (bonus stack): heading, then each
+  // bonus-row, then the closing total line.
+  setupBlurCascadeReveal('#bonusStack', ['.section-head', '.bonus-row', '.bonus-total'])
 })()

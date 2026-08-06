@@ -3229,6 +3229,27 @@ body.nav-open {
   text-transform: none;
 }
 
+/* Scroll-in reveal for "#bonusStack" ("При оплате до конца предзаписи"):
+   same soft blur cascade as #program/#whatYouGet -- heading, then each
+   bonus-row, then the closing total line. */
+#bonusStack.js-animate .section-head,
+#bonusStack.js-animate .bonus-row,
+#bonusStack.js-animate .bonus-total {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(10px);
+}
+
+#bonusStack.js-animate.is-revealed .section-head,
+#bonusStack.js-animate.is-revealed .bonus-row,
+#bonusStack.js-animate.is-revealed .bonus-total {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0px);
+  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s ease;
+  transition-delay: var(--reveal-delay, 0s);
+}
+
 /* ---------- Pricing / order form ---------- */
 .pricing-section {
   position: relative;
