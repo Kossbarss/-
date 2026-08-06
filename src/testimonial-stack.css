@@ -91,7 +91,11 @@
      auto-sizes to the tallest one, at every breakpoint. */
   display: grid;
   width: 100%;
-  max-width: 480px;
+  /* 480px read as small on wider screens (a fixed-size island in the
+     middle of a much wider section) -- widened per client feedback.
+     Mobile is unaffected since it's already narrower than either value
+     (bounded by the page's own side padding, not this max-width). */
+  max-width: 560px;
   margin: 0 auto;
   /* Stacked cards behind the active one peek upward via translateY, up to
      -4rem (2 cards * -2rem, the component's own default visibleBehind=2)
