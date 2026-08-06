@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import Carousel3D, { type Carousel3DItem } from "@/components/ui/carousel-3d";
+import Carousel3D, { type Carousel3DHandle, type Carousel3DItem } from "@/components/ui/carousel-3d";
+import CaseCarouselDots from "@/components/ui/case-carousel-dots";
 
 type CaseStudy = {
   name: string;
@@ -86,10 +87,16 @@ const CAROUSEL_ITEMS: Carousel3DItem[] = CASES.map(study => ({
 function Demo() {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeCase = CASES[activeIndex] || CASES[0];
+  const carouselRef = useRef<Carousel3DHandle>(null);
 
   return (
     <div className="case-carousel-demo">
-      <Carousel3D items={CAROUSEL_ITEMS} onActiveChange={setActiveIndex} />
+      <Carousel3D ref={carouselRef} items={CAROUSEL_ITEMS} onActiveChange={setActiveIndex} />
+      <CaseCarouselDots
+        total={CASES.length}
+        activeIndex={activeIndex}
+        onChange={(index) => carouselRef.current?.goTo(index)}
+      />
       <article className="case-carousel-detail" aria-live="polite">
         <span className="case-carousel-detail-module">{activeCase.city}</span>
         <h3>{activeCase.name}</h3>

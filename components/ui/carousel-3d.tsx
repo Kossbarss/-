@@ -1,9 +1,11 @@
 "use client";
 
 import {
+  forwardRef,
   memo,
   useCallback,
   useEffect,
+  useImperativeHandle,
   useLayoutEffect,
   useRef,
   useState,
@@ -276,9 +278,42 @@ const Drum = memo(function Drum({
   );
 });
 
-export function Carousel3D({ items, onActiveChange }: Carousel3DProps) {
+export interface Carousel3DHandle {
+  goTo: (index: number) => void;
+}
+
+export const Carousel3D = forwardRef<Carousel3DHandle, Carousel3DProps>(function Carousel3D(
+  { items, onActiveChange },
+  ref
+) {
   const controls = useAnimation();
   const rotation = useMotionValue(0);
+  const faceCount = items.length;
+
+  // Each face sits at a fixed local rotateY(i * angle) inside the drum, and
+  // the drum itself carries the animated group rotation -- both rotate
+  // around the same Y axis, so they compose additively. A face faces the
+  // camera once that sum is a multiple of 360deg, i.e. rotation === -i*angle
+  // (mod 360). We pick the equivalent target closest to the current
+  // rotation so the pagination dots always animate the short way round
+  // instead of spinning a full extra lap.
+  useImperativeHandle(
+    ref,
+    () => ({
+      goTo(index: number) {
+        if (!faceCount) return;
+        const angle = 360 / faceCount;
+        const current = rotation.get();
+        const target = -index * angle;
+        const delta = (((target - current + 180) % 360) + 360) % 360 - 180;
+        controls.start({
+          rotateY: current + delta,
+          transition: { type: "spring", stiffness: 100, damping: 30, mass: 0.1 },
+        });
+      },
+    }),
+    [faceCount, rotation, controls]
+  );
 
   if (!items.length) return null;
 
@@ -287,6 +322,6 @@ export function Carousel3D({ items, onActiveChange }: Carousel3DProps) {
       <Drum items={items} rotation={rotation} controls={controls} onActiveChange={onActiveChange} />
     </div>
   );
-}
+});
 
 export default Carousel3D;

@@ -153,8 +153,12 @@
    layout to soften it. Desktop keeps the original gap since it wasn't
    flagged there. */
 @media (max-width: 1023px) {
+  /* Split across the two gaps flanking the pagination dots (see the base
+     .case-carousel-demo rule in card-fan-carousel.css) so the total
+     carousel-to-detail-card span stays at the previously requested 3rem
+     instead of doubling now that the dots sit in between. */
   #caseFanLayout[data-case-carousel-3d="true"] .case-carousel-demo {
-    gap: 3rem !important;
+    gap: 1.5rem !important;
   }
 
   .cases-section .case-fan-head {
@@ -190,8 +194,10 @@
     margin-bottom: clamp(4.125rem, 13.5vw, 5.25rem) !important;
   }
 
+  /* Halved for the same reason as the 1023px block above: total span
+     across the dots stays at the previously requested 7.3125rem. */
   #caseFanLayout[data-case-carousel-3d="true"] .case-carousel-demo {
-    gap: 7.3125rem !important;
+    gap: 3.65625rem !important;
   }
 
   .section-cta {
