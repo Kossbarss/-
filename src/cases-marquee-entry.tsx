@@ -30,7 +30,7 @@ const RU_TESTIMONIALS: Testimonial[] = [
     role: "Выпуск 2025",
     quote: "Пришла с нулевым художественным опытом. Через 8 недель сделала первую тату на модели и ни разу не тряслась рука — система реально работает.",
     avatarGradient: "linear-gradient(135deg, var(--gold-light), var(--gold-dark))",
-    rating: 4.5,
+    rating: 4.8,
   },
   {
     id: 2,
@@ -48,7 +48,7 @@ const RU_TESTIMONIALS: Testimonial[] = [
     role: "Выпуск 2025",
     quote: "Разбор работ с ментором — то, чего не хватало на других курсах. Теперь беру клиентов на постоянной основе и не боюсь браться за цветные работы.",
     avatarGradient: "linear-gradient(135deg, var(--periwinkle), var(--periwinkle-dark))",
-    rating: 5,
+    rating: 4.5,
   },
   {
     id: 4,
@@ -66,7 +66,7 @@ const RU_TESTIMONIALS: Testimonial[] = [
     role: "Выпуск 2025",
     quote: "Работал барменом и вообще не думал о тату до этого курса. Через 3 месяца сделал первую платную работу и понял — это моё призвание.",
     avatarGradient: "linear-gradient(135deg, var(--ink-soft), var(--blood-dark))",
-    rating: 4.5,
+    rating: 4.3,
   },
 ];
 
@@ -87,7 +87,7 @@ const UK_TESTIMONIALS: Testimonial[] = [
     role: "Випуск 2025",
     quote: "Прийшла з нульовим художнім досвідом. Через 8 тижнів зробила першу тату на моделі, і рука жодного разу не тремтіла — система справді працює.",
     avatarGradient: "linear-gradient(135deg, var(--gold-light), var(--gold-dark))",
-    rating: 4.5,
+    rating: 4.8,
   },
   {
     id: 2,
@@ -105,7 +105,7 @@ const UK_TESTIMONIALS: Testimonial[] = [
     role: "Випуск 2025",
     quote: "Розбір робіт з ментором — те, чого не вистачало на інших курсах. Тепер беру клієнтів на постійній основі і не боюся братися за кольорові роботи.",
     avatarGradient: "linear-gradient(135deg, var(--periwinkle), var(--periwinkle-dark))",
-    rating: 5,
+    rating: 4.5,
   },
   {
     id: 4,
@@ -123,7 +123,7 @@ const UK_TESTIMONIALS: Testimonial[] = [
     role: "Випуск 2025",
     quote: "Працював барменом і взагалі не думав про тату до цього курсу. Через 3 місяці зробив першу платну роботу і зрозумів — це моє покликання.",
     avatarGradient: "linear-gradient(135deg, var(--ink-soft), var(--blood-dark))",
-    rating: 4.5,
+    rating: 4.3,
   },
 ];
 
