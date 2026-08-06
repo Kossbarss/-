@@ -244,14 +244,21 @@ const Drum = memo(function Drum({
                 }}
               >
                 {isWideDesktop ? (
-                  <motion.img
-                    src={item.src}
-                    alt={item.alt}
-                    className="carousel3d-face-img-square"
-                    initial={{ filter: "blur(4px)" }}
-                    animate={{ filter: "blur(0px)" }}
-                    transition={faceTransition}
-                  />
+                  <>
+                    <motion.img
+                      src={item.src}
+                      alt={item.alt}
+                      className="carousel3d-face-img-square"
+                      initial={{ filter: "blur(4px)" }}
+                      animate={{ filter: "blur(0px)" }}
+                      transition={faceTransition}
+                    />
+                    <div className="carousel3d-face-shade" aria-hidden="true" />
+                    <div className="carousel3d-face-copy">
+                      <strong>{item.name}</strong>
+                      <span>{item.subtitle}</span>
+                    </div>
+                  </>
                 ) : (
                   <>
                     <motion.img
