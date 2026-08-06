@@ -2308,18 +2308,6 @@ body.nav-open {
   user-select: none;
 }
 
-.avatar-tip-index {
-  position: relative;
-  z-index: 2;
-  display: block;
-  font-family: var(--font-rise);
-  font-weight: 700;
-  font-size: 0.7rem;
-  color: rgba(250, 246, 239, 0.5);
-  letter-spacing: -0.01em;
-  margin-bottom: 4px;
-}
-
 .avatar-tip-name {
   position: relative;
   z-index: 2;

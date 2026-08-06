@@ -120,10 +120,6 @@ if (avatars) {
     watermark.alt = "";
     watermark.setAttribute("aria-hidden", "true");
 
-    const index = document.createElement("span");
-    index.className = "avatar-tip-index";
-    index.textContent = String(i + 1).padStart(2, "0");
-
     const name = document.createElement("span");
     name.className = "avatar-tip-name";
     name.textContent = graduate.name;
@@ -132,7 +128,7 @@ if (avatars) {
     role.className = "avatar-tip-role";
     role.textContent = graduate.city;
 
-    bubble.append(watermark, index, name, role);
+    bubble.append(watermark, name, role);
 
     const avatar = document.createElement("span");
     avatar.className = "avatar";
@@ -162,6 +158,36 @@ if (avatars) {
     tips.forEach((tip) => observer.observe(tip));
   } else {
     tips.forEach((tip) => tip.classList.add("is-visible"));
+  }
+
+  // Auto-cycle the name/city bubble: most visitors never discover that
+  // hovering or tapping an avatar reveals it, so cycle through the cards
+  // on a timer instead of waiting for that gesture. A manual hover/tap
+  // (still wired up in site-interactions.js) briefly overrides this, and
+  // the timer pauses while the pointer is over the row so it doesn't yank
+  // the bubble away mid-read.
+  if (tips.length > 0) {
+    let activeIndex = 0;
+    const activate = (index: number) => {
+      tips.forEach((tip, i) => tip.classList.toggle("is-active", i === index));
+    };
+    activate(0);
+
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      let timer: number | undefined;
+      const advance = () => {
+        activeIndex = (activeIndex + 1) % tips.length;
+        activate(activeIndex);
+      };
+      const start = () => {
+        timer = window.setInterval(advance, 2200);
+      };
+      const stop = () => window.clearInterval(timer);
+
+      start();
+      avatars.addEventListener("mouseenter", stop);
+      avatars.addEventListener("mouseleave", start);
+    }
   }
 }
 
