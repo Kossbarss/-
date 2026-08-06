@@ -78,7 +78,9 @@ function VerifiedBadge({ label }: { label: string }) {
 function TestimonialCard({ testimonial, hidden, verifiedLabel }: { testimonial: Testimonial; hidden: boolean; verifiedLabel: string }) {
   return (
     <div className="cases-marquee-card" aria-hidden={hidden || undefined}>
-      <VerifiedBadge label={verifiedLabel} />
+      <div className="cases-marquee-badge-row">
+        <VerifiedBadge label={verifiedLabel} />
+      </div>
       <div className="cases-marquee-header">
         <div className="cases-marquee-avatar" style={{ background: testimonial.avatarGradient }}>
           {testimonial.initials}

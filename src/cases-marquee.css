@@ -64,10 +64,15 @@
   box-shadow: 3px 5px 12px rgba(21, 17, 15, 0.12);
 }
 
+.cases-marquee-badge-row {
+  display: flex;
+  justify-content: flex-end;
+  /* Own row above the avatar/name, with a fixed gap before it -- keeps
+     the badge from ever overlapping the name, however long it is. */
+  margin-bottom: 12px;
+}
+
 .cases-marquee-verified {
-  position: absolute;
-  top: 14px;
-  right: 14px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -141,10 +146,24 @@
   display: inline-block;
 }
 
+/* Flex items shrink by default, so a narrower fill container was
+   squeezing all 5 stars down to fit instead of letting overflow:hidden
+   crop the trailing one -- every rating rendered as "5 full stars",
+   just slightly smaller. Fixed-size, unshrinkable stars make the
+   container's overflow actually do the clipping. */
+.cases-marquee-stars-track > svg,
+.cases-marquee-stars-fill > svg {
+  flex-shrink: 0;
+}
+
 .cases-marquee-stars-track {
   display: flex;
   gap: 3px;
-  color: var(--border);
+  /* Invisible -- exists only to give .cases-marquee-stars its width (5
+     stars' worth) so the gold fill below can be clipped to an exact
+     percentage. Rendering it in a visible muted color looked like a
+     ghostly duplicate row of stars, so it's fully transparent instead. */
+  color: transparent;
 }
 
 .cases-marquee-stars-fill {
