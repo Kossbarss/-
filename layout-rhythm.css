@@ -146,6 +146,22 @@
   padding-top: 0 !important;
 }
 
+/* Gap between the carousel and the detail card below it -- client feedback
+   on the real-photo gallery: at the shared .case-carousel-demo gap (2.25rem)
+   the white detail card reads as touching the bottom row of photos on
+   mobile/tablet, where there's no extra whitespace from a wider desktop
+   layout to soften it. Desktop keeps the original gap since it wasn't
+   flagged there. */
+@media (max-width: 1023px) {
+  #caseFanLayout[data-case-carousel-3d="true"] .case-carousel-demo {
+    gap: 3rem !important;
+  }
+
+  .cases-section .case-fan-head {
+    margin-bottom: clamp(3rem, 6vw, 4rem) !important;
+  }
+}
+
 .case-fan-cta {
   margin-top: var(--layout-group-gap) !important;
   margin-bottom: 0.5rem !important;
@@ -171,7 +187,11 @@
   }
 
   .cases-section .case-fan-head {
-    margin-bottom: clamp(2.25rem, 7vw, 3rem) !important;
+    margin-bottom: clamp(2.75rem, 9vw, 3.5rem) !important;
+  }
+
+  #caseFanLayout[data-case-carousel-3d="true"] .case-carousel-demo {
+    gap: 3.25rem !important;
   }
 
   .section-cta {
