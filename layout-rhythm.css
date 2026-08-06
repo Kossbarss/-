@@ -187,11 +187,11 @@
   }
 
   .cases-section .case-fan-head {
-    margin-bottom: clamp(2.75rem, 9vw, 3.5rem) !important;
+    margin-bottom: clamp(4.125rem, 13.5vw, 5.25rem) !important;
   }
 
   #caseFanLayout[data-case-carousel-3d="true"] .case-carousel-demo {
-    gap: 3.25rem !important;
+    gap: 4.875rem !important;
   }
 
   .section-cta {
