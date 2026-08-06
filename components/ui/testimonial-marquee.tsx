@@ -36,9 +36,7 @@ function StarRow({ rating }: { rating: number }) {
 function TestimonialCard({ testimonial, hidden }: { testimonial: Testimonial; hidden: boolean }) {
   return (
     <div className="cases-marquee-card" aria-hidden={hidden || undefined}>
-      <StarRow rating={testimonial.rating} />
-      <blockquote>&laquo;{testimonial.quote}&raquo;</blockquote>
-      <div className="cases-marquee-footer">
+      <div className="cases-marquee-header">
         <div className="cases-marquee-avatar" style={{ background: testimonial.avatarGradient }}>
           {testimonial.initials}
         </div>
@@ -47,6 +45,8 @@ function TestimonialCard({ testimonial, hidden }: { testimonial: Testimonial; hi
           <div className="cases-marquee-role">{testimonial.role}</div>
         </div>
       </div>
+      <blockquote>{testimonial.quote}</blockquote>
+      <StarRow rating={testimonial.rating} />
     </div>
   );
 }

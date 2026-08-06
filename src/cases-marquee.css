@@ -4,13 +4,13 @@
 @source "./**/*.tsx";
 
 /* ---------------------------------------------------------------
-   Continuous horizontal marquee of liquid-glass testimonial cards,
-   replacing the single static "chat-mock" card in the
-   "Это не просто курс..." section. The track holds the testimonials
-   list twice back-to-back; animating it from translateX(0) to
-   translateX(-50%) and looping makes the seam invisible -- the moment
-   the first copy has fully scrolled off, the second copy is sitting
-   exactly where the first one started.
+   Continuous horizontal marquee of testimonial cards, replacing the
+   single static "chat-mock" card in the "Это не просто курс..."
+   section. The track holds the testimonials list twice back-to-back;
+   animating it from translateX(0) to translateX(-50%) and looping
+   makes the seam invisible -- the moment the first copy has fully
+   scrolled off, the second copy is sitting exactly where the first
+   one started.
    --------------------------------------------------------------- */
 
 .cases-marquee {
@@ -24,7 +24,7 @@
 .cases-marquee-track {
   display: flex;
   width: max-content;
-  gap: 22px;
+  gap: 20px;
   animation: cases-marquee-scroll var(--marquee-duration, 42s) linear infinite;
 }
 
@@ -39,47 +39,25 @@
 
 .cases-marquee-card {
   flex: 0 0 auto;
-  width: 320px;
+  width: 300px;
   padding: 24px;
-  border-radius: 20px;
-  background: color-mix(in oklch, var(--white) 55%, transparent);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  box-shadow: 0 20px 45px -25px rgba(21, 17, 15, 0.35);
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: 0 12px 28px -16px rgba(21, 17, 15, 0.25);
 }
 
-.cases-marquee-stars {
-  display: flex;
-  gap: 3px;
-  margin-bottom: 14px;
-  color: var(--border);
-}
-
-.cases-marquee-stars .is-filled {
-  color: var(--gold);
-}
-
-.cases-marquee-card blockquote {
-  margin: 0 0 20px;
-  color: var(--ink-soft);
-  font-size: 0.95rem;
-  line-height: 1.55;
-}
-
-.cases-marquee-footer {
+.cases-marquee-header {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
+  margin-bottom: 16px;
 }
 
 .cases-marquee-avatar {
   flex-shrink: 0;
   width: 44px;
   height: 44px;
-  border-radius: 12px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -99,6 +77,23 @@
   color: var(--muted);
   font-size: 0.85rem;
   margin-top: 2px;
+}
+
+.cases-marquee-card blockquote {
+  margin: 0 0 16px;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.cases-marquee-stars {
+  display: flex;
+  gap: 3px;
+  color: var(--border);
+}
+
+.cases-marquee-stars .is-filled {
+  color: var(--gold);
 }
 
 @media (prefers-reduced-motion: reduce) {
