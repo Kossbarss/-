@@ -499,20 +499,20 @@
     observer.observe(grid)
   })()
 
-  // "Кому подойдёт курс" (#program): same staggered fade+rise-up as the
-  // rise-grid above, but across three different pieces -- the heading,
-  // then each pain-card, then the fit-list -- so the whole block reveals
-  // itself top-to-bottom as it scrolls into view instead of the section
-  // heading and its content just appearing instantly together. Deliberately
-  // slow (0.2s between items, 0.9s transition -- see the matching CSS) for
-  // an unhurried, soft cascade rather than a quick snap.
-  ;(function () {
-    const section = document.querySelector('#program')
+  // Soft blur-cascade reveal: the heading, then each direct content group
+  // in turn, fades+rises+sharpens into place as the section scrolls into
+  // view, instead of everything appearing instantly together. Deliberately
+  // slow (0.2s between items, 0.9s transition -- see the matching CSS in
+  // style-base.css) for an unhurried cascade rather than a quick snap.
+  // Shared by every section below that wants this treatment; each call
+  // scopes itself to its own section id so it can never bleed into a
+  // different section reusing the same .section-head / card class names.
+  function setupBlurCascadeReveal(sectionSelector, itemSelectors) {
+    const section = document.querySelector(sectionSelector)
     if (!section || reducedMotion || !('IntersectionObserver' in window)) return
-    const head = section.querySelector('.section-head')
-    const cards = [...section.querySelectorAll('.pain-card')]
-    const fitList = section.querySelector('.fit-list')
-    const items = [head, ...cards, fitList].filter(Boolean)
+    const items = itemSelectors
+      .flatMap((sel) => [...section.querySelectorAll(sel)])
+      .filter(Boolean)
     if (!items.length) return
 
     items.forEach((item, index) => {
@@ -528,5 +528,12 @@
       })
     }, { threshold: 0.15 })
     observer.observe(section)
-  })()
+  }
+
+  // "Кому подойдёт курс": heading, then each pain-card, then the fit-list.
+  setupBlurCascadeReveal('#program', ['.section-head', '.pain-card', '.fit-list'])
+
+  // "Формат обучения" ("Что вы получите на курсе?"): heading, then each
+  // of the 4 feature-cards.
+  setupBlurCascadeReveal('#whatYouGet', ['.section-head', '.feature-card'])
 })()

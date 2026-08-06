@@ -2428,6 +2428,27 @@ body.nav-open {
   text-transform: none;
 }
 
+/* Scroll-in reveal for "#whatYouGet" ("Формат обучения"): same soft
+   blur cascade as #program -- heading first, then each feature-card in
+   sequence. Scoped to #whatYouGet since .section-head/.feature-card are
+   shared class names reused by other sections (e.g. "Результат обучения")
+   that should stay untouched. */
+#whatYouGet.js-animate .section-head,
+#whatYouGet.js-animate .feature-card {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(10px);
+}
+
+#whatYouGet.js-animate.is-revealed .section-head,
+#whatYouGet.js-animate.is-revealed .feature-card {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0px);
+  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s ease;
+  transition-delay: var(--reveal-delay, 0s);
+}
+
 /* ---------- Program pillars (kept from MCMM) ---------- */
 .pillars-stack {
   display: flex;
