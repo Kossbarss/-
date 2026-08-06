@@ -2219,10 +2219,22 @@ body.nav-open {
 .avatar-tip {
   position: relative;
   margin-left: -14px;
+  /* Scroll-in reveal: opacity only (not transform), so it never fights
+     the always-on float animation below -- both target the same element,
+     and animations win over transitions on a shared property, which
+     would silently swallow a transform-based entrance. .is-visible is
+     added once by an IntersectionObserver in case-carousel-entry.tsx. */
+  opacity: 0;
+  transition: opacity 0.6s ease-out;
+  transition-delay: var(--reveal-delay, 0s);
   /* gentle idle float so the row feels alive at rest — transform-only,
      so it's pure GPU compositing (no repaint), same reasoning as the
      case-fan border fix earlier */
   animation: avatar-float 3.6s ease-in-out infinite;
+}
+
+.avatar-tip.is-visible {
+  opacity: 1;
 }
 
 .avatar-tip:first-child {
@@ -2247,6 +2259,8 @@ body.nav-open {
 @media (prefers-reduced-motion: reduce) {
   .avatar-tip {
     animation: none;
+    transition: none;
+    opacity: 1;
   }
 }
 
@@ -2270,8 +2284,8 @@ body.nav-open {
   background: #1c1917;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 9px;
-  padding: 6px 10px 7px;
-  min-width: 118px;
+  padding: 8px 12px 9px;
+  min-width: 136px;
   overflow: hidden;
   white-space: nowrap;
   text-align: left;
@@ -2300,10 +2314,10 @@ body.nav-open {
   display: block;
   font-family: var(--font-rise);
   font-weight: 700;
-  font-size: 0.58rem;
-  color: rgba(250, 246, 239, 0.4);
+  font-size: 0.7rem;
+  color: rgba(250, 246, 239, 0.5);
   letter-spacing: -0.01em;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 }
 
 .avatar-tip-name {
@@ -2311,7 +2325,8 @@ body.nav-open {
   z-index: 2;
   display: block;
   font-family: var(--font-display);
-  font-size: 0.66rem;
+  font-size: 0.86rem;
+  line-height: 1.2;
   color: var(--white);
 }
 
@@ -2321,9 +2336,10 @@ body.nav-open {
   display: block;
   font-family: var(--font-body);
   text-transform: none;
-  font-size: 0.52rem;
-  color: rgba(250, 246, 239, 0.6);
-  margin-top: 1px;
+  font-size: 0.68rem;
+  line-height: 1.3;
+  color: rgba(250, 246, 239, 0.72);
+  margin-top: 2px;
 }
 
 .avatar-tip:hover .avatar-tip-bubble,

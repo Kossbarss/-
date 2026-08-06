@@ -10,8 +10,6 @@ type CaseStudy = {
   image: string;
 };
 
-type Graduate = [name: string, city: string];
-
 const isUkrainian =
   document.documentElement.lang.toLowerCase().startsWith("uk") ||
   /\/ua(?:\/|$)/.test(window.location.pathname);
@@ -58,24 +56,13 @@ const UK_CASES: CaseStudy[] = [
   { name: "Ніка, 34 роки", city: "Oslo", text: "Завершила навчання, тепер спокійно працюю зі шкірою і знайшла свої стилі 👌 Моя реклама тепер — це мої рекомендації, система навчання досі приносить хороші результати й активність в Instagram. Тепер планую підвищувати ціни на татуювання та комплексні сеанси 😊", image: "case-nika-oslo.jpg" },
 ];
 
-const RU_GRADUATES: Graduate[] = [
-  ["Вероника", "Florida"],
-  ["Анна", "Hamburg"],
-  ["Анна", "Nice"],
-  ["Полина", "Milan"],
-  ["Амира", "Vancouver"],
-];
-
-const UK_GRADUATES: Graduate[] = [
-  ["Вероніка", "Florida"],
-  ["Анна", "Hamburg"],
-  ["Анна", "Nice"],
-  ["Поліна", "Milan"],
-  ["Аміра", "Vancouver"],
-];
-
 const CASES = isUkrainian ? UK_CASES : RU_CASES;
-const GRADUATES = isUkrainian ? UK_GRADUATES : RU_GRADUATES;
+
+// The avatar-tip bubbles reuse the first 5 real cases (name+age already
+// baked into .name, city in .city) instead of a separately maintained
+// name/city list, so this display can never drift out of sync with the
+// verified per-person data in CASES.
+const GRADUATES = CASES.slice(0, 5);
 
 const CAROUSEL_ITEMS: Carousel3DItem[] = CASES.map(study => ({
   src: `${assetPrefix}${study.image}`,
@@ -117,21 +104,65 @@ if (count) count.textContent = "300+";
 if (avatars) {
   avatars.replaceChildren();
 
-  GRADUATES.forEach(([name, city]) => {
+  const tips: HTMLElement[] = [];
+
+  GRADUATES.forEach((graduate, i) => {
     const item = document.createElement("div");
     item.className = "avatar-tip";
+    item.style.setProperty("--reveal-delay", `${i * 0.12}s`);
 
     const bubble = document.createElement("div");
     bubble.className = "avatar-tip-bubble";
-    bubble.textContent = `${name} · ${city}`;
+
+    const watermark = document.createElement("img");
+    watermark.src = `${assetPrefix}logo-watermark.png`;
+    watermark.className = "avatar-tip-watermark";
+    watermark.alt = "";
+    watermark.setAttribute("aria-hidden", "true");
+
+    const index = document.createElement("span");
+    index.className = "avatar-tip-index";
+    index.textContent = String(i + 1).padStart(2, "0");
+
+    const name = document.createElement("span");
+    name.className = "avatar-tip-name";
+    name.textContent = graduate.name;
+
+    const role = document.createElement("span");
+    role.className = "avatar-tip-role";
+    role.textContent = graduate.city;
+
+    bubble.append(watermark, index, name, role);
 
     const avatar = document.createElement("span");
     avatar.className = "avatar";
-    avatar.setAttribute("aria-label", `${name}, ${city}`);
+    avatar.setAttribute("aria-label", `${graduate.name}, ${graduate.city}`);
 
     item.append(bubble, avatar);
     avatars.appendChild(item);
+    tips.push(item);
   });
+
+  // Reveal each card once as the row scrolls into view, instead of all
+  // being visible from the first paint -- .is-visible only adds
+  // opacity/transform (see style-base.css), so this never affects layout
+  // or the existing idle-float animation once revealed.
+  if (typeof IntersectionObserver !== "undefined") {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.3 }
+    );
+    tips.forEach((tip) => observer.observe(tip));
+  } else {
+    tips.forEach((tip) => tip.classList.add("is-visible"));
+  }
 }
 
 if (mountNode) {
