@@ -38,9 +38,6 @@ async function copyStaticTree(source, target) {
 const localeCopy = {
   ru: {
     intro: 'Это не просто курс про «как держать машинку». Это курс, после которого вы:',
-    chatTitle: 'Общий чат выпускников школы',
-    now: 'сейчас',
-    chat: 'Спасибо! 🙏 Мечтала уверенно держать машинку целый год, но всегда думала, что это не для меня. После разбора работы с ментором наконец чувствую себя мастером, а не «той, кто нарисовала пятно». Спасибо...',
     kicker: 'Кейсы учеников',
     title: 'Кейсы учеников после обучения',
     cta: 'Купить курс и начать обучение тату',
@@ -54,9 +51,6 @@ const localeCopy = {
   },
   uk: {
     intro: 'Це не просто курс про «як тримати машинку». Це курс, після якого ви:',
-    chatTitle: 'Загальний чат випускників школи',
-    now: 'зараз',
-    chat: 'Дякую! 🙏 Мріяла впевнено тримати машинку цілий рік, але завжди думала, що це не для мене. Після розбору роботи з ментором нарешті відчуваю себе майстром, а не «тією, хто намалювала пляму». Дякую...',
     kicker: 'Кейси учнів',
     title: 'Кейси учнів після навчання',
     cta: 'Купити курс і почати навчання тату',
@@ -86,10 +80,7 @@ function renderCasesSection(locale) {
         <h2>${copy.intro}</h2>
       </div>
 
-      <div class="chat-mock">
-        <div class="chat-head"><span>${copy.chatTitle}</span><span>${copy.now}</span></div>
-        <p><span class="author">Марта_ink:</span> ${copy.chat}</p>
-      </div>
+      <div id="casesTestimonialMarquee"></div>
 
       <div class="section-head case-fan-head">
         <span class="kicker">${copy.kicker}</span>
@@ -155,8 +146,10 @@ function injectAssets(html, assetPrefix) {
   const carouselCss = `  <link rel="stylesheet" href="${assetPrefix}dist/card-fan-carousel.css?v=${version}" />`
   const rhythmCss = `  <link rel="stylesheet" href="${assetPrefix}layout-rhythm.css?v=${version}" />`
   const testimonialCss = `  <link rel="stylesheet" href="${assetPrefix}dist/testimonial-stack.css?v=${version}" />`
+  const casesMarqueeCss = `  <link rel="stylesheet" href="${assetPrefix}dist/cases-marquee.css?v=${version}" />`
   const carouselJs = `<script src="${assetPrefix}dist/card-fan-carousel.js?v=${version}"></script>`
   const testimonialJs = `<script src="${assetPrefix}dist/testimonial-stack.js?v=${version}"></script>`
+  const casesMarqueeJs = `<script src="${assetPrefix}dist/cases-marquee.js?v=${version}"></script>`
   const certificateJs = `<script src="${assetPrefix}dist/certificate-tilt.js?v=${version}"></script>`
   const heroStatsJs = `<script src="${assetPrefix}dist/hero-stats.js?v=${version}"></script>`
   const heroShaderJs = `<script src="${assetPrefix}hero-shader-background.js?v=${version}"></script>`
@@ -172,15 +165,17 @@ function injectAssets(html, assetPrefix) {
     .replace(/\s*<link rel="stylesheet" href="(?:\.\.\/)?layout-rhythm\.css[^\n]*\n?/g, '\n')
     .replace(/\s*<link rel="stylesheet" href="layout-fixes\.css[^\n]*\n?/g, '\n')
     .replace(/\s*<link rel="stylesheet" href="(?:\.\.\/)?dist\/testimonial-stack\.css[^\n]*\n?/g, '\n')
+    .replace(/\s*<link rel="stylesheet" href="(?:\.\.\/)?dist\/cases-marquee\.css[^\n]*\n?/g, '\n')
     .replace(/\s*<script src="(?:\.\.\/)?dist\/card-fan-carousel\.js[^\n]*<\/script>\n?/g, '\n')
     .replace(/\s*<script src="(?:\.\.\/)?dist\/testimonial-stack\.js[^\n]*<\/script>\n?/g, '\n')
+    .replace(/\s*<script src="(?:\.\.\/)?dist\/cases-marquee\.js[^\n]*<\/script>\n?/g, '\n')
     .replace(/\s*<script src="(?:\.\.\/)?dist\/certificate-tilt\.js[^\n]*<\/script>\n?/g, '\n')
     .replace(/\s*<script src="(?:\.\.\/)?dist\/hero-stats\.js[^\n]*<\/script>\n?/g, '\n')
     .replace(/\s*<script src="(?:\.\.\/)?hero-shader-background\.js[^\n]*<\/script>\n?/g, '\n')
     .replace(/\s*<script src="(?:\.\.\/)?dist\/instructor-carousel\.js[^\n]*<\/script>\n?/g, '\n')
 
-  html = html.replace('</head>', `${mainCss}\n${carouselCss}\n${rhythmCss}\n${testimonialCss}\n</head>`)
-  html = html.replace('<script src="script.js"></script>', `${carouselJs}\n  ${testimonialJs}\n  ${certificateJs}\n  ${heroStatsJs}\n  ${heroShaderJs}\n  ${instructorCarouselJs}\n  <script src="script.js"></script>`)
+  html = html.replace('</head>', `${mainCss}\n${carouselCss}\n${rhythmCss}\n${testimonialCss}\n${casesMarqueeCss}\n</head>`)
+  html = html.replace('<script src="script.js"></script>', `${carouselJs}\n  ${testimonialJs}\n  ${casesMarqueeJs}\n  ${certificateJs}\n  ${heroStatsJs}\n  ${heroShaderJs}\n  ${instructorCarouselJs}\n  <script src="script.js"></script>`)
   return html
 }
 
