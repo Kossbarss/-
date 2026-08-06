@@ -503,7 +503,9 @@
   // rise-grid above, but across three different pieces -- the heading,
   // then each pain-card, then the fit-list -- so the whole block reveals
   // itself top-to-bottom as it scrolls into view instead of the section
-  // heading and its content just appearing instantly together.
+  // heading and its content just appearing instantly together. Deliberately
+  // slow (0.2s between items, 0.9s transition -- see the matching CSS) for
+  // an unhurried, soft cascade rather than a quick snap.
   ;(function () {
     const section = document.querySelector('#program')
     if (!section || reducedMotion || !('IntersectionObserver' in window)) return
@@ -514,7 +516,7 @@
     if (!items.length) return
 
     items.forEach((item, index) => {
-      item.style.setProperty('--reveal-delay', `${Math.min(index * 0.08, 0.6)}s`)
+      item.style.setProperty('--reveal-delay', `${Math.min(index * 0.2, 1.4)}s`)
     })
     section.classList.add('js-animate')
 
