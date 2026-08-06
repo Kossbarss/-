@@ -17,8 +17,28 @@
   position: relative;
   width: 100%;
   margin-top: 40px;
-  margin-bottom: 8px;
+  margin-bottom: 56px;
   overflow: hidden;
+  /* Light vertical dissolve at the left/right edges as cards scroll in
+     and out of view, instead of a hard cut. */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    rgba(0, 0, 0, 0.55) 40px,
+    black 100px,
+    black calc(100% - 100px),
+    rgba(0, 0, 0, 0.55) calc(100% - 40px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    rgba(0, 0, 0, 0.55) 40px,
+    black 100px,
+    black calc(100% - 100px),
+    rgba(0, 0, 0, 0.55) calc(100% - 40px),
+    transparent 100%
+  );
 }
 
 .cases-marquee-track {
@@ -88,12 +108,23 @@
 }
 
 .cases-marquee-stars {
+  position: relative;
+  display: inline-block;
+}
+
+.cases-marquee-stars-track {
   display: flex;
   gap: 3px;
   color: var(--border);
 }
 
-.cases-marquee-stars .is-filled {
+.cases-marquee-stars-fill {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 3px;
+  overflow: hidden;
+  white-space: nowrap;
   color: var(--gold);
 }
 

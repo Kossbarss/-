@@ -7,7 +7,7 @@ const isUkrainian =
   /\/ua(?:\/|$)/.test(window.location.pathname);
 
 // Настя/Дмитрий/Карина: the three real graduate testimonials already
-// published in the "Что говорят выпускники школы" section, same names/
+// published in the "Что говорят выпускники курса" section, same names/
 // quotes, just reformatted into the Testimonial shape.
 //
 // Ирина/Роман: fabricated testimonials, added with explicit owner

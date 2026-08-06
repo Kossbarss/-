@@ -8,7 +8,7 @@ export interface Testimonial {
   role: string;
   quote: string;
   avatarGradient: string;
-  /** 1-5 filled stars */
+  /** 0-5, fractional values (e.g. 4.5) partially fill the 5th star */
   rating: number;
 }
 
@@ -18,17 +18,34 @@ export interface TestimonialMarqueeProps {
   speed?: number;
 }
 
-function StarRow({ rating }: { rating: number }) {
+function Star({ keyIndex }: { keyIndex: number }) {
   return (
-    <div className="cases-marquee-stars" aria-hidden="true">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <svg key={i} viewBox="0 0 24 24" width="16" height="16" className={i < rating ? 'is-filled' : ''}>
-          <path
-            d="M12 2.5l2.95 6.62 7.2.63-5.45 4.77 1.65 7.08L12 17.77l-6.35 3.83 1.65-7.08L1.85 9.75l7.2-.63z"
-            fill="currentColor"
-          />
-        </svg>
-      ))}
+    <svg key={keyIndex} viewBox="0 0 24 24" width="16" height="16">
+      <path
+        d="M12 2.5l2.95 6.62 7.2.63-5.45 4.77 1.65 7.08L12 17.77l-6.35 3.83 1.65-7.08L1.85 9.75l7.2-.63z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+// Fills a fractional amount of the 5-star row (e.g. 4.5, 3.8) by layering
+// an exact-width clipped copy of filled stars on top of a muted row,
+// rather than only ever rounding to a whole star.
+function StarRow({ rating }: { rating: number }) {
+  const percent = Math.max(0, Math.min(100, (rating / 5) * 100));
+  return (
+    <div className="cases-marquee-stars" aria-label={`Оценка ${rating} из 5`}>
+      <div className="cases-marquee-stars-track" aria-hidden="true">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Star key={i} keyIndex={i} />
+        ))}
+      </div>
+      <div className="cases-marquee-stars-fill" style={{ width: `${percent}%` }} aria-hidden="true">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Star key={i} keyIndex={i} />
+        ))}
+      </div>
     </div>
   );
 }
