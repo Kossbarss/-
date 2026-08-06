@@ -1628,6 +1628,29 @@ body.nav-open {
   flex-shrink: 0;
 }
 
+/* Scroll-in reveal for the whole "#program" block: heading first, then
+   each pain-card in sequence, then the fit-list -- same progressive-
+   enhancement pattern as .rise-grid below (JS adds .js-animate + sets
+   each element's transition-delay, IntersectionObserver adds
+   .is-revealed once). Scoped to #program specifically since
+   .section-head/.pain-card/.fit-list are shared class names used by
+   other sections that should stay untouched. */
+#program.js-animate .section-head,
+#program.js-animate .pain-card,
+#program.js-animate .fit-list {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+#program.js-animate.is-revealed .section-head,
+#program.js-animate.is-revealed .pain-card,
+#program.js-animate.is-revealed .fit-list {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
 /* ---------- Instructor ---------- */
 .instructor-section {
   position: relative;

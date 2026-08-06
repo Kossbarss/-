@@ -498,4 +498,33 @@
     }, { threshold: 0.15 })
     observer.observe(grid)
   })()
+
+  // "Кому подойдёт курс" (#program): same staggered fade+rise-up as the
+  // rise-grid above, but across three different pieces -- the heading,
+  // then each pain-card, then the fit-list -- so the whole block reveals
+  // itself top-to-bottom as it scrolls into view instead of the section
+  // heading and its content just appearing instantly together.
+  ;(function () {
+    const section = document.querySelector('#program')
+    if (!section || reducedMotion || !('IntersectionObserver' in window)) return
+    const head = section.querySelector('.section-head')
+    const cards = [...section.querySelectorAll('.pain-card')]
+    const fitList = section.querySelector('.fit-list')
+    const items = [head, ...cards, fitList].filter(Boolean)
+    if (!items.length) return
+
+    items.forEach((item, index) => {
+      item.style.setProperty('--reveal-delay', `${Math.min(index * 0.08, 0.6)}s`)
+    })
+    section.classList.add('js-animate')
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return
+        section.classList.add('is-revealed')
+        observer.disconnect()
+      })
+    }, { threshold: 0.15 })
+    observer.observe(section)
+  })()
 })()
