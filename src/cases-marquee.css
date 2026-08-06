@@ -43,8 +43,8 @@
   padding: 25px;
   border-radius: 18px;
   background: var(--white);
-  border: 1px solid rgba(21, 17, 15, 0.14);
-  box-shadow: 0 4px 14px rgba(21, 17, 15, 0.08);
+  border: 1px solid rgba(21, 17, 15, 0.04);
+  box-shadow: 3px 5px 12px rgba(21, 17, 15, 0.12);
 }
 
 .cases-marquee-header {
