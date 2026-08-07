@@ -1114,10 +1114,19 @@ body.nav-open {
    instead of the paragraph's -- background-clip:text doesn't reliably
    clip through a nested inline-block descendant. */
 .hero-lede .word-animate {
-  background: linear-gradient(155deg, var(--gold-light) 0%, var(--gold) 100%);
+  /* Darkened from gold-light->gold to gold->gold-dark: against the
+     turquoise hero background the lighter gradient sat too close in
+     luminance to read cleanly, especially where the background gradient
+     itself is brighter. The tighter shadow below adds edge contrast on
+     top of that without relying on blur alone (the paragraph-level
+     shadow from the ".hero h1, .hero-lede, ..." rule further down is
+     a soft 12px blur, good for lifting off the background broadly but
+     too diffuse by itself to firm up individual letterforms). */
+  background: linear-gradient(155deg, var(--gold) 0%, var(--gold-dark) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6), 0 2px 14px rgba(0, 0, 0, 0.35);
 }
 
 /* The "22+" ticker digit-roll (see hero-stats-entry.tsx) renders its own
@@ -1125,13 +1134,12 @@ body.nav-open {
    background-clip:text above to reliably clip through (same reason the
    comment above moved the gradient down to word level instead of the
    whole paragraph). Give it a plain solid gold instead of fighting
-   that. #d8bb79 is a measured match, not a guess: sampled the actual
-   rendered pixels of the neighboring word "странах" (which the 155deg
-   gold-light -> gold gradient happens to land on roughly midway, at
-   this word's position in the sentence) and used that color directly
-   -- neither design token alone matched. --gold-light alone read pale
-   and washed-out (almost white) next to it; --gold alone read
-   noticeably darker/more saturated.
+   that. #b99142 is the 50/50 average of the word-animate gradient's
+   two stops (gold #c9a24a, gold-dark #a9803a), matching where that
+   gradient lands at this word's position in the sentence -- same
+   derivation as the #d8bb79 it replaces, just recomputed after the
+   gradient darkened for contrast against the turquoise hero background
+   (see .hero-lede .word-animate above).
    Font is left to inherit from .hero-lede (Roboto Flex, weight 600)
    rather than overridden -- same font as its neighbors rules out a
    font-metrics mismatch as the cause of any baseline gap.
@@ -1155,8 +1163,8 @@ body.nav-open {
   background: none;
   -webkit-background-clip: initial;
   background-clip: initial;
-  -webkit-text-fill-color: #d8bb79;
-  color: #d8bb79;
+  -webkit-text-fill-color: #b99142;
+  color: #b99142;
   vertical-align: -0.19em;
 }
 
@@ -4563,6 +4571,10 @@ body.popup-open {
 
   .hero-lede {
     font-size: clamp(1.4rem, 1.6vw, 2.2rem);
+    /* Base rule below caps this at 760px, which reads as a cramped
+       narrow column once the desktop font-size bump above is applied.
+       Let it use the full .container width on desktop instead. */
+    max-width: 100%;
   }
 
   .hero .hero-topline p:first-child {
