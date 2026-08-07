@@ -145,9 +145,21 @@
   line-height: 1.55;
 }
 
+.cases-marquee-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .cases-marquee-stars {
   position: relative;
   display: inline-block;
+}
+
+.cases-marquee-stars-caption {
+  font-size: 0.7rem;
+  color: rgba(21, 17, 15, 0.45);
+  white-space: nowrap;
 }
 
 /* Flex items shrink by default, so a narrower fill container was

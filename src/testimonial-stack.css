@@ -161,3 +161,49 @@
 .testimonials-stack .testimonial-card:nth-child(3) { --primary: var(--periwinkle-dark); }
 .testimonials-stack .testimonial-card:nth-child(4) { --primary: var(--sage); }
 .testimonials-stack .testimonial-card:nth-child(5) { --primary: var(--blood-light); }
+
+/* ---------------------------------------------------------------
+   Star rating row, added below each quote. Same fractional-fill
+   technique as the cases-marquee cards: a transparent 5-star row
+   gives the container its width, a gold copy on top is clipped to
+   the exact rating percentage.
+   --------------------------------------------------------------- */
+
+.testimonial-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.testimonial-stars {
+  position: relative;
+  display: inline-block;
+}
+
+.testimonial-stars-track > svg,
+.testimonial-stars-fill > svg {
+  flex-shrink: 0;
+}
+
+.testimonial-stars-track {
+  display: flex;
+  gap: 2px;
+  color: transparent;
+}
+
+.testimonial-stars-fill {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--gold);
+}
+
+.testimonial-stars-caption {
+  font-size: 0.7rem;
+  color: rgba(21, 17, 15, 0.45);
+  white-space: nowrap;
+}

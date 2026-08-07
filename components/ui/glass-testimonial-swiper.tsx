@@ -10,16 +10,56 @@ export interface Testimonial {
   tags: { text: string; type: 'featured' | 'default' }[];
   stats: { icon: React.ComponentType<React.SVGProps<SVGSVGElement>>; text: string; }[];
   avatarGradient: string;
+  /** 0-5, fractional values (e.g. 4.5) partially fill the 5th star */
+  rating: number;
 }
 
 export interface TestimonialStackProps {
   testimonials: Testimonial[];
   /** How many cards to show behind the main card */
   visibleBehind?: number;
+  /** Locale text shown next to the star rating, e.g. "Оценка отзывов обучения" */
+  ratingCaption?: string;
+}
+
+function TestimonialStar({ keyIndex }: { keyIndex: number }) {
+  return (
+    <svg key={keyIndex} viewBox="0 0 24 24" width="14" height="14">
+      <path
+        d="M12 2.5l2.95 6.62 7.2.63-5.45 4.77 1.65 7.08L12 17.77l-6.35 3.83 1.65-7.08L1.85 9.75l7.2-.63z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+// Same fractional-fill technique as the cases-marquee stars: a transparent
+// 5-star row sets the width, a gold copy on top is clipped to the exact
+// rating percentage (flex-shrink: 0 on both keeps the browser from just
+// squeezing all 5 stars smaller instead of clipping the trailing one).
+function TestimonialStarRow({ rating, caption }: { rating: number; caption?: string }) {
+  const percent = Math.max(0, Math.min(100, (rating / 5) * 100));
+  return (
+    <div className="testimonial-rating-row">
+      <div className="testimonial-stars" aria-label={`${rating} из 5`}>
+        <div className="testimonial-stars-track" aria-hidden="true">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <TestimonialStar key={i} keyIndex={i} />
+          ))}
+        </div>
+        <div className="testimonial-stars-fill" style={{ width: `${percent}%` }} aria-hidden="true">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <TestimonialStar key={i} keyIndex={i} />
+          ))}
+        </div>
+      </div>
+      {caption && <span className="testimonial-stars-caption">{caption}</span>}
+    </div>
+  );
 }
 
 // --- The Component ---
-export const TestimonialStack = ({ testimonials, visibleBehind = 2 }: TestimonialStackProps) => {
+export const TestimonialStack = ({ testimonials, visibleBehind = 2, ratingCaption }: TestimonialStackProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
@@ -124,6 +164,8 @@ export const TestimonialStack = ({ testimonials, visibleBehind = 2 }: Testimonia
               </div>
 
               <blockquote className="text-card-foreground/90 leading-snug text-base mb-3">"{testimonial.quote}"</blockquote>
+
+              <TestimonialStarRow rating={testimonial.rating} caption={ratingCaption} />
 
               <div className="flex flex-row items-center justify-between border-t border-border pt-3 gap-2">
                 <div className="flex flex-wrap gap-2">

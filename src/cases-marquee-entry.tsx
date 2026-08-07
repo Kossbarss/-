@@ -134,6 +134,7 @@ if (mountNode) {
     <TestimonialMarquee
       testimonials={isUkrainian ? UK_TESTIMONIALS : RU_TESTIMONIALS}
       verifiedLabel={isUkrainian ? "Верифіковано" : "Верифицировано"}
+      ratingCaption={isUkrainian ? "Оцінка відгуків навчання" : "Оценка отзывов обучения"}
     />
   );
 }
