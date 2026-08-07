@@ -3291,6 +3291,22 @@ body.nav-open {
   flex-shrink: 0;
 }
 
+/* Mobile/tablet: .bonus-row wraps (flex-wrap on the row above) once the
+   title/description no longer fit alongside the price, so the price
+   drops onto its own line -- left-aligned there by default, since
+   .bonus-row's justify-content:space-between only positions items
+   sharing a row. Centering it needs the price to actually claim the
+   row's full width first (flex items don't stretch to it on their
+   own), then center its own (baseline-aligned) old/new price pair
+   within that width. Desktop is untouched -- there the price sits
+   beside the text on the same row, where centering would look off. */
+@media (max-width: 1023px) {
+  .bonus-row-price {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 .bonus-row-price .old {
   text-decoration: line-through;
   color: var(--muted);
