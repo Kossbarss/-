@@ -2413,14 +2413,6 @@ body.nav-open {
 
 .feature-card {
   padding: 24px 20px;
-  text-align: left;
-}
-
-/* Headings/descriptions centered within these 4 cards specifically,
-   per client request -- scoped to #whatYouGet since .feature-card is
-   also reused by "Результат обучения" further down the page, which
-   should keep its left-aligned layout. */
-#whatYouGet .feature-card {
   text-align: center;
 }
 
