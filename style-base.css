@@ -4391,6 +4391,28 @@ body.popup-open {
   text-wrap: balance;
 }
 
+/* Same drop shadow as .hero-sub above, extended to every other piece
+   of text in the hero block per client request -- headline, stats,
+   the step-by-step lede, the topline lines, the scrolling tag pills,
+   and the whole price/bonus card (including the CTA button label). */
+.hero h1,
+.hero-stat strong,
+.hero-stat span,
+.hero-lede,
+.hero .hero-topline p,
+.hero-tag,
+.price-box-promise,
+.price-box-timer,
+.price-box-clock,
+.price-box-price .old,
+.price-box-price .new,
+.hero .btn-stardust-wrap,
+.bonus-callout-lead,
+.bonus-callout-label,
+.bonus-callout-text {
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+}
+
 .hero-cta-row {
   order: 3;
   margin: 0;
