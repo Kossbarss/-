@@ -2471,6 +2471,31 @@ body.nav-open {
   }
 }
 
+/* Templates/bonus screenshot, added to the "Шаблоны и бонусы" card
+   below its text -- same slot pattern as .feature-video-wrap. */
+.feature-templates-wrap {
+  margin: 16px 0 0;
+}
+
+.feature-templates-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  animation: templates-glow-pulse 2.6s ease-in-out infinite;
+}
+
+/* Same pulsing edge-glow technique as the AI-chip icon and video
+   thumbnail, recolored to a soft turquoise-green. */
+@keyframes templates-glow-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(45, 175, 140, 0.35));
+  }
+  50% {
+    filter: drop-shadow(0 0 22px rgba(45, 175, 140, 0.85));
+  }
+}
+
 /* Scroll-in reveal for "#whatYouGet" ("Формат обучения"): same soft
    blur cascade as #program -- heading first, then each feature-card in
    sequence. Scoped to #whatYouGet since .section-head/.feature-card are
@@ -2735,7 +2760,8 @@ body.nav-open {
 @media (prefers-reduced-motion: reduce) {
   .feature-ai-image,
   .feature-ai-glow,
-  .feature-video-image {
+  .feature-video-image,
+  .feature-templates-image {
     animation: none;
   }
 }
