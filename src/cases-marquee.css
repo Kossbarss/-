@@ -221,27 +221,31 @@
   }
 }
 
-/* Desktop only: edge cards fade out over roughly one card's width
-   (.cases-marquee-card is 320px here) instead of the short 28px sliver
-   above, so the card entering/leaving at each side visibly dissolves
-   across its own span -- opacity -> transparent -- rather than getting
+/* Desktop only: edge cards fade out over 80px instead of the 28px
+   sliver above, so the card entering/leaving at each side visibly
+   dissolves -- opacity -> transparent -- rather than getting
    hard-cropped by overflow:hidden with only its outermost edge
-   softened. Mobile/tablet are unaffected, keeping the original short
-   fade (a 320px zone would swallow most of a phone-width row). */
+   softened. Kept short on purpose: a full card-width fade (320px, an
+   earlier version of this rule) pushed legible card content way past
+   the .cases-marquee container's own 65px inset from the screen edge,
+   which read as "the gap isn't 65px" even though the container itself
+   really does start there -- 80px keeps the dissolve visible without
+   eating most of the first card. Mobile/tablet are unaffected, keeping
+   the original short fade. */
 @media (min-width: 1024px) {
   .cases-marquee {
     -webkit-mask-image: linear-gradient(
       to right,
       transparent 0,
-      black 320px,
-      black calc(100% - 320px),
+      black 80px,
+      black calc(100% - 80px),
       transparent 100%
     );
     mask-image: linear-gradient(
       to right,
       transparent 0,
-      black 320px,
-      black calc(100% - 320px),
+      black 80px,
+      black calc(100% - 80px),
       transparent 100%
     );
   }
