@@ -6,11 +6,12 @@
 /* ---------------------------------------------------------------
    Continuous horizontal marquee of testimonial cards, replacing the
    single static "chat-mock" card in the "Это не просто курс..."
-   section. The track holds the testimonials list twice back-to-back;
-   animating it from translateX(0) to translateX(-50%) and looping
-   makes the seam invisible -- the moment the first copy has fully
-   scrolled off, the second copy is sitting exactly where the first
-   one started.
+   section. The track holds the testimonials list twice back-to-back
+   so a seamless loop is possible; the actual scrolling/dragging is
+   driven from JS (components/ui/testimonial-marquee.tsx) via a plain
+   `transform` set every frame, not a CSS @keyframes animation --
+   that's what lets manual dragging and idle auto-scroll share one
+   continuous position instead of fighting each other.
    --------------------------------------------------------------- */
 
 .cases-marquee {
@@ -45,16 +46,16 @@
   display: flex;
   width: max-content;
   gap: 13px;
-  animation: cases-marquee-scroll var(--marquee-duration, 42s) linear infinite;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  /* Let the browser keep handling vertical page scroll natively;
+     horizontal drag is fully owned by the pointer handlers in JS. */
+  touch-action: pan-y;
 }
 
-.cases-marquee-track:hover {
-  animation-play-state: paused;
-}
-
-@keyframes cases-marquee-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+.cases-marquee-track.is-dragging {
+  cursor: grabbing;
 }
 
 .cases-marquee-card {

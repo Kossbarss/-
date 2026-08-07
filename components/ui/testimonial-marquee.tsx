@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 // --- Component Interfaces ---
 export interface Testimonial {
@@ -101,19 +101,99 @@ function TestimonialCard({ testimonial, hidden, verifiedLabel, ratingCaption }: 
   );
 }
 
-// Continuous horizontal auto-scroll ("marquee") of liquid-glass cards.
-// The track is duplicated once so the loop is seamless (translateX(-50%)
-// lands exactly back on the first copy); the animation itself is a plain
-// CSS keyframe (see cases-marquee.css) so it keeps running smoothly
-// without any per-frame JS. Hover pauses it; prefers-reduced-motion
-// disables it entirely via the same CSS file.
+// Continuous horizontal auto-scroll ("marquee") of liquid-glass cards,
+// draggable/swipeable by hand on any device. The list is duplicated once
+// so the loop is seamless: position is tracked as a single pixel offset
+// that wraps by exactly one copy's width whenever it runs past either
+// end, so dragging and idle auto-scroll are the same motion -- no
+// separate "paused" state to fall out of sync with. Hovering never
+// pauses it; only an active drag does, and only for its duration.
 export const TestimonialMarquee = ({ testimonials, speed = 42, verifiedLabel = 'Верифицировано', ratingCaption }: TestimonialMarqueeProps) => {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const positionRef = useRef(0);
+  const halfWidthRef = useRef(0);
+  const draggingRef = useRef(false);
+  const dragStartXRef = useRef(0);
+  const dragStartPositionRef = useRef(0);
+
+  useEffect(() => {
+    const trackEl = trackRef.current;
+    if (!trackEl || !testimonials.length) return;
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const measure = () => {
+      halfWidthRef.current = trackEl.scrollWidth / 2;
+    };
+    measure();
+    const resizeObserver = new ResizeObserver(measure);
+    resizeObserver.observe(trackEl);
+
+    const wrap = () => {
+      const half = halfWidthRef.current;
+      if (!half) return;
+      while (positionRef.current <= -half) positionRef.current += half;
+      while (positionRef.current > 0) positionRef.current -= half;
+    };
+
+    let lastTime = performance.now();
+    let rafId: number;
+
+    const tick = (now: number) => {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+      if (!draggingRef.current && !reducedMotion && halfWidthRef.current) {
+        positionRef.current -= (halfWidthRef.current / speed) * dt;
+        wrap();
+      }
+      trackEl.style.transform = `translateX(${positionRef.current}px)`;
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+
+    const onPointerDown = (e: PointerEvent) => {
+      draggingRef.current = true;
+      dragStartXRef.current = e.clientX;
+      dragStartPositionRef.current = positionRef.current;
+      // Keeps receiving pointermove even if the drag leaves the track's own
+      // bounds; a handful of pointer types/environments reject capture
+      // outright, so a throw here shouldn't stop the drag from starting.
+      try { trackEl.setPointerCapture(e.pointerId); } catch { /* capture not available for this pointer */ }
+      trackEl.classList.add('is-dragging');
+    };
+    const onPointerMove = (e: PointerEvent) => {
+      if (!draggingRef.current) return;
+      positionRef.current = dragStartPositionRef.current + (e.clientX - dragStartXRef.current);
+      wrap();
+    };
+    const endDrag = (e: PointerEvent) => {
+      if (!draggingRef.current) return;
+      draggingRef.current = false;
+      trackEl.classList.remove('is-dragging');
+      try { trackEl.releasePointerCapture(e.pointerId); } catch { /* pointer already released */ }
+    };
+
+    trackEl.addEventListener('pointerdown', onPointerDown);
+    trackEl.addEventListener('pointermove', onPointerMove);
+    trackEl.addEventListener('pointerup', endDrag);
+    trackEl.addEventListener('pointercancel', endDrag);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      resizeObserver.disconnect();
+      trackEl.removeEventListener('pointerdown', onPointerDown);
+      trackEl.removeEventListener('pointermove', onPointerMove);
+      trackEl.removeEventListener('pointerup', endDrag);
+      trackEl.removeEventListener('pointercancel', endDrag);
+    };
+  }, [testimonials, speed]);
+
   if (!testimonials?.length) return null;
   const track = [...testimonials, ...testimonials];
 
   return (
-    <div className="cases-marquee" style={{ ['--marquee-duration' as string]: `${speed}s` }}>
-      <div className="cases-marquee-track">
+    <div className="cases-marquee">
+      <div className="cases-marquee-track" ref={trackRef}>
         {track.map((testimonial, index) => (
           <TestimonialCard
             key={`${testimonial.id}-${index}`}
