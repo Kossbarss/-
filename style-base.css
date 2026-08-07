@@ -4383,7 +4383,7 @@ body.popup-open {
   width: min(760px, 100%);
   margin: 0 auto clamp(30px, 2.2vw, 42px);
   font-family: var(--font-rise);
-  font-size: clamp(1.05rem, 1.25vw, 1.45rem);
+  font-size: clamp(1.15rem, 1.35vw, 1.6rem);
   font-weight: 600;
   line-height: 1.35;
   color: #fff;
@@ -4682,7 +4682,7 @@ body.popup-open {
     order: 3;
     width: 88vw;
     margin: 0 calc(50% - 44vw) 10vw;
-    font-size: clamp(0.9rem, 3.73vw, 1.2rem);
+    font-size: clamp(1rem, 3.9vw, 1.3rem);
     line-height: 1.2;
   }
 
