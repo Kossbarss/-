@@ -2421,6 +2421,12 @@ body.nav-open {
   margin-bottom: 12px;
 }
 
+/* Video-lessons card's icon is centered within the card, unlike the
+   other cards' left-aligned emoji icons, per client request. */
+.icon-centered {
+  text-align: center;
+}
+
 /* AI-assistant card's icon is a graphic, not an emoji -- centered
    above the heading instead of left-aligned like the other cards'
    emoji icons, per client request. */
