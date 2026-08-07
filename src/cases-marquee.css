@@ -16,7 +16,14 @@
 
 .cases-marquee {
   position: relative;
-  width: 100%;
+  /* Full-bleed: breaks out of the parent .container (max-width: 1180px)
+     to span the whole viewport width instead of being cropped to the
+     same column as the section's text, so more cards are visible/
+     peeking at once. Card size itself (.cases-marquee-card) is
+     untouched -- only the row they scroll through got wider. */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
   margin-top: 24px;
   margin-bottom: 40px;
   /* Room for the card shadows to render before overflow:hidden crops
