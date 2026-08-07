@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { Clock, Palette, Briefcase, Users } from "lucide-react";
+import { Clock, Users } from "lucide-react";
 import { TestimonialStack, type Testimonial } from "@/components/ui/glass-testimonial-swiper";
 
 const isUkrainian =
@@ -10,9 +10,11 @@ const isUkrainian =
 // published in the "Что говорят выпускники курса" section, same names/
 // quotes, just reformatted into the Testimonial shape.
 //
-// Ирина/Роман: fabricated testimonials, added with explicit owner
-// approval to reach 5 cards matching the reference component's demo --
-// these two names/quotes/tags/stats are invented, not real students.
+// Лукас/Эмиль: also real graduates (Bergen, Norway / Berlin, Germany,
+// per owner). Owner didn't have the verbatim review text on hand, so
+// the quote below is a generalized paraphrase of a typical graduate's
+// experience -- no invented specifics (numbers, client counts, etc.)
+// were added, per owner's own direction.
 const RU_TESTIMONIALS: Testimonial[] = [
   {
     id: 1,
@@ -46,22 +48,22 @@ const RU_TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 4,
-    initials: "И",
-    name: "Ирина",
+    initials: "Л",
+    name: "Лукас",
     role: "Выпуск 2025",
-    quote: "Боялась работать с цветом — казалось, это не для новичков. После модуля по цвету взяла первую цветную работу, и клиентка была в восторге. Теперь беру только цветные тату.",
-    tags: [{ text: "ЦВЕТНЫЕ РАБОТЫ", type: "featured" }],
-    stats: [{ icon: Palette, text: "12 цветных работ" }],
+    quote: "Учился онлайн из Норвегии, Берген, и переживал, что обратная связь будет не такой живой на расстоянии. Оказалось наоборот: разборы работ с ментором такие же подробные, как в очной студии. Теперь увереннее берусь за новые техники.",
+    tags: [{ text: "МЕЖДУНАРОДНЫЙ УЧЕНИК", type: "featured" }],
+    stats: [{ icon: Clock, text: "Обучение онлайн" }],
     avatarGradient: "linear-gradient(135deg, var(--sage), var(--gold-dark))",
   },
   {
     id: 5,
-    initials: "Р",
-    name: "Роман",
+    initials: "Э",
+    name: "Эмиль",
     role: "Выпуск 2025",
-    quote: "Работал барменом и вообще не думал о тату до этого курса. Через 3 месяца сделал первую платную работу и понял — это моё призвание.",
-    tags: [{ text: "СМЕНА ПРОФЕССИИ", type: "featured" }],
-    stats: [{ icon: Briefcase, text: "3 месяца практики" }],
+    quote: "Начинал с нуля в Берлине — только делал наброски для себя. Курс дал понятную систему: от базовой техники до общения с клиентами. Сейчас собираю собственное портфолио и не боюсь показывать работы вживую.",
+    tags: [{ text: "С НУЛЯ", type: "featured" }],
+    stats: [{ icon: Users, text: "Собственное портфолио" }],
     avatarGradient: "linear-gradient(135deg, var(--ink-soft), var(--blood-dark))",
   },
 ];
@@ -99,22 +101,22 @@ const UK_TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 4,
-    initials: "І",
-    name: "Ірина",
+    initials: "Л",
+    name: "Лукас",
     role: "Випуск 2025",
-    quote: "Боялася працювати з кольором — здавалося, це не для новачків. Після модуля з кольору взяла першу кольорову роботу, і клієнтка була в захваті. Тепер беру лише кольорові тату.",
-    tags: [{ text: "КОЛЬОРОВІ РОБОТИ", type: "featured" }],
-    stats: [{ icon: Palette, text: "12 кольорових робіт" }],
+    quote: "Навчався онлайн з Норвегії, Берген, і переживав, що зворотний зв'язок буде не таким живим на відстані. Виявилось навпаки: розбори робіт з ментором такі ж докладні, як в офлайн-студії. Тепер впевненіше беруся за нові техніки.",
+    tags: [{ text: "МІЖНАРОДНИЙ УЧЕНЬ", type: "featured" }],
+    stats: [{ icon: Clock, text: "Навчання онлайн" }],
     avatarGradient: "linear-gradient(135deg, var(--sage), var(--gold-dark))",
   },
   {
     id: 5,
-    initials: "Р",
-    name: "Роман",
+    initials: "Е",
+    name: "Еміль",
     role: "Випуск 2025",
-    quote: "Працював барменом і взагалі не думав про тату до цього курсу. Через 3 місяці зробив першу платну роботу і зрозумів — це моє покликання.",
-    tags: [{ text: "ЗМІНА ПРОФЕСІЇ", type: "featured" }],
-    stats: [{ icon: Briefcase, text: "3 місяці практики" }],
+    quote: "Починав з нуля в Берліні — тільки робив ескізи для себе. Курс дав зрозумілу систему: від базової техніки до спілкування з клієнтами. Зараз збираю власне портфоліо і не боюся показувати роботи наживо.",
+    tags: [{ text: "З НУЛЯ", type: "featured" }],
+    stats: [{ icon: Users, text: "Власне портфоліо" }],
     avatarGradient: "linear-gradient(135deg, var(--ink-soft), var(--blood-dark))",
   },
 ];

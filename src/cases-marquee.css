@@ -16,8 +16,12 @@
 .cases-marquee {
   position: relative;
   width: 100%;
-  margin-top: 40px;
-  margin-bottom: 56px;
+  margin-top: 24px;
+  margin-bottom: 40px;
+  /* Room for the card shadows to render before overflow:hidden crops
+     them -- without this the shadow got cut flush at the container's
+     top/bottom edge instead of fading out naturally under each card. */
+  padding: 16px 0;
   overflow: hidden;
   /* Light vertical dissolve at the left/right edges as cards scroll in
      and out of view, instead of a hard cut -- short and subtle. */
@@ -60,7 +64,7 @@
   padding: 25px;
   border-radius: 18px;
   background: var(--white);
-  border: 1px solid rgba(21, 17, 15, 0.04);
+  border: 1.5px solid var(--gold);
   box-shadow: 3px 5px 12px rgba(21, 17, 15, 0.12);
 }
 
@@ -190,15 +194,5 @@
   .cases-marquee-card {
     width: 280px;
     padding: 20px;
-  }
-
-  /* Long names (e.g. "Марта_ink") can run into the badge at this width --
-     drop the text label and keep just the dot + Google mark. */
-  .cases-marquee-verified-label {
-    display: none;
-  }
-
-  .cases-marquee-verified {
-    padding: 4px;
   }
 }
