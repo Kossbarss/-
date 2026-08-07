@@ -2639,48 +2639,34 @@ body.nav-open {
   color: var(--white);
 }
 
-/* Card 3's AI-assistant chip: stacks under the tags below the same
-   1024px breakpoint the pillar text itself unwraps at (see the
-   .pillar-body display:contents rule above), then sits beside the
-   text once there's room for both side by side. */
-.pillar-ai-wrap {
+/* AI-assistant chip: moved from card 3's pillar into the "Доступ через
+   Telegram-бота" feature-card per client request. Same glow/pulse
+   technique as before, sized down for the narrower feature-card. */
+.feature-ai-wrap {
   position: relative;
   display: block;
-  flex: 1 1 100%;
-  max-width: 210px;
-  margin: 18px auto 0;
+  max-width: 140px;
+  margin: 16px auto 0;
 }
 
-.pillar-ai-image {
+.feature-ai-image {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 14px;
+  border-radius: 12px;
   animation: ai-chip-pulse 2.6s ease-in-out infinite;
 }
 
 /* A second glow layered over the chip's own turquoise ring (see the
    sampled center/color below) so that highlight pulses in place too,
    not just the halo around the photo's outer edge. */
-.pillar-ai-glow {
+.feature-ai-glow {
   position: absolute;
   inset: 0;
-  border-radius: 14px;
+  border-radius: 12px;
   background: radial-gradient(circle at 51% 52%, rgba(141, 211, 234, 0.95) 0%, rgba(141, 211, 234, 0.5) 16%, transparent 40%);
   mix-blend-mode: screen;
   animation: ai-chip-glow-pulse 2.6s ease-in-out infinite;
-}
-
-@media (min-width: 1025px) {
-  .pillar-top-ai {
-    align-items: center;
-  }
-
-  .pillar-ai-wrap {
-    flex: 0 0 180px;
-    max-width: 180px;
-    margin: 0 0 0 28px;
-  }
 }
 
 /* Echoes the turquoise glow already inside the chip artwork so it
@@ -2704,8 +2690,8 @@ body.nav-open {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pillar-ai-image,
-  .pillar-ai-glow {
+  .feature-ai-image,
+  .feature-ai-glow {
     animation: none;
   }
 }
