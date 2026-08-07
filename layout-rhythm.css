@@ -84,6 +84,21 @@
   margin-left: auto;
 }
 
+/* Part of the desktop 3x guarantee-box treatment (see style-base.css,
+   same min-width:1024px breakpoint) -- the box's own max-width cap has
+   to be lifted here specifically, since this file loads after
+   style-base.css and would otherwise win the cascade and keep the box
+   stuck at 45rem regardless of what's set there. 135rem is 3x the
+   45rem above; in practice the .container (1180px max) still caps the
+   rendered width below that on most screens, which is fine -- the
+   point is removing the box's OWN artificial cap, not forcing it to
+   literally hit 135rem. */
+@media (min-width: 1024px) {
+  .guarantee-box--centered {
+    max-width: 135rem;
+  }
+}
+
 .pain-card p,
 .feature-card p,
 .pillar-body p,

@@ -3545,6 +3545,39 @@ body.nav-open {
   text-transform: none;
 }
 
+/* Desktop-only: whole "Гарантия честного старта" box at 3x -- every
+   dimension (padding, gap, icon, headline, body text, border, corner
+   radius, and the box's own max-width) scaled by the same factor so it
+   reads as a uniformly bigger box, not just bigger text inside the old
+   frame. Scoped to min-width:1024px so mobile/tablet are untouched. */
+@media (min-width: 1024px) {
+  .guarantee-box {
+    gap: 66px;
+    padding: 84px 96px;
+    border-width: 3px;
+    border-radius: 42px;
+  }
+
+  .guarantee-icon {
+    font-size: 6rem;
+  }
+
+  .guarantee-box h4 {
+    font-size: 3.6rem;
+    margin-bottom: 18px;
+  }
+
+  .guarantee-box p {
+    font-size: 3rem;
+    max-width: 1920px;
+  }
+
+  /* The box's own max-width cap (.guarantee-box--centered) lives in
+     layout-rhythm.css, not here -- that file loads after this one, so
+     an override placed here would lose the cascade regardless of this
+     media query. See the matching min-width:1024px block there. */
+}
+
 /* ---------- Certificate ---------- */
 .certificate-section {
   position: relative;
