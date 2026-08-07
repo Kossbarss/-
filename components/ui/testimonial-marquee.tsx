@@ -14,13 +14,24 @@ export interface Testimonial {
 
 export interface TestimonialMarqueeProps {
   testimonials: Testimonial[];
-  /** Seconds for one full loop of the track */
-  speed?: number;
+  /** Seconds each card spends resting in the "4 full + 2 peeking" layout
+   *  before advancing one card to the left. */
+  dwellSeconds?: number;
+  /** Seconds for the eased slide from one resting position to the next. */
+  stepSeconds?: number;
   /** Locale text for the verified-review badge, e.g. "Верифицировано" */
   verifiedLabel?: string;
   /** Locale text shown next to the star rating, e.g. "Оценка отзывов обучения" */
   ratingCaption?: string;
 }
+
+function easeInOutCubic(t: number): number {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+// Must match the 0.15 in the "4.3 card-widths" math in the .cases-marquee-card
+// comment (src/cases-marquee.css) -- how much of the edge cards peeks in.
+const PEEK_FRACTION = 0.15;
 
 function Star({ keyIndex }: { keyIndex: number }) {
   return (
@@ -108,11 +119,18 @@ function TestimonialCard({ testimonial, hidden, verifiedLabel, ratingCaption }: 
 // end, so dragging and idle auto-scroll are the same motion -- no
 // separate "paused" state to fall out of sync with. Hovering never
 // pauses it; only an active drag does, and only for its duration.
-export const TestimonialMarquee = ({ testimonials, speed = 42, verifiedLabel = 'Верифицировано', ratingCaption }: TestimonialMarqueeProps) => {
+export const TestimonialMarquee = ({ testimonials, dwellSeconds = 3.2, stepSeconds = 0.7, verifiedLabel = 'Верифицировано', ratingCaption }: TestimonialMarqueeProps) => {
   const trackRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef(0);
   const halfWidthRef = useRef(0);
+  // Distance (px) from one card's left edge to the next card's left edge --
+  // i.e. card width + track gap, measured from the live DOM instead of
+  // assumed, since the card width is viewport-relative (see
+  // src/cases-marquee.css) and can't be computed from CSS alone here.
+  const cardStepRef = useRef(0);
+  const cardWidthRef = useRef(0);
   const draggingRef = useRef(false);
+  const initializedRestOffsetRef = useRef(false);
   const dragStartXRef = useRef(0);
   const dragStartPositionRef = useRef(0);
 
@@ -124,6 +142,23 @@ export const TestimonialMarquee = ({ testimonials, speed = 42, verifiedLabel = '
 
     const measure = () => {
       halfWidthRef.current = trackEl.scrollWidth / 2;
+      const cards = trackEl.querySelectorAll<HTMLElement>('.cases-marquee-card');
+      if (cards.length >= 2) {
+        cardWidthRef.current = cards[0].getBoundingClientRect().width;
+        cardStepRef.current = cards[1].getBoundingClientRect().left - cards[0].getBoundingClientRect().left;
+        // The very first measurement (mount, or first resize before the
+        // rAF loop has run) establishes the resting baseline: instead of
+        // the first card sitting flush at the container's left edge (0%
+        // peeking on the left, everything on the right), shift right by
+        // PEEK_FRACTION of a card so the *previous* card in the track
+        // peeks in symmetrically with the next one. Deliberately only
+        // done once -- re-applying it on every later resize would jump
+        // the animation sideways whenever the window is resized.
+        if (!initializedRestOffsetRef.current) {
+          positionRef.current = PEEK_FRACTION * cardWidthRef.current;
+          initializedRestOffsetRef.current = true;
+        }
+      }
     };
     measure();
     const resizeObserver = new ResizeObserver(measure);
@@ -136,15 +171,44 @@ export const TestimonialMarquee = ({ testimonials, speed = 42, verifiedLabel = '
       while (positionRef.current > 0) positionRef.current -= half;
     };
 
+    // Rests at each "4 full cards + 2 peeking" position for dwellSeconds,
+    // then eases exactly one card-step to the left over stepSeconds, and
+    // repeats. A continuous constant-speed drift (the previous approach)
+    // spends equal time at every intermediate position, including ones
+    // where 5-6 cards all happen to be nearly fully visible at once --
+    // there's no way to keep a "4 full + 2 partial" look showing most of
+    // the time without resting there between discrete steps.
+    let phase: 'dwell' | 'moving' = 'dwell';
+    let phaseElapsed = 0;
+    let stepStartPos = 0;
+    let stepTargetPos = 0;
     let lastTime = performance.now();
     let rafId: number;
+
+    const beginStep = () => {
+      phase = 'moving';
+      phaseElapsed = 0;
+      stepStartPos = positionRef.current;
+      stepTargetPos = positionRef.current - (cardStepRef.current || 0);
+    };
 
     const tick = (now: number) => {
       const dt = (now - lastTime) / 1000;
       lastTime = now;
-      if (!draggingRef.current && !reducedMotion && halfWidthRef.current) {
-        positionRef.current -= (halfWidthRef.current / speed) * dt;
-        wrap();
+      if (!draggingRef.current && !reducedMotion && cardStepRef.current) {
+        phaseElapsed += dt;
+        if (phase === 'dwell') {
+          if (phaseElapsed >= dwellSeconds) beginStep();
+        } else {
+          const t = Math.min(1, phaseElapsed / stepSeconds);
+          positionRef.current = stepStartPos + (stepTargetPos - stepStartPos) * easeInOutCubic(t);
+          if (t >= 1) {
+            positionRef.current = stepTargetPos;
+            wrap();
+            phase = 'dwell';
+            phaseElapsed = 0;
+          }
+        }
       }
       trackEl.style.transform = `translateX(${positionRef.current}px)`;
       rafId = requestAnimationFrame(tick);
@@ -171,6 +235,18 @@ export const TestimonialMarquee = ({ testimonials, speed = 42, verifiedLabel = '
       draggingRef.current = false;
       trackEl.classList.remove('is-dragging');
       try { trackEl.releasePointerCapture(e.pointerId); } catch { /* pointer already released */ }
+      // Snap back to the nearest "4 full + 2 peeking" resting position
+      // instead of resuming auto-advance from wherever the finger let go.
+      // Resting positions are offset from plain card-step multiples by
+      // the same PEEK_FRACTION baseline set up in measure() above, so
+      // the snap target has to account for that offset too.
+      if (cardStepRef.current) {
+        const restOffset = PEEK_FRACTION * cardWidthRef.current;
+        positionRef.current = Math.round((positionRef.current - restOffset) / cardStepRef.current) * cardStepRef.current + restOffset;
+        wrap();
+      }
+      phase = 'dwell';
+      phaseElapsed = 0;
     };
 
     trackEl.addEventListener('pointerdown', onPointerDown);
@@ -186,7 +262,7 @@ export const TestimonialMarquee = ({ testimonials, speed = 42, verifiedLabel = '
       trackEl.removeEventListener('pointerup', endDrag);
       trackEl.removeEventListener('pointercancel', endDrag);
     };
-  }, [testimonials, speed]);
+  }, [testimonials, dwellSeconds, stepSeconds]);
 
   if (!testimonials?.length) return null;
   const track = [...testimonials, ...testimonials];
