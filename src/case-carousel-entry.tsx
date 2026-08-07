@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import Carousel3D, { type Carousel3DHandle, type Carousel3DItem } from "@/components/ui/carousel-3d";
 import CaseCarouselDots from "@/components/ui/case-carousel-dots";
+import { NumberTicker } from "@/components/ui/be-ui-number-animation";
 
 type CaseStudy = {
   name: string;
@@ -94,12 +95,17 @@ function Demo() {
 }
 
 const mountNode = document.getElementById("caseFanLayout");
-const stars = document.querySelector<HTMLElement>(".case-fan-cta .stars");
 const avatars = document.querySelector(".case-fan-cta .avatars");
 const count = document.querySelector<HTMLElement>(".case-fan-cta .count");
 
-if (stars) stars.textContent = "★★★★★";
-if (count) count.textContent = "300+";
+// Same rolling-digit mechanism and typographic treatment as the
+// instructor stats-row's "300+" (src/instructor-carousel-entry.tsx),
+// reused here per client request.
+if (count) {
+  createRoot(count).render(
+    <NumberTicker value={300} suffix="+" duration={2.2} stagger={0.15} />
+  );
+}
 
 if (avatars) {
   avatars.replaceChildren();

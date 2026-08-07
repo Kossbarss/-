@@ -92,7 +92,6 @@ function renderCasesSection(locale) {
       </div>
 
       <div class="case-fan-cta">
-        <div class="stars">★★★★★</div>
         <div class="avatar-row">
           <div class="avatars">
 ${renderGraduates(copy.graduates)}

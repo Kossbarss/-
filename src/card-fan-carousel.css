@@ -317,24 +317,13 @@
   transform: none !important;
 }
 
-.case-fan-cta .stars {
-  position: static !important;
-  display: block !important;
-  margin: 0 !important;
-  color: #c8952e;
-  font-size: 1.3rem;
-  line-height: 1;
-  letter-spacing: 0.14rem;
-  transform: none !important;
-}
-
 .case-fan-cta .avatar-row {
   position: static !important;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
-  margin-top: 0.8rem;
+  margin-top: 0;
   transform: none !important;
 }
 
@@ -364,11 +353,23 @@
   box-shadow: 0 0.35rem 0.8rem rgba(53, 26, 14, 0.16);
 }
 
+/* Same typographic treatment as the instructor stats-row's .stat-value
+   (style-base.css) per client request -- font-family/weight/letter-
+   spacing/case/size copied verbatim. Color uses --gold instead of that
+   block's --gold-light: the stats-row sits on the dark .instructor-
+   section background where the pale tone reads clearly, but this card
+   sits on the light --paper background, where --gold-light would be
+   near-invisible. --gold is the same accent color family at a shade
+   that stays legible here. */
 .case-fan-cta .count {
   position: static !important;
-  color: #221a16;
-  font-size: 1rem;
-  font-weight: 800;
+  display: inline-flex;
+  font-family: var(--font-rise);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+  font-size: 1.8rem;
+  color: var(--gold);
   transform: none !important;
 }
 
