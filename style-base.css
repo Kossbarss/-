@@ -2496,6 +2496,31 @@ body.nav-open {
   }
 }
 
+/* Lifetime-access illustration, added to the "Пожизненный доступ"
+   card below its text -- same slot pattern as .feature-video-wrap. */
+.feature-lifetime-wrap {
+  margin: 16px 0 0;
+}
+
+.feature-lifetime-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  animation: lifetime-glow-pulse 2.6s ease-in-out infinite;
+}
+
+/* Same pulsing edge-glow technique as the other cards' images, cycled
+   through a dark red-gold palette instead of a single hue. */
+@keyframes lifetime-glow-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(139, 26, 26, 0.35));
+  }
+  50% {
+    filter: drop-shadow(0 0 22px rgba(201, 162, 74, 0.85));
+  }
+}
+
 /* Scroll-in reveal for "#whatYouGet" ("Формат обучения"): same soft
    blur cascade as #program -- heading first, then each feature-card in
    sequence. Scoped to #whatYouGet since .section-head/.feature-card are
@@ -2761,7 +2786,8 @@ body.nav-open {
   .feature-ai-image,
   .feature-ai-glow,
   .feature-video-image,
-  .feature-templates-image {
+  .feature-templates-image,
+  .feature-lifetime-image {
     animation: none;
   }
 }
