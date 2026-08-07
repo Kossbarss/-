@@ -209,3 +209,16 @@
     padding: 20px;
   }
 }
+
+/* Desktop: at the base 320px card width, the section's 1180px container
+   (see .container) only fits ~3.5 cards, reading as "3 full cards, one
+   half-hidden" -- client wants 4 full cards visible, still with a couple
+   more peeking at each edge. Narrowing the card (not the container) gets
+   there without touching tablet/mobile, which keep their own widths
+   above/below this breakpoint untouched. */
+@media (min-width: 1024px) {
+  .cases-marquee-card {
+    width: 260px;
+    padding: 22px;
+  }
+}
