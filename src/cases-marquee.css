@@ -31,24 +31,22 @@
      top/bottom edge instead of fading out naturally under each card. */
   padding: 16px 0;
   overflow: hidden;
-  /* Edge cards fade out over roughly one card's width (.cases-marquee-card
-     is 320px) instead of a thin 28px sliver, so the card entering/leaving
-     at each side visibly dissolves across its own span -- opacity ->
-     transparent -- rather than getting hard-cropped by overflow:hidden
-     with only its outermost edge softened. Cards further in stay fully
-     opaque since the gradient reaches solid black well before them. */
+  /* Light vertical dissolve at the left/right edges as cards scroll in
+     and out of view, instead of a hard cut -- short and subtle. Desktop
+     widens this considerably (see the min-width:1024px block below);
+     mobile/tablet keep this original short fade untouched. */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0,
-    black 320px,
-    black calc(100% - 320px),
+    black 28px,
+    black calc(100% - 28px),
     transparent 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0,
-    black 320px,
-    black calc(100% - 320px),
+    black 28px,
+    black calc(100% - 28px),
     transparent 100%
   );
 }
@@ -219,24 +217,29 @@
     width: 280px;
     padding: 20px;
   }
+}
 
+/* Desktop only: edge cards fade out over roughly one card's width
+   (.cases-marquee-card is 320px here) instead of the short 28px sliver
+   above, so the card entering/leaving at each side visibly dissolves
+   across its own span -- opacity -> transparent -- rather than getting
+   hard-cropped by overflow:hidden with only its outermost edge
+   softened. Mobile/tablet are unaffected, keeping the original short
+   fade (a 320px zone would swallow most of a phone-width row). */
+@media (min-width: 1024px) {
   .cases-marquee {
-    /* Matches the 280px card at this breakpoint -- see the base
-       .cases-marquee mask-image comment above (tuned for the 320px
-       desktop card). A 320px fade zone on a narrow phone screen would
-       swallow almost the whole row. */
     -webkit-mask-image: linear-gradient(
       to right,
       transparent 0,
-      black 280px,
-      black calc(100% - 280px),
+      black 320px,
+      black calc(100% - 320px),
       transparent 100%
     );
     mask-image: linear-gradient(
       to right,
       transparent 0,
-      black 280px,
-      black calc(100% - 280px),
+      black 320px,
+      black calc(100% - 320px),
       transparent 100%
     );
   }
