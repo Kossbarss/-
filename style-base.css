@@ -2438,6 +2438,20 @@ body.nav-open {
   text-transform: none;
 }
 
+/* Video-lesson preview thumbnail, added to the "Короткие видеоуроки"
+   card below its text -- same slot pattern as .feature-ai-wrap in the
+   AI-assistant card, just a static photo instead of an animated chip. */
+.feature-video-wrap {
+  margin: 16px 0 0;
+}
+
+.feature-video-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
 /* Scroll-in reveal for "#whatYouGet" ("Формат обучения"): same soft
    blur cascade as #program -- heading first, then each feature-card in
    sequence. Scoped to #whatYouGet since .section-head/.feature-card are
