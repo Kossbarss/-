@@ -4514,6 +4514,12 @@ body.popup-open {
 
 .hero-stat span {
   font-size: clamp(1.15rem, 1.5vw, 1.5rem);
+  /* Match .hero-sub's weight ("Без дорогого оборудования...") -- both
+     already share font-family (--font-rise/Roboto Flex) via .hero-stat
+     above, but this label was left at the browser's default 400 while
+     .hero-sub is 600, which read as a different typeface even though
+     it wasn't one. */
+  font-weight: 600;
 }
 
 .hero .hero-topline {
