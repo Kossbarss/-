@@ -20,9 +20,13 @@
      (almost) the whole viewport width instead of being cropped to the
      same column as the section's text, so more cards are visible/
      peeking at once -- but stops 145px short of each screen edge
-     (65px + a further 80px) rather than running fully flush (100vw).
-     Card size itself (.cases-marquee-card) is untouched -- only the
-     row they scroll through got wider. */
+     rather than running fully flush (100vw). Card size itself
+     (.cases-marquee-card) is untouched -- only the row they scroll
+     through got wider.
+     145px is CLIENT-CONFIRMED FINAL -- explicitly signed off after
+     iterating from full-bleed (0px) up through 65px. Do not change
+     this number without a new explicit request; it is not a
+     placeholder or a rough estimate. */
   width: calc(100vw - 290px);
   margin-left: calc(50% - 50vw + 145px);
   margin-right: calc(50% - 50vw + 145px);
