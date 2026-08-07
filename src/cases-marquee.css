@@ -31,20 +31,24 @@
      top/bottom edge instead of fading out naturally under each card. */
   padding: 16px 0;
   overflow: hidden;
-  /* Light vertical dissolve at the left/right edges as cards scroll in
-     and out of view, instead of a hard cut -- short and subtle. */
+  /* Edge cards fade out over roughly one card's width (.cases-marquee-card
+     is 320px) instead of a thin 28px sliver, so the card entering/leaving
+     at each side visibly dissolves across its own span -- opacity ->
+     transparent -- rather than getting hard-cropped by overflow:hidden
+     with only its outermost edge softened. Cards further in stay fully
+     opaque since the gradient reaches solid black well before them. */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0,
-    black 28px,
-    black calc(100% - 28px),
+    black 320px,
+    black calc(100% - 320px),
     transparent 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0,
-    black 28px,
-    black calc(100% - 28px),
+    black 320px,
+    black calc(100% - 320px),
     transparent 100%
   );
 }
@@ -215,26 +219,26 @@
     width: 280px;
     padding: 20px;
   }
-}
 
-/* Desktop: sized so the resting/typical view reads as "4 full cards
-   plus a ~10% sliver of the next/previous card" at the edges, at any
-   desktop viewport width. Since .cases-marquee is full-bleed 100vw
-   (see above) and the visible span is
-   [10% card][gap][card][gap][card][gap][card][gap][card][gap][10% card],
-   that's 4.2 card-widths (W) plus 5 gaps (this row's own 13px
-   .cases-marquee-track gap): 4.2W + 5*13px = 100vw, i.e.
-   W = (100vw - 65px) / 4.2. Note the marquee scrolls continuously
-   (not step-and-pause), so the edge cards constantly cycle through
-   every crop percentage from 0-100% as they scroll through, not just
-   the "resting" one this width is tuned for -- there's no way to keep
-   them fixed at exactly 10% at all times without pausing the scroll,
-   which was tried and reverted. This only sets how much of each edge
-   card shows at the moment it's freshly settled into the 4-full-cards
-   layout. Clamped so cards don't get too cramped right at the 1024px
-   edge or absurdly large on ultra-wide monitors. */
-@media (min-width: 1024px) {
-  .cases-marquee-card {
-    width: clamp(240px, calc(23.81vw - 15.48px), 420px);
+  .cases-marquee {
+    /* Matches the 280px card at this breakpoint -- see the base
+       .cases-marquee mask-image comment above (tuned for the 320px
+       desktop card). A 320px fade zone on a narrow phone screen would
+       swallow almost the whole row. */
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black 280px,
+      black calc(100% - 280px),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black 280px,
+      black calc(100% - 280px),
+      transparent 100%
+    );
   }
 }
+
