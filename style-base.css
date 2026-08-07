@@ -2456,6 +2456,19 @@ body.nav-open {
   width: 100%;
   height: auto;
   border-radius: 12px;
+  animation: video-thumb-glow-pulse 2.6s ease-in-out infinite;
+}
+
+/* Same pulsing edge-glow technique as the AI-chip icon
+   (ai-chip-pulse), recolored to a soft brown to suit a photo
+   thumbnail instead of the chip's turquoise LED ring. */
+@keyframes video-thumb-glow-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(139, 94, 52, 0.35));
+  }
+  50% {
+    filter: drop-shadow(0 0 22px rgba(139, 94, 52, 0.85));
+  }
 }
 
 /* Scroll-in reveal for "#whatYouGet" ("Формат обучения"): same soft
@@ -2721,7 +2734,8 @@ body.nav-open {
 
 @media (prefers-reduced-motion: reduce) {
   .feature-ai-image,
-  .feature-ai-glow {
+  .feature-ai-glow,
+  .feature-video-image {
     animation: none;
   }
 }
