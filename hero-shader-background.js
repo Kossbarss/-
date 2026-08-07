@@ -93,8 +93,8 @@ void main(){
   fragColor=vec4(mix(base,overlay,.6),1.);
 }`
 
-  const BASE_COLORS = ['#000000', '#06b6d4', '#0891b2', '#164e63', '#f97316']
-  const OVERLAY_COLORS = ['#000000', '#ffffff', '#06b6d4', '#f97316']
+  const BASE_COLORS = ['#000000', '#06b6d4', '#0891b2', '#164e63', '#22d3ee']
+  const OVERLAY_COLORS = ['#000000', '#ffffff', '#06b6d4', '#22d3ee']
 
   function palette(colors) {
     const values = new Float32Array(40)

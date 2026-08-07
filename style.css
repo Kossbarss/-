@@ -10,7 +10,7 @@
   background-color: #000000 !important;
   background-image:
     radial-gradient(ellipse at 18% 18%, #06b6d4 0%, rgba(6, 182, 212, 0.34) 24%, transparent 55%),
-    radial-gradient(ellipse at 82% 24%, #f97316 0%, rgba(249, 115, 22, 0.30) 23%, transparent 54%),
+    radial-gradient(ellipse at 82% 24%, #22d3ee 0%, rgba(34, 211, 238, 0.30) 23%, transparent 54%),
     radial-gradient(ellipse at 56% 78%, #0891b2 0%, rgba(8, 145, 178, 0.28) 27%, transparent 58%),
     radial-gradient(ellipse at 40% 52%, #164e63 0%, rgba(22, 78, 99, 0.30) 31%, transparent 61%),
     linear-gradient(180deg, #000000 0%, #000000 100%) !important;
@@ -380,7 +380,7 @@ body {
   .hero::after {
     top: 14vw;
     right: -20vw;
-    background: radial-gradient(circle, rgba(249, 115, 22, 0.7) 0%, rgba(249, 115, 22, 0.3) 45%, transparent 74%);
+    background: radial-gradient(circle, rgba(34, 211, 238, 0.7) 0%, rgba(34, 211, 238, 0.3) 45%, transparent 74%);
     animation: hero-mobile-blob-b 8.5s ease-in-out infinite;
   }
 
