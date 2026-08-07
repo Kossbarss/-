@@ -54,7 +54,7 @@ const RU_TESTIMONIALS: Testimonial[] = [
   {
     id: 4,
     initials: "О",
-    name: "Оля, 42 года",
+    name: "Оля",
     role: "Gdansk",
     quote: "Важно никогда не отказываться от своей мечты 💫 Превращение художественного хобби в собственную тату-студию — иногда новые знакомства дарят нам новые пути и образ жизни 😊",
     avatarGradient: "linear-gradient(135deg, var(--sage), var(--gold-dark))",
@@ -63,7 +63,7 @@ const RU_TESTIMONIALS: Testimonial[] = [
   {
     id: 5,
     initials: "А",
-    name: "Андрей, 33 года",
+    name: "Андрей",
     role: "Kyiv",
     quote: "Тату — это современное искусство. И как художник (теперь по совместительству и тату-мастер) я всегда стараюсь делать свою работу так, чтобы клиент радовался новому имиджу.",
     avatarGradient: "linear-gradient(135deg, var(--ink-soft), var(--blood-dark))",
@@ -111,7 +111,7 @@ const UK_TESTIMONIALS: Testimonial[] = [
   {
     id: 4,
     initials: "О",
-    name: "Оля, 42 роки",
+    name: "Оля",
     role: "Gdansk",
     quote: "Важливо ніколи не відмовлятися від своєї мрії 💫 Перетворення художнього хобі на власну тату-студію — іноді нові знайомства дарують нам нові шляхи й спосіб життя 😊",
     avatarGradient: "linear-gradient(135deg, var(--sage), var(--gold-dark))",
@@ -120,7 +120,7 @@ const UK_TESTIMONIALS: Testimonial[] = [
   {
     id: 5,
     initials: "А",
-    name: "Андрій, 33 роки",
+    name: "Андрій",
     role: "Kyiv",
     quote: "Тату — це сучасне мистецтво. І як художник (тепер за сумісництвом і тату-майстер) я завжди намагаюся робити свою роботу так, щоб клієнт радів новому іміджу.",
     avatarGradient: "linear-gradient(135deg, var(--ink-soft), var(--blood-dark))",
