@@ -1114,27 +1114,23 @@ body.nav-open {
    instead of the paragraph's -- background-clip:text doesn't reliably
    clip through a nested inline-block descendant. */
 .hero-lede .word-animate {
-  /* Kept the original light gold-light->gold fill -- darkening it
-     (an earlier attempt, toward gold-dark) backfired: the hero
-     background isn't uniform turquoise, it has a dark radial vignette
-     over parts of it (see .hero-glow / the shader background), and a
-     darkened gold read fine on the bright patches but nearly vanished
-     on the dark ones, which is worse. A light fill stays legible over
-     the dark vignette on its own; text-stroke below gives it a firm
-     dark outline so it also holds up over the bright turquoise,
-     instead of relying on the fill color to do both jobs at once.
-     Stacked text-shadow copies were tried first for this and rejected
-     -- at this font-size/weight the shadow's blur+offset fully covered
-     the glyphs' thin strokes and the whole word rendered as a solid
-     black blob with no gold visible at all. text-stroke paints purely
-     as an outside border around each glyph, so the gradient fill
-     inside stays untouched no matter how solid the stroke color is. */
-  background: linear-gradient(155deg, var(--gold-light) 0%, var(--gold) 100%);
+  /* Client wants this warm and light -- no dark outline/shadow, which
+     is what the two earlier attempts both leaned on (a dark gradient,
+     then a dark text-stroke). This version goes the other way: a
+     brighter/more saturated golden gradient than the muted
+     gold-light->gold token pair, lifted off the background with a
+     bright warm-white glow instead of a dark edge. The glow works on
+     both halves of the hero -- against the dark vignette patches it
+     reads as a clean bright halo, and against the lighter turquoise
+     patches the warm hue (vs. the background's cool cyan) still gives
+     it separation even without a luminance-darkening trick. */
+  background: linear-gradient(155deg, #fff6e0 0%, #f6cf74 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 0.6px rgba(0, 0, 0, 0.6);
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.85),
+    0 0 16px rgba(246, 207, 116, 0.55);
 }
 
 /* The "22+" ticker digit-roll (see hero-stats-entry.tsx) renders its own
@@ -1142,13 +1138,9 @@ body.nav-open {
    background-clip:text above to reliably clip through (same reason the
    comment above moved the gradient down to word level instead of the
    whole paragraph). Give it a plain solid gold instead of fighting
-   that. #d8bb79 is a measured match, not a guess: sampled the actual
-   rendered pixels of the neighboring word "странах" (which the 155deg
-   gold-light -> gold gradient happens to land on roughly midway, at
-   this word's position in the sentence) and used that color directly
-   -- neither design token alone matched. --gold-light alone read pale
-   and washed-out (almost white) next to it; --gold alone read
-   noticeably darker/more saturated.
+   that. #fbe3aa is the 50/50 average of the word-animate gradient's
+   two stops (#fff6e0, #f6cf74), matching where that gradient lands at
+   this word's position in the sentence.
    Font is left to inherit from .hero-lede (Roboto Flex, weight 600)
    rather than overridden -- same font as its neighbors rules out a
    font-metrics mismatch as the cause of any baseline gap.
@@ -1172,11 +1164,12 @@ body.nav-open {
   background: none;
   -webkit-background-clip: initial;
   background-clip: initial;
-  -webkit-text-fill-color: #d8bb79;
-  color: #d8bb79;
+  -webkit-text-fill-color: #fbe3aa;
+  color: #fbe3aa;
   vertical-align: -0.19em;
-  -webkit-text-stroke: 0.6px rgba(0, 0, 0, 0.6);
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.85),
+    0 0 16px rgba(246, 207, 116, 0.55);
 }
 
 .hero-tags {
