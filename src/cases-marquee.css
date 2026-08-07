@@ -218,26 +218,18 @@
 }
 
 /* Desktop: exactly 4 full cards on screen plus the next/previous card
-   each cropped to ~15% visible at the edges, at any desktop viewport
-   width -- not just at one specific size. Since .cases-marquee is
-   full-bleed 100vw (see above), laid out left to right the visible
-   span is [peek 0.15W][gap][card][gap][card][gap][card][gap][card][gap]
-   [peek 0.15W] -- 4.3 card-widths (W) plus 5 gaps (this row's own
-   13px .cases-marquee-track gap), so: 4.3W + 5*13px = 100vw, i.e.
-   W = (100vw - 65px) / 4.3. Widening/narrowing the browser keeps the
-   same look instead of drifting to some other card count, which a
-   fixed px width can't do on its own. Clamped so cards don't get too
-   cramped right at the 1024px edge or absurdly large on ultra-wide
-   monitors.
-   This ratio only reads correctly because the track holds still at
-   each "4 full + 2x15%" position between steps instead of drifting
-   continuously -- see the dwell/step animation in
-   components/ui/testimonial-marquee.tsx. A constantly-moving marquee
-   spends equal time at every position along the way, including ones
-   where several cards are all fully visible at once, no matter how
-   the cards are sized. */
+   each half-cropped at the edges, at any desktop viewport width -- not
+   just at one specific size. Since .cases-marquee is full-bleed 100vw
+   (see above), "4 full + 2 halves" is 5 card-widths total across the
+   viewport, so each card-plus-gap slot is 1/5 of 100vw; the -13px
+   subtracts this row's own gap (.cases-marquee-track) back out of that
+   slot to get the card's own width. Widening/narrowing the browser
+   keeps the same 4-full/2-half look instead of drifting to some other
+   card count, which a fixed px width can't do on its own. Clamped so
+   cards don't get too cramped right at the 1024px edge (raw formula
+   would be ~192px there) or absurdly large on ultra-wide monitors. */
 @media (min-width: 1024px) {
   .cases-marquee-card {
-    width: clamp(240px, calc(23.26vw - 15.12px), 420px);
+    width: clamp(240px, calc(20vw - 13px), 420px);
   }
 }
