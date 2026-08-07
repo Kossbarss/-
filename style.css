@@ -189,11 +189,6 @@ button.sticky-bar-inner {
   outline-offset: 4px;
 }
 
-/* Static fallback remains visible if canvas or image sampling fails. */
-#logoParticles {
-  background: center / 58% no-repeat url('./assets/logo-watermark.png');
-}
-
 /* Remove the pale body gutter below the footer; keep safe space inside the dark footer. */
 body {
   padding-bottom: 0 !important;
@@ -452,10 +447,6 @@ body {
   .hero > .hero-glow {
     animation-duration: 10s !important;
     animation-iteration-count: infinite !important;
-  }
-
-  #logoParticles {
-    background-size: 58%;
   }
 
   .case-fan-card {
