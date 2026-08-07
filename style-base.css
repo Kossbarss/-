@@ -1114,23 +1114,18 @@ body.nav-open {
    instead of the paragraph's -- background-clip:text doesn't reliably
    clip through a nested inline-block descendant. */
 .hero-lede .word-animate {
-  /* Client wants this warm and light -- no dark outline/shadow, which
-     is what the two earlier attempts both leaned on (a dark gradient,
-     then a dark text-stroke). This version goes the other way: a
-     brighter/more saturated golden gradient than the muted
-     gold-light->gold token pair, lifted off the background with a
-     bright warm-white glow instead of a dark edge. The glow works on
-     both halves of the hero -- against the dark vignette patches it
-     reads as a clean bright halo, and against the lighter turquoise
-     patches the warm hue (vs. the background's cool cyan) still gives
-     it separation even without a luminance-darkening trick. */
+  /* Warm/light golden gradient, brighter and more saturated than the
+     muted gold-light->gold token pair. The glow this had (a bright
+     warm-white text-shadow) is explicitly turned off per client
+     request -- text-shadow: none overrides the soft shadow the parent
+     .hero-lede would otherwise inherit from the shared hero rule (see
+     ".hero h1, .hero-lede, ..." further down), so these words render
+     with no shadow/glow at all, just the plain gradient fill. */
   background: linear-gradient(155deg, #fff6e0 0%, #f6cf74 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow:
-    0 0 4px rgba(255, 255, 255, 0.85),
-    0 0 16px rgba(246, 207, 116, 0.55);
+  text-shadow: none;
 }
 
 /* The "22+" ticker digit-roll (see hero-stats-entry.tsx) renders its own
@@ -1167,9 +1162,7 @@ body.nav-open {
   -webkit-text-fill-color: #fbe3aa;
   color: #fbe3aa;
   vertical-align: -0.19em;
-  text-shadow:
-    0 0 4px rgba(255, 255, 255, 0.85),
-    0 0 16px rgba(246, 207, 116, 0.55);
+  text-shadow: none;
 }
 
 .hero-tags {
