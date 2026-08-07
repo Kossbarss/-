@@ -16,20 +16,10 @@
 
 .cases-marquee {
   position: relative;
-  /* Breaks out of the parent .container (max-width: 1180px) to span
-     (almost) the whole viewport width instead of being cropped to the
-     same column as the section's text, so more cards are visible/
-     peeking at once -- but stops 145px short of each screen edge
-     rather than running fully flush (100vw). Card size itself
-     (.cases-marquee-card) is untouched -- only the row they scroll
-     through got wider.
-     145px is CLIENT-CONFIRMED FINAL -- explicitly signed off after
-     iterating from full-bleed (0px) up through 65px. Do not change
-     this number without a new explicit request; it is not a
-     placeholder or a rough estimate. */
-  width: calc(100vw - 290px);
-  margin-left: calc(50% - 50vw + 145px);
-  margin-right: calc(50% - 50vw + 145px);
+  /* Full-bleed breakout (see the min-width:1024px block below) is
+     desktop-only -- on mobile/tablet this sits inside the normal
+     .container like any other section content, same as before that
+     treatment existed. */
   margin-top: 24px;
   margin-bottom: 40px;
   /* Room for the card shadows to render before overflow:hidden crops
@@ -238,6 +228,22 @@
    the original short fade. */
 @media (min-width: 1024px) {
   .cases-marquee {
+    /* Breaks out of the parent .container (max-width: 1180px) to span
+       (almost) the whole viewport width instead of being cropped to
+       the same column as the section's text, so more cards are
+       visible/peeking at once -- but stops 145px short of each screen
+       edge rather than running fully flush (100vw). Card size itself
+       (.cases-marquee-card) is untouched -- only the row they scroll
+       through got wider.
+       145px is CLIENT-CONFIRMED FINAL -- explicitly signed off after
+       iterating from full-bleed (0px) up through 65px. Do not change
+       this number without a new explicit request; it is not a
+       placeholder or a rough estimate. Desktop-only: mobile/tablet
+       stay inside the normal .container, same as before this
+       treatment existed. */
+    width: calc(100vw - 290px);
+    margin-left: calc(50% - 50vw + 145px);
+    margin-right: calc(50% - 50vw + 145px);
     -webkit-mask-image: linear-gradient(
       to right,
       transparent 0,
