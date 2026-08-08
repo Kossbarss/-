@@ -1579,7 +1579,21 @@ body.nav-open {
 
 /* One pain-card icon (equipment photo, replacing its line-icon SVG)
    fills the same 46x46 box the SVGs use, cropped to cover it -- the
-   parent's overflow:hidden above clips it to the shared 10px radius. */
+   parent's overflow:hidden above clips it to the shared 10px radius.
+   --photo bumps that one card's icon up to a much bigger, centered
+   image instead -- client wants it to read as a visual complement to
+   the card's whole description, not a small corner icon like its
+   siblings. Margin auto centers it since .pain-icon is still a
+   block-level box (the grid/place-items above only affects its own
+   contents); overflow:hidden above still clips it to the radius. */
+.pain-icon--photo {
+  width: 140px;
+  height: 140px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 16px;
+}
+
 .pain-icon-img {
   width: 100%;
   height: 100%;
