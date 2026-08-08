@@ -1530,39 +1530,9 @@ body.nav-open {
   }
 }
 
-.pain-grid {
-  counter-reset: pain-index;
-}
-
 .pain-card {
   position: relative;
   padding: 40px 26px 26px;
-}
-
-/* notched-card signature: a small trapezoid cut into the top edge,
-   painted in the section's own background so it reads as a notch
-   rather than a shape sitting on top of the card */
-.pain-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 24px;
-  width: 56px;
-  height: 16px;
-  background: var(--paper);
-  clip-path: polygon(18% 0, 82% 0, 100% 100%, 0 100%);
-}
-
-.pain-card::after {
-  counter-increment: pain-index;
-  content: '/' counter(pain-index, decimal-leading-zero);
-  position: absolute;
-  top: 16px;
-  right: 20px;
-  font-family: var(--font-accent);
-  font-size: 0.85rem;
-  letter-spacing: 0.02em;
-  color: var(--muted);
 }
 
 .pain-icon {
