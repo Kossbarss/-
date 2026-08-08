@@ -1555,8 +1555,13 @@ body.nav-open {
    card's whole description, not a small corner icon like its
    siblings. The negative left/right margins bleed it past .pain-card's
    own 26px horizontal padding so it actually spans the card's full
-   outer width, not just the padded content column; overflow:hidden
-   above still clips it to the radius.
+   outer width, not just the padded content column; the negative top
+   margin does the same against the card's 40px top padding, so the
+   photo touches the card's top edge too instead of leaving a gap
+   above it (shrinking the card's overall height in the process).
+   overflow:hidden above still clips it to the radius. Top corners use
+   the same 14px radius as .card itself so they blend into the card's
+   own rounded corner instead of a mismatched inner curve.
    aspect-ratio matches the source photo's own 900x563 (~1.6:1)
    exactly -- an earlier version forced a 1:1 square and relied on
    object-fit:cover to crop it to fit, which chopped the leftmost/
@@ -1567,9 +1572,10 @@ body.nav-open {
   width: calc(100% + 52px);
   aspect-ratio: 900 / 563;
   height: auto;
+  margin-top: -40px;
   margin-left: -26px;
   margin-right: -26px;
-  border-radius: 16px;
+  border-radius: 14px 14px 16px 16px;
 }
 
 .pain-icon-img {
