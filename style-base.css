@@ -1547,10 +1547,10 @@ body.nav-open {
   overflow: hidden;
 }
 
-/* One pain-card icon (equipment photo, replacing its line-icon SVG)
-   fills the same 46x46 box the SVGs use, cropped to cover it -- the
+/* Some pain-card icons (real photos, replacing their line-icon SVG)
+   fill the same 46x46 box the SVGs use, cropped to cover it -- the
    parent's overflow:hidden above clips it to the shared 10px radius.
-   --photo bumps that one card's icon up to a full-width banner image
+   --photo bumps that card's icon up to a full-width banner image
    instead -- client wants it to read as a visual complement to the
    card's whole description, not a small corner icon like its
    siblings. The negative left/right margins bleed it past .pain-card's
@@ -1562,15 +1562,14 @@ body.nav-open {
    overflow:hidden above still clips it to the radius. Top corners use
    the same 14px radius as .card itself so they blend into the card's
    own rounded corner instead of a mismatched inner curve.
-   aspect-ratio matches the source photo's own 900x563 (~1.6:1)
-   exactly -- an earlier version forced a 1:1 square and relied on
-   object-fit:cover to crop it to fit, which chopped the leftmost/
-   rightmost machines out of frame and read as "stretched". Matching
-   the container to the image's real ratio means nothing gets cropped
-   or distorted; the whole photo fits as-is. */
+   No fixed aspect-ratio here on purpose -- an earlier version hardcoded
+   one photo's exact ratio (900x563), which then stretched/cropped the
+   next photo dropped into this same class with a different ratio
+   (900x675). .pain-icon-img below sizes itself from its own width/
+   height HTML attributes instead, so each photo keeps its own natural
+   shape with nothing cropped or distorted, whatever ratio it is. */
 .pain-icon--photo {
   width: calc(100% + 52px);
-  aspect-ratio: 900 / 563;
   height: auto;
   margin-top: -40px;
   margin-left: -26px;
@@ -1580,8 +1579,7 @@ body.nav-open {
 
 .pain-icon-img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   display: block;
 }
 
