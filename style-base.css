@@ -1591,6 +1591,14 @@ body.nav-open {
   text-transform: none;
 }
 
+/* Just the equipment card's text, per client request -- its siblings'
+   paragraphs are untouched at the base 0.95rem above. Specificity has
+   to match/beat ".pain-card p" (class+element) -- a bare class
+   selector alone loses that cascade fight and silently does nothing. */
+.pain-card p.pain-card-p--lg {
+  font-size: 1.08rem;
+}
+
 .pain-card strong {
   color: var(--ink);
 }
