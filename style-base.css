@@ -1574,6 +1574,17 @@ body.nav-open {
   place-items: center;
   margin-bottom: 16px;
   color: var(--blood);
+  overflow: hidden;
+}
+
+/* One pain-card icon (equipment photo, replacing its line-icon SVG)
+   fills the same 46x46 box the SVGs use, cropped to cover it -- the
+   parent's overflow:hidden above clips it to the shared 10px radius. */
+.pain-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .pain-card p {
