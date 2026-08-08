@@ -1556,12 +1556,16 @@ body.nav-open {
    siblings. The negative left/right margins bleed it past .pain-card's
    own 26px horizontal padding so it actually spans the card's full
    outer width, not just the padded content column; overflow:hidden
-   above still clips it to the radius, and aspect-ratio keeps it square
-   as that width changes across breakpoints/grid columns instead of a
-   fixed height. */
+   above still clips it to the radius.
+   aspect-ratio matches the source photo's own 900x563 (~1.6:1)
+   exactly -- an earlier version forced a 1:1 square and relied on
+   object-fit:cover to crop it to fit, which chopped the leftmost/
+   rightmost machines out of frame and read as "stretched". Matching
+   the container to the image's real ratio means nothing gets cropped
+   or distorted; the whole photo fits as-is. */
 .pain-icon--photo {
   width: calc(100% + 52px);
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 900 / 563;
   height: auto;
   margin-left: -26px;
   margin-right: -26px;
