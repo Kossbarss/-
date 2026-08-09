@@ -4254,10 +4254,20 @@ body.nav-open {
 }
 
 .popup-sub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   color: var(--muted);
   font-size: 0.92rem;
   text-transform: none;
   margin-bottom: 18px;
+}
+
+.popup-sub-icon {
+  width: 20px;
+  height: auto;
+  flex-shrink: 0;
 }
 
 .popup-price {
