@@ -308,6 +308,10 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* guarantees breathing room between header-brand and .nav-toggle even
+     when space-between runs out of free space at narrow widths, instead
+     of letting them sit flush against each other */
+  gap: 10px;
   height: 64px;
   padding-inline: 28px;
   background: rgba(21, 17, 15, 0.78);
@@ -549,7 +553,6 @@ button {
     display: flex;
     align-items: center;
     gap: 14px;
-    min-width: 0;
   }
 
   .lang-switch.lang-switch-mobile {
