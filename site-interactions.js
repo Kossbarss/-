@@ -533,8 +533,9 @@
     observer.observe(section)
   }
 
-  // "Кому подойдёт курс": heading, then each pain-card, then the fit-list.
-  setupBlurCascadeReveal('#program', ['.section-head', '.pain-card', '.fit-list'])
+  // "Кому подойдёт курс": heading and fit-list stay static (client
+  // request), only the pain-cards get the reveal animation.
+  setupBlurCascadeReveal('#program', ['.pain-card'])
 
   // "Формат обучения" ("Что вы получите на курсе?"): heading, then each
   // of the 4 feature-cards.
