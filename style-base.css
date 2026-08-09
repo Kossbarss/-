@@ -4331,10 +4331,20 @@ body.nav-open {
 }
 
 .popup-footnote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   color: var(--muted);
   font-size: 0.85rem;
   text-transform: none;
   line-height: 1.5;
+}
+
+.popup-footnote-icon {
+  width: 16px;
+  height: auto;
+  flex-shrink: 0;
 }
 
 .popup-footnote strong {
