@@ -4292,6 +4292,9 @@ body.nav-open {
 }
 
 .popup-timer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   font-size: 0.9rem;
   color: var(--ink-soft);
   text-transform: none;
@@ -4299,6 +4302,13 @@ body.nav-open {
   border-radius: 10px;
   padding: 10px 14px;
   margin-bottom: 22px;
+}
+
+.popup-timer-access {
+  color: var(--blood);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
 }
 
 .popup-timer strong {

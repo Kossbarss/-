@@ -70,11 +70,12 @@
   box-shadow: 0 10px 28px -18px rgba(0, 0, 0, 0.72) !important;
 }
 
-/* Keep only the countdown inside the fixed discount bar. */
+/* Keep only the countdown inside the fixed discount bar -- popup-timer
+   is shown again (client now wants the timer + instant-access line
+   visible inside the popup itself, not just the sticky bar). */
 .price-box-timer,
 .price-box-clock,
-.mini-timer,
-.popup-timer {
+.mini-timer {
   display: none !important;
 }
 

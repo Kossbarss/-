@@ -63,13 +63,14 @@
     link.setAttribute('aria-current', 'page')
   })
 
-  // .popup-form is the lead form inside the popup itself -- its button
-  // is the actual final step, so it still goes straight to Telegram.
+  // .popup-form is the lead form inside the popup itself -- its inputs
+  // (email + phone) stay visible, only the submit button is swapped for
+  // a styled link straight to Telegram (no real backend to submit to).
   document.querySelectorAll('.popup-form').forEach((form) => {
     form.removeAttribute('onsubmit')
     form.classList.add('direct-order-form')
     form.setAttribute('aria-label', copy.order)
-    form.replaceChildren()
+    form.querySelector('button[type="submit"]')?.remove()
 
     const orderLink = document.createElement('a')
     orderLink.className = 'btn btn-stardust btn-block'
