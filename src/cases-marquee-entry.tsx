@@ -135,6 +135,7 @@ if (mountNode) {
       testimonials={isUkrainian ? UK_TESTIMONIALS : RU_TESTIMONIALS}
       verifiedLabel={isUkrainian ? "Верифіковано" : "Верифицировано"}
       ratingCaption={isUkrainian ? "Оцінка відгуків навчання" : "Оценка отзывов обучения"}
+      ratingAriaLabel={(rating) => (isUkrainian ? `Оцінка ${rating} з 5` : `Оценка ${rating} из 5`)}
     />
   );
 }

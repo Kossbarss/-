@@ -20,6 +20,8 @@ export interface TestimonialMarqueeProps {
   verifiedLabel?: string;
   /** Locale text shown next to the star rating, e.g. "Оценка отзывов обучения" */
   ratingCaption?: string;
+  /** Locale formatter for the star row's screen-reader label, e.g. rating => `Оценка ${rating} из 5` */
+  ratingAriaLabel?: (rating: number) => string;
 }
 
 function Star({ keyIndex }: { keyIndex: number }) {
@@ -36,11 +38,12 @@ function Star({ keyIndex }: { keyIndex: number }) {
 // Fills a fractional amount of the 5-star row (e.g. 4.5, 3.8) by layering
 // an exact-width clipped copy of filled stars on top of a muted row,
 // rather than only ever rounding to a whole star.
-function StarRow({ rating, caption }: { rating: number; caption?: string }) {
+function StarRow({ rating, caption, ariaLabel }: { rating: number; caption?: string; ariaLabel?: (rating: number) => string }) {
   const percent = Math.max(0, Math.min(100, (rating / 5) * 100));
+  const resolvedAriaLabel = (ariaLabel ?? ((r: number) => `Оценка ${r} из 5`))(rating);
   return (
     <div className="cases-marquee-rating-row">
-      <div className="cases-marquee-stars" aria-label={`Оценка ${rating} из 5`}>
+      <div className="cases-marquee-stars" aria-label={resolvedAriaLabel}>
         <div className="cases-marquee-stars-track" aria-hidden="true">
           {Array.from({ length: 5 }).map((_, i) => (
             <Star key={i} keyIndex={i} />
@@ -80,7 +83,7 @@ function VerifiedBadge({ label }: { label: string }) {
   );
 }
 
-function TestimonialCard({ testimonial, hidden, verifiedLabel, ratingCaption }: { testimonial: Testimonial; hidden: boolean; verifiedLabel: string; ratingCaption?: string }) {
+function TestimonialCard({ testimonial, hidden, verifiedLabel, ratingCaption, ratingAriaLabel }: { testimonial: Testimonial; hidden: boolean; verifiedLabel: string; ratingCaption?: string; ratingAriaLabel?: (rating: number) => string }) {
   return (
     <div className="cases-marquee-card" aria-hidden={hidden || undefined}>
       <div className="cases-marquee-badge-row">
@@ -96,7 +99,7 @@ function TestimonialCard({ testimonial, hidden, verifiedLabel, ratingCaption }: 
         </div>
       </div>
       <blockquote>{testimonial.quote}</blockquote>
-      <StarRow rating={testimonial.rating} caption={ratingCaption} />
+      <StarRow rating={testimonial.rating} caption={ratingCaption} ariaLabel={ratingAriaLabel} />
     </div>
   );
 }
@@ -108,7 +111,7 @@ function TestimonialCard({ testimonial, hidden, verifiedLabel, ratingCaption }: 
 // end, so dragging and idle auto-scroll are the same motion -- no
 // separate "paused" state to fall out of sync with. Hovering never
 // pauses it; only an active drag does, and only for its duration.
-export const TestimonialMarquee = ({ testimonials, speed = 42, verifiedLabel = 'Верифицировано', ratingCaption }: TestimonialMarqueeProps) => {
+export const TestimonialMarquee = ({ testimonials, speed = 42, verifiedLabel = 'Верифицировано', ratingCaption, ratingAriaLabel }: TestimonialMarqueeProps) => {
   const trackRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef(0);
   const halfWidthRef = useRef(0);
@@ -201,6 +204,7 @@ export const TestimonialMarquee = ({ testimonials, speed = 42, verifiedLabel = '
             hidden={index >= testimonials.length}
             verifiedLabel={verifiedLabel}
             ratingCaption={ratingCaption}
+            ratingAriaLabel={ratingAriaLabel}
           />
         ))}
       </div>
