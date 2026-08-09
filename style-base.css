@@ -1562,15 +1562,15 @@ body.nav-open {
    overflow:hidden above still clips it to the radius. Top corners use
    the same 14px radius as .card itself so they blend into the card's
    own rounded corner instead of a mismatched inner curve.
-   No fixed aspect-ratio here on purpose -- an earlier version hardcoded
-   one photo's exact ratio (900x563), which then stretched/cropped the
-   next photo dropped into this same class with a different ratio
-   (900x675). .pain-icon-img below sizes itself from its own width/
-   height HTML attributes instead, so each photo keeps its own natural
-   shape with nothing cropped or distorted, whatever ratio it is. */
+   Fixed aspect-ratio matches the "Боишься дорогого оборудования" photo
+   (900x563) -- client wants every pain-card photo at the same size and
+   position, not each sized to its own natural ratio. .pain-icon-img
+   below fills this box with object-fit:cover, so photos with a
+   different natural ratio get center-cropped to match instead of
+   stretching. */
 .pain-icon--photo {
   width: calc(100% + 52px);
-  height: auto;
+  aspect-ratio: 900 / 563;
   margin-top: -40px;
   margin-left: -26px;
   margin-right: -26px;
@@ -1579,7 +1579,9 @@ body.nav-open {
 
 .pain-icon-img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   display: block;
 }
 
