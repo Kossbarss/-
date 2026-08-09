@@ -60,10 +60,14 @@
   max-width: 72rem;
   height: 24rem;
   margin: 0 auto;
-  /* Desktop/tablet-and-up: crop the wider drum at the container edges
-     (matches the client's reference -- photos extend past the frame and
-     get cut off) instead of showing every face uncropped. Restored to
-     visible for <=1023px below, where the drum is narrower already. */
+  /* Crop the drum at the container edges (matches the client's reference
+     -- photos extend past the frame and get cut off) instead of showing
+     every face uncropped. Kept hidden at every width, including the
+     <=1023px override below -- at that breakpoint the drum is narrower
+     but its peeking side faces still extend past the actual screen edge
+     (confirmed via measurement, not just visually past this container),
+     which inflated the page's own scrollWidth and created invisible
+     horizontal scroll on mobile/tablet. */
   overflow: hidden;
 }
 
@@ -415,7 +419,6 @@
   #caseFanLayout[data-case-carousel-3d="true"] .carousel3d-viewport {
     max-width: 46rem;
     height: 17rem;
-    overflow: visible;
   }
 }
 
