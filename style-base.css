@@ -4706,6 +4706,17 @@ body.popup-open {
     font-size: clamp(1.6rem, 2.1vw, 2.85rem);
   }
 
+  /* Base rule below caps this at 650px -- fine at the base font-size,
+     but the desktop bump above grows the label text well past what
+     650px can hold on one line, so the "22+" column (which already
+     forces a break after "ценят"/"цінують") wraps onto extra lines
+     while the "300+" column doesn't, making the pair visibly
+     lopsided. Same fix as .hero-lede above: let it use more of the
+     .container width on desktop instead. */
+  .hero-stats {
+    width: min(900px, 100%);
+  }
+
   .hero-lede {
     font-size: clamp(1.4rem, 1.6vw, 2.2rem);
     /* Base rule below caps this at 760px, which reads as a cramped
