@@ -1417,7 +1417,6 @@ body.nav-open {
   /* Straight band on desktop -- no rotate() -- so the height is
      exactly identical at both edges at every viewport width, with
      nothing that scales with element width to fight with. */
-  margin: 0 -40px;
   padding: 16px 0;
   overflow: hidden;
 }
