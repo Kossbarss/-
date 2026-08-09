@@ -11,7 +11,7 @@
     mentorship: 'https://t.me/mentor_tatoo_Viktoria_bot',
   }
   const copy = isUk ? {
-    order: 'Оформити участь у Telegram',
+    order: 'Купити курс і отримати всі 4 бонуси',
     orderNote: 'Telegram відкриється в новій вкладці. Адміністратор уточнить формат участі та оплату.',
     instagram: 'Instagram Вікторії Понікарової',
     telegram: 'Telegram-адміністратор VIP tattoo school',
@@ -19,7 +19,7 @@
     previousCase: 'Попередній кейс',
     nextCase: 'Наступний кейс',
   } : {
-    order: 'Оформить участие в Telegram',
+    order: 'Купить курс и получить все 4 бонуса',
     orderNote: 'Telegram откроется в новой вкладке. Администратор уточнит формат участия и оплату.',
     instagram: 'Instagram Виктории Поникаровой',
     telegram: 'Telegram-администратор VIP tattoo school',
