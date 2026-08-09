@@ -12,7 +12,6 @@
   }
   const copy = isUk ? {
     order: 'Купити курс і отримати всі 4 бонуси',
-    orderNote: 'Telegram відкриється в новій вкладці. Адміністратор уточнить формат участі та оплату.',
     instagram: 'Instagram Вікторії Понікарової',
     telegram: 'Telegram-адміністратор VIP tattoo school',
     carousel: 'Фотогалерея навчання VIP tattoo school',
@@ -20,7 +19,6 @@
     nextCase: 'Наступний кейс',
   } : {
     order: 'Купить курс и получить все 4 бонуса',
-    orderNote: 'Telegram откроется в новой вкладке. Администратор уточнит формат участия и оплату.',
     instagram: 'Instagram Виктории Поникаровой',
     telegram: 'Telegram-администратор VIP tattoo school',
     carousel: 'Фотогалерея обучения VIP tattoo school',
@@ -79,10 +77,7 @@
     orderLink.appendChild(orderText)
     setExternalLink(orderLink, contacts.mentorship, copy.order)
 
-    const note = document.createElement('p')
-    note.className = 'contact-note'
-    note.textContent = copy.orderNote
-    form.append(orderLink, note)
+    form.append(orderLink)
     form.addEventListener('submit', (event) => event.preventDefault())
   })
 
