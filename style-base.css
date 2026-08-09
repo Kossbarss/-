@@ -4634,7 +4634,11 @@ body.popup-open {
 }
 
 .hero-stat span {
-  font-size: clamp(1.15rem, 1.5vw, 1.5rem);
+  /* Bumped from clamp(1.15rem, 1.5vw, 1.5rem) -- client said "выпускников
+     обучения" / "стран, где ценят работы учеников" read too small on
+     mobile/tablet. Desktop is untouched (its own bump lives in the
+     min-width:1025px block below), so this only affects <1025px. */
+  font-size: clamp(1.3rem, 1.8vw, 1.7rem);
   /* Match .hero-sub's weight ("Без дорогого оборудования...") -- both
      already share font-family (--font-rise/Roboto Flex) via .hero-stat
      above, but this label was left at the browser's default 400 while
@@ -4857,7 +4861,9 @@ body.popup-open {
   }
 
   .hero-stat span {
-    font-size: clamp(0.95rem, 4vw, 1.15rem);
+    /* Bumped from clamp(0.95rem, 4vw, 1.15rem) -- same client request
+       as the base .hero-stat span rule above, phone-specific override. */
+    font-size: clamp(1.1rem, 4.4vw, 1.35rem);
     line-height: 1.25;
   }
 
