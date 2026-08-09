@@ -1777,6 +1777,18 @@ body.nav-open {
   perspective: 1000px;
 }
 
+/* Touch-swipe navigation for the 3 instructor photos (see the
+   onTouchStart/onTouchEnd handlers in circular-testimonials.tsx) is
+   scoped to below the site's 1024px desktop cutoff -- pan-y here keeps
+   the browser from treating the horizontal swipe as its own gesture
+   (page scroll/back-forward nav) while still letting vertical page
+   scroll pass through untouched. */
+@media (max-width: 1023px) {
+  .instructor-carousel-mount .image-container {
+    touch-action: pan-y;
+  }
+}
+
 .instructor-carousel-mount .testimonial-image {
   position: absolute;
   inset: 0;

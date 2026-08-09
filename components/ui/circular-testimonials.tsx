@@ -111,6 +111,37 @@ export const CircularTestimonials = ({
     if (autoplayIntervalRef.current) clearInterval(autoplayIntervalRef.current);
   }, [testimonialsLength]);
 
+  // Touch-swipe navigation -- mobile/tablet only (client asked for this
+  // explicitly scoped to below desktop), gated by viewport width rather
+  // than touch capability so it matches the same 1024px cutoff the rest
+  // of the site uses for "desktop and up" (cases-marquee, guarantee-box).
+  // Only fires on a real touch gesture (onTouchStart/onTouchEnd), so
+  // desktop mouse/arrow-button interaction is completely untouched.
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  }, []);
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      const start = touchStartRef.current;
+      touchStartRef.current = null;
+      if (!start || window.innerWidth >= 1024) return;
+      const touch = e.changedTouches[0];
+      const deltaX = touch.clientX - start.x;
+      const deltaY = touch.clientY - start.y;
+      // Ignore short taps and swipes that are more vertical than
+      // horizontal, so vertical page scrolling stays untouched.
+      if (Math.abs(deltaX) < 40 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+      if (deltaX < 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
+    },
+    [handleNext, handlePrev]
+  );
+
   // Keyboard navigation -- scoped to the carousel itself (via a
   // container ref + focus check) rather than window, so it doesn't
   // hijack ArrowLeft/ArrowRight for the rest of the page while mounted.
@@ -179,7 +210,12 @@ export const CircularTestimonials = ({
     <div className="testimonial-container" ref={rootRef}>
       <div className="testimonial-grid">
         {/* Images */}
-        <div className="image-container" ref={imageContainerRef}>
+        <div
+          className="image-container"
+          ref={imageContainerRef}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           {testimonials.map((testimonial, index) => (
             <img
               key={testimonial.src}
