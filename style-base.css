@@ -4331,6 +4331,24 @@ body.nav-open {
   color: var(--ink);
 }
 
+.popup-privacy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-transform: none;
+  line-height: 1.4;
+}
+
+.popup-privacy-icon {
+  width: 14px;
+  height: auto;
+  flex-shrink: 0;
+}
+
 body.popup-open {
   overflow: hidden;
 }
