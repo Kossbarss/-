@@ -4664,13 +4664,19 @@ body.popup-open {
 }
 
 .hero .hero-topline p:first-child {
-  font-size: 1rem;
+  /* Bumped from 1rem -- client said this and the line below read too
+     small on mobile/tablet. Desktop has its own separate bump further
+     down (min-width:1025px block), untouched. */
+  font-size: 1.15rem;
   font-weight: 700;
   color: rgba(250, 246, 239, 0.92);
   margin-bottom: 2px;
 }
 
 .hero .hero-topline p:last-child {
+  /* Bumped from the inherited base 0.82rem (.hero .hero-topline p
+     above) -- same client request as p:first-child. */
+  font-size: 0.95rem;
   font-weight: 500;
   color: rgba(250, 246, 239, 0.96);
 }
