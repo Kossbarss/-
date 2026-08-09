@@ -7,7 +7,7 @@
   const isUk = window.VIP_TATTOO_LOCALE === 'uk' || document.documentElement.lang === 'uk'
   const contacts = {
     instagram: 'https://www.instagram.com/viktoriia_ponikarova?igsh=MWZya3dvY215dGFocA==',
-    telegram: 'https://t.me/tattoo_adminbot',
+    telegram: 'https://t.me/+48733341364',
     mentorship: 'https://t.me/mentor_tatoo_Viktoria_bot',
   }
   const copy = isUk ? {
