@@ -12,6 +12,7 @@
   }
   const copy = isUk ? {
     order: 'Купити курс і отримати всі 4 бонуси',
+    popupOrder: 'Отримати доступ',
     instagram: 'Instagram Вікторії Понікарової',
     telegram: 'Telegram-адміністратор VIP tattoo school',
     carousel: 'Фотогалерея навчання VIP tattoo school',
@@ -19,6 +20,7 @@
     nextCase: 'Наступний кейс',
   } : {
     order: 'Купить курс и получить все 4 бонуса',
+    popupOrder: 'Получить доступ',
     instagram: 'Instagram Виктории Поникаровой',
     telegram: 'Telegram-администратор VIP tattoo school',
     carousel: 'Фотогалерея обучения VIP tattoo school',
@@ -69,16 +71,16 @@
   document.querySelectorAll('.popup-form').forEach((form) => {
     form.removeAttribute('onsubmit')
     form.classList.add('direct-order-form')
-    form.setAttribute('aria-label', copy.order)
+    form.setAttribute('aria-label', copy.popupOrder)
     form.querySelector('button[type="submit"]')?.remove()
 
     const orderLink = document.createElement('a')
     orderLink.className = 'btn btn-stardust btn-block'
     const orderText = document.createElement('span')
     orderText.className = 'btn-stardust-wrap'
-    orderText.textContent = copy.order
+    orderText.textContent = copy.popupOrder
     orderLink.appendChild(orderText)
-    setExternalLink(orderLink, contacts.mentorship, copy.order)
+    setExternalLink(orderLink, contacts.mentorship, copy.popupOrder)
 
     form.append(orderLink)
     form.addEventListener('submit', (event) => event.preventDefault())
