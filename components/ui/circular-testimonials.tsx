@@ -27,11 +27,16 @@ interface FontSizes {
   designation?: string;
   quote?: string;
 }
+interface AriaLabels {
+  prev?: string;
+  next?: string;
+}
 interface CircularTestimonialsProps {
   testimonials: Testimonial[];
   autoplay?: boolean;
   colors?: Colors;
   fontSizes?: FontSizes;
+  ariaLabels?: AriaLabels;
 }
 
 function calculateGap(width: number) {
@@ -50,6 +55,7 @@ export const CircularTestimonials = ({
   autoplay = true,
   colors = {},
   fontSizes = {},
+  ariaLabels = {},
 }: CircularTestimonialsProps) => {
   // Color & font config
   const colorName = colors.name ?? "#000";
@@ -61,6 +67,8 @@ export const CircularTestimonials = ({
   const fontSizeName = fontSizes.name ?? "1.5rem";
   const fontSizeDesignation = fontSizes.designation ?? "0.925rem";
   const fontSizeQuote = fontSizes.quote ?? "1.125rem";
+  const ariaLabelPrev = ariaLabels.prev ?? "Previous testimonial";
+  const ariaLabelNext = ariaLabels.next ?? "Next testimonial";
 
   // State
   const [activeIndex, setActiveIndex] = useState(0);
@@ -283,7 +291,7 @@ export const CircularTestimonials = ({
               }}
               onMouseEnter={() => setHoverPrev(true)}
               onMouseLeave={() => setHoverPrev(false)}
-              aria-label="Previous testimonial"
+              aria-label={ariaLabelPrev}
             >
               <ArrowLeft size={22} color={colorArrowFg} />
             </button>
@@ -295,7 +303,7 @@ export const CircularTestimonials = ({
               }}
               onMouseEnter={() => setHoverNext(true)}
               onMouseLeave={() => setHoverNext(false)}
-              aria-label="Next testimonial"
+              aria-label={ariaLabelNext}
             >
               <ArrowRight size={22} color={colorArrowFg} />
             </button>

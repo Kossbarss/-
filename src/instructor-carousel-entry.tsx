@@ -69,6 +69,11 @@ if (mountNode) {
         designation: "0.9rem",
         quote: "1rem",
       }}
+      ariaLabels={
+        isUkrainian
+          ? { prev: "Попередній відгук", next: "Наступний відгук" }
+          : { prev: "Предыдущий отзыв", next: "Следующий отзыв" }
+      }
     />
   );
 }
