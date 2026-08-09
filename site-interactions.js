@@ -232,6 +232,9 @@
     }
 
     stickyTrigger.addEventListener('click', () => setPopupOpen(true))
+    document.querySelectorAll('[data-popup-open]').forEach((trigger) => {
+      trigger.addEventListener('click', () => setPopupOpen(true))
+    })
     popupClose?.addEventListener('click', () => setPopupOpen(false))
     popupOverlay.addEventListener('click', () => setPopupOpen(false))
     popupCard.addEventListener('keydown', (event) => app.trapFocus(event, popupCard))

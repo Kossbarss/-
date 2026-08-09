@@ -63,7 +63,9 @@
     link.setAttribute('aria-current', 'page')
   })
 
-  document.querySelectorAll('.order-form, .popup-form').forEach((form) => {
+  // .popup-form is the lead form inside the popup itself -- its button
+  // is the actual final step, so it still goes straight to Telegram.
+  document.querySelectorAll('.popup-form').forEach((form) => {
     form.removeAttribute('onsubmit')
     form.classList.add('direct-order-form')
     form.setAttribute('aria-label', copy.order)
@@ -78,6 +80,29 @@
     setExternalLink(orderLink, contacts.mentorship, copy.order)
 
     form.append(orderLink)
+    form.addEventListener('submit', (event) => event.preventDefault())
+  })
+
+  // .order-form is the standalone "Заполни форму..." section CTA --
+  // it now opens the same popup as the sticky bar instead of jumping
+  // straight to Telegram (site-interactions.js wires up the actual
+  // popup-open behaviour on any [data-popup-open] element).
+  document.querySelectorAll('.order-form').forEach((form) => {
+    form.removeAttribute('onsubmit')
+    form.classList.add('popup-order-form')
+    form.setAttribute('aria-label', copy.order)
+    form.replaceChildren()
+
+    const orderButton = document.createElement('button')
+    orderButton.type = 'button'
+    orderButton.className = 'btn btn-stardust btn-block'
+    orderButton.setAttribute('data-popup-open', '')
+    const orderText = document.createElement('span')
+    orderText.className = 'btn-stardust-wrap'
+    orderText.textContent = copy.order
+    orderButton.appendChild(orderText)
+
+    form.append(orderButton)
     form.addEventListener('submit', (event) => event.preventDefault())
   })
 
