@@ -138,6 +138,7 @@ if (mountNode) {
     <TestimonialStack
       testimonials={isUkrainian ? UK_TESTIMONIALS : RU_TESTIMONIALS}
       ratingCaption={isUkrainian ? "Оцінка відгуків навчання" : "Оценка отзывов обучения"}
+      paginationLabel={(n) => (isUkrainian ? `Перейти до відгуку ${n}` : `Перейти к отзыву ${n}`)}
     />
   );
 }

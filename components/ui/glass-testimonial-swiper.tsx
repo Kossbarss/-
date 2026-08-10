@@ -20,6 +20,8 @@ export interface TestimonialStackProps {
   visibleBehind?: number;
   /** Locale text shown next to the star rating, e.g. "Оценка отзывов обучения" */
   ratingCaption?: string;
+  /** Locale aria-label for a pagination dot, e.g. (n) => `Перейти к отзыву ${n}` */
+  paginationLabel?: (position: number) => string;
 }
 
 function TestimonialStar({ keyIndex }: { keyIndex: number }) {
@@ -59,7 +61,7 @@ function TestimonialStarRow({ rating, caption }: { rating: number; caption?: str
 }
 
 // --- The Component ---
-export const TestimonialStack = ({ testimonials, visibleBehind = 2, ratingCaption }: TestimonialStackProps) => {
+export const TestimonialStack = ({ testimonials, visibleBehind = 2, ratingCaption, paginationLabel }: TestimonialStackProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
@@ -194,7 +196,7 @@ export const TestimonialStack = ({ testimonials, visibleBehind = 2, ratingCaptio
 
       <div className="pagination flex gap-2 justify-center absolute bottom-0 left-0 right-0">
         {testimonials.map((_, index) => (
-          <button key={index} aria-label={`Go to testimonial ${index + 1}`} onClick={() => navigate(index)} className={`pagination-dot ${activeIndex === index ? 'active' : ''}`} />
+          <button key={index} aria-label={paginationLabel ? paginationLabel(index + 1) : `Go to testimonial ${index + 1}`} onClick={() => navigate(index)} className={`pagination-dot ${activeIndex === index ? 'active' : ''}`} />
         ))}
       </div>
     </section>
