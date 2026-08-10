@@ -2923,6 +2923,26 @@ body.nav-open {
   }
 }
 
+/* the 92vw and 78vw values above are each internally continuous, but
+   jump instantly at the 479/480px threshold -- 480px -> 78vw (~374px)
+   vs 479px -> 92vw (~441px), a ~66px size change for a 1px difference
+   in window width. this band turns that jump into a short linear ramp
+   instead, computed to land on the exact same pixel value as the flat
+   rules on both sides (at 460px and 500px) so there's no visible seam. */
+@media (min-width: 460px) and (max-width: 500px) {
+  .topics-ring {
+    width: clamp(390px, -83vw + 805px, 423.2px);
+  }
+}
+
+/* same ramp treatment, for the 767/768px jump between 78vw and 58vw --
+   lands on the same pixel value as the flat rules at 748px/788px. */
+@media (min-width: 748px) and (max-width: 788px) {
+  .topics-ring {
+    width: clamp(457.04px, -316vw + 2947.12px, 583.44px);
+  }
+}
+
 .topics-ring svg {
   position: absolute;
   inset: 0;
@@ -2946,6 +2966,15 @@ body.nav-open {
 @media (max-width: 479px) {
   .v-marquee {
     height: 53vw;
+  }
+}
+
+/* same ramp treatment as .topics-ring above, for the 479/480px jump
+   between 33.4vw and 53vw -- lands on the same pixel value as the flat
+   rules at 460px/500px so there's no seam. */
+@media (min-width: 460px) and (max-width: 500px) {
+  .v-marquee {
+    height: clamp(167px, -192vw + 1127px, 243.8px);
   }
 }
 
@@ -2987,6 +3016,27 @@ body.nav-open {
   }
 }
 
+/* same ramp treatment as .topics-ring above, for the 479/480px jump.
+   note this ramps toward the tablet tier (22vw/24vw, active 480-767px)
+   -- not the desktop base (12vw/14vw) -- since that's the value that's
+   actually adjacent on the other side of the 479/480px line. */
+@media (min-width: 460px) and (max-width: 500px) {
+  .topics-marquee-wrap {
+    margin-top: clamp(92px, 45vw + -115px, 110px);
+    margin-bottom: clamp(96.6px, 58.5vw + -172.5px, 120px);
+  }
+}
+
+/* same ramp treatment, for the 767/768px jump between 22vw/24vw and
+   12vw/14vw -- lands on the same pixel value as the flat rules at
+   748px/788px. */
+@media (min-width: 748px) and (max-width: 788px) {
+  .topics-marquee-wrap {
+    margin-top: clamp(94.56px, -175vw + 1473.56px, 164.56px);
+    margin-bottom: clamp(110.32px, -173vw + 1473.56px, 179.52px);
+  }
+}
+
 .v-track {
   display: flex;
   flex-direction: column;
@@ -3013,6 +3063,14 @@ body.nav-open {
   }
 }
 
+/* same ramp treatment as .topics-ring above, for the 479/480px jump
+   between 5.9vw and 9.33vw */
+@media (min-width: 460px) and (max-width: 500px) {
+  .v-item {
+    font-size: clamp(29.5px, -33.545vw + 197.22px, 42.92px);
+  }
+}
+
 @keyframes scroll-up {
   from {
     transform: translateY(0);
@@ -3022,26 +3080,10 @@ body.nav-open {
   }
 }
 
-/* fade the scrolling words into the section background at the top and
-   bottom edges of the porthole. A real flat fully-opaque zone (0-28%)
-   comes first — RISE's original curve (opaque only at the very 0%
-   point, already translucent a few % in) let bright letter strokes
-   show through as a faint but readable sliver right at the edge. */
+/* fade overlay disabled per client request -- words now scroll fully
+   visible with no darkening at the top/bottom edges of the porthole. */
 .v-marquee-blur {
-  position: absolute;
-  top: -2px;
-  left: 0;
-  right: 0;
-  height: calc(50% + 2px);
-  background: linear-gradient(#0d0b0a 0%, #0d0b0a 38%, rgba(13, 11, 10, 0.75) 68%, rgba(13, 11, 10, 0) 100%);
-  pointer-events: none;
-  z-index: 2;
-}
-
-.v-marquee-blur.is-bottom {
-  top: auto;
-  bottom: -2px;
-  background: linear-gradient(rgba(13, 11, 10, 0) 0%, rgba(13, 11, 10, 0.75) 32%, #0d0b0a 62%, #0d0b0a 100%);
+  display: none;
 }
 
 /* ---------- 14-day cycle grid (identical block/palette/logo-placement to RISE) ---------- */

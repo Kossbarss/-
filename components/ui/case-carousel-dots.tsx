@@ -2,27 +2,14 @@
 
 import { AnimatePresence, motion } from "motion/react";
 
-interface CaseCarouselDotsAriaLabels {
-  prev?: string;
-  next?: string;
-  track?: string;
-  case?: (index: number) => string;
-}
-
 interface CaseCarouselDotsProps {
   total: number;
   activeIndex: number;
   onChange: (index: number) => void;
-  ariaLabels?: CaseCarouselDotsAriaLabels;
 }
 
-export function CaseCarouselDots({ total, activeIndex, onChange, ariaLabels = {} }: CaseCarouselDotsProps) {
+export function CaseCarouselDots({ total, activeIndex, onChange }: CaseCarouselDotsProps) {
   if (total <= 1) return null;
-
-  const ariaLabelPrev = ariaLabels.prev ?? "Попередній кейс";
-  const ariaLabelNext = ariaLabels.next ?? "Наступний кейс";
-  const ariaLabelTrack = ariaLabels.track ?? "Кейси учнів";
-  const ariaLabelCase = ariaLabels.case ?? ((i: number) => `Кейс ${i + 1}`);
 
   const goPrev = () => onChange(activeIndex > 0 ? activeIndex - 1 : total - 1);
   const goNext = () => onChange(activeIndex < total - 1 ? activeIndex + 1 : 0);
@@ -33,14 +20,14 @@ export function CaseCarouselDots({ total, activeIndex, onChange, ariaLabels = {}
         type="button"
         className="case-carousel-dots-arrow"
         onClick={goPrev}
-        aria-label={ariaLabelPrev}
+        aria-label="Попередній кейс"
       >
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
           <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
 
-      <div className="case-carousel-dots-track" role="tablist" aria-label={ariaLabelTrack}>
+      <div className="case-carousel-dots-track" role="tablist" aria-label="Кейси учнів">
         {Array.from({ length: total }).map((_, i) => {
           const isActive = i === activeIndex;
           return (
@@ -49,7 +36,7 @@ export function CaseCarouselDots({ total, activeIndex, onChange, ariaLabels = {}
               type="button"
               role="tab"
               aria-selected={isActive}
-              aria-label={ariaLabelCase(i)}
+              aria-label={`Кейс ${i + 1}`}
               className={`case-carousel-dot${isActive ? " is-active" : ""}`}
               onClick={() => onChange(i)}
               animate={{ width: isActive ? 22 : 8 }}
@@ -76,7 +63,7 @@ export function CaseCarouselDots({ total, activeIndex, onChange, ariaLabels = {}
         type="button"
         className="case-carousel-dots-arrow"
         onClick={goNext}
-        aria-label={ariaLabelNext}
+        aria-label="Наступний кейс"
       >
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
           <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
