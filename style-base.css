@@ -3172,6 +3172,38 @@ body.nav-open {
   }
 }
 
+/* the 4-column zone (561-900px) previously fell through to the base
+   7-column cell sizing below -- 4 wider columns rendered with values
+   tuned for 7 narrow ones, so cells landed far too small right next
+   to the 3-column zone's much larger ones, and the 560/561px boundary
+   snapped between the two extremes instead of stepping down gradually.
+   Each calc() below is a straight line through the 3-column zone's
+   value at 561px and the 7-column zone's value at 900px, so both
+   boundaries (560/561 and 900/901) land within a fraction of a
+   pixel of each other instead of snapping -- a flat vw value here
+   would still cliff at whichever end it wasn't tuned for. */
+@media (min-width: 561px) and (max-width: 900px) {
+  .rise-grid {
+    gap: calc(11.77px - 1.03vw);
+  }
+
+  .rise-grid .rise-cell {
+    min-height: calc(140px - 8.96vw);
+    padding: calc(21.45px - 1.69vw);
+    gap: calc(9.68px - 0.33vw);
+    border-radius: calc(35.3px - 3.09vw);
+  }
+
+  .rise-grid .cell-day-num {
+    font-size: calc(36.95px - 2.86vw);
+  }
+
+  .rise-grid .cell-label {
+    font-size: calc(26.37px - 2.03vw);
+    line-height: 1.25;
+  }
+}
+
 @media (max-width: 560px) {
   .rise-grid {
     grid-template-columns: repeat(3, 1fr);
