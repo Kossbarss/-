@@ -3081,24 +3081,17 @@ body.nav-open {
 }
 
 /* fade the scrolling words into the section background at the top and
-   bottom edges of the porthole. A real flat fully-opaque zone comes
-   first — RISE's original curve (opaque only at the very 0% point,
-   already translucent a few % in) let bright letter strokes show
-   through as a faint but readable sliver right at the edge.
-   The flat zone is sized at 46% of the half-height (not a rounder
-   38%) because at the default 33.4vw marquee height one .v-item row
-   (font-size 5.9vw + 1vw gap) is taller than 38% of the half-height —
-   a word sitting right at the edge had part of its glyphs poking past
-   the opaque zone into the 38-68% translucent band, reading as fully
-   legible white text right up against the hard v-marquee-clip edge
-   instead of fading out first. 46% covers one full row with margin. */
+   bottom edges of the porthole. A real flat fully-opaque zone (0-28%)
+   comes first — RISE's original curve (opaque only at the very 0%
+   point, already translucent a few % in) let bright letter strokes
+   show through as a faint but readable sliver right at the edge. */
 .v-marquee-blur {
   position: absolute;
   top: -2px;
   left: 0;
   right: 0;
   height: calc(50% + 2px);
-  background: linear-gradient(#0d0b0a 0%, #0d0b0a 46%, rgba(13, 11, 10, 0.75) 74%, rgba(13, 11, 10, 0) 100%);
+  background: linear-gradient(#0d0b0a 0%, #0d0b0a 38%, rgba(13, 11, 10, 0.75) 68%, rgba(13, 11, 10, 0) 100%);
   pointer-events: none;
   z-index: 2;
 }
@@ -3106,7 +3099,7 @@ body.nav-open {
 .v-marquee-blur.is-bottom {
   top: auto;
   bottom: -2px;
-  background: linear-gradient(rgba(13, 11, 10, 0) 0%, rgba(13, 11, 10, 0.75) 26%, #0d0b0a 54%, #0d0b0a 100%);
+  background: linear-gradient(rgba(13, 11, 10, 0) 0%, rgba(13, 11, 10, 0.75) 32%, #0d0b0a 62%, #0d0b0a 100%);
 }
 
 /* ---------- 14-day cycle grid (identical block/palette/logo-placement to RISE) ---------- */
