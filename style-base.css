@@ -2935,6 +2935,14 @@ body.nav-open {
   }
 }
 
+/* same ramp treatment, for the 767/768px jump between 78vw and 58vw --
+   lands on the same pixel value as the flat rules at 748px/788px. */
+@media (min-width: 748px) and (max-width: 788px) {
+  .topics-ring {
+    width: clamp(457.04px, -316vw + 2947.12px, 583.44px);
+  }
+}
+
 .topics-ring svg {
   position: absolute;
   inset: 0;
@@ -3016,6 +3024,16 @@ body.nav-open {
   .topics-marquee-wrap {
     margin-top: clamp(92px, 45vw + -115px, 110px);
     margin-bottom: clamp(96.6px, 58.5vw + -172.5px, 120px);
+  }
+}
+
+/* same ramp treatment, for the 767/768px jump between 22vw/24vw and
+   12vw/14vw -- lands on the same pixel value as the flat rules at
+   748px/788px. */
+@media (min-width: 748px) and (max-width: 788px) {
+  .topics-marquee-wrap {
+    margin-top: clamp(94.56px, -175vw + 1473.56px, 164.56px);
+    margin-bottom: clamp(110.32px, -173vw + 1473.56px, 179.52px);
   }
 }
 
