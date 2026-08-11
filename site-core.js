@@ -144,54 +144,41 @@
     return `${minutes} ${plural(minutes, minuteForms)} ${joiner} ${seconds} ${plural(seconds, secondForms)}`
   }
 
-  // Drives a countdown element on a 250ms setTimeout chain instead of
-  // setInterval(fn, 1000). A plain 1000ms interval can get delayed by
-  // whatever else is busy on the main thread, and since the callback
-  // still only fires once it finally gets a turn, two real seconds can
-  // pass between one update and the next -- visible as the display
-  // "skipping" a second. Checking 4x/sec instead means the moment the
-  // displayed second changes is essentially never missed, and remaining
-  // time is always recomputed from Date.now() rather than decremented,
-  // so there's nothing to drift in the first place.
-  //
-  // An earlier version of this used requestAnimationFrame (checking on
-  // literally every paint, up to 60x/sec) for the same self-correcting
-  // effect, but running that continuously for the full ~10-minute
-  // countdown added enough steady main-thread load to visibly stagger
-  // the hero carousel's own rAF-driven animation -- 250ms is already
-  // four times finer than the 1-second boundary actually needs, so
-  // setTimeout's coarser, cooperative scheduling is a better fit here
-  // than competing for every single animation frame.
-  //
-  // getElement is a function, not a captured node, so the element can
-  // safely be replaced elsewhere in the DOM (see #stickyBarTrigger's
-  // <div>-to-<button> upgrade in site-interactions.js) without orphaning
-  // this loop's updates on the old, now-detached node.
-  function driveCountdown(getElement, expiredText) {
-    let lastText = null
-
-    function tick() {
+  if (document.getElementById('stickyClock')) {
+    // Re-look-up by id on every tick instead of keeping the node found
+    // above: site-interactions.js upgrades #stickyBarTrigger's container
+    // from a <div> to a real <button> for accessibility, cloning its
+    // innerHTML (including this element) into the replacement and
+    // detaching the original from the page. A captured reference here
+    // would keep writing to that now-detached original -- invisibly, no
+    // error -- while the visible clone sits frozen at whatever text it
+    // had at the instant of the swap.
+    function updateStickyClock() {
+      const clock = document.getElementById('stickyClock')
+      if (!clock) return false
       const remaining = countdownDeadline - Date.now()
-      const clock = getElement()
-      if (clock) {
-        const text = remaining > 0 ? formatRemaining(remaining) : expiredText ?? formatRemaining(0)
-        if (text !== lastText) {
-          clock.textContent = text
-          lastText = text
-        }
-      }
-      if (remaining > 0) window.setTimeout(tick, 250)
+      clock.textContent = formatRemaining(remaining)
+      return remaining > 0
     }
 
-    tick()
+    updateStickyClock()
+    const timerId = window.setInterval(() => {
+      if (!updateStickyClock()) window.clearInterval(timerId)
+    }, 1000)
   }
 
-  if (document.getElementById('stickyClock')) {
-    driveCountdown(() => document.getElementById('stickyClock'))
-  }
+  const popupClock = document.getElementById('popupClock')
+  if (popupClock) {
+    function updatePopupClock() {
+      const remaining = countdownDeadline - Date.now()
+      popupClock.textContent = remaining > 0 ? formatRemaining(remaining) : 'EXPIRED'
+      return remaining > 0
+    }
 
-  if (document.getElementById('popupClock')) {
-    driveCountdown(() => document.getElementById('popupClock'), 'EXPIRED')
+    updatePopupClock()
+    const popupTimerId = window.setInterval(() => {
+      if (!updatePopupClock()) window.clearInterval(popupTimerId)
+    }, 1000)
   }
 
   const ribbonTrack = document.getElementById('ribbonTrack')
