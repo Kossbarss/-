@@ -144,11 +144,20 @@
     return `${minutes} ${plural(minutes, minuteForms)} ${joiner} ${seconds} ${plural(seconds, secondForms)}`
   }
 
-  const stickyClock = document.getElementById('stickyClock')
-  if (stickyClock) {
+  if (document.getElementById('stickyClock')) {
+    // Re-look-up by id on every tick instead of keeping the node found
+    // above: site-interactions.js upgrades #stickyBarTrigger's container
+    // from a <div> to a real <button> for accessibility, cloning its
+    // innerHTML (including this element) into the replacement and
+    // detaching the original from the page. A captured reference here
+    // would keep writing to that now-detached original -- invisibly, no
+    // error -- while the visible clone sits frozen at whatever text it
+    // had at the instant of the swap.
     function updateStickyClock() {
+      const clock = document.getElementById('stickyClock')
+      if (!clock) return false
       const remaining = countdownDeadline - Date.now()
-      stickyClock.textContent = formatRemaining(remaining)
+      clock.textContent = formatRemaining(remaining)
       return remaining > 0
     }
 
