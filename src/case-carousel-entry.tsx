@@ -84,6 +84,11 @@ function Demo() {
         total={CASES.length}
         activeIndex={activeIndex}
         onChange={(index) => carouselRef.current?.goTo(index)}
+        labels={
+          isUkrainian
+            ? { prev: "Попередній кейс", next: "Наступний кейс", track: "Кейси учнів", dot: (n) => `Кейс ${n}` }
+            : { prev: "Предыдущий кейс", next: "Следующий кейс", track: "Кейсы учеников", dot: (n) => `Кейс ${n}` }
+        }
       />
       <article className="case-carousel-detail" aria-live="polite">
         <span className="case-carousel-detail-module">{activeCase.city}</span>
