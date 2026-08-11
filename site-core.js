@@ -144,17 +144,24 @@
     return `${minutes} ${plural(minutes, minuteForms)} ${joiner} ${seconds} ${plural(seconds, secondForms)}`
   }
 
-  // Drives a countdown element via requestAnimationFrame instead of
+  // Drives a countdown element on a 250ms setTimeout chain instead of
   // setInterval(fn, 1000). A plain 1000ms interval can get delayed by
-  // whatever else is busy on the main thread (the hero WebGL shader,
-  // the carousels, etc.), and since the callback still only fires once
-  // it finally gets a turn, two real seconds can pass between one
-  // update and the next -- visible as the display "skipping" a second.
-  // Checking every animation frame (up to 60x/sec) instead means the
-  // exact frame where the displayed second changes is almost never
-  // missed, and remaining time is always recomputed from Date.now()
-  // rather than decremented, so there's nothing to drift in the first
-  // place -- only a smoother, more reliably-timed paint of it.
+  // whatever else is busy on the main thread, and since the callback
+  // still only fires once it finally gets a turn, two real seconds can
+  // pass between one update and the next -- visible as the display
+  // "skipping" a second. Checking 4x/sec instead means the moment the
+  // displayed second changes is essentially never missed, and remaining
+  // time is always recomputed from Date.now() rather than decremented,
+  // so there's nothing to drift in the first place.
+  //
+  // An earlier version of this used requestAnimationFrame (checking on
+  // literally every paint, up to 60x/sec) for the same self-correcting
+  // effect, but running that continuously for the full ~10-minute
+  // countdown added enough steady main-thread load to visibly stagger
+  // the hero carousel's own rAF-driven animation -- 250ms is already
+  // four times finer than the 1-second boundary actually needs, so
+  // setTimeout's coarser, cooperative scheduling is a better fit here
+  // than competing for every single animation frame.
   //
   // getElement is a function, not a captured node, so the element can
   // safely be replaced elsewhere in the DOM (see #stickyBarTrigger's
@@ -173,7 +180,7 @@
           lastText = text
         }
       }
-      if (remaining > 0) requestAnimationFrame(tick)
+      if (remaining > 0) window.setTimeout(tick, 250)
     }
 
     tick()
