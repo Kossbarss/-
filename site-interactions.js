@@ -225,7 +225,12 @@
       popupCard.setAttribute('aria-hidden', String(!open))
       if (open) {
         popupReturnFocus = document.activeElement
-        ;(popupClose || app.focusableElements(popupCard)[0])?.focus()
+        // Deferred: the browser assigns default focus back to the clicked/activated
+        // trigger element right after this handler runs, which would otherwise
+        // stomp the focus() call below before it takes visible effect.
+        window.setTimeout(() => {
+          ;(popupClose || app.focusableElements(popupCard)[0])?.focus()
+        }, 0)
       } else if (popupReturnFocus instanceof HTMLElement) {
         popupReturnFocus.focus()
       }

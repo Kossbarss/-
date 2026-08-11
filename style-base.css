@@ -400,10 +400,6 @@ button {
   color: var(--gold-light);
 }
 
-.nav-cta {
-  display: inline-flex;
-}
-
 /* bouncy sliding-thumb toggle, ported from a React switch reference —
    a pill track with a thumb that slides and overshoots (the same
    spring-like cubic-bezier) to whichever side is active, recolored
@@ -541,7 +537,6 @@ button {
 
 @media (max-width: 1024px) {
   .nav-links,
-  .nav-cta,
   .lang-switch.lang-switch-desktop {
     display: none;
   }
@@ -737,43 +732,6 @@ body.nav-open {
   z-index: 0;
 }
 
-/* reusable ambient glow — the same gold/orange "topics scroller" ring
-   colors, echoed across other sections so the accent palette reads as
-   one continuous thread through the page instead of living in just
-   one isolated block. Position per instance via inline top/left/etc. */
-.ambient-glow {
-  position: absolute;
-  width: 620px;
-  height: 620px;
-  border-radius: 50%;
-  pointer-events: none;
-  filter: blur(20px);
-  z-index: 0;
-  /* without a transform hint, some engines re-rasterize this blur on
-     every scroll frame instead of caching it as its own GPU layer —
-     costly at 620x620px, and repeated in four sections. translateZ(0)
-     is a static no-op transform that forces the one-time promotion. */
-  transform: translateZ(0);
-}
-
-.ambient-glow--gold {
-  background: radial-gradient(circle, rgba(253, 144, 77, 0.3) 0%, rgba(201, 162, 74, 0.14) 42%, transparent 72%);
-}
-
-.ambient-glow--blood {
-  background: radial-gradient(circle, rgba(255, 0, 3, 0.28) 0%, rgba(255, 0, 3, 0.12) 45%, transparent 72%);
-}
-
-.ambient-glow--periwinkle {
-  background: radial-gradient(circle, rgba(143, 153, 207, 0.32) 0%, rgba(143, 153, 207, 0.14) 45%, transparent 72%);
-}
-
-@media (max-width: 1023px) {
-  .ambient-glow--periwinkle {
-    display: none;
-  }
-}
-
 .hero > .container {
   position: relative;
   z-index: 1;
@@ -818,22 +776,6 @@ body.nav-open {
   }
 }
 
-.hero-kicker {
-  display: inline-block;
-  font-family: var(--font-body);
-  font-style: normal;
-  font-weight: 500;
-  font-size: 0.85rem;
-  line-height: 1.4;
-  color: rgba(250, 246, 239, 0.85);
-  text-transform: none;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 999px;
-  padding: 8px 20px;
-  margin-bottom: 22px;
-}
-
 .hero h1 {
   order: 1;
   width: min(1040px, 100%);
@@ -867,15 +809,6 @@ body.nav-open {
   margin-bottom: 0;
 }
 
-.hero-cta-row {
-  order: 3;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  margin: 14px 0 12px;
-}
 
 /* Rotating 3D panorama, ported from the supplied React/Framer
    reference into the site's native HTML/CSS/JS architecture. */
@@ -1066,12 +999,6 @@ body.nav-open {
     margin: 0 auto 24px;
   }
 
-  .hero-cta-row {
-    order: 5;
-    width: 100%;
-    margin: 0 0 30px;
-  }
-
   .hero-lede {
     order: 6;
   }
@@ -1087,10 +1014,6 @@ body.nav-open {
    to the reference landing's own mobile gaps (measured at ~12-14%
    of viewport width between kicker→headline and headline→subhead) */
 @media (max-width: 900px) {
-  .hero-kicker {
-    margin-bottom: clamp(24px, 13vw, 50px);
-  }
-
   .hero h1 {
     margin-bottom: clamp(20px, 12vw, 46px);
   }
@@ -1227,21 +1150,8 @@ body.nav-open {
   }
 }
 
-.hero-kicker,
-.hero-cta-row,
 .hero-tags {
   animation: heroFadeSlideIn 0.55s ease both;
-}
-
-.hero-kicker {
-  animation-delay: 0s;
-}
-
-.hero-cta-row {
-  animation-delay: 0.15s;
-}
-
-.hero-tags {
   animation-delay: 0.32s;
 }
 
@@ -1254,8 +1164,6 @@ body.nav-open {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-kicker,
-  .hero-cta-row,
   .hero-panorama-shell,
   .hero-tags,
   .hero-tags-track {
@@ -1713,30 +1621,6 @@ body.nav-open {
     grid-template-areas: "identity" "photo" "copy";
     row-gap: 24px;
   }
-}
-
-.instructor-photo {
-  aspect-ratio: 4/5;
-  border-radius: 16px;
-  background: linear-gradient(160deg, var(--gold-dark), var(--ink) 70%);
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(201, 162, 74, 0.4);
-  overflow: hidden;
-}
-
-.instructor-photo .initials {
-  font-family: var(--font-display);
-  font-size: 4rem;
-  color: var(--gold-light);
-}
-
-.instructor-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: inherit;
-  display: block;
 }
 
 /* Circular-testimonials carousel mount (components/ui/circular-testimonials.tsx),
@@ -2815,50 +2699,6 @@ body.nav-open {
   }
 }
 
-/* ---------- Lesson program grid ---------- */
-.lesson-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
-}
-
-@media (max-width: 780px) {
-  .lesson-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  .lesson-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.lesson-cell {
-  background: var(--white);
-  padding: 22px;
-  display: flex;
-  gap: 14px;
-}
-
-.lesson-num {
-  font-family: var(--font-display);
-  font-size: 1.6rem;
-  color: var(--gold-dark);
-  flex-shrink: 0;
-}
-
-.lesson-cell p {
-  font-size: 0.88rem;
-  line-height: 1.45;
-  text-transform: none;
-  color: var(--ink-soft);
-}
-
 /* ---------- Vertical topics scroller (same porthole-marquee pattern as RISE) ---------- */
 .topics-scroll-section {
   background: #0d0b0a;
@@ -3496,24 +3336,6 @@ body.nav-open {
   border-radius: inherit;
   margin-block: calc(var(--layout-section-y) * -1);
   padding-block: var(--layout-section-y);
-}
-
-.pricing-watermark {
-  position: absolute;
-  top: 50%;
-  right: -80px;
-  width: 560px;
-  height: 560px;
-  transform: translateY(-50%);
-  color: var(--gold);
-  opacity: 0.12;
-  pointer-events: none;
-}
-
-@media (max-width: 700px) {
-  .pricing-watermark {
-    display: none;
-  }
 }
 
 .order-box {
@@ -4337,14 +4159,6 @@ body.nav-open {
   color: var(--blood);
 }
 
-.popup-kicker {
-  color: var(--blood);
-  font-weight: 700;
-  font-size: 0.95rem;
-  text-transform: none;
-  margin-bottom: 10px;
-}
-
 .popup-card h3 {
   font-size: 1.5rem;
   line-height: 1.2;
@@ -4494,11 +4308,6 @@ body.popup-open {
   text-align: center;
 }
 
-.footer-logo {
-  display: block;
-  margin: 0 auto 24px;
-}
-
 .footer-particles-wrap {
   display: flex;
   flex-direction: column;
@@ -4640,13 +4449,6 @@ body.popup-open {
 .bonus-callout-label,
 .bonus-callout-text {
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
-}
-
-.hero-cta-row {
-  order: 3;
-  margin: 0;
-  position: relative;
-  z-index: 5;
 }
 
 .hero-panorama-shell {
@@ -4985,12 +4787,6 @@ body.popup-open {
        as the base .hero-stat span rule above, phone-specific override. */
     font-size: clamp(1.1rem, 4.4vw, 1.35rem);
     line-height: 1.25;
-  }
-
-  .hero-cta-row {
-    order: 5;
-    width: 100%;
-    margin: 0 0 9vw;
   }
 
   .hero .hero-topline {
