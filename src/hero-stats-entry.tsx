@@ -1,12 +1,10 @@
 import { createRoot } from "react-dom/client";
 import { NumberTicker } from "@/components/ui/be-ui-number-animation";
 
-// Both mount points only exist on the RU page for now (the UA hero
-// stats still show their original static "300+"/"11+" -- no UA copy
-// was provided for the "22+" wording change, so the animated counter
-// wiring for it was left RU-only too, per the same rule). The
-// `if (mountNode)` guards below make this a no-op on the UA page
-// rather than an error.
+// Both RU and UA pages carry these mount points now, so the animated
+// counters run on both. The `if (mountNode)` guards below are just
+// defensive -- a no-op instead of an error if either mount point is
+// ever missing.
 // The mount points themselves carry class="word-animate" with the same
 // animation-delay:2600ms the plain "300+"/"22+" text had before this
 // was converted to a ticker (see index.html), so the number fades in
