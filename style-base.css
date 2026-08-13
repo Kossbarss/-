@@ -19,11 +19,12 @@
   --gold-light: #e8d5a8;
   --gold-dark: #a9803a;
 
-  /* vivid red-orange, matching the client's reference (rise-platform.com)
-     palette instead of the earlier muted burgundy/wine tones */
-  --blood: #ff0003;
-  --blood-dark: #dd0003;
-  --blood-light: #fe5200;
+  /* muted burgundy/wine tones -- reverted from the vivid red-orange
+     (rise-platform.com reference) per explicit client request to match
+     the premium/VIP style brief (no neon or acid accent colors). */
+  --blood: #7a2233;
+  --blood-dark: #5c1a26;
+  --blood-light: #a8455a;
 
   --periwinkle: #8f99cf;
   --periwinkle-dark: #6672ab;
@@ -169,10 +170,10 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--font-hand);
-  font-weight: 400;
-  font-style: normal;
-  font-size: 36px;
+  font-family: var(--font-topline);
+  font-weight: 600;
+  font-style: italic;
+  font-size: 30px;
   background: linear-gradient(160deg, var(--gold-dark), var(--ink));
   background-clip: text;
   -webkit-background-clip: text;
@@ -1728,10 +1729,10 @@ body.nav-open {
 
 .instructor-name-badge {
   display: inline-block;
-  /* Same red -> orange -> gold palette as the pricing-section WebGL glow
-     (pricing-reference.js: redColor #f20904, orangeColor #ff471a,
-     goldColor #ed9c38), as a static gradient here. */
-  background: linear-gradient(90deg, #f20904 0%, #ff471a 55%, #ed9c38 100%);
+  /* Same wine -> rose -> gold palette as the pricing-section WebGL glow
+     (pricing-reference.js: redColor #5c1a26, orangeColor #a8455a,
+     goldColor #a9803a), as a static gradient here. */
+  background: linear-gradient(90deg, #5c1a26 0%, #a8455a 55%, #a9803a 100%);
   color: var(--white);
   padding: 10px 20px;
   border-radius: 8px;
