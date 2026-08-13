@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/-/assets/favicon-logo.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Страница не найдена / Сторінку не знайдено | VIP tattoo school</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/-/style.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--paper);
+      padding: 24px;
+    }
+
+    .not-found {
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: clamp(32px, 6vw, 56px) clamp(24px, 5vw, 44px);
+    }
+
+    .not-found-logo {
+      width: 56px;
+      height: 56px;
+      margin-bottom: 24px;
+    }
+
+    .not-found-oops {
+      width: min(220px, 60%);
+      height: auto;
+      margin: 0 auto 8px;
+      display: block;
+    }
+
+    .not-found-code {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(64px, 14vw, 96px);
+      line-height: 1;
+      background: linear-gradient(135deg, var(--gold-dark), var(--blood));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+
+    .not-found-title {
+      font-size: clamp(19px, 3vw, 23px);
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .not-found-text {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    .not-found-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+
+    .not-found-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .not-found-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+
+    .not-found-link:hover {
+      opacity: 0.85;
+      transform: translateY(-1px);
+    }
+
+    .not-found-link--primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: var(--white);
+    }
+
+    .not-found-link--secondary {
+      background: var(--paper-alt);
+      color: var(--ink);
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <main class="not-found">
+    <img src="/-/assets/logo-mark.png" alt="VIP tattoo school" class="not-found-logo" width="56" height="56" />
+    <img src="/-/assets/404-oops.png" alt="" aria-hidden="true" class="not-found-oops" width="300" height="200" />
+    <div class="not-found-code">404</div>
+    <p class="not-found-title">Страница не найдена</p>
+    <p class="not-found-text">Похоже, такой страницы не существует или она была перемещена. Вернитесь на главную — там всё на месте.</p>
+    <div class="not-found-links">
+      <a href="/-/" class="not-found-link not-found-link--primary">На главную (RU)</a>
+      <a href="/-/ua/" class="not-found-link not-found-link--secondary">На головну (UA)</a>
+    </div>
+    <hr class="not-found-divider" />
+    <p class="not-found-title">Сторінку не знайдено</p>
+    <p class="not-found-text">Схоже, такої сторінки не існує або її було переміщено. Поверніться на головну — там усе на місці.</p>
+  </main>
+</body>
+</html>
