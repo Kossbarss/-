@@ -166,9 +166,12 @@
   let navReturnFocus = null
 
   if (navToggle && mobileNav) {
+    const navOpenLabel = navToggle.getAttribute('aria-label') || 'Menu'
+    const navCloseLabel = mobileNavClose?.getAttribute('aria-label') || navOpenLabel
+
     mobileNav.setAttribute('role', 'dialog')
     mobileNav.setAttribute('aria-modal', 'true')
-    mobileNav.setAttribute('aria-label', navToggle.getAttribute('aria-label') || 'Menu')
+    mobileNav.setAttribute('aria-label', navOpenLabel)
     mobileNav.setAttribute('aria-hidden', 'true')
     navToggle.setAttribute('aria-controls', 'mobileNav')
     navToggle.setAttribute('aria-expanded', 'false')
@@ -178,6 +181,7 @@
       navToggle.classList.toggle('on', open)
       document.body.classList.toggle('nav-open', open)
       navToggle.setAttribute('aria-expanded', String(open))
+      navToggle.setAttribute('aria-label', open ? navCloseLabel : navOpenLabel)
       mobileNav.setAttribute('aria-hidden', String(!open))
       if (open) {
         navReturnFocus = document.activeElement
