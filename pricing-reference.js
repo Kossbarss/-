@@ -74,9 +74,9 @@
 
         vec3 deepBurgundy=vec3(.055,.004,.010);
         vec3 burgundy=vec3(.24,.008,.016);
-        vec3 redColor=vec3(.95,.035,.015);
-        vec3 orangeColor=vec3(1.0,.28,.10);
-        vec3 goldColor=vec3(.93,.61,.22);
+        vec3 redColor=vec3(.361,.102,.149);
+        vec3 orangeColor=vec3(.659,.271,.353);
+        vec3 goldColor=vec3(.663,.502,.227);
 
         float horizontalGlow=smoothstep(aspect*.95,aspect*.28,abs(shifted.x));
         float verticalGlow=smoothstep(.82,.10,abs(shifted.y));
