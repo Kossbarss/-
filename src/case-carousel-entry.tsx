@@ -15,7 +15,10 @@ const isUkrainian =
   document.documentElement.lang.toLowerCase().startsWith("uk") ||
   /\/ua(?:\/|$)/.test(window.location.pathname);
 
-const assetPrefix = isUkrainian ? "../assets/" : "assets/";
+// Asset nesting depth is independent of language -- UA is now the root
+// page and RU lives under /ru/, so this has to key off the URL's actual
+// nesting, not which language is being displayed.
+const assetPrefix = /\/ru(?:\/|$)/.test(window.location.pathname) ? "../assets/" : "assets/";
 
 // Real graduates, sourced verbatim from the client-provided document (14
 // clients, each with name/age/city/quote paired to their own photo --

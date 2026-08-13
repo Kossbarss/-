@@ -186,7 +186,9 @@
     const items = isUk
       ? ['8 тижнів навчання', '40+ годин практики', '300+ випускників', 'Сертифікат VIP Tattoo School', 'Довічний доступ до записів', '22+ країн, де цінують роботи', 'Особистий фідбек від куратора', 'Практика на моделях']
       : ['8 недель обучения', '40+ часов практики', '300+ выпускников', 'Сертификат VIP Tattoo School', 'Пожизненный доступ к записям', '22+ стран, где ценят работы', 'Личная обратная связь от куратора', 'Практика на моделях']
-    const assetsPrefix = isUk ? '../assets/' : 'assets/'
+    // Nesting depth is independent of language -- UA is the root page and
+    // RU lives under /ru/, so this has to key off the URL, not isUk.
+    const assetsPrefix = /\/ru(?:\/|$)/.test(location.pathname) ? '../assets/' : 'assets/'
     ribbonTrack.replaceChildren()
     ;[...items, ...items].forEach((text) => {
       const item = document.createElement('span')

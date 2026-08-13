@@ -210,17 +210,17 @@ async function buildPage(sourcePath, outputPath, locale, assetPrefix) {
 await rm(outputRoot, { recursive: true, force: true })
 await copyStaticTree(root, outputRoot)
 
-const ruHtml = await buildPage(
+const ukHtml = await buildPage(
   path.join(root, 'index.html'),
   path.join(outputRoot, 'index.html'),
-  'ru',
+  'uk',
   '',
 )
 
-const ukHtml = await buildPage(
-  path.join(root, 'ua', 'index.html'),
-  path.join(outputRoot, 'ua', 'index.html'),
-  'uk',
+const ruHtml = await buildPage(
+  path.join(root, 'ru', 'index.html'),
+  path.join(outputRoot, 'ru', 'index.html'),
+  'ru',
   '../',
 )
 

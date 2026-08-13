@@ -1,7 +1,7 @@
 ;(function () {
   'use strict'
 
-  window.VIP_TATTOO_LOCALE = 'ru'
+  window.VIP_TATTOO_LOCALE = 'uk'
   const modules = ['site-core.js', 'site-interactions.js']
 
   function finish() {

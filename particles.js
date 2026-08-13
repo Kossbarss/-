@@ -4,7 +4,7 @@
   if (window.__vipTattooEffectsLoaderStarted) return
   window.__vipTattooEffectsLoaderStarted = true
 
-  const prefix = location.pathname.includes('/ua/') ? '../' : ''
+  const prefix = location.pathname.includes('/ru/') ? '../' : ''
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   // hero-shader-background.js has its own <script> tag (loaded early,
   // in parallel with script.js) instead of going through this chain --

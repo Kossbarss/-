@@ -3,14 +3,14 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.vip-tattoo-school.com/</loc>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://www.vip-tattoo-school.com/" />
-    <xhtml:link rel="alternate" hreflang="uk" href="https://www.vip-tattoo-school.com/ua/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.vip-tattoo-school.com/ru/" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://www.vip-tattoo-school.com/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.vip-tattoo-school.com/" />
   </url>
   <url>
-    <loc>https://www.vip-tattoo-school.com/ua/</loc>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://www.vip-tattoo-school.com/" />
-    <xhtml:link rel="alternate" hreflang="uk" href="https://www.vip-tattoo-school.com/ua/" />
+    <loc>https://www.vip-tattoo-school.com/ru/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.vip-tattoo-school.com/ru/" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://www.vip-tattoo-school.com/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.vip-tattoo-school.com/" />
   </url>
 </urlset>
