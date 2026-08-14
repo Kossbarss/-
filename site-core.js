@@ -65,17 +65,38 @@
     link.setAttribute('aria-current', 'page')
   })
 
+  // .order-form is the standalone "Заполни форму..." section CTA -- it
+  // always just opens the popup (site-interactions.js wires up the
+  // actual popup-open behaviour on any [data-popup-open] element), on
+  // both the static build and WordPress. The popup is the single entry
+  // point either way; only what happens once *inside* it differs.
+  document.querySelectorAll('.order-form').forEach((form) => {
+    form.removeAttribute('onsubmit')
+    form.classList.add('popup-order-form')
+    form.setAttribute('aria-label', copy.order)
+    form.replaceChildren()
+
+    const orderButton = document.createElement('button')
+    orderButton.type = 'button'
+    orderButton.className = 'btn btn-stardust btn-block'
+    orderButton.setAttribute('data-popup-open', '')
+    const orderText = document.createElement('span')
+    orderText.className = 'btn-stardust-wrap'
+    orderText.textContent = copy.order
+    orderButton.appendChild(orderText)
+
+    form.append(orderButton)
+    form.addEventListener('submit', (event) => event.preventDefault())
+  })
+
   // On the static build (no real backend), .popup-form's submit button
-  // gets swapped for a styled link straight to Telegram, and
-  // .order-form gets replaced with a button that just opens that same
-  // popup -- neither form actually submits anywhere.
-  //
-  // window.VIP_TATTOO_REST_URL is only set on the WordPress build (see
-  // vip_tattoo_render_globals() in the plugin), where vip-payments.js
-  // wires both forms' real submit event to a Stripe Checkout session.
-  // Skip this static-only fallback there, or vip-payments.js's submit
-  // listener never fires -- .popup-form's button gets removed before
-  // it can attach, and .order-form's inputs get wiped out entirely.
+  // gets swapped for a styled link straight to Telegram -- there's
+  // nothing to submit to. window.VIP_TATTOO_REST_URL is only set on
+  // the WordPress build (see vip_tattoo_render_globals() in the
+  // plugin), where vip-payments.js wires the popup form's real submit
+  // event to a Stripe Checkout session instead. Skip the static-only
+  // swap there, or vip-payments.js's submit listener never fires --
+  // the button gets removed before it can attach.
   if (!window.VIP_TATTOO_REST_URL) {
     document.querySelectorAll('.popup-form').forEach((form) => {
       form.removeAttribute('onsubmit')
@@ -92,29 +113,6 @@
       setExternalLink(orderLink, contacts.mentorship, copy.popupOrder)
 
       form.append(orderLink)
-      form.addEventListener('submit', (event) => event.preventDefault())
-    })
-
-    // .order-form is the standalone "Заполни форму..." section CTA --
-    // it opens the same popup as the sticky bar instead of jumping
-    // straight to Telegram (site-interactions.js wires up the actual
-    // popup-open behaviour on any [data-popup-open] element).
-    document.querySelectorAll('.order-form').forEach((form) => {
-      form.removeAttribute('onsubmit')
-      form.classList.add('popup-order-form')
-      form.setAttribute('aria-label', copy.order)
-      form.replaceChildren()
-
-      const orderButton = document.createElement('button')
-      orderButton.type = 'button'
-      orderButton.className = 'btn btn-stardust btn-block'
-      orderButton.setAttribute('data-popup-open', '')
-      const orderText = document.createElement('span')
-      orderText.className = 'btn-stardust-wrap'
-      orderText.textContent = copy.order
-      orderButton.appendChild(orderText)
-
-      form.append(orderButton)
       form.addEventListener('submit', (event) => event.preventDefault())
     })
   }
