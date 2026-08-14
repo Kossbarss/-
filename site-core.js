@@ -65,49 +65,59 @@
     link.setAttribute('aria-current', 'page')
   })
 
-  // .popup-form is the lead form inside the popup itself -- its inputs
-  // (email + phone) stay visible, only the submit button is swapped for
-  // a styled link straight to Telegram (no real backend to submit to).
-  document.querySelectorAll('.popup-form').forEach((form) => {
-    form.removeAttribute('onsubmit')
-    form.classList.add('direct-order-form')
-    form.setAttribute('aria-label', copy.popupOrder)
-    form.querySelector('button[type="submit"]')?.remove()
+  // On the static build (no real backend), .popup-form's submit button
+  // gets swapped for a styled link straight to Telegram, and
+  // .order-form gets replaced with a button that just opens that same
+  // popup -- neither form actually submits anywhere.
+  //
+  // window.VIP_TATTOO_REST_URL is only set on the WordPress build (see
+  // vip_tattoo_render_globals() in the plugin), where vip-payments.js
+  // wires both forms' real submit event to a Stripe Checkout session.
+  // Skip this static-only fallback there, or vip-payments.js's submit
+  // listener never fires -- .popup-form's button gets removed before
+  // it can attach, and .order-form's inputs get wiped out entirely.
+  if (!window.VIP_TATTOO_REST_URL) {
+    document.querySelectorAll('.popup-form').forEach((form) => {
+      form.removeAttribute('onsubmit')
+      form.classList.add('direct-order-form')
+      form.setAttribute('aria-label', copy.popupOrder)
+      form.querySelector('button[type="submit"]')?.remove()
 
-    const orderLink = document.createElement('a')
-    orderLink.className = 'btn btn-stardust btn-block'
-    const orderText = document.createElement('span')
-    orderText.className = 'btn-stardust-wrap'
-    orderText.textContent = copy.popupOrder
-    orderLink.appendChild(orderText)
-    setExternalLink(orderLink, contacts.mentorship, copy.popupOrder)
+      const orderLink = document.createElement('a')
+      orderLink.className = 'btn btn-stardust btn-block'
+      const orderText = document.createElement('span')
+      orderText.className = 'btn-stardust-wrap'
+      orderText.textContent = copy.popupOrder
+      orderLink.appendChild(orderText)
+      setExternalLink(orderLink, contacts.mentorship, copy.popupOrder)
 
-    form.append(orderLink)
-    form.addEventListener('submit', (event) => event.preventDefault())
-  })
+      form.append(orderLink)
+      form.addEventListener('submit', (event) => event.preventDefault())
+    })
 
-  // .order-form is the standalone "Заполни форму..." section CTA --
-  // it now opens the same popup as the sticky bar instead of jumping
-  // straight to Telegram (site-interactions.js wires up the actual
-  // popup-open behaviour on any [data-popup-open] element).
-  document.querySelectorAll('.order-form').forEach((form) => {
-    form.removeAttribute('onsubmit')
-    form.classList.add('popup-order-form')
-    form.setAttribute('aria-label', copy.order)
-    form.replaceChildren()
+    // .order-form is the standalone "Заполни форму..." section CTA --
+    // it opens the same popup as the sticky bar instead of jumping
+    // straight to Telegram (site-interactions.js wires up the actual
+    // popup-open behaviour on any [data-popup-open] element).
+    document.querySelectorAll('.order-form').forEach((form) => {
+      form.removeAttribute('onsubmit')
+      form.classList.add('popup-order-form')
+      form.setAttribute('aria-label', copy.order)
+      form.replaceChildren()
 
-    const orderButton = document.createElement('button')
-    orderButton.type = 'button'
-    orderButton.className = 'btn btn-stardust btn-block'
-    orderButton.setAttribute('data-popup-open', '')
-    const orderText = document.createElement('span')
-    orderText.className = 'btn-stardust-wrap'
-    orderText.textContent = copy.order
-    orderButton.appendChild(orderText)
+      const orderButton = document.createElement('button')
+      orderButton.type = 'button'
+      orderButton.className = 'btn btn-stardust btn-block'
+      orderButton.setAttribute('data-popup-open', '')
+      const orderText = document.createElement('span')
+      orderText.className = 'btn-stardust-wrap'
+      orderText.textContent = copy.order
+      orderButton.appendChild(orderText)
 
-    form.append(orderButton)
-    form.addEventListener('submit', (event) => event.preventDefault())
-  })
+      form.append(orderButton)
+      form.addEventListener('submit', (event) => event.preventDefault())
+    })
+  }
 
   const hero = document.querySelector('.hero')
   const stickyBar = document.getElementById('stickyBar')
