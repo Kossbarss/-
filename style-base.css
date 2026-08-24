@@ -1068,7 +1068,7 @@ body.nav-open {
   /* Subtle relief/emboss (not a soft drop shadow, which was explicitly
      removed) -- a faint dark edge below, faint light edge above. Kept
      unscoped so it applies on every device/screen size. */
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35), 0 -1px 0 rgba(255, 255, 255, 0.18);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.07), 0 -1px 0 rgba(255, 255, 255, 0.04);
 }
 
 /* Desktop only: back to the lighter --gold-dark tone instead of the
