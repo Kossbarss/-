@@ -127,67 +127,6 @@
     }
   }
 
-  // Shared deadline: the sticky-bar clock and the popup clock are the same
-  // ongoing offer window, not two independent countdowns, so both read
-  // from one Date.now()-based deadline computed once here.
-  const countdownDuration = (10 * 60 + 40) * 1000
-  const countdownDeadline = Date.now() + countdownDuration
-
-  function plural(value, forms) {
-    const lastTwo = value % 100
-    const last = value % 10
-    if (lastTwo >= 11 && lastTwo <= 14) return forms[2]
-    if (last === 1) return forms[0]
-    if (last >= 2 && last <= 4) return forms[1]
-    return forms[2]
-  }
-
-  function formatRemaining(ms) {
-    const totalSeconds = Math.max(0, Math.floor(ms / 1000))
-    const minutes = Math.floor(totalSeconds / 60)
-    const seconds = totalSeconds % 60
-    const minuteForms = isUk ? ['хвилина', 'хвилини', 'хвилин'] : ['минута', 'минуты', 'минут']
-    const secondForms = isUk ? ['секунда', 'секунди', 'секунд'] : ['секунда', 'секунды', 'секунд']
-    const joiner = isUk ? 'та' : 'и'
-    return `${minutes} ${plural(minutes, minuteForms)} ${joiner} ${seconds} ${plural(seconds, secondForms)}`
-  }
-
-  if (document.getElementById('stickyClock')) {
-    // Re-look-up by id on every tick instead of keeping the node found
-    // above: site-interactions.js upgrades #stickyBarTrigger's container
-    // from a <div> to a real <button> for accessibility, cloning its
-    // innerHTML (including this element) into the replacement and
-    // detaching the original from the page. A captured reference here
-    // would keep writing to that now-detached original -- invisibly, no
-    // error -- while the visible clone sits frozen at whatever text it
-    // had at the instant of the swap.
-    function updateStickyClock() {
-      const clock = document.getElementById('stickyClock')
-      if (!clock) return false
-      const remaining = countdownDeadline - Date.now()
-      clock.textContent = formatRemaining(remaining)
-      return remaining > 0
-    }
-
-    updateStickyClock()
-    const timerId = window.setInterval(() => {
-      if (!updateStickyClock()) window.clearInterval(timerId)
-    }, 1000)
-  }
-
-  const popupClock = document.getElementById('popupClock')
-  if (popupClock) {
-    function updatePopupClock() {
-      const remaining = countdownDeadline - Date.now()
-      popupClock.textContent = remaining > 0 ? formatRemaining(remaining) : 'EXPIRED'
-      return remaining > 0
-    }
-
-    updatePopupClock()
-    const popupTimerId = window.setInterval(() => {
-      if (!updatePopupClock()) window.clearInterval(popupTimerId)
-    }, 1000)
-  }
 
   const ribbonTrack = document.getElementById('ribbonTrack')
   if (ribbonTrack) {

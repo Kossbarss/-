@@ -2,7 +2,7 @@
   'use strict'
 
   window.VIP_TATTOO_LOCALE = 'ru'
-  const modules = ['../site-core.js', '../site-interactions.js']
+  const modules = ['../site-core.js?v=2', '../site-interactions.js']
 
   function finish() {
     window.__vipTattooAppReady = true
