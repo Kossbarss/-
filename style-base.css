@@ -1638,12 +1638,12 @@ body.nav-open {
 }
 
 /* Below 900px, .instructor-layout stacks to one column -- the badge
-   moves to its own area ahead of the photo here (client request: badge
-   above the photo on mobile/tablet, unchanged side-by-side on desktop). */
+   sits below the photo here (client request: badge under the photo on
+   mobile/tablet, unchanged side-by-side on desktop). */
 @media (max-width: 900px) {
   .instructor-layout {
     grid-template-columns: 1fr;
-    grid-template-areas: "identity" "photo" "copy";
+    grid-template-areas: "photo" "identity" "copy";
     row-gap: 24px;
   }
 }
