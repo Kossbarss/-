@@ -257,6 +257,23 @@
   background: rgba(201, 162, 74, 0.35);
 }
 
+/* The arrows/dots above default to a dark, low-opacity ink -- readable
+   on this component's original light card background. The Cases
+   section they live in is now dark (merged with the Instructor block's
+   background), so those colors are nearly invisible there; lighten
+   them specifically in that context. */
+.cases-section #caseFanLayout[data-case-carousel-3d="true"] .case-carousel-dots-arrow {
+  color: rgba(250, 246, 239, 0.55);
+}
+
+.cases-section #caseFanLayout[data-case-carousel-3d="true"] .case-carousel-dots-arrow:hover {
+  color: var(--paper, #faf6ef);
+}
+
+.cases-section #caseFanLayout[data-case-carousel-3d="true"] .case-carousel-dot {
+  background: rgba(250, 246, 239, 0.3);
+}
+
 #caseFanLayout[data-case-carousel-3d="true"] .case-carousel-detail {
   position: relative;
   z-index: 2;
