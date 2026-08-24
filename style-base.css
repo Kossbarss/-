@@ -1067,6 +1067,21 @@ body.nav-open {
   color: var(--gold-dark);
 }
 
+/* Even, symmetric breathing room between the ribbon above and the
+   fit-list card below -- .hero-lede's own margin-bottom:28px is left
+   untouched (it's part of the original element), this just adds the
+   rest via the wrapper. padding-top is bigger than padding-bottom to
+   cancel out .ribbon-wrap's -20px overlap immediately above. #program
+   now holds only .fit-list, so its own top padding would double up
+   with this; zeroed below and controlled from here instead. */
+.lede-relocated {
+  padding: 68px 0 20px;
+}
+
+#program {
+  padding-top: 0;
+}
+
 /* #heroLedeCountriesNumber is an ID selector (higher specificity than
    .word-animate's gradient), so it needs its own override here too --
    otherwise the "22+" ticker would stay light gold regardless of the
@@ -1534,7 +1549,6 @@ body.nav-open {
 }
 
 .fit-list {
-  margin-top: 40px;
   padding: 28px 32px;
   background: var(--paper-alt);
 }
