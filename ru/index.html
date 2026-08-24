@@ -285,7 +285,7 @@
           <span class="old">499€</span>
         </div>
 
-        <a href="#pricing" class="btn btn-stardust"><span class="btn-stardust-wrap">Присоединиться сейчас</span></a>
+        <button type="button" class="btn btn-stardust" data-popup-open aria-haspopup="dialog"><span class="btn-stardust-wrap">Присоединиться сейчас</span></button>
 
         <hr />
 
@@ -366,7 +366,7 @@
   </section>
 
   <!-- ============ INSTRUCTOR ============ -->
-  <section class="section instructor-section">
+  <section id="instructor" class="section instructor-section">
     <div class="corner-fix corner-fix--tl corner-fix--paper" aria-hidden="true"></div>
     <div class="corner-fix corner-fix--tr corner-fix--paper" aria-hidden="true"></div>
     <div class="corner-fix corner-fix--bl corner-fix--paper" aria-hidden="true"></div>
@@ -388,7 +388,7 @@
         </div>
 
         <div class="instructor-copy">
-          <div class="section-head" style="margin-bottom: 0;">
+          <div class="section-head section-head--flush">
             <h2 style="color:var(--paper);">Почему моя методика работает, даже если ты держишь машинку первый раз</h2>
             <p>
               Я не теоретик, а практикующий мастер, который каждый день работает с
@@ -431,48 +431,53 @@
     </div>
   </section>
 
-<section class="section">
-  <div class="container">
-    <!-- 1. Заголовок -->
-    <div class="section-head"><h2>Это не просто курс…</h2></div>
-
-    <!-- 2. Галерея відгуків -->
-    <div id="casesTestimonialMarquee"></div>
-
-    <!-- 3. Підзаголовок -->
-    <div class="section-head case-fan-head">
-      <span class="kicker">Кейсы учеников</span>
-      <h2>Кейсы учеников после обучения</h2>
-    </div>
-
-    <!-- 4. Віяло кейсів (малює script.js) -->
-    <div class="case-fan-wrap">
-      <div class="case-fan-layout" id="caseFanLayout"></div>
-      <div class="case-fan-detail" id="caseFanDetail"></div>
-      <div class="case-fan-nav" id="caseFanNav" hidden>
-        <button class="case-fan-arrow" id="caseFanPrev">‹</button>
-        <div class="case-fan-dots" id="caseFanDots"></div>
-        <button class="case-fan-arrow" id="caseFanNext">›</button>
+  <section id="cases" class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Это не просто курс про «как держать машинку». Это курс, после которого вы:</h2>
       </div>
-    </div>
 
-    <!-- 5. CTA: зірки + аватарки-тултіпи + кнопка -->
-    <div class="case-fan-cta">
-      <div class="stars">★★★★★</div>
-      <div class="avatar-row">
-        <div class="avatars">
+      <div id="casesTestimonialMarquee"></div>
+
+      <div class="section-head case-fan-head">
+        <span class="kicker">Кейсы учеников</span>
+        <h2>Кейсы учеников после обучения</h2>
+      </div>
+
+      <div class="case-fan-wrap">
+        <div class="case-fan-layout" id="caseFanLayout"></div>
+      </div>
+
+      <div class="case-fan-cta">
+        <div class="avatar-row">
+          <div class="avatars">
           <div class="avatar-tip">
-            <div class="avatar-tip-bubble">…ім'я/країна/роль…</div>
-            <span class="avatar"></span>
+            <div class="avatar-tip-bubble">Марго · Украина · лайнворк</div>
+            <span class="avatar" aria-label="Марго, Украина · лайнворк"></span>
           </div>
-          <!-- ×5 аватарок -->
+          <div class="avatar-tip">
+            <div class="avatar-tip-bubble">Максим · Польша · графика</div>
+            <span class="avatar" aria-label="Максим, Польша · графика"></span>
+          </div>
+          <div class="avatar-tip">
+            <div class="avatar-tip-bubble">Оля · Чехия · мини-тату</div>
+            <span class="avatar" aria-label="Оля, Чехия · мини-тату"></span>
+          </div>
+          <div class="avatar-tip">
+            <div class="avatar-tip-bubble">Настя · Германия · ботаника</div>
+            <span class="avatar" aria-label="Настя, Германия · ботаника"></span>
+          </div>
+          <div class="avatar-tip">
+            <div class="avatar-tip-bubble">Карина · Испания · цвет</div>
+            <span class="avatar" aria-label="Карина, Испания · цвет"></span>
+          </div>
+          </div>
+          <span class="count">300+</span>
         </div>
-        <span class="count">300+</span>
+        <button type="button" class="btn btn-stardust" data-popup-open aria-haspopup="dialog"><span class="btn-stardust-wrap">Хочу начать обучение прямо сейчас</span></button>
       </div>
-      <a href="#pricing" class="btn btn-stardust"><span class="btn-stardust-wrap">Купить курс и начать обучение тату</span></a>
     </div>
-  </div>
-</section>
+  </section>
 
   <!-- ============ WHAT YOU GET ============ -->
   <section id="whatYouGet" class="section" style="background: var(--paper-alt);">
@@ -594,21 +599,21 @@
         </div>
       </div>
 
-      <p style="margin-top:32px;">
-        <a href="#pricing" class="btn btn-stardust"><span class="btn-stardust-wrap">Посмотреть полную программу</span></a>
+      <p class="section-cta">
+        <button type="button" class="btn btn-stardust" data-popup-open aria-haspopup="dialog"><span class="btn-stardust-wrap">Посмотреть полную программу</span></button>
       </p>
     </div>
   </section>
 
   <!-- ============ TOPICS VERTICAL SCROLLER ============ -->
-  <section class="section topics-scroll-section">
+  <section id="topics" class="section topics-scroll-section">
     <div class="corner-fix corner-fix--tl corner-fix--paper" aria-hidden="true"></div>
     <div class="corner-fix corner-fix--tr corner-fix--paper" aria-hidden="true"></div>
     <svg class="section-edge-glare" aria-hidden="true" data-radius="24">
       <path class="section-edge-glare-path" />
     </svg>
     <div class="container">
-      <div class="section-head" style="text-align: center; max-width: 960px; margin-inline: auto;">
+      <div class="section-head section-head--centered section-head--wide">
         <h2 style="color: var(--white);">На протяжении курса<br />последовательно <span class="accent">разбираем:</span></h2>
       </div>
 
@@ -653,7 +658,7 @@
   </section>
 
   <!-- ============ 15-BLOCK PROGRAM GRID (identical layout/palette to RISE) ============ -->
-  <section class="section rise-cycle-section">
+  <section id="riseCycle" class="section rise-cycle-section">
     <div class="corner-fix corner-fix--bl corner-fix--paper" aria-hidden="true"></div>
     <div class="corner-fix corner-fix--br corner-fix--paper" aria-hidden="true"></div>
     <svg class="section-edge-glare" data-edge="bottom" aria-hidden="true" data-radius="24">
@@ -826,7 +831,7 @@
   </section>
 
   <!-- ============ COMPARISON ============ -->
-  <section class="section" style="background: radial-gradient(circle at top right, rgba(253, 144, 77, 0.15) 0%, rgba(201, 162, 74, 0.07) 30%, transparent 55%), var(--paper); position: relative; overflow: hidden;">
+  <section id="comparison" class="section" style="background: radial-gradient(circle at top right, rgba(253, 144, 77, 0.15) 0%, rgba(201, 162, 74, 0.07) 30%, transparent 55%), var(--paper); position: relative; overflow: hidden;">
     <div class="container">
       <div class="section-head">
         <span class="kicker">Почему именно это обучение</span>
@@ -860,7 +865,7 @@
   </section>
 
   <!-- ============ TESTIMONIALS ============ -->
-  <section class="section" style="background: radial-gradient(circle at top left, rgba(253, 144, 77, 0.3) 0%, rgba(201, 162, 74, 0.14) 30%, transparent 55%), radial-gradient(circle at bottom right, rgba(143, 153, 207, 0.32) 0%, rgba(143, 153, 207, 0.14) 30%, transparent 55%), var(--paper-alt); position: relative; overflow: hidden;">
+  <section id="testimonials" class="section" style="background: radial-gradient(circle at top left, rgba(253, 144, 77, 0.3) 0%, rgba(201, 162, 74, 0.14) 30%, transparent 55%), radial-gradient(circle at bottom right, rgba(143, 153, 207, 0.32) 0%, rgba(143, 153, 207, 0.14) 30%, transparent 55%), var(--paper-alt); position: relative; overflow: hidden;">
     <div class="container">
       <div class="section-head">
         <span class="kicker">Отзывы выпускников</span>
@@ -872,7 +877,7 @@
   </section>
 
   <!-- ============ CERTIFICATE ============ -->
-  <section class="section certificate-section">
+  <section id="certificate" class="section certificate-section">
     <div class="corner-fix corner-fix--tl corner-fix--paper-alt" aria-hidden="true"></div>
     <div class="corner-fix corner-fix--tr corner-fix--cert-top-right" aria-hidden="true"></div>
     <div class="corner-fix corner-fix--bl corner-fix--paper" aria-hidden="true"></div>
@@ -888,7 +893,7 @@
     <div class="container">
       <div class="certificate-layout">
         <div class="certificate-copy">
-          <div class="section-head" style="margin-bottom: 28px;">
+          <div class="section-head section-head--compact">
             <span class="kicker">Документ о завершении</span>
             <h2>Сертификат VIP tattoo school</h2>
             <p>Признаётся студиями-партнёрами курса в Украине и Европе.</p>
@@ -901,7 +906,7 @@
             <div class="check-row"><span class="signal-dot" aria-hidden="true"></span><span>Признаётся 12 студиями-партнёрами</span></div>
           </div>
 
-          <a href="#pricing" class="btn btn-stardust certificate-cta"><span class="btn-stardust-wrap">Хочу получить сертификат</span></a>
+          <button type="button" class="btn btn-stardust certificate-cta" data-popup-open aria-haspopup="dialog"><span class="btn-stardust-wrap">Хочу получить сертификат</span></button>
         </div>
 
         <div id="certificateTilt" class="certificate-tilt-mount"></div>
@@ -911,9 +916,9 @@
   </section>
 
   <!-- ============ WHY THIS COURSE MATTERS ============ -->
-  <section class="section">
+  <section id="whyImportant" class="section">
     <div class="container">
-      <div class="section-head" style="max-width: 720px; margin-bottom: 0;">
+      <div class="section-head section-head--narrow">
         <span class="kicker">Зачем это нужно именно тебе</span>
         <h2>Почему это обучение важно для каждого, кто хочет стать тату-мастером</h2>
         <p>Потому что я не просто покажу, как держать машинку — я покажу, как превратить это в профессию, которая кормит и приносит уверенность в себе. Тату-индустрия растёт каждый год, а мастеров с системным подходом к гигиене, технике и клиентам — единицы. Именно этот пробел закрывает программа VIP tattoo school.</p>
@@ -922,7 +927,7 @@
   </section>
 
   <!-- ============ AFTER THE COURSE ============ -->
-  <section class="section" style="background: var(--paper-alt);">
+  <section id="afterCourse" class="section section--paper-alt">
     <div class="container">
       <div class="section-head">
         <span class="kicker">Результат обучения</span>
@@ -952,16 +957,16 @@
         </div>
       </div>
 
-      <p style="margin-top:32px;">
-        <a href="#pricing" class="btn btn-stardust"><span class="btn-stardust-wrap">Начать обучение прямо сейчас</span></a>
+      <p class="section-cta">
+        <button type="button" class="btn btn-stardust" data-popup-open aria-haspopup="dialog"><span class="btn-stardust-wrap">Начать обучение прямо сейчас</span></button>
       </p>
     </div>
   </section>
 
   <!-- ============ WHY SUCH A LOW PRICE ============ -->
-  <section class="section">
+  <section id="whyLowPrice" class="section">
     <div class="container">
-      <div class="section-head" style="max-width: 720px; margin-bottom: 0;">
+      <div class="section-head section-head--narrow">
         <span class="kicker">Честный ответ</span>
         <h2>Почему такая низкая цена?</h2>
         <p>Я знаю, что не каждый готов сразу платить за очное обучение в студии от 800€ и присутствовать лично в студии на обучении. Поэтому сделала онлайн обучение по доступной цене — чтобы вы могли начать путь в профессии без риска, а дальше уже сами решали, куда расти: в свою мини-студию или в открытие своего дела.</p>
@@ -970,9 +975,9 @@
   </section>
 
   <!-- ============ GUARANTEE ============ -->
-  <section class="section" style="background: var(--paper-alt);">
+  <section id="guarantee" class="section section--paper-alt">
     <div class="container">
-      <div class="card guarantee-box" style="max-width:720px;margin-inline:auto;">
+      <div class="card guarantee-box guarantee-box--centered">
         <div class="guarantee-icon">🛡</div>
         <div>
           <h4>Гарантия честного старта</h4>
@@ -1050,14 +1055,14 @@
   </section>
 
   <!-- ============ FINAL CTA ============ -->
-  <section class="section" style="text-align:center;">
+  <section id="finalCta" class="section section--centered">
     <div class="container">
       <div class="final-box">
         <h3>Помни:</h3>
         <p>Перемены, которых ты ждёшь, начинаются с действий.</p>
         <p>За цену одного клиентского сеанса ты можешь освоить навык, который приведёт к стабильному потоку клиентов.</p>
         <p><strong>Не бойся мечтать масштабно — бойся не попробовать.</strong></p>
-        <a href="#pricing" class="btn btn-stardust"><span class="btn-stardust-wrap">Купить курс</span></a>
+        <button type="button" class="btn btn-stardust" data-popup-open aria-haspopup="dialog"><span class="btn-stardust-wrap">Купить курс</span></button>
       </div>
     </div>
   </section>
@@ -1086,7 +1091,9 @@
       </div>
       <p>
         Firma Виктория Поникарова NIP 6492327660<br />
-        <a href="#" class="legal-link">Публичная оферта</a>
+        <a href="privacy-policy.html" class="legal-link">Политика конфиденциальности</a>
+        <a href="cookie-policy.html" class="legal-link">Политика использования файлов cookie</a>
+        <a href="terms.html" class="legal-link">Условия и положения</a>
       </p>
       <p style="margin-top:16px;">© Copyright 2026 by VIP tattoo school. Все права защищены.</p>
     </div>
