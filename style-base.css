@@ -144,7 +144,16 @@ button {
   font-weight: 600;
   font-size: 1rem;
   line-height: 1.6;
-  color: var(--gold-dark);
+  color: var(--gold-light);
+  background: var(--ink);
+  border-radius: 16px;
+  padding: 24px 32px;
+}
+
+@media (min-width: 901px) {
+  .course-fit-lede {
+    font-size: 1.25rem;
+  }
 }
 
 @media (max-width: 720px) {
