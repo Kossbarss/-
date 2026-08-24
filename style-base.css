@@ -1063,9 +1063,11 @@ body.nav-open {
    stay completely untouched. */
 .lede-relocated .word-animate {
   background: none;
-  -webkit-text-fill-color: var(--gold-dark);
-  color: var(--gold-dark);
-  text-shadow: none;
+  -webkit-text-fill-color: #87662e;
+  color: #87662e;
+  /* Subtle relief/emboss (not a soft drop shadow, which was explicitly
+     removed) -- a faint dark edge below, faint light edge above. */
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35), 0 -1px 0 rgba(255, 255, 255, 0.18);
 }
 
 /* Even, symmetric breathing room between the ribbon above and the
@@ -1088,8 +1090,8 @@ body.nav-open {
    otherwise the "22+" ticker would stay light gold regardless of the
    rule above. */
 .lede-relocated #heroLedeCountriesNumber {
-  -webkit-text-fill-color: var(--gold-dark);
-  color: var(--gold-dark);
+  -webkit-text-fill-color: #87662e;
+  color: #87662e;
 }
 
 /* The "22+" ticker digit-roll (see hero-stats-entry.tsx) renders its own
