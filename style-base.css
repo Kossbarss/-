@@ -1065,6 +1065,11 @@ body.nav-open {
   background: none;
   -webkit-text-fill-color: var(--gold-dark);
   color: var(--gold-dark);
+  /* .hero-lede .word-animate explicitly zeroes this shadow for its use
+     inside .hero (per an earlier client request there); restored here,
+     matching the same shadow .hero h1 uses, since it reads well again
+     now that this text sits on the light page background. */
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
 }
 
 /* Even, symmetric breathing room between the ribbon above and the
