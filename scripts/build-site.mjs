@@ -80,6 +80,8 @@ function renderCasesSection(locale) {
         <h2>${copy.intro}</h2>
       </div>
 
+      <div id="casesTestimonialMarquee"></div>
+
       <div class="section-head case-fan-head">
         <span class="kicker">${copy.kicker}</span>
         <h2>${copy.title}</h2>
