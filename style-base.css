@@ -133,7 +133,7 @@ button {
   font-weight: 600;
   font-size: 1rem;
   line-height: 1.6;
-  color: var(--ink);
+  color: var(--gold-dark);
 }
 
 @media (max-width: 720px) {
