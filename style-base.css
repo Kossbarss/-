@@ -3286,8 +3286,9 @@ body.nav-open {
 
 .bonus-total {
   text-align: center;
-  color: var(--muted);
+  color: var(--ink);
   font-size: 0.95rem;
+  font-weight: 600;
   text-transform: none;
 }
 
