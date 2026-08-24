@@ -1054,6 +1054,28 @@ body.nav-open {
   text-shadow: none;
 }
 
+/* This paragraph now also lives outside .hero (moved below the ribbon,
+   per request) -- the light gold gradient above reads fine over .hero's
+   own dark background, but is nearly invisible over the light page
+   background there, so .lede-relocated overrides it to a plain dark
+   gold. Placed after .hero-lede .word-animate (equal specificity, so
+   source order decides) -- the original rule and its use inside .hero
+   stay completely untouched. */
+.lede-relocated .word-animate {
+  background: none;
+  -webkit-text-fill-color: var(--gold-dark);
+  color: var(--gold-dark);
+}
+
+/* #heroLedeCountriesNumber is an ID selector (higher specificity than
+   .word-animate's gradient), so it needs its own override here too --
+   otherwise the "22+" ticker would stay light gold regardless of the
+   rule above. */
+.lede-relocated #heroLedeCountriesNumber {
+  -webkit-text-fill-color: var(--gold-dark);
+  color: var(--gold-dark);
+}
+
 /* The "22+" ticker digit-roll (see hero-stats-entry.tsx) renders its own
    nested column/track structure -- too deep for the gradient
    background-clip:text above to reliably clip through (same reason the
