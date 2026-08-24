@@ -1701,6 +1701,10 @@ body.nav-open {
     grid-template-areas: "photo" "identity" "copy";
     row-gap: 24px;
   }
+
+  .instructor-identity {
+    justify-content: center;
+  }
 }
 
 /* Circular-testimonials carousel mount (components/ui/circular-testimonials.tsx),
