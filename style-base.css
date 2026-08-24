@@ -1233,7 +1233,10 @@ body.nav-open {
 .topline-fade {
   opacity: 0;
   animation: word-appear 0.8s ease-out both;
-  animation-delay: 4720ms;
+  /* Matches .hero-stats's own animation-delay (2600ms) so this text
+     appears together with "300+ випускників курсу / 22+ країн, де
+     цінують роботи учнів" instead of after it. */
+  animation-delay: 2600ms;
 }
 
 @keyframes word-appear {
