@@ -1225,6 +1225,19 @@ body.nav-open {
   will-change: opacity, transform, filter;
 }
 
+/* .hero-topline's two lines used to animate word-by-word like the rest
+   of .hero, but that stretched their reveal out ~1.8s on its own well
+   after everything else nearby had already settled, reading as a
+   separate, late arrival. Fades in as a single block per line instead,
+   at the same moment (no per-word stagger, no display:inline-block --
+   .hero-topline p is centered block text, and inline-block would
+   shrink-wrap it away from that). */
+.topline-fade {
+  opacity: 0;
+  animation: word-appear 0.8s ease-out both;
+  animation-delay: 4720ms;
+}
+
 @keyframes word-appear {
   0% {
     opacity: 0;
