@@ -80,8 +80,6 @@ function renderCasesSection(locale) {
         <h2>${copy.intro}</h2>
       </div>
 
-      <div id="casesTestimonialMarquee"></div>
-
       <div class="section-head case-fan-head">
         <span class="kicker">${copy.kicker}</span>
         <h2>${copy.title}</h2>
@@ -105,17 +103,21 @@ ${renderGraduates(copy.graduates)}
 }
 
 function replaceCasesSection(html, locale) {
-  const whatYouGetMarker = '<!-- ============ WHAT YOU GET ============ -->'
-  const nextMarker = html.indexOf(whatYouGetMarker)
-  const mount = html.lastIndexOf('id="caseFanLayout"', nextMarker)
-  if (nextMarker < 0 || mount < 0) throw new Error(`Cannot locate cases section in ${locale} page.`)
+  // Anchored on the section's own content (id="caseFanLayout") rather than
+  // its position relative to any other section -- the Cases block's place
+  // in the page order has moved before and may move again, but this id is
+  // unique to it regardless of where it sits.
+  const mount = html.indexOf('id="caseFanLayout"')
+  if (mount < 0) throw new Error(`Cannot locate cases section in ${locale} page.`)
 
   const sectionStart = html.lastIndexOf('<section', mount)
   const commentStart = html.lastIndexOf('<!-- ============ CHAT TESTIMONIAL + CASES ============ -->', mount)
   const replaceStart = commentStart >= 0 ? commentStart : sectionStart
-  if (replaceStart < 0) throw new Error(`Cannot locate cases section start in ${locale} page.`)
+  const sectionEnd = html.indexOf('</section>', mount)
+  if (replaceStart < 0 || sectionEnd < 0) throw new Error(`Cannot locate cases section boundaries in ${locale} page.`)
 
-  return `${html.slice(0, replaceStart)}${renderCasesSection(locale)}\n\n  ${html.slice(nextMarker)}`
+  const afterSection = sectionEnd + '</section>'.length
+  return `${html.slice(0, replaceStart)}${renderCasesSection(locale)}\n\n  ${html.slice(afterSection)}`
 }
 
 function replaceInlineLayoutStyles(html) {
