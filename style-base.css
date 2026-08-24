@@ -126,9 +126,20 @@ button {
   padding: 40px 0;
 }
 
+.course-fit-lede-wrap {
+  padding: 68px 0 48px;
+}
+
+/* #program now contains only .fit-list -- the section's own top padding
+   would double up with .course-fit-lede-wrap's bottom padding above it,
+   so it's zeroed here and spacing is controlled from the wrap instead. */
+#program {
+  padding-top: 0;
+}
+
 .course-fit-lede {
   max-width: 760px;
-  margin: 32px auto;
+  margin: 0 auto;
   text-align: center;
   font-weight: 600;
   font-size: 1rem;
@@ -1522,7 +1533,6 @@ body.nav-open {
 }
 
 .fit-list {
-  margin-top: 40px;
   padding: 28px 32px;
   background: var(--paper-alt);
 }
