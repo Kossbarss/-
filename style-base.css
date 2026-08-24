@@ -1579,16 +1579,41 @@ body.nav-open {
 }
 
 /* ---------- Instructor ---------- */
+/* Instructor and Cases now read as one continuous block: same background/
+   gradient runs through both, rounded only at the outer top (instructor)
+   and outer bottom (cases) -- no seam, no rounding at the shared edge. */
 .instructor-section {
   position: relative;
   background: radial-gradient(circle at top right, rgba(253, 144, 77, 0.3) 0%, rgba(201, 162, 74, 0.14) 30%, transparent 55%), var(--ink);
-  border-radius: 24px;
+  border-radius: 24px 24px 0 0;
   color: var(--paper);
 }
 
 .instructor-section .section-clip {
   position: relative;
   overflow: hidden;
+}
+
+.cases-section {
+  position: relative;
+  background: radial-gradient(circle at top right, rgba(253, 144, 77, 0.3) 0%, rgba(201, 162, 74, 0.14) 30%, transparent 55%), var(--ink);
+  border-radius: 0 0 24px 24px;
+  color: var(--paper);
+}
+
+.cases-section .section-clip {
+  position: relative;
+  overflow: hidden;
+}
+
+.cases-section .kicker {
+  background: none;
+  -webkit-text-fill-color: var(--paper);
+  color: var(--paper);
+}
+
+.cases-section .case-fan-head h2 {
+  color: var(--paper);
 }
 
 .instructor-layout {
