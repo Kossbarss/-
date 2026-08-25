@@ -274,6 +274,15 @@
   background: rgba(250, 246, 239, 0.3);
 }
 
+/* The lightened inactive-dot rule above has the same specificity as
+   .case-carousel-dot.is-active further up this file and comes after it
+   in source order, so without this it was winning and silently erasing
+   the gold "you are here" active-dot indicator on every dot, active or
+   not. Restore it explicitly in this context. */
+.cases-section #caseFanLayout[data-case-carousel-3d="true"] .case-carousel-dot.is-active {
+  background: var(--gold, #c9a24a);
+}
+
 #caseFanLayout[data-case-carousel-3d="true"] .case-carousel-detail {
   position: relative;
   z-index: 2;
