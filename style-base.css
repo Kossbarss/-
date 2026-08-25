@@ -1709,6 +1709,10 @@ body.nav-open {
   grid-area: copy;
 }
 
+.instructor-copy .section-head h2 {
+  text-align: center;
+}
+
 /* Below 900px, .instructor-layout stacks to one column -- the badge
    sits below the photo here (client request: badge under the photo on
    mobile/tablet, unchanged side-by-side on desktop). */
