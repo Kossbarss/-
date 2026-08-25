@@ -135,7 +135,9 @@
       : ['8 недель обучения', '40+ часов практики', '300+ выпускников', 'Сертификат VIP Tattoo School', 'Пожизненный доступ к записям', '22+ стран, где ценят работы', 'Личная обратная связь от куратора', 'Практика на моделях']
     // Nesting depth is independent of language -- UA is the root page and
     // RU lives under /ru/, so this has to key off the URL, not isUk.
-    const assetsPrefix = /\/ru(?:\/|$)/.test(location.pathname) ? '../assets/' : 'assets/'
+    const assetsPrefix =
+      window.VIP_TATTOO_ASSET_BASE ||
+      (/\/ru(?:\/|$)/.test(location.pathname) ? '../assets/' : 'assets/')
     ribbonTrack.replaceChildren()
     ;[...items, ...items].forEach((text) => {
       const item = document.createElement('span')
