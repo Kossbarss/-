@@ -1724,10 +1724,6 @@ body.nav-open {
   .instructor-identity {
     justify-content: center;
   }
-
-  .instructor-copy .section-head h2 {
-    text-align: center;
-  }
 }
 
 /* Circular-testimonials carousel mount (components/ui/circular-testimonials.tsx),
