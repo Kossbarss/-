@@ -1,4 +1,4 @@
-@import url('./style-base.css');
+@import url('./style-base.css?v=1');
 
 /* First-paint fallback for the Paper MeshGradient hero. */
 .hero-topline {
