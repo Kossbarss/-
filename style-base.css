@@ -1587,6 +1587,7 @@ body.nav-open {
 .fit-list {
   padding: 28px 32px;
   background: var(--paper-alt);
+  border-radius: 14px;
 }
 
 .fit-list h3 {
