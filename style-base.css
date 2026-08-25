@@ -1710,9 +1710,6 @@ body.nav-open {
   grid-area: copy;
 }
 
-.instructor-copy .section-head h2 {
-  text-align: center;
-}
 
 /* Below 900px, .instructor-layout stacks to one column -- the badge
    sits below the photo here (client request: badge under the photo on
@@ -1726,6 +1723,10 @@ body.nav-open {
 
   .instructor-identity {
     justify-content: center;
+  }
+
+  .instructor-copy .section-head h2 {
+    text-align: center;
   }
 }
 
@@ -1824,7 +1825,6 @@ body.nav-open {
 .instructor-identity {
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-wrap: wrap;
   gap: 12px;
 }
