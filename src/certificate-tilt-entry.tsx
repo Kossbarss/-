@@ -10,7 +10,9 @@ const isUkrainian =
 // Asset nesting depth is independent of language -- UA is now the root
 // page and RU lives under /ru/, so this has to key off the URL's actual
 // nesting, not which language is being displayed.
-const assetPrefix = /\/ru(?:\/|$)/.test(window.location.pathname) ? "../assets/" : "assets/";
+const assetPrefix =
+  (window as any).VIP_TATTOO_ASSET_BASE ||
+  (/\/ru(?:\/|$)/.test(window.location.pathname) ? "../assets/" : "assets/");
 const certificateFilename = "certificate-vip-tattoo-school.jpg";
 
 const alt = isUkrainian
